@@ -1,6 +1,7 @@
 package crud.prac.domain.shorts;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class HashTagList {
     @OneToMany(mappedBy = "hashtag_id")
     private List<HashTag> hashTag;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "id")
     private Shorts shorts;
 }

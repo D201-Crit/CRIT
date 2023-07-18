@@ -1,6 +1,7 @@
 package crud.prac.domain;
 
 import crud.prac.domain.post.PostLikeTable;
+import crud.prac.domain.shorts.Shorts;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,9 @@ public class Member {
 
     @OneToMany(mappedBy = "following")
     private List<Follow> followings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "shorts_id")
+    private List<Shorts> shorts = new ArrayList<>();
 
     @Builder
     public Member(Long id, String name, String member_id, String nickname, String password) {
