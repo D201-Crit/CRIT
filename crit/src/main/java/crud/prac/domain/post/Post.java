@@ -55,6 +55,12 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<PostLikeTable> likeTables = new ArrayList<>();
 
+    public Post(String title, String content, Member author, int i) {
+        this.title = title;
+        this.content = content;
+        this.author = author;
+        this.views = i;
+    }
 
     public void update(String title, String content) {
         this.title = title;

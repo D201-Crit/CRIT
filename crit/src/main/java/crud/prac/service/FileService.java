@@ -1,7 +1,7 @@
 package crud.prac.service;
 
 
-import crud.prac.domain.FileEntity;
+import crud.prac.domain.FileUpload;
 import crud.prac.domain.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,7 +42,7 @@ public class FileService {
         String savedPath = fileDir + savedName;
 
         //파일 엔티티
-        FileEntity file = FileEntity.builder()
+        FileUpload file = FileUpload.builder()
                 .orgNm(origName)
                 .savedNm(savedName)
                 .savedPath(savedPath)
@@ -52,7 +52,7 @@ public class FileService {
         files.transferTo(new File(savedPath));
 
         // 데이터베이스에 파일 정보 저장
-        FileEntity savedFile = fileRepository.save(file);
+        FileUpload savedFile = fileRepository.save(file);
 
         return savedFile.getId();
     }

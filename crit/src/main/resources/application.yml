@@ -20,6 +20,14 @@ spring:
     hibernate:
       ddl-auto: create
 
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 300MB
+
+file:
+  dir: D:/test/
+
 
 server:
   servlet:
@@ -31,5 +39,3 @@ server:
 logging:
   level:
     practice: DEBUG
-
-

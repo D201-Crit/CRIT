@@ -1,5 +1,6 @@
 package crud.prac.web.dto;
 
+import crud.prac.domain.Member;
 import crud.prac.domain.post.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +10,10 @@ import lombok.NoArgsConstructor;
 public class PostSaveRequestDto {
     private String title;
     private String content;
-    private String author;
+    private Member author;
 
-    public PostSaveRequestDto(String title, String content, String author) {
+
+    public PostSaveRequestDto(String title, String content, Member author) {
         this.title = title;
         this.content = content;
         this.author = author;
@@ -19,7 +21,6 @@ public class PostSaveRequestDto {
 
     public Post toEntity() {
 
-        Post posts = new Post(title, content, author, 0);
-        return posts;
+        return new Post(title, content, author, 0);
     }
 }
