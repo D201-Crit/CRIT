@@ -37,16 +37,16 @@ public class UserService {
                     .follower(member1)
                     .following(member2).build();
             followRepository.save(follow);
-            member1.adduserTofollower(follow);
-            member2.adduserTofollowing(follow);
+            member1.addUserToFollower(follow);
+            member2.addUserToFollowing(follow);
             return member1;
 //            return FollowDto.builder()
 //                    .followers(user1.getFollowers())
 //                    .followwings(user1.getFollowings()).build();
         } else {
             Follow follow = followRepository.findByFollowerAndFollowing(member1, member2).get();
-            member1.removeuserTofollower(follow);
-            member2.removeuserTofollowing(follow);
+            member1.removeUserToFollower(follow);
+            member2.removeUserToFollowing(follow);
             followRepository.deleteByFollowerAndFollowing(member1, member2);
             return member1;
 //            return FollowDto.builder()

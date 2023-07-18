@@ -1,8 +1,8 @@
 package crud.prac.web;
 
-import crud.prac.domain.Posts;
-import crud.prac.domain.repository.PostsRepository;
-import crud.prac.web.dto.PostsSaveRequestDto;
+import crud.prac.domain.post.Post;
+import crud.prac.domain.repository.PostRepository;
+import crud.prac.web.dto.PostSaveRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class PostsApiControllerTest {
     private TestRestTemplate restTemplate;
 
     @Autowired
-    private PostsRepository postsRepository;
+    private PostRepository postsRepository;
 
 
     @AfterEach
@@ -41,7 +41,7 @@ public class PostsApiControllerTest {
 
         String title = "title";
         String content = "content";
-        PostsSaveRequestDto requestDto = new PostsSaveRequestDto(title, content, "zz");
+        PostSaveRequestDto requestDto = new PostSaveRequestDto(title, content, "zz");
 
         String url = "http://localhost:" + port + "/api/v1/posts";
 
@@ -53,7 +53,7 @@ public class PostsApiControllerTest {
         assertThat(responseEntity.getBody())
                 .isGreaterThan(0L);
 
-        List<Posts> all = postsRepository.findAll();
+        List<Post> all = postsRepository.findAll();
 
         assertThat(all.get(0).getTitle()).isEqualTo(title);
         assertThat(all.get(0).getContent()).isEqualTo(content);

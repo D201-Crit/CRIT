@@ -1,5 +1,6 @@
 package crud.prac.domain;
 
+import crud.prac.domain.post.PostLikeTable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class Member {
 
     @Id
     @GeneratedValue
+    @Column(name = "member_id")
     private Long id;
 
     private String name;
@@ -26,7 +28,7 @@ public class Member {
     private String password;
 
     @OneToMany(mappedBy = "member")
-    private List<LikeTable> likeTables;
+    private List<PostLikeTable> likeTables;
 
     @OneToMany(mappedBy = "follower")
     private List<Follow> followers = new ArrayList<>();
@@ -43,27 +45,27 @@ public class Member {
         this.password = password;
     }
 
-    public void addLiketable(LikeTable likeTable) {
+    public void addLikeTable(PostLikeTable likeTable) {
         likeTables.add(likeTable);
     }
 
-    public void removeLiketable(LikeTable likeTable) {
+    public void removeLikeTable(PostLikeTable likeTable) {
         likeTables.remove(likeTable);
     }
 
-    public void adduserTofollower(Follow follow) {
+    public void addUserToFollower(Follow follow) {
         followers.add(follow);
     }
 
-    public void adduserTofollowing(Follow follow) {
+    public void addUserToFollowing(Follow follow) {
         followings.add(follow);
     }
 
-    public void removeuserTofollower(Follow follow) {
+    public void removeUserToFollower(Follow follow) {
         followers.remove(follow);
     }
 
-    public void removeuserTofollowing(Follow follow) {
+    public void removeUserToFollowing(Follow follow) {
         followings.remove(follow);
     }
 

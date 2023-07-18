@@ -1,9 +1,9 @@
 package crud.prac.web;
 
-import crud.prac.domain.Posts;
-import crud.prac.domain.Review;
+import crud.prac.domain.post.Post;
+import crud.prac.domain.post.PostComment;
 import crud.prac.domain.Member;
-import crud.prac.service.PostsService;
+import crud.prac.service.PostService;
 import crud.prac.service.UserService;
 import crud.prac.web.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +17,12 @@ import java.util.List;
 public class PostsApiController {
 
     // service -> controller
-    private final PostsService postsService;
+    private final PostService postsService;
     private final UserService userService;
 
     // 저장 Mapping
     @PostMapping("/api/v1/posts")
-    public Long save(@RequestBody PostsSaveRequestDto requestDto){
+    public Long save(@RequestBody PostSaveRequestDto requestDto){
         return postsService.save(requestDto);
     }
 
@@ -45,22 +45,22 @@ public class PostsApiController {
     }
 
     @GetMapping("/api/findbytitle/{title}")
-    public ResponseEntity<List<Posts>> findbytitle(@PathVariable String title) {
+    public ResponseEntity<List<Post>> findbytitle(@PathVariable String title) {
         return ResponseEntity.ok(postsService.findbytitle(title));
     }
 
     @PostMapping("/api/review")
-    public ResponseEntity<Review> createreview(ReviewRequestDto requestDto) {
-        return ResponseEntity.ok(postsService.createreview(requestDto));
+    public ResponseEntity<PostComment> createreview(ReviewRequestDto requestDto) {
+        return ResponseEntity.ok(postsService.createComment(requestDto));
     }
 
     @GetMapping("/api/orederbyviews")
-    public ResponseEntity<List<Posts>> orderbyviews() {
+    public ResponseEntity<List<Post>> orderbyviews() {
         return ResponseEntity.ok(postsService.orderbyviews());
     }
 
     @PostMapping("/api/likepost")
-    public Posts likepost(String title, String nickname) {
+    public Post likepost(String title, String nickname) {
         return postsService.likePost(title,nickname);
     }
 
@@ -71,7 +71,7 @@ public class PostsApiController {
 
     @PostMapping("/api/paging")
     public PageDto paging(int nowpage, int interval) {
-        List<Posts> posts = postsService.orderbyviews();
+        List<Post> posts = postsService.orderbyviews();
         PageDto pageDto = new PageDto(nowpage, posts.size(),interval);
         if (nowpage * interval > posts.size()) {
             for (int i = nowpage * interval - interval; i < posts.size() ; i++) {

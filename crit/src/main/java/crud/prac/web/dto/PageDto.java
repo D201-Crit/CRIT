@@ -1,8 +1,6 @@
 package crud.prac.web.dto;
 
-import crud.prac.domain.Posts;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import crud.prac.domain.post.Post;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +18,7 @@ public class PageDto {
     private boolean prev, next; // 이전, 다음 페이지 활성화 여부
     private int interval; // 한 페이지당 게시물 수 몇개?
 
-    private List<Posts> postsList = new ArrayList<>();
+    private List<Post> postsList = new ArrayList<>();
 
 
     public PageDto(int nowpage, int total, int interval) {
@@ -43,7 +41,7 @@ public class PageDto {
         /* 마지막 페이지(endPage)값이 1보다 큰 경우 true */
         this.next = this.endpage < realend;
     }
-    public void addPosts(Posts posts) {
+    public void addPosts(Post posts) {
         postsList.add(posts);
     }
 }

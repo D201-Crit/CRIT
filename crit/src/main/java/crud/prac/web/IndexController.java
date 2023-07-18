@@ -1,6 +1,6 @@
 package crud.prac.web;
 
-import crud.prac.service.PostsService;
+import crud.prac.service.PostService;
 import crud.prac.web.dto.PostsResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequiredArgsConstructor
 @Controller
 public class IndexController {
-    private final PostsService postsService;
+    private final PostService postsService;
 
     // index 페이지
     @GetMapping("/")

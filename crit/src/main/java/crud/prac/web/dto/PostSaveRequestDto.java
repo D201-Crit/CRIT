@@ -1,25 +1,25 @@
 package crud.prac.web.dto;
 
-import crud.prac.domain.Posts;
+import crud.prac.domain.post.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PostsSaveRequestDto {
+public class PostSaveRequestDto {
     private String title;
     private String content;
     private String author;
 
-    public PostsSaveRequestDto(String title, String content, String author) {
+    public PostSaveRequestDto(String title, String content, String author) {
         this.title = title;
         this.content = content;
         this.author = author;
     }
 
-    public Posts toEntity() {
+    public Post toEntity() {
 
-        Posts posts = new Posts(title, content, author, 0);
+        Post posts = new Post(title, content, author, 0);
         return posts;
     }
 }
