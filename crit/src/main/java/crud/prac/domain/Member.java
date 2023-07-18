@@ -1,7 +1,7 @@
 package crud.prac.domain;
 
+import crud.prac.domain.challenge.ChallengeUser;
 import crud.prac.domain.post.PostLikeTable;
-import crud.prac.domain.shorts.Shorts;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +9,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * * 230718
+ * * 멤버 엔티티
+ * * by 조경호
+ */
 
 @Entity
 @NoArgsConstructor
@@ -22,14 +28,20 @@ public class Member {
 
     private String name;
 
-    private String member_id;
+    private String memberId;
 
     private String nickname;
 
     private String password;
 
+    private String profileImg;
+
+    private int point;
+
+    private Grade grade;
+
     @OneToMany(mappedBy = "member")
-    private List<PostLikeTable> likeTables;
+    private List<PostLikeTable> likeTables = new ArrayList<>();
 
     @OneToMany(mappedBy = "follower")
     private List<Follow> followers = new ArrayList<>();
@@ -37,17 +49,25 @@ public class Member {
     @OneToMany(mappedBy = "following")
     private List<Follow> followings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "shorts_id")
-    private List<Shorts> shorts = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<ChallengeUser> challengeUsers = new ArrayList<>(); // 참여한 챌린지 들
 
     @Builder
-    public Member(Long id, String name, String member_id, String nickname, String password) {
+    public Member(Long id, String name, String memberId, String nickname, String password, String profileImg, List<PostLikeTable> likeTables, List<Follow> followers, List<Follow> followings, List<ChallengeUser> challengeUsers) {
         this.id = id;
         this.name = name;
-        this.member_id = member_id;
+        this.memberId = memberId;
         this.nickname = nickname;
         this.password = password;
+        this.profileImg = profileImg;
+        this.likeTables = likeTables;
+        this.followers = followers;
+        this.followings = followings;
+        this.challengeUsers = challengeUsers;
     }
+
+
+
 
     public void addLikeTable(PostLikeTable likeTable) {
         likeTables.add(likeTable);

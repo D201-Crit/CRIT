@@ -1,16 +1,20 @@
 package crud.prac.domain.challenge;
 
+import crud.prac.domain.post.Board;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * * 230718
  * * 챌린지 엔티티
  * * by 조경호
+ * * 수정 필요
  */
 
 @Entity
@@ -39,11 +43,27 @@ public class Challenge {
 //    private LocalDateTime endTime; // 뭐가 나을지?
 
     @Enumerated(EnumType.STRING)
-    private Certification certification; // 인증 타입
+    private CertificationType type; // 인증 타입
 
     private Boolean offline;
+    /**
+     * 이걸 인증 타입에 넣는건 어떤지?
+     */
 
-    private LocalDateTime localDateTime;
+    private LocalDateTime initDate; // 챌린지 생성 날짜
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "challenge_cate_id")
+    private ChallengeCategory category;
+    
+    private int cost;  // 챌린지 금액
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "board_id")
+    private Board board; // 챌린지 게시판
+
+    @OneToMany(mappedBy = "challenge")
+    private List<ChallengeUser> challengeUsers = new ArrayList<>(); // 챌린지 유저 리스트
 
 
 
