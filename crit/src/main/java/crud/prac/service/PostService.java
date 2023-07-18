@@ -40,14 +40,14 @@ public class PostService {
     @Transactional
     public PostsResponseDto findById(Long id){
         Post posts = postsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시물 없음"));
-        posts.Plusviews();
-        return new PostsResponseDto(posts.getId(), posts.getTitle(), posts.getContent(), posts.getAuthor());
+        posts.plusViews();
+        return new PostsResponseDto(posts.getId(), posts.getTitle(), posts.getContent(), posts.getAuthor().getMemberId());
     }
 
     @Transactional(readOnly = true)
     public List<PostsListResponseDto> findAllDesc() {
         return postsRepository.findAllDesc().stream()
-                .map(post -> new PostsListResponseDto(post.getId(), post.getTitle(), post.getAuthor()))
+                .map(post -> new PostsListResponseDto(post.getId(), post.getTitle(), post.getAuthor().getMemberId()))
                 .collect(Collectors.toList());
     }
 

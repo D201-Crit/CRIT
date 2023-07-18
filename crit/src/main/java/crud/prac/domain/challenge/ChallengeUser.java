@@ -2,6 +2,7 @@ package crud.prac.domain.challenge;
 
 import crud.prac.domain.Member;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -9,34 +10,32 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * * 230718
+ * * 챌린지 유저 엔티티
+ * * by 조경호
+ */
+
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Certification {
+public class ChallengeUser {
     @Id
     @GeneratedValue
-    @Column(name = "certification_id")
+    @Column(name = "challenge_user_id")
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private CertificationStatus status; // 인증 상태, 체크 or 언체크
-
-    private LocalDateTime emptyTime; // 자리를 비운 시간
-
-    private String certImage; // 사진인 경우 인증사진 경로에 해당
-
-    private String emptyImage; // 자리 비움이 길어졌을때의 사진
-
     @CreationTimestamp
-    private LocalDateTime initDate; // 인증 시간
+    private LocalDateTime initDate; // 해당 챌린지 참여 일자
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Member member; // 챌린지 참여하는 멤버
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_id")
-    private Challenge challenge;
+    private Challenge challenge; // 해당 챌린지
 
 }

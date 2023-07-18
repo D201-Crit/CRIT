@@ -43,17 +43,18 @@ public class Post {
 
     private LocalDateTime initDate; // 게시글 생성 날짜
 
-    @Enumerated(EnumType.STRING)
-    private BoardCategory category;  // 카테고리
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")
+    private Board board;  // 해당 보드
 
     private int views;  // 조회수
-
+    
+    @OneToMany(mappedBy = "post")
+    private List<PostComment> comments = new ArrayList<>(); // 게시글의 댓글들
 
     @OneToMany(mappedBy = "post")
-    private List<PostComment> comments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "post")
-    private List<PostLikeTable> likeTables = new ArrayList<>();
+    private List<PostLikeTable> likeTables = new ArrayList<>(); // 게시글의 좋아요
 
 
     public void update(String title, String content) {
@@ -61,7 +62,7 @@ public class Post {
         this.content = content;
     }
 
-    public void Plusviews() {
+    public void plusViews() {
         this.views = this.views + 1;
     }
 
