@@ -24,7 +24,6 @@ public class PostComment {
     @Column(name = "post_comment_id")
     private Long id;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER) // Eager? Lazy?
     @JoinColumn(name = "post_id")
     private Post post;

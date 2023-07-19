@@ -19,11 +19,11 @@ public class ShortsReply {
     @GeneratedValue
     private Long id;
 
-    @JsonIgnore
+    private String reply;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Shorts shorts;
 }

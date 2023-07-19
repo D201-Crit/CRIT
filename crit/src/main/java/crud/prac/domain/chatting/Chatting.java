@@ -5,10 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,8 +23,8 @@ public class Chatting {
 
     private LocalDateTime localDateTime;
 
-    @OneToMany(mappedBy = "member_id")
-    private List<Member> member;
+    @OneToOne(mappedBy = "member_id")
+    private Member member; // sender
 
     @OneToMany(mappedBy = "chattingroom_id")
     private List<ChattingRoom> chattingRooms;

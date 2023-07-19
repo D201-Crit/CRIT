@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -19,20 +21,22 @@ public class ShortsComments {
 
     @Id
     @GeneratedValue
+    @Column(name = "shortscomments_id")
     private Long id;
 
-    @JsonIgnore
+    private String comments;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shorts_id")
     private Shorts shorts;
 
-    @JsonIgnore
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
     @OneToMany(mappedBy = "id")
-    private List<ShortsReply> replies;
+    private List<ShortsReply> replies = new ArrayList<>();
 
     private LocalDateTime localDateTime;
 }

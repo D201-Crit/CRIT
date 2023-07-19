@@ -27,12 +27,10 @@ public class PostLikeTable {
 
     private LocalDateTime initDate; // 좋아요 누른 날짜
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;

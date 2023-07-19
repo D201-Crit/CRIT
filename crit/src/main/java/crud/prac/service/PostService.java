@@ -23,6 +23,8 @@ public class PostService {
     private final PostCommentRepository reviewRepository;
     private final UserRepository userRepository;
     private final LikeTableRepository likeTableRepository;
+    private final FileService fileService;
+
 
     @Transactional
     public Long save(PostSaveRequestDto requestDto){ // 게시물 저장
@@ -41,13 +43,13 @@ public class PostService {
     public PostsResponseDto findById(Long id){
         Post posts = postsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시물 없음"));
         posts.plusViews();
-        return new PostsResponseDto(posts.getId(), posts.getTitle(), posts.getContent(), posts.getAuthor().getMemberId());
+        return new PostsResponseDto(posts.getId(), posts.getTitle(), posts.getContent(), posts.getAuthor());
     }
 
     @Transactional(readOnly = true)
     public List<PostsListResponseDto> findAllDesc() {
         return postsRepository.findAllDesc().stream()
-                .map(post -> new PostsListResponseDto(post.getId(), post.getTitle(), post.getAuthor().getMemberId()))
+                .map(post -> new PostsListResponseDto(post.getId(), post.getTitle(), post.getAuthor()))
                 .collect(Collectors.toList());
     }
 

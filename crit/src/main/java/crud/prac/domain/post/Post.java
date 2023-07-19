@@ -56,6 +56,9 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<PostLikeTable> likeTables = new ArrayList<>(); // 게시글의 좋아요
 
+
+
+
     public Post(String title, String content, Member author, int i) {
         this.title = title;
         this.content = content;

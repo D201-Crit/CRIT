@@ -1,4 +1,4 @@
-package crud.prac.domain.repository.shorts;
+package crud.prac.domain.repository;
 
 import crud.prac.domain.post.Post;
 import crud.prac.domain.shorts.Shorts;

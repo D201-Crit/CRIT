@@ -21,6 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Builder
+//게시판 구분
 public class Board {
     @Id
     @GeneratedValue

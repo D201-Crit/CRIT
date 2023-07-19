@@ -7,10 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @NoArgsConstructor
 @Entity
@@ -22,6 +19,7 @@ public class FileUpload {
 
     @Id
     @GeneratedValue
+    @Column(name = "fileUpload_id")
     private Long id;
 
     @Comment("Original Name")
