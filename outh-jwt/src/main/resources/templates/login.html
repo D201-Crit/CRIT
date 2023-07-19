@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>로그인 페이지</title>
+</head>
+<body>
+<h1>로그인 페이지</h1>
+<hr/>
+<!-- 시큐리티는 x-www-form-url-encoded 타입만 인식 -->
+<form action="/login" method="post">
+	<input type="text" name="username" placeholder="username"/> <br/>
+	<input type="password" name="password" placeholder="password" /> <br/>
+	<button>로그인</button>
+</form>
+<a href="/joinForm">회원가입</a>
+<br />
+
+<h1>Social Login</h1>
+<br />
+<!-- javascript:; 는 클릭해도 반응을 없게 하는 키워드 -->
+<a href="/oauth2/authorization/google" >google</a>
+<br />
+<a href="/oauth2/authorization/naver" >naver</a>
+<br />
+<a href="/oauth2/authorization/kakao" >kakao</a>
+<br />
+</body>
+</html>
