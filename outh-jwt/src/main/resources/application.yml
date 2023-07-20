@@ -7,6 +7,9 @@ server:
       enabled: true
       force: true
 
+jasypt:
+  password: critwebgiggle
+
 spring:
   datasource:
     url: jdbc:h2:tcp://localhost/~/oauth
@@ -28,15 +31,15 @@ spring:
       client:
         registration:
           google: # /oauth2/authorization/google ? ??? ???? ??.
-            client-id: 
-            client-secret:
+            client-id: 654898016967-ga4did0cpou4r9ckv0r7ho42arkrtlc1.apps.googleusercontent.com
+            client-secret: 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
             scope:
               - email
               - profile
 
           naver:
-            client-id:
-            client-secret:
+            client-id: L61z2MvnsWFQfYi7kRi2
+            client-secret: C7WDt44jj5
             scope:
               - name
               - email
@@ -45,11 +48,13 @@ spring:
             redirect-uri: http://localhost:8080/login/oauth2/code/naver
 
           kakao:
-            client-id:
-            client-secret:
+            client-id: abc570fb116bd926266e60e2e34149bb
+            client-secret: T7L5ZhjorN1iZ4lOmo0yuHCesg9F7iDI
             scope:
               - profile_nickname
               - account_email
+              - profile_image
+            client-authentication-method: POST
             client-name: Kakao
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao

@@ -3,7 +3,7 @@ package com.crit.outhjwt.global.jwt.filter;
 import com.crit.outhjwt.domain.user.entity.User;
 import com.crit.outhjwt.domain.user.repository.UserRepository;
 import com.crit.outhjwt.global.jwt.service.JwtService;
-import com.crit.outhjwt.global.jwt.util.PasswordUtil;
+import com.crit.outhjwt.global.util.PasswordUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

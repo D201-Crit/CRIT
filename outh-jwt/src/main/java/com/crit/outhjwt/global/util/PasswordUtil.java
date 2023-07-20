@@ -1,4 +1,4 @@
-package com.crit.outhjwt.global.jwt.util;
+package com.crit.outhjwt.global.util;
 
 import java.util.Random;
 

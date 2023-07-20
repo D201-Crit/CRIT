@@ -3,6 +3,7 @@ package com.crit.outhjwt.global.oauth2;
 import com.crit.outhjwt.domain.user.entity.Role;
 import com.crit.outhjwt.domain.user.entity.SocialType;
 import com.crit.outhjwt.domain.user.entity.User;
+import com.crit.outhjwt.global.util.PasswordUtil;
 import com.crit.outhjwt.global.oauth2.userinfo.GoogleOAuth2UserInfo;
 import com.crit.outhjwt.global.oauth2.userinfo.KakaoOAuth2UserInfo;
 import com.crit.outhjwt.global.oauth2.userinfo.NaverOAuth2UserInfo;
@@ -11,7 +12,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * 각 소셜에서 받아오는 데이터가 다르므로
@@ -75,11 +75,14 @@ public class OAuthAttributes {
      * role은 GUEST로 설정
      */
     public User toEntity(SocialType socialType, OAuth2UserInfo oauth2UserInfo) {
+        // oauth user는 비밀번호 정보가 없기에 임의의 비밀번호를 생성
+        String password = PasswordUtil.generateRandomPassword();
         return User.builder()
                 .socialType(socialType)
                 .socialId(oauth2UserInfo.getId())
                 .email(oauth2UserInfo.getEmail())
                 .nickname(oauth2UserInfo.getNickname())
+                .password(password)
                 .imageUrl(oauth2UserInfo.getImageUrl())
                 .role(Role.USER)
                 .build();

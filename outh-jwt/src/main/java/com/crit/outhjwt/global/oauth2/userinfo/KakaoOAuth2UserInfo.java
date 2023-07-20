@@ -1,7 +1,10 @@
 package com.crit.outhjwt.global.oauth2.userinfo;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Map;
 
+@Slf4j
 public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
 
     public KakaoOAuth2UserInfo(Map<String, Object> attributes) {
@@ -41,6 +44,11 @@ public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
      */
     @Override
     public String getEmail(){
-        return (String) attributes.get("email");
+        Map<String, Object> account = (Map<String, Object>) attributes.get("kakao_account");
+        if (account == null) {
+            return null;
+        }
+
+        return (String) account.get("email");
     }
 }
