@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>게시물작성폼</title>
+</head>
+
+<style>
+    .layout{
+        width : 500px;
+        margin : 0 auto;
+        margin-top: 40px;
+    } /*layout 하위에 있는 input태그 스타일 설정*/
+    .layout input{
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .layout textarea{
+        width: 100%;
+        margin-top: 10px;
+        min-height: 300px;
+    }
+</style>
+
+
+<body>
+<div class="layout">                                <!--form-data추가-->
+    <form action="/board/writepro" method="post" enctype="multipart/form-data">
+        <input name="title" type="text">
+        <textarea name="content"></textarea>
+        <!--파일 선택추가-->
+        <input type="file" name="file"> <!--name이름을 controller의 매개변수 이름과 동일하게 설정-->
+        <button type="submit">작성</button>
+    </form>
+</div>
+</body>
+</html>
