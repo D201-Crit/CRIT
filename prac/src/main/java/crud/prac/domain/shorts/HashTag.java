@@ -1,18 +1,15 @@
 package crud.prac.domain.shorts;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import org.hibernate.annotations.NaturalId;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,7 +23,8 @@ public class HashTag {
 
 	private String hashTag;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "shorts_id")
-	private Shorts shorts;
+	
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "shorts_id")
+//	private Shorts shorts;
 }

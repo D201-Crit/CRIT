@@ -1,5 +1,6 @@
 package crud.prac.domain.shorts;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -30,7 +31,13 @@ public class Shorts extends BaseTimeEntity {
 
 	private int views;
 
+
+	/**
+	 * 요렇게 추가하는게 어떤지?
+	 */
 	@OneToMany(mappedBy = "shorts")
-	private List<HashTag> hashTagList;
+	private List<HashTagShorts> hashTagShortsList = new ArrayList<>(); // 해시태그 리스트
+//	@OneToMany(mappedBy = "shorts")
+//	private List<HashTag> hashTagList;
 
 }

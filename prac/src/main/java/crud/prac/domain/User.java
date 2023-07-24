@@ -1,5 +1,6 @@
 package crud.prac.domain;
 
+import crud.prac.domain.challenge.ChallengeUser;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class User {
 
     @Id
     @GeneratedValue
+    @Column(name = "user_id")
     private Long id;
     private String nickname;
     private String password;
@@ -27,6 +29,11 @@ public class User {
 
     @OneToMany(mappedBy = "following")
     private List<Follow> followings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ChallengeUser> challengeUserList = new ArrayList<>(); // 유저가 참여중인 챌린지 목록
+
+
 
     @Builder
     public User(Long id, String nickname, String password) {

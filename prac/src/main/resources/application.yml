@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:h2:tcp://localhost/~/crit
     driverClassName: org.h2.Driver
-    username:
+    username: sa
     password:
 
   jpa:

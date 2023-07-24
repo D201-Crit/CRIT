@@ -23,8 +23,4 @@ public class ChallengeCategory {
 	private Long id;
 
 	private String species;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "challenge_id")
-	private Challenge challenge;
 }

@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import crud.prac.domain.User;
 import org.hibernate.annotations.ColumnDefault;
 
 import lombok.AccessLevel;
@@ -43,9 +44,9 @@ public class IsCert {
 	@JoinColumn(name = "challenge_id")
 	private Challenge challenge;
 
-	// @ManyToOne(fetch = FetchType.LAZY)
-	// @JoinColumn(name = "user_id")
-	// private User user;
+	 @ManyToOne(fetch = FetchType.LAZY)
+	 @JoinColumn(name = "user_id")
+	 private User user;
 
 
 }
