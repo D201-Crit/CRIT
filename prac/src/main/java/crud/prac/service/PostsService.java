@@ -24,11 +24,11 @@ public class PostsService {
     private final UserRepository userRepository;
     private final LikeTableRepository likeTableRepository;
 
-    @Transactional
-    public Long save(PostsSaveRequestDto requestDto){
-        return postsRepository.save(requestDto.toEntity())
-                .getId();
-    }
+//    @Transactional
+//    public Long save(PostsSaveRequestDto requestDto){
+//        return postsRepository.save(requestDto.toEntity())
+//                .getId();
+//    }
 
     @Transactional
     public Long update(Long id, PostsUpdateRequestDto requestDto){
@@ -37,19 +37,19 @@ public class PostsService {
         return id;
     }
 
-    @Transactional
-    public PostsResponseDto findById(Long id){
-        Posts posts = postsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시물 없음"));
-        posts.Plusviews();
-        return new PostsResponseDto(posts.getId(), posts.getTitle(), posts.getContent(), posts.getAuthor());
-    }
-
-    @Transactional(readOnly = true)
-    public List<PostsListResponseDto> findAllDesc() {
-        return postsRepository.findAllDesc().stream()
-                .map(post -> new PostsListResponseDto(post.getId(), post.getTitle(), post.getAuthor()))
-                .collect(Collectors.toList());
-    }
+//    @Transactional
+//    public PostsResponseDto findById(Long id){
+//        Posts posts = postsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시물 없음"));
+//        posts.Plusviews();
+//        return new PostsResponseDto(posts.getId(), posts.getTitle(), posts.getContent(), posts.getAuthor());
+//    }
+//
+//    @Transactional(readOnly = true)
+//    public List<PostsListResponseDto> findAllDesc() {
+//        return postsRepository.findAllDesc().stream()
+//                .map(post -> new PostsListResponseDto(post.getId(), post.getTitle(), post.getAuthor()))
+//                .collect(Collectors.toList());
+//    }
 
     @Transactional(readOnly = true)
     public List<Posts> findbytitle(String title) {

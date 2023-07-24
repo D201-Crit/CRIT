@@ -17,9 +17,9 @@ public class PostsSaveRequestDto {
         this.author = author;
     }
 
-    public Posts toEntity() {
+//    public Posts toEntity() {
 
-        Posts posts = new Posts(title, content, author, 0);
-        return posts;
-    }
+//        Posts posts = new Posts(title, content, author, 0);
+//        return posts;
+//    }
 }
