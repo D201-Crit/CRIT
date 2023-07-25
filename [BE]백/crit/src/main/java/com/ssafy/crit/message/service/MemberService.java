@@ -1,9 +1,6 @@
 package com.ssafy.crit.message.service;
 
 import lombok.RequiredArgsConstructor;
-import message.message.dto.RegisterDto;
-import message.message.entity.Member;
-import message.message.entity.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

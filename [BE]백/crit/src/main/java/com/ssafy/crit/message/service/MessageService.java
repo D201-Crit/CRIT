@@ -1,11 +1,6 @@
 package com.ssafy.crit.message.service;
 
 import lombok.RequiredArgsConstructor;
-import message.message.dto.MessageDto;
-import message.message.entity.Member;
-import message.message.entity.MemberRepository;
-import message.message.entity.Message;
-import message.message.entity.MessageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
