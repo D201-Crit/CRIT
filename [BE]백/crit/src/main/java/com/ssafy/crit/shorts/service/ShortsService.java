@@ -52,15 +52,25 @@ public class ShortsService {
             hashTagShortsRepository.save(hashTagShorts);
         }
 
+
         return ShortsDto.toDto(shorts);
     }
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
+//    public ShortsDto read(Long id){
+//        Shorts shorts = shortsRepository.findById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("Invalid shorts id."));
+//        return ShortsDto.toDto(shorts);
+//    }
+
+    @Transactional
     public ShortsDto read(Long id){
         Shorts shorts = shortsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid shorts id."));
+        shorts.getHashTagShortsList().size(); // hashTagShortsList를 로딩합니다.
         return ShortsDto.toDto(shorts);
     }
+
 
     @Transactional
     public ShortsDto update(Long id, ShortsDto shortsDto){

@@ -13,21 +13,25 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class ShortsDto {
+    private Long id;
     private String title;
     private String shortsUrl;
     private String name;
     private List<String> hashTagNames;
 
     public static ShortsDto toDto(Shorts shorts) {
-        List<String> hashTagNames = shorts.getHashTagShortsList().stream()
+        ShortsDto shortsDto = new ShortsDto();
+        shortsDto.setId(shorts.getId());
+        shortsDto.setTitle(shorts.getTitle());
+        shortsDto.setShortsUrl(shorts.getShortsUrl());
+        shortsDto.setName(shorts.getMemberName().getName());
+
+        List<String> hashTagNames = shorts.getHashTagShortsList()
+                .stream()
                 .map(hashTagShorts -> hashTagShorts.getHashTag().getHashTag())
                 .collect(Collectors.toList());
+        shortsDto.setHashTagNames(hashTagNames);
 
-        return new ShortsDto(
-                shorts.getTitle(),
-                shorts.getShortsUrl(),
-                shorts.getMemberName().getName(),
-                hashTagNames
-        );
+        return shortsDto;
     }
 }

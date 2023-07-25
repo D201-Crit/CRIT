@@ -34,9 +34,6 @@ public class Shorts {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Member memberName;
 
-    /**
-     * 요렇게 추가하는게 어떤지?
-     */
     @OneToMany(mappedBy = "shorts")
     private List<HashTagShorts> hashTagShortsList = new ArrayList<>(); // 해시태그 리스트
 //	@OneToMany(mappedBy = "shorts")

@@ -28,7 +28,7 @@ public class ShortsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ShortsDto> get(@PathVariable Long id) {
+    public ResponseEntity<ShortsDto> read(@PathVariable Long id) {
         return ResponseEntity.ok(shortsService.get(id));
     }
 
