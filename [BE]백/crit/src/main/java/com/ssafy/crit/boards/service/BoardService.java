@@ -1,6 +1,10 @@
-package com.ssafy.crit.message.service;
+package com.ssafy.crit.boards.service;
 
 
+import com.ssafy.crit.boards.service.BoardDto;
+import com.ssafy.crit.boards.entity.Board;
+import com.ssafy.crit.boards.repository.BoardRepository;
+import com.ssafy.crit.imsimember.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +43,7 @@ public class BoardService {
     public BoardDto write(BoardDto boardDto, Member member){
         Board board = new Board();
         board.setTitle(boardDto.getTitle());
-        board.setContent(board.getContent());
+        board.setContent(boardDto.getContent());
         board.setMember(member);
         boardRepository.save(board);
         return BoardDto.toDto(board);

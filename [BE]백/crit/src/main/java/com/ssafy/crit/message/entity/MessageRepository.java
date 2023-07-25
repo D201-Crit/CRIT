@@ -1,5 +1,6 @@
 package com.ssafy.crit.message.entity;
 
+import com.ssafy.crit.imsimember.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

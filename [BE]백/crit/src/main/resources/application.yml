@@ -13,7 +13,7 @@ spring:
       max-file-size: 300MB
       max-request-size: 300MB
   datasource:
-    url: jdbc:h2:tcp://localhost/~/crit
+    url: jdbc:h2:tcp://localhost/~/critt
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -26,9 +26,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create #create update none
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      use-new-id-generator-mappings: false
     show-sql: true
     properties:
       hibernate:
@@ -82,9 +79,6 @@ spring:
             user-name-attribute: id
 
 
-  mvc:
-    pathmatch:
-      matching-strategy=ant_path_matcher
 
 logging:
   level:

@@ -1,10 +1,10 @@
 package com.ssafy.crit.message.dto;
 
+import com.ssafy.crit.message.entity.Message;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import message.message.entity.Message;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

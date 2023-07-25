@@ -1,5 +1,6 @@
-package com.ssafy.crit.message.entity;
+package com.ssafy.crit.boards.repository;
 
+import com.ssafy.crit.boards.entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

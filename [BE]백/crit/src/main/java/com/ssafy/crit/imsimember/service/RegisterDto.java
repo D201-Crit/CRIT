@@ -1,4 +1,4 @@
-package com.ssafy.crit.message.dto;
+package com.ssafy.crit.imsimember.service;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

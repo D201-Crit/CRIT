@@ -1,4 +1,4 @@
-package com.ssafy.crit.message.entity;
+package com.ssafy.crit.imsimember.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

@@ -1,5 +1,10 @@
 package com.ssafy.crit.message.service;
 
+import com.ssafy.crit.message.dto.MessageDto;
+import com.ssafy.crit.imsimember.entity.Member;
+import com.ssafy.crit.imsimember.repository.MemberRepository;
+import com.ssafy.crit.message.entity.Message;
+import com.ssafy.crit.message.entity.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +17,7 @@ import java.util.List;
 public class MessageService {
 
 	private final MessageRepository messageRepository;
-	private final MemberRepository  memberRepository;
+	private final MemberRepository memberRepository;
 
 	@Transactional
 	public MessageDto write(MessageDto messageDto) {

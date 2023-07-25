@@ -1,12 +1,11 @@
-package com.ssafy.crit.message.controller;
+package com.ssafy.crit.boards.controller;
 
-import io.swagger.annotations.ApiOperation;
+import com.ssafy.crit.boards.service.BoardDto;
+import com.ssafy.crit.imsimember.entity.Member;
+import com.ssafy.crit.imsimember.repository.MemberRepository;
+import com.ssafy.crit.message.response.Response;
+import com.ssafy.crit.boards.service.BoardService;
 import lombok.RequiredArgsConstructor;
-import message.message.dto.BoardDto;
-import message.message.entity.Member;
-import message.message.entity.MemberRepository;
-import message.message.response.Response;
-import message.message.service.BoardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +19,7 @@ public class BoardController {
 
 
     // 전체 게시글 조회
-    @ApiOperation(value = "전체 게시글 보기", notes = "전체 게시글을 조회한다.")
+//    @ApiOperation(value = "전체 게시글 보기", notes = "전체 게시글을 조회한다.")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/boards")
     public Response getBoards() {
@@ -30,7 +29,7 @@ public class BoardController {
 
 
     // 개별 게시글 조회
-    @ApiOperation(value = "개별 게시글 보기", notes = "개별 게시글 조회한다.")
+//    @ApiOperation(value = "개별 게시글 보기", notes = "개별 게시글 조회한다.")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/boards/{id}")
     public Response getBoard(@PathVariable("id") Long id) {
@@ -40,7 +39,7 @@ public class BoardController {
 
 
     // 게시글 작성
-    @ApiOperation(value = "게시글 작성", notes = "게시글을 작성한다.")
+//    @ApiOperation(value = "게시글 작성", notes = "게시글을 작성한다.")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/boards/write")
     public Response write(@RequestBody BoardDto boardDto) {
@@ -54,7 +53,7 @@ public class BoardController {
 
 
     // 게시글 수정
-    @ApiOperation(value = "게시글 수정", notes = "게시글을 수정한다.")
+//    @ApiOperation(value = "게시글 수정", notes = "게시글을 수정한다.")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/boards/update/{id}")
     public Response edit(@RequestBody BoardDto boardDto, @PathVariable("id") Long id) {
@@ -76,7 +75,7 @@ public class BoardController {
 
 
     // 게시글 삭제
-    @ApiOperation(value = "게시글 삭제", notes = "게시글을 삭제한다.")
+//    @ApiOperation(value = "게시글 삭제", notes = "게시글을 삭제한다.")
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/boards/delete/{id}")
     public Response delete(@PathVariable("id") Long id) {

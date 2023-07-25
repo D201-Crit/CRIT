@@ -1,12 +1,11 @@
-package com.ssafy.crit.message.controller;
+package com.ssafy.crit.boards.controller;
 
-import io.swagger.annotations.ApiOperation;
+import com.ssafy.crit.boards.service.CommentDto;
+import com.ssafy.crit.imsimember.entity.Member;
+import com.ssafy.crit.imsimember.repository.MemberRepository;
+import com.ssafy.crit.message.response.Response;
+import com.ssafy.crit.boards.service.CommentService;
 import lombok.RequiredArgsConstructor;
-import message.message.dto.CommentDto;
-import message.message.entity.Member;
-import message.message.entity.MemberRepository;
-import message.message.response.Response;
-import message.message.service.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +17,7 @@ public class CommentController {
     private final MemberRepository memberRepository;
 
     // 댓글 작성
-    @ApiOperation(value = "댓글 작성", notes = "댓글을 작성한다.")
+//    @ApiOperation(value = "댓글 작성", notes = "댓글을 작성한다.")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/comments/{boardId}")
     public Response writeComment(@PathVariable("boardId") Long boardId, @RequestBody CommentDto commentDto) {
@@ -31,7 +30,7 @@ public class CommentController {
 
 
     // 게시글에 달린 댓글 모두 불러오기
-    @ApiOperation(value = "댓글 불러오기", notes = "게시글에 달린 댓글을 모두 불러온다.")
+//    @ApiOperation(value = "댓글 불러오기", notes = "게시글에 달린 댓글을 모두 불러온다.")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/comments/{boardId}")
     public Response getComments(@PathVariable("boardId") Long boardId) {
@@ -40,7 +39,7 @@ public class CommentController {
 
 
     // 댓글 삭제
-    @ApiOperation(value = "댓글 삭제", notes = "게시글에 달린 댓글을 삭제합니다.")
+//    @ApiOperation(value = "댓글 삭제", notes = "게시글에 달린 댓글을 삭제합니다.")
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/comments/{boardId}/{commentId}")
     public Response deleteComment(@PathVariable("boardId") Long boardId, @PathVariable("commentId") Long commentId) {

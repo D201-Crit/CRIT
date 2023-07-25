@@ -1,8 +1,9 @@
-package com.ssafy.crit.message.dto;
+package com.ssafy.crit.boards.service;
+import com.ssafy.crit.boards.entity.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import message.message.entity.Comment;
+
 
 @Data
 @NoArgsConstructor

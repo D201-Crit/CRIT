@@ -1,5 +1,8 @@
-package com.ssafy.crit.message.service;
+package com.ssafy.crit.imsimember.service;
 
+import com.ssafy.crit.imsimember.service.RegisterDto;
+import com.ssafy.crit.imsimember.entity.Member;
+import com.ssafy.crit.imsimember.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
