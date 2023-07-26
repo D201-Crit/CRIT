@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -18,28 +20,27 @@ public class ShortsController {
     private final ShortsService shortsService;
 
     @PostMapping
-    public ResponseEntity<ShortsDto> create(@RequestBody ShortsDto shortsDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(shortsService.create(shortsDto));
+    public ShortsDto create(@RequestPart("shorts") ShortsDto shortsDto, @RequestPart("file") MultipartFile file) throws IOException {
+        return shortsService.create(shortsDto, file);
     }
 
     @GetMapping
-    public ResponseEntity<List<ShortsDto>> getAll() {
-        return ResponseEntity.ok(shortsService.getAll());
+    public List<ShortsDto> getAll() {
+        return shortsService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ShortsDto> read(@PathVariable Long id) {
-        return ResponseEntity.ok(shortsService.get(id));
+    public ShortsDto read(@PathVariable Long id) {
+        return shortsService.read(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ShortsDto> update(@PathVariable Long id, @RequestBody ShortsDto shortsDto) {
-        return ResponseEntity.ok(shortsService.update(id, shortsDto));
+    public ShortsDto update(@PathVariable Long id, @RequestBody ShortsDto shortsDto) {
+        return shortsService.update(id, shortsDto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         shortsService.delete(id);
-        return ResponseEntity.noContent().build();
     }
 }

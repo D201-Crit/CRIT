@@ -15,7 +15,8 @@ import java.util.stream.Collectors;
 public class ShortsDto {
     private Long id;
     private String title;
-    private String shortsUrl;
+    private String filename;
+    private String filepath;
     private String name;
     private List<String> hashTagNames;
 
@@ -23,7 +24,7 @@ public class ShortsDto {
         ShortsDto shortsDto = new ShortsDto();
         shortsDto.setId(shorts.getId());
         shortsDto.setTitle(shorts.getTitle());
-        shortsDto.setShortsUrl(shorts.getShortsUrl());
+        shortsDto.setFilepath(shorts.getFilepath());
         shortsDto.setName(shorts.getMemberName().getName());
 
         List<String> hashTagNames = shorts.getHashTagShortsList()

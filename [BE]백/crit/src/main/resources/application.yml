@@ -7,6 +7,7 @@ server:
       enabled: true
       force: true
 
+
 spring:
   servlet:
     multipart:
@@ -77,6 +78,9 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+
+file:
+  dir: C:\Users\SSAFY\Desktop\파일저장
 
 
 

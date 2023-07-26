@@ -1,7 +1,7 @@
 package com.ssafy.crit.shorts.entity;
 
 import com.ssafy.crit.imsimember.entity.Member;
-import lombok.AccessLevel;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,8 +22,9 @@ public class Shorts {
     @GeneratedValue
     private Long id;
 
-    // 영상 주소는 String으로 받음
-    private String shortsUrl;
+    private String filename;//파일이름
+
+    private String filepath;//파일경로
 
     private String title;
 
@@ -36,7 +37,5 @@ public class Shorts {
 
     @OneToMany(mappedBy = "shorts")
     private List<HashTagShorts> hashTagShortsList = new ArrayList<>(); // 해시태그 리스트
-//	@OneToMany(mappedBy = "shorts")
-//	private List<HashTag> hashTagList;
 
 }
