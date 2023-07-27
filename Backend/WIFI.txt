@@ -1,0 +1,7 @@
+SSID
+SSAFY-3F , SSAFY-4F , MO_AP_1 , MO_AP_2
+
+P/W
+ssafy123!
+
+* 허용 단말기만 가능
