@@ -159,7 +159,8 @@ export const STextArea = styled.textarea`
   border: none;
   border-radius: 10px;
   color: white;
-  margin: 30px 0 30px 0;
+  margin: 30px 0 20px 0;
+  resize: none;
 
   &::placeholder {
     padding: 15px 10px;
@@ -169,7 +170,7 @@ export const STextArea = styled.textarea`
 
 export const SSelectChallengeWrapper = styled.div`
   width: 260px;
-  height: 320px;
+  height: 160px;
   background-color: rgb(40, 40, 40);
   border: none;
   border-ridus: 10px;
@@ -178,6 +179,10 @@ export const SSelectChallengeWrapper = styled.div`
   color: white;
   font-size: 20px;
   padding: 0 20px;
+  margin: 0 0 20px 0;
+  h4 {
+    margin: 10px 0 15px 0;
+  }
   li {
     list-style: none;
   }
@@ -186,19 +191,51 @@ export const SSelectChallengeWrapper = styled.div`
     height: 15px;
   }
 `;
-
-export const SAuthenticationMethodWrapper = styled.div`
-  position: relative;
-  bottom: 322px;
-  left: 320px;
+export const SChallengeTimeWrapper = styled.div`
   width: 260px;
-  height: 152px;
+  height: 160px;
   border: 0.5px solid white;
   border-radius: 10px;
   color: white;
   font-size: 20px;
   padding: 0 20px;
+  background-color: rgb(40, 40, 40);
 
+  h4 {
+    margin: 10px 0 15px 0;
+  }
+  li {
+    list-style: none;
+    width: 255px;
+  }
+  input {
+    width: 150px;
+    height: 23px;
+    font-size: 20px;
+    font-weight: 700;
+    background-color: rgb(70, 70, 70);
+    border: none;
+    border-raidus: 10px;
+    margin: 10px;
+  }
+`;
+
+export const SAuthenticationMethodWrapper = styled.div`
+  position: relative;
+  bottom: 342px;
+  left: 320px;
+  width: 260px;
+  height: 160px;
+  border: 0.5px solid white;
+  border-radius: 10px;
+  color: white;
+  font-size: 20px;
+  padding: 0 20px;
+  background-color: rgb(40, 40, 40);
+
+  h4 {
+    margin: 10px 0 15px 0;
+  }
   li {
     list-style: none;
   }
@@ -210,15 +247,16 @@ export const SAuthenticationMethodWrapper = styled.div`
 // 인원수 설정
 export const SMemberWrapper = styled.div`
   position: relative;
-  bottom: 309px;
+  bottom: 323px;
   left: 320px;
   width: 260px;
-  height: 152px;
+  height: 160px;
   border: 0.5px solid white;
   border-radius: 10px;
   color: white;
   font-size: 20px;
   padding: 0 20px;
+  background-color: rgb(40, 40, 40);
 
   li {
     list-style: none;
@@ -228,7 +266,7 @@ export const SMemberWrapper = styled.div`
     height: 15px;
   }
   h4 {
-    margin: 20px 0 10px 0;
+    margin: 10px 0 10px 0;
   }
   select {
     position: relative;
@@ -244,7 +282,7 @@ export const SMemberWrapper = styled.div`
 
 export const SCalendarwrapper = styled.div`
   position: relative;
-  bottom: 816px;
+  bottom: 844px;
   left: 650px;
   width: 435px;
   text-align: center;
@@ -255,8 +293,9 @@ export const SCalendarwrapper = styled.div`
     border-radius: 10px;
     width: 435px;
   }
+  ${"" /*  챌린지 범위 */}
   .selected-range {
-    background-color: red; /* 원하는 하이라이트 색상으로 변경 가능 */
+    background-color: gray;
     color: white;
     border-radius: 2px;
   }
@@ -277,26 +316,25 @@ export const SCalendarwrapper = styled.div`
   .react-calendar__tile.react-calendar__tile--now.react-calendar__month-view__days__day {
     background-color: #33ff00;
     border: none;
-    border-radius: 30px;
   }
   ${"" /* 다른 일 눌렀을 때 배경색 */}
   .react-calendar__tile.react-calendar__tile--active.react-calendar__tile--range.react-calendar__tile--rangeStart.react-calendar__tile--rangeEnd.react-calendar__tile--rangeBothEnds.react-calendar__month-view__days__day {
     background-color: #0000c5;
     border: none;
-    border-radius: 30px;
   }
 
   ${"" /* 요일  */}
   .react-calendar__month-view__weekdays {
     abbr {
-      color: ;
       font-size: 18px;
       font-weight: 500;
+      text-decoration: none;
     }
   }
   ${"" /* 현재월 평일 */}
   .react-calendar__tile.react-calendar__month-view__days__day {
     color: white;
+    font-size: 17px;
   }
   ${"" /* 전월 or 다음월 평일 */}
   .react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--neighboringMonth {
@@ -304,7 +342,7 @@ export const SCalendarwrapper = styled.div`
   }
   ${"" /* 현재월 주말 */}
   .react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--weekend {
-    ${"" /* color: red; */}
+    color: red;
   }
   ${"" /* 다음월 주말 */}
   .react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--weekend.react-calendar__month-view__days__day--neighboringMonth {

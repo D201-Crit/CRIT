@@ -12,6 +12,8 @@ import ProfilePage from "./pages/profile-page";
 import KakaoCallback from "./component/user/socialLogin/KaKaoCallback";
 import { Sfont } from "./styles/SCommon";
 import DetailChallengePage from "./pages/detail-challenge-page";
+import { Provider } from "react-redux";
+
 function App() {
   return (
     <Sfont>

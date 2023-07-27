@@ -10,6 +10,8 @@ import {
 } from "../styles/pages/SSignUpPage";
 import useInput from "../hooks/useInput";
 import axios from "axios";
+import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 const SignUp = () => {
   const [id, onChangeId] = useInput("");
@@ -17,7 +19,7 @@ const SignUp = () => {
   const [passwordCheck, setPasswordCheck] = useState("");
   const [email, onChangeEmail] = useInput("");
   const [nickname, onChangeNickname] = useInput("");
-
+  const nav = useNavigate();
   // 비밀번호 확인
   const onChangePassword = useCallback(
     (e) => {
@@ -60,6 +62,14 @@ const SignUp = () => {
           .then((response) => {
             console.log(response);
             setSignUpSuccess(true);
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "회원가입 완료!",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            nav("/LoginPage");
           })
           .catch((error) => {
             console.log(error);
@@ -120,10 +130,7 @@ const SignUp = () => {
             onChange={onChangePasswordCheck}
           />
         </span>
-        {/* <span>
-          <label>이름</label>
-          <input />
-        </span> */}
+
         <span>
           <label>닉네임</label>
           <input

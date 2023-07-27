@@ -12,13 +12,11 @@ export const SSpan = styled.span`
   display: block;
   margin: 20px 0;
   text-align: center;
-`;
-
-export const SInput = styled.input`
-  type: text;
-  width: 60%;
-  height: 50px;
-  border-radius: 5px;
+  input {
+    width: 60%;
+    height: 50px;
+    border-radius: 5px;
+  }
 `;
 
 export const SLoginButton = styled.button`
@@ -30,6 +28,7 @@ export const SLoginButton = styled.button`
   cursor: pointer;
   font-size: 18px;
   font-weight: 1000;
+  type: submit;
 `;
 
 export const SMoveSignUp = styled(Link)`
@@ -51,4 +50,9 @@ export const SNaverLoginButton = styled.img`
   border-radius: 5px;
   cursor: pointer;
   margin-right: 10px;
+`;
+export const Error = styled.div`
+  color: #e01e5a;
+  margin: 8px 0 16px;
+  font-weight: bold;
 `;
