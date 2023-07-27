@@ -26,5 +26,18 @@ public class ChallengeUser {
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
 
+    public ChallengeUser(User user, Challenge challenge) {
+        this.user = user;
+        this.challenge = challenge;
+    }
 
+    /***/
+    public static ChallengeUser createChallengeUser(Challenge challenge, User user){
+        ChallengeUser challengeUser = new ChallengeUser();
+        challengeUser.setChallenge(challenge);
+        challengeUser.setUser(user);
+
+        return challengeUser;
+
+    }
 }

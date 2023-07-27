@@ -37,11 +37,13 @@ public class Challenge {
 
     private int money; // 참여비
 
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
-    private LocalTime doingTime;
+    private LocalTime startTime; // 시작 시간
+
+    private LocalTime endTime; // 종료 시간
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
@@ -54,15 +56,17 @@ public class Challenge {
     @OneToMany(mappedBy = "challenge")
     private List<IsCert> isCerts; // 챌린지별 인증을 모아 두는곳?
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_challenge_id")
     private ChallengeCategory challengeCategory;
-    /**
-     * 챌린지 카테고리는 1대1이면 가능하지 않을까?
-     */
 
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
     private List<ChallengeUser> challengeUserList = new ArrayList<>(); //챌린지 유저 리스트
 
+    /**  */
+    public void addChallengeUser(ChallengeUser user){
+        this.challengeUserList.add(user);
+
+    }
 
 }
