@@ -54,13 +54,11 @@ public class BoardService {
         Board board = boardRepository.findById(id).orElseThrow(() -> {
             return new IllegalArgumentException("Board Id를 찾을 수 없습니다!");
         });
-
         board.setTitle(boardDto.getTitle());
         board.setContent(boardDto.getContent());
 
         return BoardDto.toDto(board);
     }
-
 
     // 게시글 삭제
     public void delete(Long id) {
@@ -69,7 +67,6 @@ public class BoardService {
         Board board = boardRepository.findById(id).orElseThrow(() -> {
             return new IllegalArgumentException("Board Id를 찾을 수 없습니다!");
         });
-
         // 게시글이 있는 경우 삭제처리
         boardRepository.deleteById(id);
 

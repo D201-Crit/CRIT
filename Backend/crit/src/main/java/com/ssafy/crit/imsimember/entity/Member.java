@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -26,5 +28,26 @@ public class Member {
 
 	@Column(nullable = false, unique = true)
 	private String name;
+
+	@OneToMany(mappedBy = "follower")
+	private List<Follow> followers = new ArrayList<>();
+
+	@OneToMany(mappedBy = "following")
+	private List<Follow> followings = new ArrayList<>();
+	public void addMemberTofollower(Follow follow) {
+		followers.add(follow);
+	}
+
+	public void addMemberTofollowing(Follow follow) {
+		followings.add(follow);
+	}
+
+	public void removeMemberTofollower(Follow follow) {
+		followers.remove(follow);
+	}
+
+	public void removeMemberTofollowing(Follow follow) {
+		followings.remove(follow);
+	}
 
 }

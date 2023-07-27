@@ -34,7 +34,7 @@ public class ShortsService {
 
     @Transactional
     public ShortsDto create(ShortsDto shortsDto, MultipartFile file) throws IOException {
-        Member member = memberRepository.findByName(shortsDto.getName());
+        Member member = memberRepository.findByName(shortsDto.getName()).get();
 
         /*우리의 프로젝트경로를 담아주게 된다 - 저장할 경로를 지정*/
         String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static";
