@@ -10,21 +10,18 @@ import com.ssafy.crit.shorts.repository.HashTagRepository;
 import com.ssafy.crit.shorts.repository.HashTagShortsRepository;
 import com.ssafy.crit.shorts.repository.ShortsRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class ShortsService {
 
     private final ShortsRepository shortsRepository;
@@ -33,39 +30,18 @@ public class ShortsService {
     private final HashTagShortsRepository hashTagShortsRepository; // HashTagShorts를 위한 repository
 
     @Transactional
-    public ShortsDto create(ShortsDto shortsDto, MultipartFile file) throws IOException {
-        Member member = memberRepository.findByName(shortsDto.getName()).get();
-
-        /*우리의 프로젝트경로를 담아주게 된다 - 저장할 경로를 지정*/
-        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static";
-        log.info(projectPath);
-        /*식별자 . 랜덤으로 이름 만들어줌*/
-        UUID uuid = UUID.randomUUID();
-        log.info("UUID = {}", uuid);
-        /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
-        String fileName = uuid + "_" + file.getOriginalFilename();
-        log.info("fileName = {}", fileName);
-        /*빈 껍데기 생성*/
-        /*File을 생성할건데, 이름은 "name" 으로할거고, projectPath 라는 경로에 담긴다는 뜻*/
-        File saveFile = new File(projectPath, fileName);
-
-        file.transferTo(saveFile);
+    public ShortsDto create(ShortsDto shortsDto, MultipartFile file) throws Exception{
+        Member member = memberRepository.findByName(shortsDto.getName());
 
         Shorts shorts = new Shorts();
-        log.info("shorts 생성자");
         shorts.setTitle(shortsDto.getTitle());
-        log.info("setTitle");
-        shorts.setFilename(fileName);
-        log.info("fileName");
-        shorts.setFilepath("/files/" + fileName);
         shorts.setMemberName(member);
         shorts.setViews(0);
+        shorts.setContent(shortsDto.getContent());
 
-        shortsRepository.save(shorts);
-
-        for(String hashTagName : shortsDto.getHashTagNames()){
+        for(String hashTagName : shortsDto.getHashTagNames()) {
             HashTag hashTag = hashTagRepository.findByHashTag(hashTagName);
-            if(hashTag == null) {
+            if (hashTag == null) {
                 hashTag = new HashTag();
                 hashTag.setHashTag(hashTagName);
                 hashTagRepository.save(hashTag);
@@ -77,7 +53,28 @@ public class ShortsService {
 
             hashTagShortsRepository.save(hashTagShorts);
         }
+        /*우리의 프로젝트경로를 담아주게 된다 - 저장할 경로를 지정*/
+        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static";
 
+        /*식별자 . 랜덤으로 이름 만들어줌*/
+        UUID uuid = UUID.randomUUID();
+
+        /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
+        String shortsName = uuid + "_" + file.getOriginalFilename();
+
+        /*빈 껍데기 생성*/
+        /*File을 생성할건데, 이름은 "name" 으로할거고, projectPath 라는 경로에 담긴다는 뜻*/
+        File saveShorts = new File(projectPath, shortsName);
+
+        file.transferTo(saveShorts);
+
+        /*디비에 파일 넣기*/
+        shorts.setShortsName(shortsName);
+        /*저장되는 경로*/
+        shorts.setShortsUrl("/files/" + shortsName); /*저장된파일의이름,저장된파일의경로*/
+
+        /*파일 저장*/
+        shortsRepository.save(shorts);
 
         return ShortsDto.toDto(shorts);
     }
@@ -103,6 +100,8 @@ public class ShortsService {
         Shorts shorts = shortsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid shorts id."));
         shorts.setTitle(shortsDto.getTitle());
+        shorts.setShortsUrl(shortsDto.getShortsUrl());
+        shorts.setContent(shortsDto.getContent());
         // Add other fields to update as necessary.
         return ShortsDto.toDto(shorts);
     }
@@ -128,10 +127,10 @@ public class ShortsService {
                 .collect(Collectors.toList());
     }
 
-    // @Transactional(readOnly = true)
-    // public ShortsDto get(Long id) {
-    //     return shortsRepository.findById(id)
-    //             .map(ShortsDto::toDto)
-    //             .orElseThrow(() -> new RuntimeException("Shorts not found with id " + id));
-    // }
+    @Transactional(readOnly = true)
+    public ShortsDto get(Long id) {
+        return shortsRepository.findById(id)
+                .map(ShortsDto::toDto)
+                .orElseThrow(() -> new RuntimeException("Shorts not found with id " + id));
+    }
 }
