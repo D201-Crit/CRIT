@@ -9,16 +9,22 @@ import LoginPage from "./pages/login-page";
 import SignUpPage from "./pages/signup-page";
 import CommunityPage from "./pages/community-page";
 import ProfilePage from "./pages/profile-page";
+import MyPage from "./pages/my-page";
+import PayPage from "./pages/pay-page";
 import KakaoCallback from "./component/user/socialLogin/KaKaoCallback";
 import { Sfont } from "./styles/SCommon";
 import DetailChallengePage from "./pages/detail-challenge-page";
+
+
 function App() {
   return (
+
     <Sfont>
       <BrowserRouter>
         <AppRoutes />
       </BrowserRouter>
     </Sfont>
+
   );
 }
 
@@ -41,6 +47,10 @@ function AppRoutes() {
         <Route path="/SignUpPage" element={<SignUpPage />} />
         <Route path="/LoginPage" element={<LoginPage />} />
         <Route path="/ProfilePage" element={<ProfilePage />} />
+        <Route path="/MyPage" element={<MyPage />} />
+        <Route path="/PayPage" element={<PayPage />} />
+
+
       </Routes>
     </>
   );
