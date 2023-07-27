@@ -1,5 +1,7 @@
 package com.ssafy.crit.pay.service;
 
+import com.ssafy.crit.auth.entity.User;
+import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.pay.dto.KakaoApproveResponse;
 import com.ssafy.crit.pay.dto.KakaoCancelResponse;
 import com.ssafy.crit.pay.dto.KakaoReadyResponse;
@@ -8,13 +10,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+
 @Service
 @RequiredArgsConstructor
 public class PayService {
+
+    private final UserRepository userRepository;
     static final String cid = "TC0ONETIME"; // 가맹점 테스트 코드
     @Value("86f8e70b2e6f309e47d76e82c0e84441")
     private String admin_Key;
@@ -23,7 +29,8 @@ public class PayService {
     /**
      * 결제 요청
      */
-    public KakaoReadyResponse kakaoPayReady(String amount) {
+    @Transactional
+    public KakaoReadyResponse kakaoPayReady(String userId, String amount) {
 
         // 카카오페이 요청 양식
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
@@ -44,24 +51,29 @@ public class PayService {
 
         // 외부에 보낼 url
         RestTemplate restTemplate = new RestTemplate();
-
         kakaoReady = restTemplate.postForObject(
                 "https://kapi.kakao.com/v1/payment/ready",
                 requestEntity,
                 KakaoReadyResponse.class);
-
+        // tid 저장
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("아이디가 존재 X"));
+        user.updateTid(kakaoReady.getTid());
         return kakaoReady;
     }
 
     /**
     * 결제 승인
      */
-    public KakaoApproveResponse ApproveResponse(String pgToken) {
+    public KakaoApproveResponse ApproveResponse(String userId, String pgToken) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("아이디가 존재 X"));
 
         // 카카오 요청
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
         parameters.add("cid", cid);
-        parameters.add("tid", kakaoReady.getTid());
+        parameters.add("tid", user.getTid());
         parameters.add("partner_order_id", "crit_order_id");
         parameters.add("partner_user_id", "crit_user_id");
         parameters.add("pg_token", pgToken);
@@ -83,12 +95,15 @@ public class PayService {
     /**
      * 결제 환불
      */
-    public KakaoCancelResponse kakaoCancel(String amount) {
+    public KakaoCancelResponse kakaoCancel(String userId, String amount) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("아이디가 존재 X"));
 
         // 카카오페이 요청
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
         parameters.add("cid", cid);
-        parameters.add("tid", kakaoReady.getTid());
+        parameters.add("tid", user.getTid());
         parameters.add("cancel_amount", String.valueOf(amount));
         parameters.add("cancel_tax_free_amount", "0");
         parameters.add("cancel_vat_amount", "0");

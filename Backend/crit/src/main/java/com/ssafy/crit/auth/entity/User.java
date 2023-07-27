@@ -43,8 +43,10 @@ public class User extends BaseTimeEntity {
 
     private Date tokenExpirationTime;
 
+    private String tid;
+
     @Builder
-    public User(String id, String nickname, String password, String email, String profileImageUrl, Role role, AuthProvider authProvider, String refreshToken, Date tokenExpirationTime){
+    public User(String id, String nickname, String password, String email, String profileImageUrl, Role role, AuthProvider authProvider, String refreshToken, Date tokenExpirationTime, String tid){
         this.id = id;
         this.nickname = nickname;
         this.password = password;
@@ -54,6 +56,7 @@ public class User extends BaseTimeEntity {
         this.authProvider = authProvider;
         this.refreshToken = refreshToken;
         this.tokenExpirationTime = tokenExpirationTime;
+        this.tid = tid;
     }
 
     /*
@@ -80,5 +83,9 @@ public class User extends BaseTimeEntity {
 
     public String getRoleKey(){
         return this.role.getKey();
+    }
+
+    public void updateTid(String tid) {
+        this.tid = tid;
     }
 }
