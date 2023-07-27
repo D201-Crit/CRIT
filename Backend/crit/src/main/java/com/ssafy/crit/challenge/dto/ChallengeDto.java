@@ -1,4 +1,4 @@
-package com.ssafy.crit.challenge.service;
+package com.ssafy.crit.challenge.dto;
 
 import com.ssafy.crit.challenge.entity.Cert;
 import com.ssafy.crit.challenge.entity.Challenge;
@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +32,7 @@ public class ChallengeDto {
         challengeDto.setMoney(challenge.getMoney());
 
         List<String> memberNames = challenge.getChallengeUserList().stream()
-                .map(challengeUser -> challengeUser.getUser().getName())
+                .map(challengeUser -> challengeUser.getUser().getNickname())
                 .collect(Collectors.toList());
         challengeDto.setParticipateMembers(memberNames);
 

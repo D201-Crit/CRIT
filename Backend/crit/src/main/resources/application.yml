@@ -82,6 +82,8 @@ spring:
 file:
   dir: C:\Users\SSAFY\Desktop\파일저장
 
+OPENVIDU_URL: https://i9d201.p.ssafy.io:8443/
+OPENVIDU_SECRET: CRITCRIT
 
 
 logging:
