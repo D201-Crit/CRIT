@@ -1,9 +1,9 @@
-const MyPage = () => {
+const PayConflictPage = () => {
   return (
     <>
-      <h1>MyPage입니다.</h1>
+      <h1>결제 충돌!!!!</h1>
     </>
   );
 };
 
-export default MyPage;
+export default PayConflictPage;
