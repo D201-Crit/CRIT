@@ -1,5 +1,6 @@
 package com.ssafy.crit.shorts.entity;
 
+import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.imsimember.entity.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -33,9 +34,9 @@ public class Shorts {
     private String shortsName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "name_id")
+    @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private Member memberName;
+    private User user;
 
     @OneToMany(mappedBy = "shorts", fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HashTagShorts> hashTagShortsList = new ArrayList<>(); // 해시태그 리스트

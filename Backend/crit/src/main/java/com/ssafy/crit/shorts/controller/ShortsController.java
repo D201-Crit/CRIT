@@ -40,7 +40,7 @@ public class ShortsController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PahVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         shortsService.delete(id);
         return ResponseEntity.noContent().build();
     }

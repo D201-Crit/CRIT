@@ -1,5 +1,7 @@
 package com.ssafy.crit.shorts.service;
 
+import com.ssafy.crit.auth.entity.User;
+import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.imsimember.entity.Member;
 import com.ssafy.crit.imsimember.repository.MemberRepository;
 import com.ssafy.crit.shorts.dto.ShortsDto;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -25,17 +28,19 @@ import java.util.stream.Collectors;
 public class ShortsService {
 
     private final ShortsRepository shortsRepository;
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
     private final HashTagRepository hashTagRepository; // HashTag를 위한 repository
     private final HashTagShortsRepository hashTagShortsRepository; // HashTagShorts를 위한 repository
 
     @Transactional
     public ShortsDto create(ShortsDto shortsDto, MultipartFile file) throws Exception{
-        Member member = memberRepository.findByName(shortsDto.getName());
+        User user = userRepository.findById(shortsDto.getUserId()).orElseThrow(
+                ()->{throw new IllegalArgumentException("userId가 없음");}
+        );
 
         Shorts shorts = new Shorts();
         shorts.setTitle(shortsDto.getTitle());
-        shorts.setMemberName(member);
+        shorts.setUser(user);
         shorts.setViews(0);
         shorts.setContent(shortsDto.getContent());
 
@@ -44,14 +49,14 @@ public class ShortsService {
             if (hashTag == null) {
                 hashTag = new HashTag();
                 hashTag.setHashTag(hashTagName);
-                hashTagRepository.save(hashTag);
+                hashTagRepository.saveAndFlush(hashTag);
             }
 
             HashTagShorts hashTagShorts = new HashTagShorts();
             hashTagShorts.setShorts(shorts);
             hashTagShorts.setHashTag(hashTag);
 
-            hashTagShortsRepository.save(hashTagShorts);
+            hashTagShortsRepository.saveAndFlush(hashTagShorts);
         }
         /*우리의 프로젝트경로를 담아주게 된다 - 저장할 경로를 지정*/
         String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static";

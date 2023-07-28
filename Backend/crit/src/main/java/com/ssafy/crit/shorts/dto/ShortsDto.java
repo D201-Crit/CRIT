@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,8 +17,8 @@ public class ShortsDto {
     private Long id;
     private String title;
     private String shortsUrl;
-    private String name;
-    private List<String> hashTagNames;
+    private String userId;
+    private List<String> hashTagNames = new ArrayList<>();
     private String content;
     private String shortsName;
 
@@ -26,7 +27,7 @@ public class ShortsDto {
         shortsDto.setId(shorts.getId());
         shortsDto.setTitle(shorts.getTitle());
         shortsDto.setShortsUrl(shorts.getShortsUrl());
-        shortsDto.setName(shorts.getMemberName().getName());
+        shortsDto.setUserId(shorts.getUser().getId());
         shortsDto.setContent(shorts.getContent());
         shortsDto.setShortsName(shorts.getShortsName());
 
