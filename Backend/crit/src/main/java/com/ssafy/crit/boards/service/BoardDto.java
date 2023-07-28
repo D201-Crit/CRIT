@@ -1,5 +1,6 @@
 package com.ssafy.crit.boards.service;
 
+import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.boards.entity.Board;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,11 +17,12 @@ public class BoardDto {
     private String writer;
 
     public static BoardDto toDto(Board board) {
-        return new BoardDto(
+        BoardDto boardDto = new BoardDto(
                 board.getId(),
                 board.getTitle(),
                 board.getContent(),
-                board.getMember().getName());
+                board.getUser().getId());
+        return boardDto;
     }
 
 }

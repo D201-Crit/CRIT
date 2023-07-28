@@ -11,6 +11,6 @@ import lombok.Setter;
 @Setter
 public class LikeDto {
 	private String boardTitle;
-	private String memberName;
+	private String userName;
 }
 

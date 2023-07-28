@@ -1,6 +1,7 @@
 package com.ssafy.crit.boards.service;
 
 
+import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.boards.entity.Board;
 import com.ssafy.crit.boards.entity.LikeTable;
 import com.ssafy.crit.boards.repository.LikeRepository;
@@ -22,21 +23,21 @@ public class LikeService {
 	private final LikeRepository likeRepository;
 	private final MemberRepository memberRepository;
 
-	public LikeDto like(Member member , Board board) {
-		memberRepository.findByName(member.getName()).orElseThrow();
-		if (likeRepository.findByMemberAndBoard(member, board).isEmpty()) {
+	public LikeDto like(User user , Board board) {
+		memberRepository.findByName(user.getId()).orElseThrow();
+		if (likeRepository.findByUserAndBoard(user, board).isEmpty()) {
 			LikeTable like = new LikeTable();
-			like.setMember(member);
+			like.setUser(user);
 			like.setBoard(board);
 			likeRepository.save(like);
 		}
 
-		return new LikeDto(board.getTitle(), member.getName());
+		return new LikeDto(board.getTitle(), user.getId());
 	}
 
-	public LikeDto unlike(Member member, Board board) {
-		likeRepository.deleteByMemberAndBoard(member, board);
-		return new LikeDto(board.getTitle(), member.getName());
+	public LikeDto unlike(User user, Board board) {
+		likeRepository.deleteByUserAndBoard(user, board);
+		return new LikeDto(board.getTitle(), user.getId());
 	}
 }
 

@@ -1,6 +1,6 @@
 package com.ssafy.crit.boards.entity;
 
-import com.ssafy.crit.imsimember.entity.Member;
+import com.ssafy.crit.auth.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +22,6 @@ public class Board {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "user_id")
+    private User user;
 }

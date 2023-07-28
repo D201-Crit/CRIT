@@ -2,6 +2,8 @@ package com.ssafy.crit.boards.controller;
 
 import java.util.NoSuchElementException;
 
+import com.ssafy.crit.auth.entity.User;
+import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.boards.entity.Board;
 import com.ssafy.crit.boards.repository.BoardRepository;
 import com.ssafy.crit.boards.service.LikeDto;
@@ -26,23 +28,23 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/like")
 public class LikeController {
 	private final LikeService likeService;
-	private final MemberRepository memberRepository;
+	private final UserRepository userRepository;
 	private final BoardRepository boardRepository;
 
 
 	@PostMapping("/{memberId}/{boardId}")
-	public ResponseEntity<String> like(@PathVariable Long memberId, @PathVariable Long boardId) {
-		Member member = memberRepository.findById(memberId).orElseThrow();
+	public ResponseEntity<String> like(@PathVariable String userId, @PathVariable Long boardId) {
+		User user = userRepository.findById(userId).orElseThrow();
 		Board board = boardRepository.findById(boardId).orElseThrow();
-		likeService.like(member, board);
+		likeService.like(user, board);
 		return new ResponseEntity<>("Board liked", HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{memberId}/{boardId}")
-	public ResponseEntity<String> unlike(@PathVariable Long memberId, @PathVariable Long boardId) {
-		Member member = memberRepository.findById(memberId).orElseThrow();
+	public ResponseEntity<String> unlike(@PathVariable String userId, @PathVariable Long boardId) {
+		User user = userRepository.findById(userId).orElseThrow();
 		Board board = boardRepository.findById(boardId).orElseThrow();
-		likeService.unlike(member, board);
+		likeService.unlike(user, board);
 		return new ResponseEntity<>("Board unliked", HttpStatus.OK);
 	}
 }

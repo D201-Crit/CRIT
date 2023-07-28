@@ -1,6 +1,7 @@
 package com.ssafy.crit.boards.service;
 
 
+import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.boards.service.BoardDto;
 import com.ssafy.crit.boards.entity.Board;
 import com.ssafy.crit.boards.repository.BoardRepository;
@@ -40,11 +41,11 @@ public class BoardService {
     }
 
     // 게시물 작성
-    public BoardDto write(BoardDto boardDto, Member member){
+    public BoardDto write(BoardDto boardDto, User user){
         Board board = new Board();
         board.setTitle(boardDto.getTitle());
         board.setContent(boardDto.getContent());
-        board.setMember(member);
+        board.setUser(user);
         boardRepository.save(board);
         return BoardDto.toDto(board);
     }

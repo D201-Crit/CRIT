@@ -1,5 +1,7 @@
 package com.ssafy.crit.boards.controller;
 
+import com.ssafy.crit.auth.entity.User;
+import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.boards.service.CommentDto;
 import com.ssafy.crit.imsimember.entity.Member;
 import com.ssafy.crit.imsimember.repository.MemberRepository;
@@ -15,6 +17,7 @@ public class CommentController {
 
     private final CommentService commentService;
     private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     // 댓글 작성
     @PostMapping("/comments/{boardId}")
@@ -23,7 +26,9 @@ public class CommentController {
         // 지금은 핵심 개념을 알기 위해서, JWT 로그인은 생략하고, 임의로 findById 로 유저 정보를 넣어줬습니다.
         // 추후에 로그인 기능을 도입하고 유저 정보는 세션을 통해서 넣어주면 됩니다.
         Member member = memberRepository.findById(commentDto.getId()).get();
-        return new Response<>("성공", "댓글 작성을 완료했습니다.", commentService.writeComment(boardId, commentDto, member));
+
+        User user = userRepository.findById(commentDto.getWriter()).get();
+        return new Response<>("성공", "댓글 작성을 완료했습니다.", commentService.writeComment(boardId, commentDto, user));
     }
 
 
