@@ -1,32 +1,38 @@
-// store.js
-import { configureStore, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk, configureStore } from "@reduxjs/toolkit";
 
-const api = axios.create({
-  baseURL: 'http://localhost:8080',
+export const fetchData = createAsyncThunk("data/fetch", async () => {
+  const response = await fetch("/api/data");
+  const data = await response.json();
+  return data;
 });
 
-export const fetchMessages = createAsyncThunk(
-  'messages/fetchMessages',
-  async () => {
-    const response = await api.get('/messages/received');
-    return response.data;
-  }
-);
-
-const messagesSlice = createSlice({
-  name: 'messages',
-  initialState: [],
+export const dataSlice = createSlice({
+  name: "data",
+  initialState: {
+    data: null,
+    isLoading: false,
+    error: null,
+  },
+  reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchMessages.fulfilled, (_, action) => {
-      return action.payload;
-    });
+    builder
+      .addCase(fetchData.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchData.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = action.payload;
+      })
+      .addCase(fetchData.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      });
   },
 });
 
 const PayStore = configureStore({
   reducer: {
-    messages: messagesSlice.reducer,
+    data: dataSlice.reducer,
   },
 });
 
