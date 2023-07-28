@@ -43,21 +43,6 @@ public class ShortsService {
         shorts.setUser(user);
         shorts.setViews(0);
         shorts.setContent(shortsDto.getContent());
-
-        for(String hashTagName : shortsDto.getHashTagNames()) {
-            HashTag hashTag = hashTagRepository.findByHashTag(hashTagName);
-            if (hashTag == null) {
-                hashTag = new HashTag();
-                hashTag.setHashTag(hashTagName);
-                hashTagRepository.saveAndFlush(hashTag);
-            }
-
-            HashTagShorts hashTagShorts = new HashTagShorts();
-            hashTagShorts.setShorts(shorts);
-            hashTagShorts.setHashTag(hashTag);
-
-            hashTagShortsRepository.saveAndFlush(hashTagShorts);
-        }
         /*우리의 프로젝트경로를 담아주게 된다 - 저장할 경로를 지정*/
         String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static";
 
@@ -80,6 +65,22 @@ public class ShortsService {
 
         /*파일 저장*/
         shortsRepository.save(shorts);
+
+        for(String hashTagName : shortsDto.getHashTagNames()) {
+            HashTag hashTag = hashTagRepository.findByHashTag(hashTagName);
+            if (hashTag == null) {
+                hashTag = new HashTag();
+                hashTag.setHashTag(hashTagName);
+                hashTagRepository.saveAndFlush(hashTag);
+            }
+
+            HashTagShorts hashTagShorts = new HashTagShorts();
+            hashTagShorts.setShorts(shorts);
+            hashTagShorts.setHashTag(hashTag);
+
+            hashTagShortsRepository.saveAndFlush(hashTagShorts);
+        }
+
 
         return ShortsDto.toDto(shorts);
     }
