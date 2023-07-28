@@ -16,6 +16,7 @@ import java.util.Date;
 @Table(name = "users")
 public class User extends BaseTimeEntity {
     @Id
+    @Column(name = "user_id")
     private String id;
 
     @Column(nullable = false)
