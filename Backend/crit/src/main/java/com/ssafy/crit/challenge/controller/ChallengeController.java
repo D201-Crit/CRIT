@@ -34,7 +34,7 @@ public class ChallengeController {
         User user = getUser(httpServletRequest);
         Challenge challenge = challengeService.createChallenge(requestDto, user);
         log.info("Challenge Is OK");
-        challenge.getChallengeUserList().add(new ChallengeUser(user, challenge));
+//        challenge.getChallengeUserList().add(new ChallengeUser(user, challenge));
 //        challengeService.joinChallenge(challenge.getId(), user);
         return new Response<>("success", "챌린지 생성 성공", "성공");
 

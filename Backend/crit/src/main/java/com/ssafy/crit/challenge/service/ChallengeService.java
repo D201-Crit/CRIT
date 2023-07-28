@@ -53,7 +53,9 @@ public class ChallengeService {
                 .build(); // 챌린지 생성
 
         try {
-            Challenge result = challengeRepository.save(challenge);
+            Challenge result = challengeRepository.saveAndFlush(challenge);
+            ChallengeUser challengeUser = ChallengeUser.createChallengeUser(result, user);
+            challengeUserRepository.save(challengeUser);
 //            log.info("챌린지 OK");
 //            ChallengeUser challengeUser = new ChallengeUser();
 //            challengeUser.setChallenge(result);
