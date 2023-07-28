@@ -1,10 +1,12 @@
 package com.ssafy.crit.shorts.entity;
 
+import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.imsimember.entity.Member;
-
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -22,20 +24,27 @@ public class Shorts {
     @GeneratedValue
     private Long id;
 
-    private String filename;//파일이름
-
-    private String filepath;//파일경로
+    // 영상 주소는 String으로 받음
+    private String shortsUrl;
 
     private String title;
 
     private int views;
+    private String content;
+    private String shortsName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "name_id")
+    @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private Member memberName;
+    private User user;
 
-    @OneToMany(mappedBy = "shorts")
+    @OneToMany(mappedBy = "shorts", fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HashTagShorts> hashTagShortsList = new ArrayList<>(); // 해시태그 리스트
+    // 쿼리 메서드 추가: 해시태그 정보를 가져오는 메서드
+    public List<HashTagShorts> getHashTags() {
+        return this.hashTagShortsList;
+    }
+//	@OneToMany(mappedBy = "shorts")
+//	private List<HashTag> hashTagList;
 
 }

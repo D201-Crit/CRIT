@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,19 +16,22 @@ import java.util.stream.Collectors;
 public class ShortsDto {
     private Long id;
     private String title;
-    private String filename;
-    private String filepath;
-    private String name;
-    private List<String> hashTagNames;
+    private String shortsUrl;
+    private String userId;
+    private List<String> hashTagNames = new ArrayList<>();
+    private String content;
+    private String shortsName;
 
     public static ShortsDto toDto(Shorts shorts) {
         ShortsDto shortsDto = new ShortsDto();
         shortsDto.setId(shorts.getId());
         shortsDto.setTitle(shorts.getTitle());
-        shortsDto.setFilepath(shorts.getFilepath());
-        shortsDto.setName(shorts.getMemberName().getName());
+        shortsDto.setShortsUrl(shorts.getShortsUrl());
+        shortsDto.setUserId(shorts.getUser().getId());
+        shortsDto.setContent(shorts.getContent());
+        shortsDto.setShortsName(shorts.getShortsName());
 
-        List<String> hashTagNames = shorts.getHashTagShortsList()
+        List<String> hashTagNames = shorts.getHashTags()
                 .stream()
                 .map(hashTagShorts -> hashTagShorts.getHashTag().getHashTag())
                 .collect(Collectors.toList());
@@ -35,4 +39,5 @@ public class ShortsDto {
 
         return shortsDto;
     }
+
 }
