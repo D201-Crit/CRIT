@@ -2,6 +2,7 @@ package com.ssafy.crit.boards.service;
 
 
 import com.ssafy.crit.auth.entity.User;
+import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.boards.entity.Board;
 import com.ssafy.crit.boards.entity.LikeTable;
 import com.ssafy.crit.boards.repository.LikeRepository;
@@ -21,10 +22,13 @@ import lombok.Setter;
 public class LikeService {
 
 	private final LikeRepository likeRepository;
-	private final MemberRepository memberRepository;
+	private final UserRepository userRepository;
 
 	public LikeDto like(User user , Board board) {
-		memberRepository.findByName(user.getId()).orElseThrow();
+		userRepository.findById(user.getId()).orElseThrow(() -> {
+			return new IllegalArgumentException("아이디를 찾을 수 없습니다.");
+		});
+
 		if (likeRepository.findByUserAndBoard(user, board).isEmpty()) {
 			LikeTable like = new LikeTable();
 			like.setUser(user);

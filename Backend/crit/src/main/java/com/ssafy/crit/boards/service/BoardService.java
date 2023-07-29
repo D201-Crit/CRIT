@@ -70,6 +70,5 @@ public class BoardService {
         });
         // 게시글이 있는 경우 삭제처리
         boardRepository.deleteById(id);
-
     }
 }
