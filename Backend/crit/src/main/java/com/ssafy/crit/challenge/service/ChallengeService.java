@@ -16,7 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -54,15 +57,9 @@ public class ChallengeService {
 
         try {
             Challenge result = challengeRepository.saveAndFlush(challenge);
-            ChallengeUser challengeUser = ChallengeUser.createChallengeUser(result, user);
+            ChallengeUser challengeUser = ChallengeUser.createChallengeUser(result, user); // 생성자도 챌린지 참가
             challengeUserRepository.save(challengeUser);
-//            log.info("챌린지 OK");
-//            ChallengeUser challengeUser = new ChallengeUser();
-//            challengeUser.setChallenge(result);
-//            challengeUser.setUser(user);
-//            result.addChallengeUser(challengeUser); //생성자도 챌린지 참가
-//            log.info("챌린지유저 OK");
-//
+
             return result;
 
         } catch (Exception e) {
@@ -75,7 +72,18 @@ public class ChallengeService {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new IllegalArgumentException("챌린지를 찾을 수 없습니다."));
 
-        if (challenge.getStartDate().isBefore(LocalDate.now())) { // 챌린지가 시작하기 이전인 경우
+        challenge.getChallengeUserList()
+                        .forEach(challengeUser -> {
+                            if(challengeUser.getUser().getId().equals(user.getId())){
+                                throw new IllegalStateException("중복된 참여입니다.");
+                            }
+                        });
+        // 중복 참여 제거
+
+        // 참여 중인걸 보내주는게 맞나?
+
+        if (LocalDate.now().isBefore(challenge.getStartDate())) { // 챌린지가 시작하기 이전인 경우
+            log.info("현재 시간 : {}",LocalDate.now());
             /** 챌린지 참여 로직 */
             ChallengeUser challengeUser = ChallengeUser.createChallengeUser(challenge, user);
             challenge.addChallengeUser(challengeUser);
@@ -87,6 +95,14 @@ public class ChallengeService {
 
 
     }
+
+    public List<Challenge> getChallengesAll(){
+        return challengeRepository.findAll();
+    }
+
+//    public List<Challenge> getCahllengesAvailable(){
+//        return challengeRepository.findAllByStartDate
+//    }
 
     // 카테고리 있으면 불러오기, 없으면 생성
     private ChallengeCategory getCategory(ChallengeCreateRequestDto challengeDto) {
