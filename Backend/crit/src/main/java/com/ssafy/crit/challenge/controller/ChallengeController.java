@@ -33,6 +33,7 @@ public class ChallengeController {
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
 
+    // 챌린지 만들기
     @PostMapping("/create")
     public ResponseEntity<Response<String>> createChallenge(@RequestBody ChallengeCreateRequestDto requestDto,
                                                             HttpServletRequest httpServletRequest) throws Exception {
@@ -42,6 +43,7 @@ public class ChallengeController {
         return new ResponseEntity<>(new Response<>("success", "챌린지 만들기 성공!", "OK"), HttpStatus.OK);
     }
 
+    // 챌린지 참여
     @PostMapping("/join/{challengeId}")
     public ResponseEntity<Response<String>> joinChallenge(@PathVariable("challengeId") Long challengeId, HttpServletRequest httpServletRequest) throws Exception {
         User user = getUser(httpServletRequest);
@@ -49,14 +51,28 @@ public class ChallengeController {
         return new ResponseEntity<>(new Response<>("suceess", "챌린지 참여 성공", "OK"), HttpStatus.OK);
     }
 
-    //이때까지 열린 모든 챌린지 불러오기
-    @GetMapping("/list/all")
-    public ResponseEntity<Response<List<ChallengeListResponseDto>>> listAllChallenge() throws Exception {
-        List<ChallengeListResponseDto> challenges = challengeService.getChallengesAll().stream()
+
+    // 나의 챌린지 리스트 불러오기
+    @GetMapping("/list/mine")
+    public ResponseEntity<Response<List<ChallengeListResponseDto>>> listMyChallenge(HttpServletRequest httpServletRequest)
+            throws Exception {
+        User user = getUser(httpServletRequest);
+        List<ChallengeListResponseDto> challengeList = challengeService.getMyChallengeAll(user).stream()
                 .map(challenge -> new ChallengeListResponseDto(challenge)).collect(Collectors.toList());
 
         return new ResponseEntity<>(new Response<>("success",
-                "모든 챌린지 불러 오기", challenges), HttpStatus.OK);
+                "나의 챌린지 불러오기", challengeList), HttpStatus.OK);
+    }
+
+
+    //이때까지 열린 모든 챌린지 불러오기
+    @GetMapping("/list/all")
+    public ResponseEntity<Response<List<ChallengeListResponseDto>>> listAllChallenge() throws Exception {
+        List<ChallengeListResponseDto> challengeList = challengeService.getChallengesAll().stream()
+                .map(challenge -> new ChallengeListResponseDto(challenge)).collect(Collectors.toList());
+
+        return new ResponseEntity<>(new Response<>("success",
+                "모든 챌린지 불러 오기", challengeList), HttpStatus.OK);
     }
 
     // 현재 참여 가능한 챌린지 불러오기

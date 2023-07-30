@@ -74,15 +74,15 @@ public class ChallengeService {
                 .orElseThrow(() -> new BadRequestException("챌린지를 찾을 수 없습니다."));
 
         challenge.getChallengeUserList()
-                        .forEach(challengeUser -> {
-                            if(challengeUser.getUser().getId().equals(user.getId())){
-                                throw new BadRequestException("중복된 참여입니다.");
-                            }
-                        });
+                .forEach(challengeUser -> {
+                    if (challengeUser.getUser().getId().equals(user.getId())) {
+                        throw new BadRequestException("중복된 참여입니다.");
+                    }
+                });
         // 중복 참여 제거
 
         if (LocalDate.now().isBefore(challenge.getStartDate())) { // 챌린지가 시작하기 이전인 경우
-            log.info("현재 시간 : {}",LocalDate.now());
+            log.info("현재 시간 : {}", LocalDate.now());
             /** 챌린지 참여 로직 */
             ChallengeUser challengeUser = ChallengeUser.createChallengeUser(challenge, user);
             challenge.addChallengeUser(challengeUser);
@@ -94,29 +94,33 @@ public class ChallengeService {
 
     }
 
-    public List<Challenge> getChallengesAll()throws Exception{
+    public List<Challenge> getMyChallengeAll(User user) throws Exception {
+        return challengeUserRepository.findAllByUser(user).stream()
+                .map(challengeUser -> challengeUser.getChallenge()).collect(Collectors.toList());
+    }
+
+    public List<Challenge> getChallengesAll() throws Exception {
         return challengeRepository.findAll();
     }
 
     // 현재 가능한 챌린지 불러오기
-    public List<Challenge> getCahllengesAvailable()throws Exception{
+    public List<Challenge> getCahllengesAvailable() throws Exception {
         return challengeRepository.findAllByStartDateAfter(LocalDate.now());
     }
 
     // 끝난 챌린지 불러오기
-    public List<Challenge> getChallengesFinished()throws Exception{
+    public List<Challenge> getChallengesFinished() throws Exception {
         return challengeRepository.findAllByEndDateBefore(LocalDate.now());
     }
 
     // 현재 진행중인 챌린지 불러오기
-    public List<Challenge> getChallengesOngoing()throws Exception{
+    public List<Challenge> getChallengesOngoing() throws Exception {
         return challengeRepository.findAllOngoingChallenge(LocalDate.now());
     }
 
 
-
     // 카테고리 있으면 불러오기, 없으면 생성
-    private ChallengeCategory getCategory(ChallengeCreateRequestDto challengeDto) throws Exception{
+    private ChallengeCategory getCategory(ChallengeCreateRequestDto challengeDto) throws Exception {
         Optional<ChallengeCategory> challengeCategory = challengeCategoryRepository.
                 findChallengeCategoryBySpecies(challengeDto.getCategory());
         ChallengeCategory category;

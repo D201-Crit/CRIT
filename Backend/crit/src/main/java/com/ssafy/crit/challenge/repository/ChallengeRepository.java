@@ -15,4 +15,5 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
     @Query("select c from Challenge c where c.startDate <= :curdate and c.endDate >= :curdate")
     List<Challenge> findAllOngoingChallenge(@Param("curdate") LocalDate curDate); // 현재 진행중 챌린지 조회
+
 }

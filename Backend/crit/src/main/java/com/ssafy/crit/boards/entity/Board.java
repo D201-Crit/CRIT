@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@Builder
 @Entity
 public class Board extends BaseTimeEntity {
 
