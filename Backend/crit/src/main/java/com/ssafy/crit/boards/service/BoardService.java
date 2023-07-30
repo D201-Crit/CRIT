@@ -5,6 +5,7 @@ import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.boards.service.BoardDto;
 import com.ssafy.crit.boards.entity.Board;
 import com.ssafy.crit.boards.repository.BoardRepository;
+import com.ssafy.crit.challenge.entity.Challenge;
 import com.ssafy.crit.imsimember.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -71,4 +72,12 @@ public class BoardService {
         // 게시글이 있는 경우 삭제처리
         boardRepository.deleteById(id);
     }
+
+    // 챌린지 생성 완료시 방 만들기
+//    public Board createChallengeBoard(Challenge challenge) throws Exception{
+//        Board.builder()
+//                .title(challenge.getName() + "Board")
+//                .c
+//    }
+    
 }

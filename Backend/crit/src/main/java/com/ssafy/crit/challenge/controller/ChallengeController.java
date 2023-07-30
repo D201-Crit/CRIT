@@ -6,20 +6,22 @@ import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.challenge.dto.ChallengeCreateRequestDto;
 import com.ssafy.crit.challenge.dto.ChallengeListResponseDto;
 import com.ssafy.crit.challenge.entity.Challenge;
-import com.ssafy.crit.challenge.entity.ChallengeUser;
 import com.ssafy.crit.challenge.service.ChallengeService;
 import com.ssafy.crit.message.response.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.security.SecurityUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 import java.util.stream.Collectors;
+
+/***
+ * 0730 조경호
+ * 챌린지 각종 조회
+ */
 
 @RestController
 @RequiredArgsConstructor
@@ -33,15 +35,15 @@ public class ChallengeController {
 
     @PostMapping("/create")
     public ResponseEntity<Response<String>> createChallenge(@RequestBody ChallengeCreateRequestDto requestDto,
-                                            HttpServletRequest httpServletRequest) {
+                                                            HttpServletRequest httpServletRequest) throws Exception {
         User user = getUser(httpServletRequest);
         Challenge challenge = challengeService.createChallenge(requestDto, user);
         log.info("Challenge Is OK");
-        return new ResponseEntity<>(new Response<>("success", "챌린지 만들기 성공!", "OK") ,HttpStatus.OK);
+        return new ResponseEntity<>(new Response<>("success", "챌린지 만들기 성공!", "OK"), HttpStatus.OK);
     }
 
     @PostMapping("/join/{challengeId}")
-    public ResponseEntity<Response<String>> joinChallenge(@PathVariable("challengeId") Long challengeId, HttpServletRequest httpServletRequest){
+    public ResponseEntity<Response<String>> joinChallenge(@PathVariable("challengeId") Long challengeId, HttpServletRequest httpServletRequest) throws Exception {
         User user = getUser(httpServletRequest);
         challengeService.joinChallenge(challengeId, user);
         return new ResponseEntity<>(new Response<>("suceess", "챌린지 참여 성공", "OK"), HttpStatus.OK);
@@ -49,18 +51,44 @@ public class ChallengeController {
 
     //이때까지 열린 모든 챌린지 불러오기
     @GetMapping("/list/all")
-    public ResponseEntity<Response<List<ChallengeListResponseDto>>> listAllChallenge(){
+    public ResponseEntity<Response<List<ChallengeListResponseDto>>> listAllChallenge() throws Exception {
         List<ChallengeListResponseDto> challenges = challengeService.getChallengesAll().stream()
                 .map(challenge -> new ChallengeListResponseDto(challenge)).collect(Collectors.toList());
 
-        return new ResponseEntity<>(new Response<>("success", "챌린지 불러 오기", challenges), HttpStatus.OK);
+        return new ResponseEntity<>(new Response<>("success",
+                "모든 챌린지 불러 오기", challenges), HttpStatus.OK);
     }
 
-//    // 현재 참여 가능한 챌린지 불러오기
-//    @GetMapping("/list/available")
-//    public ResponseEntity<Response<List<Challenge>>> listAvailableChallenge(){
-//        List<Challenge> challenges = challengeService.get
-//    }
+    // 현재 참여 가능한 챌린지 불러오기
+    @GetMapping("/list/available")
+    public ResponseEntity<Response<List<ChallengeListResponseDto>>> listAvailableChallenge() throws Exception {
+        List<ChallengeListResponseDto> challenges = challengeService.getCahllengesAvailable().stream()
+                .map(challenge -> new ChallengeListResponseDto(challenge)).collect(Collectors.toList());
+
+        return new ResponseEntity<>(new Response<>("success",
+                "현재 참여 가능한 챌린지 불러오기", challenges), HttpStatus.OK);
+    }
+
+    // 끝난 챌린지 불러오기
+    @GetMapping("/list/finished")
+    public ResponseEntity<Response<List<ChallengeListResponseDto>>> listFinishedChallenge() throws Exception {
+        List<ChallengeListResponseDto> challenges = challengeService.getChallengesFinished().stream()
+                .map(challenge -> new ChallengeListResponseDto(challenge)).collect(Collectors.toList());
+
+        return new ResponseEntity<>(new Response<>("success",
+                "끝난 챌린지 불러오기", challenges), HttpStatus.OK);
+    }
+
+
+    // 현재 진행중인 챌린지 불러오기
+    @GetMapping("/list/ongoing")
+    public ResponseEntity<Response<List<ChallengeListResponseDto>>> listOngoingChallenge() throws Exception {
+        List<ChallengeListResponseDto> challenges = challengeService.getChallengesOngoing().stream()
+                .map(challenge -> new ChallengeListResponseDto(challenge)).collect(Collectors.toList());
+
+        return new ResponseEntity<>(new Response<>("success",
+                "진행중인 챌린지 불러오기", challenges), HttpStatus.OK);
+    }
 
 
     private User getUser(HttpServletRequest httpServletRequest) {
@@ -72,4 +100,6 @@ public class ChallengeController {
         });
         return user;
     }
+
+
 }

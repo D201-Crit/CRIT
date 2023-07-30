@@ -1,6 +1,7 @@
 package com.ssafy.crit.challenge.service;
 
 import com.ssafy.crit.auth.entity.User;
+import com.ssafy.crit.boards.entity.Board;
 import com.ssafy.crit.challenge.dto.ChallengeCreateRequestDto;
 import com.ssafy.crit.challenge.entity.Challenge;
 import com.ssafy.crit.challenge.entity.ChallengeCategory;
@@ -9,6 +10,7 @@ import com.ssafy.crit.challenge.repository.ChallengeCategoryRepository;
 import com.ssafy.crit.challenge.repository.ChallengeRepository;
 import com.ssafy.crit.challenge.repository.ChallengeUserRepository;
 import com.ssafy.crit.challenge.repository.IsCertRepository;
+import com.ssafy.crit.common.exception.BadRequestException;
 import com.ssafy.crit.imsimember.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +39,7 @@ public class ChallengeService {
     private final ChallengeCategoryRepository challengeCategoryRepository;
     private final IsCertRepository isCertRepository;
 
-    public Challenge createChallenge(ChallengeCreateRequestDto challengeDto, User user) {
+    public Challenge createChallenge(ChallengeCreateRequestDto challengeDto, User user) throws Exception {
 
         ChallengeCategory category = getCategory(challengeDto);
         log.info("category {}", category.getSpecies());
@@ -59,7 +61,6 @@ public class ChallengeService {
             Challenge result = challengeRepository.saveAndFlush(challenge);
             ChallengeUser challengeUser = ChallengeUser.createChallengeUser(result, user); // 생성자도 챌린지 참가
             challengeUserRepository.save(challengeUser);
-
             return result;
 
         } catch (Exception e) {
@@ -68,19 +69,17 @@ public class ChallengeService {
 
     }
 
-    public int joinChallenge(Long challengeId, User user) {  // 챌린지 참여
+    public int joinChallenge(Long challengeId, User user) throws Exception {  // 챌린지 참여
         Challenge challenge = challengeRepository.findById(challengeId)
-                .orElseThrow(() -> new IllegalArgumentException("챌린지를 찾을 수 없습니다."));
+                .orElseThrow(() -> new BadRequestException("챌린지를 찾을 수 없습니다."));
 
         challenge.getChallengeUserList()
                         .forEach(challengeUser -> {
                             if(challengeUser.getUser().getId().equals(user.getId())){
-                                throw new IllegalStateException("중복된 참여입니다.");
+                                throw new BadRequestException("중복된 참여입니다.");
                             }
                         });
         // 중복 참여 제거
-
-        // 참여 중인걸 보내주는게 맞나?
 
         if (LocalDate.now().isBefore(challenge.getStartDate())) { // 챌린지가 시작하기 이전인 경우
             log.info("현재 시간 : {}",LocalDate.now());
@@ -93,19 +92,31 @@ public class ChallengeService {
             throw new IllegalStateException("챌린지 참여 기간이 지났습니다.");
         }
 
-
     }
 
-    public List<Challenge> getChallengesAll(){
+    public List<Challenge> getChallengesAll()throws Exception{
         return challengeRepository.findAll();
     }
 
-//    public List<Challenge> getCahllengesAvailable(){
-//        return challengeRepository.findAllByStartDate
-//    }
+    // 현재 가능한 챌린지 불러오기
+    public List<Challenge> getCahllengesAvailable()throws Exception{
+        return challengeRepository.findAllByStartDateAfter(LocalDate.now());
+    }
+
+    // 끝난 챌린지 불러오기
+    public List<Challenge> getChallengesFinished()throws Exception{
+        return challengeRepository.findAllByEndDateBefore(LocalDate.now());
+    }
+
+    // 현재 진행중인 챌린지 불러오기
+    public List<Challenge> getChallengesOngoing()throws Exception{
+        return challengeRepository.findAllOngoingChallenge(LocalDate.now());
+    }
+
+
 
     // 카테고리 있으면 불러오기, 없으면 생성
-    private ChallengeCategory getCategory(ChallengeCreateRequestDto challengeDto) {
+    private ChallengeCategory getCategory(ChallengeCreateRequestDto challengeDto) throws Exception{
         Optional<ChallengeCategory> challengeCategory = challengeCategoryRepository.
                 findChallengeCategoryBySpecies(challengeDto.getCategory());
         ChallengeCategory category;
@@ -119,4 +130,6 @@ public class ChallengeService {
         }
         return category;
     }
+
+
 }
