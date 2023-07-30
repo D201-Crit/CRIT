@@ -16,9 +16,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class LikeService {
 
 	private final LikeRepository likeRepository;
@@ -41,7 +43,8 @@ public class LikeService {
 
 	public LikeDto unlike(User user, Board board) {
 		likeRepository.deleteByUserAndBoard(user, board);
-		return new LikeDto(board.getTitle(), user.getId());
+		LikeDto likeDto = new LikeDto(board.getTitle(), user.getId());
+		return likeDto;
 	}
 }
 
