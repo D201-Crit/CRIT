@@ -1,4 +1,4 @@
-package com.ssafy.crit.imsimember.service;
+package com.ssafy.crit.auth.dto;
 
 
 import lombok.Getter;

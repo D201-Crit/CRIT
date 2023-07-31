@@ -5,16 +5,16 @@ import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.boards.entity.Board;
 import com.ssafy.crit.boards.repository.BoardRepository;
-import com.ssafy.crit.boards.service.BoardDto;
-import com.ssafy.crit.boards.service.BoardSaveRequestDto;
-import com.ssafy.crit.challenge.entity.Challenge;
-import com.ssafy.crit.imsimember.entity.Member;
+import com.ssafy.crit.boards.service.dto.BoardDto;
+import com.ssafy.crit.boards.service.dto.BoardSaveRequestDto;
+import com.ssafy.crit.boards.service.dto.BoardShowSortDto;
 import com.ssafy.crit.message.response.Response;
 import com.ssafy.crit.boards.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -76,6 +76,19 @@ public class BoardController {
 
         // Return an error message if the user does not have permission to delete the post
         return new Response<>("실패", "글 삭제 권한이 없습니다.", null);
+    }
+
+
+    @GetMapping("/boards/desc")
+    public Response<?> getBoardsInDescOrder() {
+        List<BoardShowSortDto> boards = boardService.findAllDesc();
+        return new Response("성공", "타이틀 내림차순", boards);
+    }
+
+    @GetMapping("/boards/asc")
+    public Response<?> getBoardsInAscOrder() {
+        List<BoardShowSortDto> boards = boardService.findAllAsc();
+        return new Response("성공", "타이틀 오름차순", boards);
     }
 
 

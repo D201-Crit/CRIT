@@ -11,7 +11,6 @@ import com.ssafy.crit.challenge.repository.ChallengeRepository;
 import com.ssafy.crit.challenge.repository.ChallengeUserRepository;
 import com.ssafy.crit.challenge.repository.IsCertRepository;
 import com.ssafy.crit.common.exception.BadRequestException;
-import com.ssafy.crit.imsimember.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

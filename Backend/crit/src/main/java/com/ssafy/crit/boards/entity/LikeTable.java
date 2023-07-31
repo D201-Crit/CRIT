@@ -7,7 +7,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import com.ssafy.crit.auth.entity.User;
-import com.ssafy.crit.imsimember.entity.Member;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,5 @@
-package com.ssafy.crit.boards.service;
+package com.ssafy.crit.boards.service.dto;
 
-import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.boards.entity.Board;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
