@@ -1,4 +1,4 @@
-package com.ssafy.crit.boards.service;
+package com.ssafy.crit.boards.service.dto;
 
 import com.ssafy.crit.boards.entity.Board;
 import com.ssafy.crit.boards.entity.Classification;
@@ -11,7 +11,7 @@ public class BoardSaveRequestDto {
     private Long id;
     private String title;
     private String content;
-    private Classification classification;
+    private Long classification;
     private String writer;
 
     @Builder
@@ -20,7 +20,7 @@ public class BoardSaveRequestDto {
                 board.getId(),
                 board.getTitle(),
                 board.getContent(),
-                board.getClassification(),
+                board.getClassification().getId(),
                 board.getUser().getId());
 
         return BoardSaveRequestDto;

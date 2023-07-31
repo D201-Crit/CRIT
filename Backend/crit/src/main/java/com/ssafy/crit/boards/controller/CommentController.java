@@ -5,13 +5,10 @@ import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.boards.entity.Comment;
 import com.ssafy.crit.boards.repository.CommentRepository;
-import com.ssafy.crit.boards.service.CommentDto;
-import com.ssafy.crit.imsimember.entity.Member;
-import com.ssafy.crit.imsimember.repository.MemberRepository;
+import com.ssafy.crit.boards.service.dto.CommentDto;
 import com.ssafy.crit.message.response.Response;
 import com.ssafy.crit.boards.service.CommentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;

@@ -6,16 +6,11 @@ import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.boards.entity.Board;
 import com.ssafy.crit.boards.entity.LikeTable;
 import com.ssafy.crit.boards.repository.LikeRepository;
-import com.ssafy.crit.imsimember.entity.Member;
-import com.ssafy.crit.imsimember.repository.MemberRepository;
+import com.ssafy.crit.boards.service.dto.LikeDto;
 
 import org.springframework.stereotype.Service;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service

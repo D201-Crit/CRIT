@@ -4,17 +4,20 @@ package com.ssafy.crit.boards.service;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.boards.entity.Classification;
-import com.ssafy.crit.boards.service.BoardDto;
+import com.ssafy.crit.boards.repository.ClassificationRepository;
+import com.ssafy.crit.boards.service.dto.BoardDto;
 import com.ssafy.crit.boards.entity.Board;
 import com.ssafy.crit.boards.repository.BoardRepository;
-import com.ssafy.crit.challenge.entity.Challenge;
-import com.ssafy.crit.imsimember.entity.Member;
+
+import com.ssafy.crit.boards.service.dto.BoardSaveRequestDto;
+import com.ssafy.crit.boards.service.dto.BoardShowSortDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +26,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final ClassificationRepository classificationRepository;
 
     //전체 게시물
     @Transactional(readOnly = true)
@@ -51,10 +55,13 @@ public class BoardService {
 
     // 게시물 작성
     public BoardSaveRequestDto write(BoardSaveRequestDto boardSaveRequestDto, User user) {
+
+        Classification classification = classificationRepository.findById(boardSaveRequestDto.getClassification()).orElseThrow();
+
         Board board = Board.builder()
                 .title(boardSaveRequestDto.getTitle())
                 .content(boardSaveRequestDto.getContent())
-                .classification(Classification.FreePost)
+                .classification(classification)
                 .user(user)
                 .build();
         boardRepository.save(board);
@@ -87,6 +94,7 @@ public class BoardService {
         boardRepository.deleteById(id);
     }
 
+
     // 챌린지 생성 완료시 방 만들기
 //    public Board createChallengeBoard(Challenge challenge) throws Exception{
 //        Board.builder()
@@ -94,4 +102,36 @@ public class BoardService {
 //                .c
 //    }
     
+
+    public List<BoardShowSortDto> findAllDesc(){
+        return boardRepository.findAllDesc().stream()
+                .map(board -> {
+                    if(board.getUser() == null) {
+                        throw new RuntimeException("User is null for board id: " + board.getId());
+                    }
+                    return new BoardShowSortDto(board.getId(),
+                            board.getTitle(),
+                            board.getContent(),
+                            board.getViews(),
+                            board.getUser().getId().toString(),
+                            board.getLikes().size());
+                }).collect(Collectors.toList());
+    }
+
+
+    public List<BoardShowSortDto> findAllAsc(){
+        return boardRepository.findAllAsc().stream()
+                .map(board -> {
+                    if(board.getUser() == null) {
+                        throw new RuntimeException("User is null for board id: " + board.getId());
+                    }
+                    return new BoardShowSortDto(board.getId(),
+                            board.getTitle(),
+                            board.getContent(),
+                            board.getViews(),
+                            board.getUser().getId().toString(),
+                            board.getLikes().size());
+                }).collect(Collectors.toList());
+    }
+
 }

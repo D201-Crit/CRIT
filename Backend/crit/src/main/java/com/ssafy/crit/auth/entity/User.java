@@ -1,6 +1,7 @@
 package com.ssafy.crit.auth.entity;
 
 import com.ssafy.crit.auth.entity.enumType.AuthProvider;
+import com.ssafy.crit.auth.entity.enumType.Grade;
 import com.ssafy.crit.auth.entity.enumType.Role;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,6 +32,8 @@ public class User extends BaseTimeEntity {
     @Column
     private String profileImageUrl;
 
+    private String profileImageName;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
@@ -46,19 +49,38 @@ public class User extends BaseTimeEntity {
 
     private String tid;
 
+    private int exp;
+
+    @Enumerated(EnumType.STRING)
+    private Grade grade;
+
+    @Column
+    private Boolean isChecked;
+
+
     @Builder
-    public User(String id, String nickname, String password, String email, String profileImageUrl, Role role, AuthProvider authProvider, String refreshToken, Date tokenExpirationTime, String tid){
+    public User(String id, String nickname, String password, String email, String profileImageUrl,
+        String profileImageName,
+        Role role, AuthProvider authProvider, String refreshToken, Date tokenExpirationTime, String tid, int exp,
+        Grade grade, Boolean isChecked) {
         this.id = id;
         this.nickname = nickname;
         this.password = password;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
+        this.profileImageName = profileImageName;
         this.role = role;
         this.authProvider = authProvider;
         this.refreshToken = refreshToken;
         this.tokenExpirationTime = tokenExpirationTime;
         this.tid = tid;
+        this.exp = exp;
+        this.grade = grade;
+        this.isChecked = false;
     }
+
+
+
 
     /*
     ** 엔티티 관련 비즈니스 로직
@@ -88,5 +110,25 @@ public class User extends BaseTimeEntity {
 
     public void updateTid(String tid) {
         this.tid = tid;
+    }
+
+    public void loginExp(int exp, boolean isChecked){
+        this.exp = exp + 10;
+        this.isChecked = true;
+    }
+    public void setGrade(int exp){
+        this.grade = Grade.getGradeByExp(exp);
+    }
+
+    public void setIsChecked(Boolean isChecked) {
+        this.isChecked = isChecked;
+    }
+
+    public void setProfileImageUrl(String s) {
+        this.profileImageUrl = s;
+    }
+
+    public void setProfileImageName(String imageName) {
+        this.profileImageName = imageName;
     }
 }

@@ -1,4 +1,4 @@
-package com.ssafy.crit.boards.service;
+package com.ssafy.crit.boards.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

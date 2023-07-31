@@ -1,5 +1,6 @@
 package com.ssafy.crit.auth.service;
 
+import com.ssafy.crit.auth.entity.enumType.Grade;
 import com.ssafy.crit.common.exception.BadRequestException;
 import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.dto.*;
@@ -7,14 +8,27 @@ import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.auth.entity.enumType.AuthProvider;
 import com.ssafy.crit.auth.entity.enumType.Role;
+import com.ssafy.crit.shorts.entity.Shorts;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 public class UserService {
@@ -32,6 +46,8 @@ public class UserService {
                 .password(signUpRequestDto.getPassword())
                 .nickname(signUpRequestDto.getNickname())
                 .role(Role.USER)
+            .grade(Grade.Beginner)
+            .exp(0)
                 .authProvider(AuthProvider.EMPTY)
                 .build();
 
@@ -48,6 +64,12 @@ public class UserService {
         if (!bCryptPasswordEncoder.matches(logInRequestDto.getPassword(), user.getPassword())) {
             throw new BadRequestException("존재하지 않는 비밀번호입니다.");
         }
+
+        if(!user.getIsChecked()){
+            user.loginExp(user.getExp(), false);
+            user.setGrade(user.getExp());
+        }
+
         // 토큰 발급
         TokenDto accessTokenDto = jwtProvider.createAccessToken(logInRequestDto.getId(), user.getAuthProvider());
         TokenDto refreshTokenDto = jwtProvider.createRefreshToken(logInRequestDto.getId(), user.getAuthProvider());
@@ -55,13 +77,58 @@ public class UserService {
         user.updateRefreshToken(refreshTokenDto.getToken(), refreshTokenDto.getTokenExpirationTime());
 
         return LogInResponseDto.builder()
-                .id(user.getId())
-                .nickname(user.getNickname())
-                .email(user.getEmail())
-                .accessToken(accessTokenDto.getToken())
-                .refreshToken(refreshTokenDto.getToken())
-                .refreshTokenExpirationTime(refreshTokenDto.getTokenExpirationTime())
-                .build();
+            .id(user.getId())
+            .nickname(user.getNickname())
+            .email(user.getEmail())
+            .accessToken(accessTokenDto.getToken())
+            .refreshToken(refreshTokenDto.getToken())
+            .refreshTokenExpirationTime(refreshTokenDto.getTokenExpirationTime())
+            .exp(user.getExp())
+            .grade(user.getGrade())
+            .build();
+    }
+
+    @Scheduled(cron = "0 0 12 * * ?")
+    public void resetIsChecked() {
+        List<User> allUsers = userRepository.findAll();
+        for(User user : allUsers) {
+            user.setIsChecked(false);
+        }
+        userRepository.saveAll(allUsers);
+    }
+
+
+    @Transactional
+    public UpdateProfilePictureDto updateProfilePictureDto(MultipartFile file, String userId) throws IOException {
+
+        User user = userRepository.findById(userId).orElseThrow();
+
+        /*우리의 프로젝트경로를 담아주게 된다 - 저장할 경로를 지정*/
+        String projectPath = "C:\\files/";
+
+        /*식별자 . 랜덤으로 이름 만들어줌*/
+        UUID uuid = UUID.randomUUID();
+
+        /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
+        String ImageName = uuid + "_" + file.getOriginalFilename();
+
+        /*빈 껍데기 생성*/
+        /*File을 생성할건데, 이름은 "name" 으로할거고, projectPath 라는 경로에 담긴다는 뜻*/
+        File saveShorts = new File(projectPath, ImageName);
+
+        file.transferTo(saveShorts);
+
+        log.info("projectPath={}", projectPath);
+        log.info("Image={}", ImageName);
+
+        user.setProfileImageName(ImageName);
+        user.setProfileImageUrl(projectPath);
+
+        userRepository.save(user);
+        /*파일 저장*/
+
+        return new UpdateProfilePictureDto(user.getProfileImageUrl(), user.getProfileImageName());
+        // return null;
     }
 
     /*
