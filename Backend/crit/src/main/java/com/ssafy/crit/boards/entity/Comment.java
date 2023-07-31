@@ -1,5 +1,6 @@
 package com.ssafy.crit.boards.entity;
 
+import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.imsimember.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,7 +25,7 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE) // 연관된 member가 삭제되면 같이 삭제됨
-    private Member member;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")

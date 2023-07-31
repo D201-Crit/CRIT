@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.imsimember.entity.Member;
 
 import lombok.Getter;
@@ -22,10 +23,8 @@ public class LikeTable {
 	@GeneratedValue
 	private Long id;
 
-	// @ManyToOne(fetch = FetchType.LAZY)
-	// private User user;
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Member member;
+	 @ManyToOne(fetch = FetchType.LAZY)
+	 private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Board board;

@@ -12,6 +12,9 @@ import com.ssafy.crit.imsimember.entity.Member;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 @Data
 @Entity
@@ -28,10 +31,14 @@ public class IsCert {
     private Boolean isCert;
 
     // 인증시간
-    private int certTime;
+    private LocalDateTime certTime;
 
     // 이탈시간
-    private int outTime;
+    private LocalDateTime outTime;
+
+    private String filename; // 이미지 이름
+
+    private String filepath; // 이미지 저장 경로
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_id")

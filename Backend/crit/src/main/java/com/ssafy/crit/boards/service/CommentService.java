@@ -1,5 +1,7 @@
 package com.ssafy.crit.boards.service;
 
+import com.ssafy.crit.auth.entity.User;
+import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.boards.entity.Board;
 import com.ssafy.crit.boards.entity.Comment;
 import com.ssafy.crit.boards.repository.BoardRepository;
@@ -19,19 +21,20 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     // 댓글 작성하기
     @Transactional
-    public CommentDto writeComment(Long boardId, CommentDto commentDto, Member member) {
+    public CommentDto writeComment(Long boardId, CommentDto commentDto, User user) {
         Comment comment = new Comment();
         comment.setContent(commentDto.getContent());
 
         // 게시판 번호로 게시글 찾기
         Board board = boardRepository.findById(boardId).orElseThrow(() -> {
-            return new IllegalArgumentException("게시판을 찾을 수 없습니다.");
+             return new IllegalArgumentException("게시판을 찾을 수 없습니다.");
         });
 
-        comment.setMember(member);
+        comment.setUser(user);
         comment.setBoard(board);
         commentRepository.save(comment);
 

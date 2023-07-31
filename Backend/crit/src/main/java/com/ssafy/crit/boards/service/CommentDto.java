@@ -1,4 +1,5 @@
 package com.ssafy.crit.boards.service;
+import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.boards.entity.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,7 @@ public class CommentDto {
         return new CommentDto(
                 comment.getId(),
                 comment.getContent(),
-                comment.getMember().getName()
+                comment.getUser().getId()
         );
     }
 }
