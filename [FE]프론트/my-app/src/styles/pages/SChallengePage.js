@@ -133,7 +133,7 @@ export const SCreateChallengeModalWrapper = styled.div`
   color: white;
   margin: 10px 5%;
 `;
-export const STitleInput = styled.input`
+export const STitleChallenge = styled.input`
   color: white;
   width: 100%;
   height: 80px;
@@ -352,7 +352,7 @@ export const SCalendarwrapper = styled.div`
 export const SButtonWrapper = styled.div`
   position: relative;
   bottom: 30px;
-  left: 650px;
+  left: 710px;
   width: 435px;
 `;
 export const SCompleteButton = styled.button`

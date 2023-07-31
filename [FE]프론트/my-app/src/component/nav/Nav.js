@@ -1,59 +1,64 @@
 import React, { useState } from "react";
-import {
-  SNav,
-  SMenuWrapper,
-  SUserWrapper,
-  SMenuNavLink,
-  SMenuUl,
-  SMenuLi,
-  SUserUl,
-  SUserLi,
-  SUserNavLink,
-} from "../../styles/SCommon";
+import { SNav, SMenuWrapper, SUserWrapper } from "../../styles/SCommon";
 import { FaRegUserCircle } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
+import LogOut from "../user/LogOut";
+import { useSelector } from "react-redux";
 
 const Nav = () => {
-  const token = localStorage.getItem("token");
-  const nickName = localStorage.getItem("nickName");
+  const user = useSelector((state) => state.users); // useSelector를 통해 userSlice의 상태를 가져옴
   const [view, setView] = useState(false);
+  console.log(user);
 
   return (
     <SNav>
       <SMenuWrapper>
-        <SMenuUl>
-          <SMenuLi>
-            <SMenuNavLink to="/IntroPage">CRIT</SMenuNavLink>
-          </SMenuLi>
-          <SMenuLi>
-            <SMenuNavLink to="/MainPage">메인</SMenuNavLink>
-          </SMenuLi>
-          <SMenuLi>
-            <SMenuNavLink to="/ChallengePage">챌린지</SMenuNavLink>
-          </SMenuLi>
-          <SMenuLi>
-            <SMenuNavLink to="/CommunityPage">커뮤니티</SMenuNavLink>
-          </SMenuLi>
-        </SMenuUl>
+        {user ? (
+          <ul>
+            <li>
+              <NavLink to="/IntroPage">CRIT</NavLink>
+            </li>
+            <li>
+              <NavLink to="/MainPage">메인</NavLink>
+            </li>
+            <li>
+              <NavLink to="/ChallengePage">챌린지</NavLink>
+            </li>
+            <li>
+              <NavLink to="/CommunityPage">커뮤니티</NavLink>
+            </li>
+          </ul>
+        ) : (
+          <ul>
+            <li>
+              <NavLink to="/IntroPage">CRIT</NavLink>
+            </li>
+          </ul>
+        )}
       </SMenuWrapper>
       <SUserWrapper>
-        {token ? (
-          <SUserUl
+        {user ? (
+          <ul
             onClick={() => {
               setView(!view);
             }}
           >
-            <SUserLi>
+            <li>
               <FaRegUserCircle size={35} style={{ cursor: "pointer" }} />{" "}
-            </SUserLi>
-            <SUserLi>
-              <SUserNavLink to="/">{view && <h3>내 정보</h3>}</SUserNavLink>
-            </SUserLi>
-            <SUserLi>{view && <h3>로그아웃</h3>}</SUserLi>
-          </SUserUl>
+            </li>
+            <li>
+              <NavLink to="/">{view && <h3>내 정보</h3>}</NavLink>
+            </li>
+            <li>{view && <LogOut />}</li>
+          </ul>
         ) : (
-          <SUserNavLink to="/LoginPage">로그인</SUserNavLink>
+          <ul>
+            <li>
+              <NavLink to="/LoginPage">로그인</NavLink>
+            </li>
+          </ul>
         )}
-        {/* </SUserUl> */}
+        {/* </ul> */}
       </SUserWrapper>
     </SNav>
   );
