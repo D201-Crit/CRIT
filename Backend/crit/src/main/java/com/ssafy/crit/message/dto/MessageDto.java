@@ -12,17 +12,19 @@ import lombok.NoArgsConstructor;
 public class MessageDto {
 
 
-	private String title;
-	private String content;
-	private String senderName;
-	private String receiverName;
+    private Long id;
+    private String title;
+    private String content;
+    private String senderName;
+    private String receiverName;
 
-	public static MessageDto toDto(Message message) {
-		return new MessageDto(
-			message.getTitle(),
-			message.getContent(),
-			message.getSender().getId(),
-			message.getReceiver().getId()
-		);
-	}
+    public static MessageDto toDto(Message message) {
+        return new MessageDto(
+                message.getId(),
+                message.getTitle(),
+                message.getContent(),
+                message.getSender().getId(),
+                message.getReceiver().getId()
+        );
+    }
 }

@@ -84,7 +84,7 @@ public class UserController {
         return user;
     }
 
-    @PostMapping("/api/follow")
+    @PostMapping("/follow")
     public Response<?> follow(@RequestBody FollowRequestDto followRequestDto, HttpServletRequest httpServletRequest) {
         User user = getUser(httpServletRequest);
 

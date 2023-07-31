@@ -3,6 +3,7 @@ package com.ssafy.crit.message.service;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.message.dto.MessageDto;
+import com.ssafy.crit.message.dto.MessageSendRequestDto;
 import com.ssafy.crit.message.entity.Message;
 import com.ssafy.crit.message.entity.MessageRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,22 +21,26 @@ public class MessageService {
 	private final UserRepository userRepository;
 
 	@Transactional
-	public MessageDto write(MessageDto messageDto) {
-		User receiver = userRepository.findById(messageDto.getReceiverName()).get();
-		User sender = userRepository.findById(messageDto.getSenderName()).get();
+	public MessageDto write(MessageSendRequestDto MessageSendRequestDto, String senderName) {
+		User receiver = userRepository.findById(MessageSendRequestDto.getReceiverName()).get();
+		User sender = userRepository.findById(senderName).orElseThrow(() -> {
+			return new IllegalArgumentException("유저를 찾을 수 없습니다.");
+		});
 
-		Message message = new Message();
-		message.setReceiver(receiver);
-		message.setSender(sender);
+		Message message = Message.builder()
+				.title(MessageSendRequestDto.getTitle())
+				.content(MessageSendRequestDto.getContent())
+				.receiver(receiver)
+				.sender(sender)
+				.deletedByReceiver(false)
+				.deletedBySender(false)
+				.build();
 
-		message.setTitle(messageDto.getTitle());
-		message.setContent(messageDto.getContent());
-		message.setDeletedByReceiver(false);
-		message.setDeletedBySender(false);
 		messageRepository.save(message);
 
 		return MessageDto.toDto(message);
 	}
+
 
 
 	@Transactional(readOnly = true)

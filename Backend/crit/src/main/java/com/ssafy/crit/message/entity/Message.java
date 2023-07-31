@@ -2,6 +2,7 @@ package com.ssafy.crit.message.entity;
 
 import com.ssafy.crit.auth.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
@@ -16,7 +17,6 @@ import javax.persistence.*;
  */
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Message {
@@ -45,6 +45,18 @@ public class Message {
 	@JoinColumn(name = "receiver_id")
 	@OnDelete(action = OnDeleteAction.NO_ACTION)
 	private User receiver;
+
+
+	@Builder
+	public Message(Long id, String title, String content, boolean deletedBySender, boolean deletedByReceiver, User sender, User receiver) {
+		this.id = id;
+		this.title = title;
+		this.content = content;
+		this.deletedBySender = deletedBySender;
+		this.deletedByReceiver = deletedByReceiver;
+		this.sender = sender;
+		this.receiver = receiver;
+	}
 
 	public void deleteBySender() {
 		this.deletedBySender = true;

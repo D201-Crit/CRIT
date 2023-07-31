@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/like")
+@RequestMapping("/api")
 public class LikeController {
 	private final LikeService likeService;
 	private final UserRepository userRepository;
