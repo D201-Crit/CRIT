@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const KakaoCallback = () => {
+const NaverCallback = () => {
   const navigate = useNavigate();
   const code = new URL(window.location.href).searchParams.get("code");
-  const registrationId = "kakao";
+  const registrationId = "naver";
   const state = "200";
 
-  const kakaoLogin = () => {
+  const naverLogin = () => {
     axios({
       method: "GET",
       url: `http://localhost:8080/login/oauth2/code/${registrationId}?code=${code}&state=${state}`,
@@ -25,7 +25,7 @@ const KakaoCallback = () => {
   };
 
   useEffect(() => {
-    kakaoLogin();
+    naverLogin();
   }, [code]);
 
   return (
@@ -39,4 +39,4 @@ const KakaoCallback = () => {
   );
 };
 
-export default KakaoCallback;
+export default NaverCallback;
