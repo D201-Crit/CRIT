@@ -1,6 +1,6 @@
 package com.ssafy.crit.message.entity;
 
-import com.ssafy.crit.imsimember.entity.Member;
+import com.ssafy.crit.auth.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,12 +39,12 @@ public class Message {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sender_id")
 	@OnDelete(action = OnDeleteAction.NO_ACTION)
-	private Member sender;
+	private User sender;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "receiver_id")
 	@OnDelete(action = OnDeleteAction.NO_ACTION)
-	private Member receiver;
+	private User receiver;
 
 	public void deleteBySender() {
 		this.deletedBySender = true;

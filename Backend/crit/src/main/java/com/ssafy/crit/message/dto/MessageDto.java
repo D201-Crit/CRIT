@@ -21,8 +21,8 @@ public class MessageDto {
 		return new MessageDto(
 			message.getTitle(),
 			message.getContent(),
-			message.getSender().getName(),
-			message.getReceiver().getName()
+			message.getSender().getId(),
+			message.getReceiver().getId()
 		);
 	}
 }
