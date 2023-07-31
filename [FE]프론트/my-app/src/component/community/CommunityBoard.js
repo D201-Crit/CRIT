@@ -16,6 +16,7 @@ const useTopics = () => {
       } catch (error) {
         // 에러 발생시 콘솔에 에러를 출력합니다.
         console.error("Error fetching topics:", error);
+        
       }
     };
 

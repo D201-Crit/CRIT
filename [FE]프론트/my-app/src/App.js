@@ -20,6 +20,9 @@ import PayPage from "./pages/pay-page";
 import ProfilePage from "./pages/profile-page";
 import SignUpPage from "./pages/signup-page";
 import StartPage from "./pages/start-page";
+import PaySuccessPage from "./pages/pay-success-page";
+import PayCanclePage from "./pages/pay-cancle-page";
+import PayConflictPage from "./pages/pay-conflict-page";
 import { Sfont } from "./styles/SCommon";
 import Swal from "sweetalert2";
 
@@ -40,7 +43,7 @@ function AppRoutes() {
 
   const showNav = location.pathname !== "/";
 
-  const authorizedPages = ["/", "/IntroPage", "/LoginPage", "/SignUpPage"];
+  const authorizedPages = ["/", "/IntroPage", "/LoginPage", "/SignUpPage" , "/login/oauth2/code/kakao"];
 
   const isAuthorizedPage = !authorizedPages.includes(location.pathname) & !user;
 
@@ -82,6 +85,11 @@ function AppRoutes() {
         <Route path="/ProfilePage" element={<ProfilePage />} />
         <Route path="/MyPage" element={<MyPage />} />
         <Route path="/PayPage" element={<PayPage />} />
+        <Route path="/PaySuccessPage" element={<PaySuccessPage />} />
+        <Route path="/PayCanclePage" element={<PayCanclePage />} />
+        <Route path="/PayConflictPage" element={<PayConflictPage />} />
+
+
       </Routes>
     </>
   );

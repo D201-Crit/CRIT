@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-class PayWaitPage extends React.Component {
-  state = {
+const PayWaitPage = () => {
+  const [state, setState] = useState({
     next_redirect_pc_url: "",
     tid: "",
     params: {
@@ -14,15 +14,14 @@ class PayWaitPage extends React.Component {
       total_amount: 2200,
       vat_amount: 200,
       tax_free_amount: 0,
-      // router에 지정한 PayResult의 경로로 수정
       approval_url: "http://localhost:3000/payresult",
       fail_url: "http://localhost:3000/payresult",
       cancel_url: "http://localhost:3000/payresult",
     },
-  };
+  });
 
-  componentDidMount() {
-    const { params } = this.state;
+  useEffect(() => {
+    const { params } = state;
     axios({
       url: "/v1/payment/ready",
       method: "POST",
@@ -38,20 +37,21 @@ class PayWaitPage extends React.Component {
 
       console.log(next_redirect_pc_url);
       console.log(tid);
-      // localstorage에 tid 저장
-	  window.localStorage.setItem("tid", tid);
-      this.setState({ next_redirect_pc_url, tid });
+      window.localStorage.setItem("tid", tid);
+      setState((prevState) => ({
+        ...prevState,
+        next_redirect_pc_url,
+        tid,
+      }));
     });
-  }
+  }, []);
 
-  render() {
-    const { next_redirect_pc_url } = this.state;
-    return (
-      <div>
-        <h2>Pay page</h2>
-        <a href={next_redirect_pc_url}>{next_redirect_pc_url}</a>
-      </div>
-    );
-  }
-}
+  const { next_redirect_pc_url } = state;
+  return (
+    <div>
+      <h2>Pay page</h2>
+      <a href={next_redirect_pc_url}>{next_redirect_pc_url}</a>
+    </div>
+  );
+};
 export default PayWaitPage;
