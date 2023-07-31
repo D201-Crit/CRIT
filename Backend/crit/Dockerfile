@@ -4,7 +4,7 @@ FROM openjdk:11-jdk
 VOLUME /tmp
 
 # 생성된 이미지에서 열어줄
-EXPOSE 8000
+EXPOSE 8080
 
 # JAR_FILE 변수 정의
 ARG JAR_FILE=./build/libs/crit-0.0.1-SNAPSHOT.jar
