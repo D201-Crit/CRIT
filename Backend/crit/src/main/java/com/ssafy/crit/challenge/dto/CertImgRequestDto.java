@@ -13,8 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class CertImgRequestDto {
-//    private Long challengeId;
-    private MultipartFile file;
+    private Long challengeId;
 //    private LocalDateTime certTime;
 
 }

@@ -25,10 +25,10 @@ public class CertController {
     private final UserRepository userRepository;
 
     @PostMapping(path = "/img", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Response<String>> imgCertification(@RequestPart(value="file") MultipartFile file, HttpServletRequest httpServletRequest)
-            throws Exception{
+    public ResponseEntity<Response<String>> imgCertification(@RequestPart(value = "file") MultipartFile file, @RequestPart(value = "requestDto") CertImgRequestDto requestDto, HttpServletRequest httpServletRequest)
+            throws Exception {
         User user = getUser(httpServletRequest);
-        certService.imgCertification(file);
+        certService.imgCertification(requestDto, user, file);
 
         return new ResponseEntity<>(new Response<>("", "", ""), HttpStatus.OK);
     }
