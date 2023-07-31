@@ -1,7 +1,8 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import PayStore from lihl
+import { userSlice } from "./slice/UserSlice";
+
 export const rootReducer = combineReducers({
-  PayStore,
-  // board,
-  // review,
+  users: userSlice.reducer,
 });
+
+export default rootReducer;
