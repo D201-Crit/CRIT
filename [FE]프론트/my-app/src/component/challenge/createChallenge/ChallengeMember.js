@@ -1,21 +1,23 @@
 import { useState } from "react";
 import { SMemberWrapper } from "../../../styles/pages/SChallengePage";
 
-const ChallengeMember = () => {
-  // 챌린지 모집인원
+const ChallengeMember = ({ onChangeMember }) => {
   const [members, setMembers] = useState(3);
 
-  const handleMembersChange = (e) => {
-    setMembers(parseInt(e.target.value));
+  const onMembersChange = (e) => {
+    const newMenber = parseInt(e.target.value);
+    setMembers(newMenber);
+    onChangeMember(newMenber);
   };
-  const handleSelectChange = (e) => {
+  const onSelectChange = (e) => {
     const selectedValue = parseInt(e.target.value);
     setMembers(selectedValue);
+    onChangeMember(selectedValue);
   };
   return (
     <SMemberWrapper>
       <h4>인원수 설정</h4>
-      <select value={members} onChange={handleSelectChange}>
+      <select value={members} onChange={onSelectChange}>
         <option value="">인원수</option>
         <option value="3">3</option>
         <option value="4">4</option>
@@ -31,7 +33,7 @@ const ChallengeMember = () => {
         min="3"
         max="10"
         value={members}
-        onChange={handleMembersChange}
+        onChange={onMembersChange}
       />
       <h5>{members}명</h5>
     </SMemberWrapper>

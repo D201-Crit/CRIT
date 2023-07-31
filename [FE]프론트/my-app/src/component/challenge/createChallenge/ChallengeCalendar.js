@@ -1,35 +1,46 @@
 import { useState } from "react";
-import moment from "moment"; // moment 임포트
-
+import moment from "moment";
 import Calendar from "react-calendar";
-
 import { SCalendarwrapper } from "../../../styles/pages/SChallengePage";
 
-const ChallengeCalendar = () => {
-  // 달력
+const ChallengeCalendar = ({ onChangeDate }) => {
+  const currentDate = new Date();
+  const sevenDaysAfter = moment(currentDate).add(7, "days").toDate();
+
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const handleDateChange = (date) => {
-    const currentDate = new Date();
-    const sevenDaysAfter = moment(currentDate).add(7, "days").toDate();
 
+  const handleDateChange = (date) => {
     if (!startDate) {
-      setStartDate(date);
-      setEndDate(null);
+      if (date >= sevenDaysAfter) {
+        setStartDate(date);
+        setEndDate(null);
+        const newDate = (moment(date).format("YYYY-MM-DD"), null);
+        onChangeDate(newDate);
+      }
     } else if (!endDate) {
       if (date > startDate && date >= sevenDaysAfter) {
-        // 현재날짜로부터 7일 이후의 날짜인지 검사
         setEndDate(date);
+        onChangeDate(
+          moment(startDate).format("YYYY-MM-DD"),
+          moment(date).format("YYYY-MM-DD")
+        ); // startDate와 endDate가 모두 설정된 경우
       } else {
         setEndDate(startDate);
-        console.log("놉");
         setStartDate(date);
+        onChangeDate(
+          moment(date).format("YYYY-MM-DD"),
+          moment(startDate).format("YYYY-MM-DD")
+        ); // startDate와 endDate가 모두 설정된 경우
       }
     } else {
       setStartDate(date);
       setEndDate(null);
+      const newDate = (moment(date).format("YYYY-MM-DD"), null);
+      onChangeDate(newDate);
     }
   };
+
   const tileClassName = ({ date }) => {
     if (startDate && endDate) {
       if (date >= startDate && date <= endDate) {
@@ -42,18 +53,21 @@ const ChallengeCalendar = () => {
     }
     return null;
   };
+
   const formatDay = (locale, date) => {
     return moment(date).format("D").replace("일", "");
   };
+
   return (
     <SCalendarwrapper>
       <Calendar
         onChange={handleDateChange}
-        value={startDate || endDate || new Date()}
+        value={startDate || endDate || sevenDaysAfter}
         tileClassName={tileClassName}
-        formatDay={formatDay} // 수정된 부분
+        formatDay={formatDay}
+        minDate={sevenDaysAfter}
       />
-      {startDate & endDate ? (
+      {startDate && endDate ? (
         <div>
           <h3>
             {moment(startDate).format("YYYY년 MM월 DD일")}~

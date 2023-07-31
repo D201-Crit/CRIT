@@ -9,6 +9,7 @@ const LogOut = () => {
   const nav = useNavigate();
 
   const logOut = () => {
+    console.log(user);
     axios
       .post("http://localhost:8080/api/auth/logout", {
         accessToken: user.accessToken,

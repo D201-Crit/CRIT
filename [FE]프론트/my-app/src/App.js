@@ -40,7 +40,13 @@ function AppRoutes() {
 
   const showNav = location.pathname !== "/";
 
-  const authorizedPages = ["/", "/IntroPage", "/LoginPage", "/SignUpPage"];
+  const authorizedPages = [
+    "/",
+    "/IntroPage",
+    "/LoginPage",
+    "/SignUpPage",
+    "/login/oauth2/code/kakao",
+  ];
 
   const isAuthorizedPage = !authorizedPages.includes(location.pathname) & !user;
 

@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 const Nav = () => {
   const user = useSelector((state) => state.users); // useSelector를 통해 userSlice의 상태를 가져옴
   const [view, setView] = useState(false);
-  console.log(user);
+  // console.log(user);
 
   return (
     <SNav>

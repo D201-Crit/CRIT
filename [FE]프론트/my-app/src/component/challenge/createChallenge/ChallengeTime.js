@@ -1,12 +1,12 @@
 import { SChallengeTimeWrapper } from "../../../styles/pages/SChallengePage";
 import { useState } from "react";
 
-const ChallengeTime = () => {
+const ChallengeTime = ({ onChangeTime }) => {
   // 챌린지 시간
   const [startTime, setStartTime] = useState(""); // 시작 시간 상태
   const [endTime, setEndTime] = useState(""); // 종료 시간 상태
 
-  const handleStartTimeChange = (e) => {
+  const onStartTimeChange = (e) => {
     const newStartTime = e.target.value;
     setStartTime(newStartTime);
 
@@ -20,9 +20,10 @@ const ChallengeTime = () => {
       const adjustedEndTime = new Date(start.getTime() + 60 * 60 * 1000);
       setEndTime(adjustedEndTime.toTimeString().slice(0, 5));
     }
+    onChangeTime(newStartTime, endTime); // startTime과 endTime을 onChangeTime으로 전달
   };
 
-  const handleEndTimeChange = (e) => {
+  const onEndTimeChange = (e) => {
     const newEndTime = e.target.value;
     setEndTime(newEndTime);
 
@@ -36,17 +37,18 @@ const ChallengeTime = () => {
       const adjustedStartTime = new Date(end.getTime() - 60 * 60 * 1000);
       setStartTime(adjustedStartTime.toTimeString().slice(0, 5));
     }
+    onChangeTime(startTime, newEndTime); // startTime과 endTime을 onChangeTime으로 전달
   };
   return (
     <SChallengeTimeWrapper>
       <h4>챌린지 시간</h4>
       <li>
         <label>시작시간</label>
-        <input type="time" value={startTime} onChange={handleStartTimeChange} />
+        <input type="time" value={startTime} onChange={onStartTimeChange} />
       </li>
       <li>
         <label>종료시간</label>
-        <input type="time" value={endTime} onChange={handleEndTimeChange} />
+        <input type="time" value={endTime} onChange={onEndTimeChange} />
       </li>
     </SChallengeTimeWrapper>
   );

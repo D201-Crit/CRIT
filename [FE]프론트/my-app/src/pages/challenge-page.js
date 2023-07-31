@@ -57,7 +57,7 @@ const ChallengePage = () => {
         isOpen={isOpen}
         onRequestClose={closeModal}
       >
-        <CreateChallengeModal />
+        <CreateChallengeModal closeModal={closeModal} />
       </Modal>
     </>
   );

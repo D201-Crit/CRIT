@@ -181,10 +181,11 @@ export const SSelectChallengeWrapper = styled.div`
   padding: 0 20px;
   margin: 0 0 20px 0;
   h4 {
-    margin: 10px 0 15px 0;
+    margin: 10px 0 5px 0;
   }
   li {
     list-style: none;
+    margin: 3px 0;
   }
   input {
     width: 30px;
@@ -349,10 +350,35 @@ export const SCalendarwrapper = styled.div`
     color: rgba(255, 0, 0, 0.596);
   }
 `;
+export const SMoneyWrapper = styled.div`
+  position: relative;
+  bottom: 840px;
+  left: 650px;
+  width: 435px;
+  text-align: center;
+  h3 {
+    font-size: 30px;
+    margin: 5px;
+  }
+  h4 {
+    font-size: 20px;
+    margin: 15px;
+  }
+  select {
+    width: 200px;
+    border: 1px solid #c4c4c4;
+    box-sizing: border-box;
+    border-radius: 10px;
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+  }
+`;
 export const SButtonWrapper = styled.div`
   position: relative;
-  bottom: 30px;
-  left: 710px;
+  bottom: -41px;
+  left: 650px;
   width: 435px;
 `;
 export const SCompleteButton = styled.button`
