@@ -11,7 +11,7 @@ public class BoardSaveRequestDto {
     private Long id;
     private String title;
     private String content;
-    private Long classification;
+    private String classification;
     private String writer;
 
     @Builder
@@ -20,7 +20,7 @@ public class BoardSaveRequestDto {
                 board.getId(),
                 board.getTitle(),
                 board.getContent(),
-                board.getClassification().getId(),
+                board.getClassification().getCategory(),
                 board.getUser().getId());
 
         return BoardSaveRequestDto;

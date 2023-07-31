@@ -33,4 +33,8 @@ public class Classification {
         this.category = category;
         this.board = board;
     }
+
+    public void setCategory(String classification) {
+        this.category = classification;
+    }
 }

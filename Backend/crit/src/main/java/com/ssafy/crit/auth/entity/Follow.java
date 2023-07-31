@@ -1,4 +1,4 @@
-package com.ssafy.crit.imsimember.entity;
+package com.ssafy.crit.auth.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
@@ -21,15 +21,15 @@ public class Follow {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "follower_id")
-    private Member follower;
+    private User follower;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "following_id")
-    private Member following;
+    private User following;
 
     @Builder
-    public Follow(Long id, Member follower, Member following) {
+    public Follow(Long id, User follower, User following) {
         this.id = id;
         this.follower = follower;
         this.following = following;

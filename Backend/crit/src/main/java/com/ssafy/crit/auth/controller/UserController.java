@@ -5,6 +5,7 @@ import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.auth.service.UserService;
+import com.ssafy.crit.message.response.Response;
 import com.ssafy.crit.shorts.dto.ShortsDto;
 
 import lombok.RequiredArgsConstructor;
@@ -81,5 +82,10 @@ public class UserController {
             return new IllegalArgumentException("유저 ID를 찾을수 없습니다.");
         });
         return user;
+    }
+
+    @PostMapping("/api/follow")
+    public Response<?> follow(@RequestBody FollowRequestDto followRequestDto) {
+        return new Response<>("true","follow 성공",userService.follow(followRequestDto));
     }
 }

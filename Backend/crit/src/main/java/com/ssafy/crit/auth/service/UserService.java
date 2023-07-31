@@ -1,6 +1,8 @@
 package com.ssafy.crit.auth.service;
 
+import com.ssafy.crit.auth.entity.Follow;
 import com.ssafy.crit.auth.entity.enumType.Grade;
+import com.ssafy.crit.auth.repository.FollowRepository;
 import com.ssafy.crit.common.exception.BadRequestException;
 import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.dto.*;
@@ -8,7 +10,6 @@ import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.auth.entity.enumType.AuthProvider;
 import com.ssafy.crit.auth.entity.enumType.Role;
-import com.ssafy.crit.shorts.entity.Shorts;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final FollowRepository followRepository;
 
     public String signUp(SignUpRequestDto signUpRequestDto) throws Exception {
         if (userRepository.findById(signUpRequestDto.getId()).isPresent()) {
@@ -151,5 +153,29 @@ public class UserService {
         }
 
         return jwtProvider.createAccessToken(userId, AuthProvider.findByCode(provider));
+    }
+
+    public UserResponseDto follow(FollowRequestDto followRequestDto) {
+        User user1 = userRepository.findById(followRequestDto.getFollower())
+            .orElseThrow(() -> new IllegalArgumentException("User with nickname " + followRequestDto.getFollower() + " does not exist."));
+        User user2 = userRepository.findById(followRequestDto.getFollowing())
+            .orElseThrow(() -> new IllegalArgumentException("User with nickname " + followRequestDto.getFollowing() + " does not exist."));
+        Optional<Follow> optionalFollow = followRepository.findByFollowerAndFollowing(user1,user2);
+
+        if (optionalFollow.isEmpty()) {
+            Follow followFunc = Follow.builder()
+                .follower(user1)
+                .following(user2).build();
+            followRepository.save(followFunc);
+            user1.addMemberTofollower(followFunc);
+            user2.addMemberTofollowing(followFunc);
+        } else {
+            Follow follow = optionalFollow.get();
+            user1.removeMemberTofollower(follow);
+            user2.removeMemberTofollowing(follow);
+            followRepository.deleteByFollowerAndFollowing(user1,user2);
+        }
+
+        return UserResponseDto.toUserResponseDto(user1);
     }
 }
