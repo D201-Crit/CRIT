@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.imsimember.entity.Member;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -46,7 +47,7 @@ public class IsCert {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Member user;
+    private User user;
 
 
 }

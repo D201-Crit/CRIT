@@ -45,8 +45,8 @@ public class ChallengeListResponseDto {
         challengeMoney = challenge.getMoney();
         challengeStartDate = challenge.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         challengeEndDate = challenge.getEndDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        challengeStartTime = challenge.getStartTime().format(DateTimeFormatter.ofPattern("kk:mm:ss"));
-        challengeEndTime = challenge.getEndTime().format(DateTimeFormatter.ofPattern("kk:mm:ss"));
+        challengeStartTime = challenge.getStartTime().format(DateTimeFormatter.ofPattern("kk:mm"));
+        challengeEndTime = challenge.getEndTime().format(DateTimeFormatter.ofPattern("kk:mm"));
         challengeCreateUserId = challenge.getCreateUser().getId();
         challengeUserList = challenge.getChallengeUserList().stream()
                 .map(challengeUser -> { return challengeUser.getUser().getId(); }).collect(Collectors.toList());

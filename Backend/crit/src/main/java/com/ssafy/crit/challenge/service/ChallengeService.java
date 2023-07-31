@@ -45,10 +45,10 @@ public class ChallengeService {
         log.info("category {}", category.getSpecies());
         Challenge challenge = Challenge.builder()
                 .name(challengeDto.getTitle())
-                .info(challengeDto.getInfo())
+                .info(challengeDto.getIntroduce())
                 .challengeCategory(category)
-                .cert(challengeDto.getCert())
-                .people(challengeDto.getPeople())
+                .cert(challengeDto.getAuthentication())
+                .people(challengeDto.getMember())
                 .money(challengeDto.getMoney())
                 .startDate(challengeDto.getStartDate())
                 .endDate(challengeDto.getEndDate())
@@ -122,13 +122,13 @@ public class ChallengeService {
     // 카테고리 있으면 불러오기, 없으면 생성
     private ChallengeCategory getCategory(ChallengeCreateRequestDto challengeDto) throws Exception {
         Optional<ChallengeCategory> challengeCategory = challengeCategoryRepository.
-                findChallengeCategoryBySpecies(challengeDto.getCategory());
+                findChallengeCategoryBySpecies(challengeDto.getSelect());
         ChallengeCategory category;
         if (challengeCategory.isPresent()) {
             category = challengeCategory.get();
         } else {
             category = ChallengeCategory.builder()
-                    .species(challengeDto.getCategory())
+                    .species(challengeDto.getSelect())
                     .build();
             challengeCategoryRepository.save(category);
         }
