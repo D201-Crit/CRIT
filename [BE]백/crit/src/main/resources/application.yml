@@ -7,13 +7,14 @@ server:
       enabled: true
       force: true
 
+
 spring:
   servlet:
     multipart:
       max-file-size: 300MB
       max-request-size: 300MB
   datasource:
-    url: jdbc:h2:tcp://localhost/~/crit
+    url: jdbc:h2:tcp://localhost/~/critt
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -26,9 +27,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create #create update none
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      use-new-id-generator-mappings: false
     show-sql: true
     properties:
       hibernate:
@@ -81,10 +79,12 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
+file:
+  dir: C:\Users\SSAFY\Desktop\파일저장
 
-  mvc:
-    pathmatch:
-      matching-strategy=ant_path_matcher
+OPENVIDU_URL: https://i9d201.p.ssafy.io:8443/
+OPENVIDU_SECRET: CRITCRIT
+
 
 logging:
   level:

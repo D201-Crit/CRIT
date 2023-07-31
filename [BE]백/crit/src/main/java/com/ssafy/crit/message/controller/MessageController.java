@@ -1,12 +1,12 @@
 package com.ssafy.crit.message.controller;
 
 
+import com.ssafy.crit.message.dto.MessageDto;
+import com.ssafy.crit.imsimember.entity.Member;
+import com.ssafy.crit.imsimember.repository.MemberRepository;
+import com.ssafy.crit.message.response.Response;
+import com.ssafy.crit.message.service.MessageService;
 import lombok.RequiredArgsConstructor;
-import message.message.dto.MessageDto;
-import message.message.entity.Member;
-import message.message.entity.MemberRepository;
-import message.message.response.Response;
-import message.message.service.MessageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

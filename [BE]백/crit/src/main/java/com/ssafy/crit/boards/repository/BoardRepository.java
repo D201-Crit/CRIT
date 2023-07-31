@@ -1,0 +1,7 @@
+package com.ssafy.crit.boards.repository;
+
+import com.ssafy.crit.boards.entity.Board;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BoardRepository extends JpaRepository<Board, Long> {
+}

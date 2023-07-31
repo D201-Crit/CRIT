@@ -1,5 +1,10 @@
 package com.ssafy.crit.message.service;
 
+import com.ssafy.crit.message.dto.MessageDto;
+import com.ssafy.crit.imsimember.entity.Member;
+import com.ssafy.crit.imsimember.repository.MemberRepository;
+import com.ssafy.crit.message.entity.Message;
+import com.ssafy.crit.message.entity.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,12 +17,12 @@ import java.util.List;
 public class MessageService {
 
 	private final MessageRepository messageRepository;
-	private final MemberRepository  memberRepository;
+	private final MemberRepository memberRepository;
 
 	@Transactional
 	public MessageDto write(MessageDto messageDto) {
-		Member receiver = memberRepository.findByName(messageDto.getReceiverName());
-		Member sender = memberRepository.findByName(messageDto.getSenderName());
+		Member receiver = memberRepository.findByName(messageDto.getReceiverName()).get();
+		Member sender = memberRepository.findByName(messageDto.getSenderName()).get();
 
 		Message message = new Message();
 		message.setReceiver(receiver);
@@ -69,9 +74,6 @@ public class MessageService {
 			return new IllegalArgumentException("유저 정보가 일치하지 않습니다.");
 		}
 	}
-
-
-
 	@Transactional(readOnly = true)
 	public List<MessageDto> sentMessage(Member member) {
 		// 보낸 편지함 불러오기

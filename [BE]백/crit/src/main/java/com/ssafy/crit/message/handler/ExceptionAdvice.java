@@ -1,6 +1,6 @@
 package com.ssafy.crit.message.handler;
 
-import message.message.response.Response;
+import com.ssafy.crit.message.response.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
