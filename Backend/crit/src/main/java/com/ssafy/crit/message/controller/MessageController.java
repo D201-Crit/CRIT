@@ -2,8 +2,6 @@ package com.ssafy.crit.message.controller;
 
 
 import com.ssafy.crit.message.dto.MessageDto;
-import com.ssafy.crit.imsimember.entity.Member;
-import com.ssafy.crit.imsimember.repository.MemberRepository;
 import com.ssafy.crit.message.response.Response;
 import com.ssafy.crit.message.service.MessageService;
 import lombok.RequiredArgsConstructor;
