@@ -43,6 +43,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	implementation 'org.jcodec:jcodec-javase:0.2.5' // 썸네일 이미지 관련 의존성
 }
 
 tasks.named('test') {
