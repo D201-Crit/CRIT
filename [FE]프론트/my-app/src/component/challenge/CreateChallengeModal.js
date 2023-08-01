@@ -5,7 +5,7 @@ import {
   SCreateChallengeModalWrapper,
   SInfoChallenge,
 } from "../../styles/pages/SChallengePage";
-
+import { api } from "../../api/api";
 import "react-calendar/dist/Calendar.css"; // css import
 import ChallengeAuthentication from "./createChallenge/ChallengeAuthentication";
 import ChallengeCalendar from "./createChallenge/ChallengeCalendar";
@@ -16,7 +16,6 @@ import IntroduceChallenge from "./createChallenge/IntroduceChallenge";
 import TitleChallenge from "./createChallenge/TitleChallenge";
 import { useState } from "react";
 import ChallengeMoney from "./createChallenge/ChallengeMoney";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 
@@ -62,7 +61,7 @@ const CreateChallengeModal = ({ closeModal }) => {
   };
 
   const createChallenge = () => {
-    axios
+    api
       .post("http://localhost:8080/challenge/create", formData, {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,

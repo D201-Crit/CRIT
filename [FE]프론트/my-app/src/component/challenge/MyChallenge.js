@@ -8,6 +8,7 @@ import "swiper/css/scrollbar";
 // 나머지
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { api } from "../../api/api";
 
 // 스타일
 import {
@@ -24,7 +25,7 @@ const MyChallenge = () => {
   const user = useSelector((state) => state.users);
   const [myChallenges, setMyChallenges] = useState([]);
   const getMyChallenge = () => {
-    axios
+    api
       .get("http://localhost:8080/challenge/list/all", {
         header: {
           Authorization: `Bearer ${user.accessToken}`,

@@ -1,4 +1,4 @@
-import axios from "axios";
+import { api } from "../../api/api";
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +22,7 @@ const Login = () => {
     (e) => {
       e.preventDefault();
       setLogInError(false);
-      axios
+      api
         .post("http://localhost:8080/api/auth/login", {
           id,
           password,
@@ -35,7 +35,7 @@ const Login = () => {
               nickname: res.data.nickname,
               accessToken: res.data.accessToken,
               refreshToken: res.data.refreshToken,
-            }),
+            })
           );
           persistor.flush(); // 상태를 영구적으로 저장
           Swal.fire({
@@ -62,7 +62,7 @@ const Login = () => {
           setLogInError(error.response?.status === 400);
         });
     },
-    [id, password],
+    [id, password]
   );
   return (
     <SForm onSubmit={onSubmit}>
