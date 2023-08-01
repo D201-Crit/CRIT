@@ -18,6 +18,7 @@ import { useState } from "react";
 import ChallengeMoney from "./createChallenge/ChallengeMoney";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import ChallengeImage from "./createChallenge/ChallengeImage";
 
 const CreateChallengeModal = ({ closeModal }) => {
   const user = useSelector((state) => state.users);
@@ -61,6 +62,19 @@ const CreateChallengeModal = ({ closeModal }) => {
   };
 
   const createChallenge = () => {
+    // 참여비(money)가 3000, 5000, 7000, 10000이 아닌 경우 챌린지 생성하지 않음
+    if (![3000, 5000, 7000, 10000].includes(formData.money)) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "참여비를 설정해주세요.",
+        showConfirmButton: false,
+        timer: 1500,
+        background: "#272727",
+        color: "white",
+      });
+      return;
+    }
     api
       .post("http://localhost:8080/challenge/create", formData, {
         headers: {
@@ -90,7 +104,7 @@ const CreateChallengeModal = ({ closeModal }) => {
         console.error("챌린지 생성 에러:", error);
         Swal.fire({
           position: "center",
-          icon: "success",
+          icon: "error",
           title: "챌린지 생성 실패..!",
           text: "CRIT",
           showConfirmButton: false,
@@ -109,6 +123,7 @@ const CreateChallengeModal = ({ closeModal }) => {
   return (
     <SCreateChallengeModalWrapper>
       <TitleChallenge onChangeTitle={onChangeTitle} />
+      {/* <ChallengeImage /> */}
       <SInfoChallenge>
         <IntroduceChallenge onChangeIntroduce={onChangeIntroduce} />
         <SelectChallenge onChangeSelectChallenge={onChangeSelectChallenge} />

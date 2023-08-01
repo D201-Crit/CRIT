@@ -5,7 +5,6 @@ import {
 const ChallengeBoard = () => {
   return (
     <SChallengeBoardWrapper>
-      {/* <h1>챌린지 찾기</h1> */}
       <SInput placeholder="검색어를 입력하세요." />
       <hr />
       <div></div>
