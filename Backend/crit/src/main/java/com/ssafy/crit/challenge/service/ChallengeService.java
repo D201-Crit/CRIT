@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 /**
  * 230727 조경호
- * 챌린지 관련 서비
+ * 챌린지 관련 서비스
  */
 public class ChallengeService {
 
