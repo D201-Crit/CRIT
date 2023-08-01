@@ -18,7 +18,7 @@ FROM nginx:stable-alpine
 RUN rm -rf /etc/nginx/conf.d/default.conf
 
 # 호스트 시스템의 Nginx 설정 파일을 Docker 빌드 컨텍스트로 복사
-COPY ./default /etc/nginx/conf.d/default.conf
+COPY /etc/nginx/sites-enabled/default.conf /etc/nginx/conf.d/default.conf
 
 # 리액트 애플리케이션 빌드 결과물 복사
 COPY --from=builder /app/build /usr/share/nginx/html
