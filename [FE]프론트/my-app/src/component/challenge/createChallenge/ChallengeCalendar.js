@@ -69,10 +69,10 @@ const ChallengeCalendar = ({ onChangeDate }) => {
       />
       {startDate && endDate ? (
         <div>
-          <h3>
+          <p id="date">
             {moment(startDate).format("YYYY년 MM월 DD일")}~
             {moment(endDate).format("YYYY년 MM월 DD일")}
-          </h3>
+          </p>
         </div>
       ) : null}
     </SCalendarwrapper>

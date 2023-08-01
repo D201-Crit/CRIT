@@ -24,10 +24,10 @@ export const SCreateChallengeButton = styled.button`
 
 export const SSwiper = styled(Swiper)`
   background-color: rgba(22, 22, 22, 0.599);
-  width: 50%;
+  width: 780px;
   height: 300px;
   margin: 100px auto;
-  padding: 20px;
+  padding: 10px;
   border: 0.5px solid white;
   border-radius: 10px;
   box-shadow: 5px 5px 20px #ff007a;
@@ -38,22 +38,27 @@ export const SSwiper = styled(Swiper)`
   }
 `;
 
-export const SSwiperSlide = styled(SwiperSlide)`
-  h1 {
-    position: absolute;
-    top: -10px;
-  }
-`;
+export const SSwiperSlide = styled(SwiperSlide)``;
 
 export const STopWrapper = styled.div`
-  h2 {
-    position: absolute;
-    left: 220px;
+  #name {
+    position: relative;
+    font-size: 25px;
+    left: 30px;
+    top: -15px;
+  }
+  #date {
+    position: relative;
+    top: -65px;
+    font-size: 18px;
+    left: 580px;
   }
 
-  h3 {
-    position: absolute;
-    right: 30px;
+  #dday {
+    position: relative;
+    top: -75px;
+    font-size: 18px;
+    left: 650px;
   }
 `;
 
@@ -62,26 +67,30 @@ export const SMidWrapper = styled.div`
   top: 80px;
 
   img {
-    position: absolute;
+    position: relative;
+    left: 20px;
+    bottom: 160px;
   }
-  p {
-    position: absolute;
-    left: 220px;
-    width: 70%;
+  #info {
+    position: relative;
+    left: 200px;
+    bottom: 310px;
+    font-size: 18px;
+    width: 500px;
   }
 `;
 
 export const SBotWrapper = styled.div`
-  position: relative;
-  top: 220px;
-
-  h2 {
-    position: absolute;
-    left: 40px;
+  #people {
+    position: relative;
+    font-size: 18px;
+    left: 45px;
+    bottom: -20px;
   }
   #enter {
-    position: absolute;
-    right: 200px;
+    position: relative;
+    left: 440px;
+    bottom: 240px;
     background-color: #0000c5;
     border: none;
     border-radius: 10px;
@@ -93,8 +102,9 @@ export const SBotWrapper = styled.div`
     cursor: pointer;
   }
   #detail {
-    position: absolute;
-    right: 30px;
+    position: relative;
+    left: 460px;
+    bottom: 240px;
     background-color: #33ff00;
     border: none;
     border-radius: 10px;
@@ -111,7 +121,7 @@ export const SChallengeBoardWrapper = styled.div``;
 export const SInput = styled.input`
   background-color: rgba(22, 22, 22, 0.599);
   color: white;
-  width: 50%;
+  width: 780px;
   border: none;
   border-radius: 10px;
   font-size: 18px;
@@ -120,7 +130,7 @@ export const SInput = styled.input`
   display: block;
 
   & + hr {
-    width: 50%;
+    width: 780px;
     border: none;
     height: 0.5px;
     background-color: #ccc;
@@ -131,77 +141,95 @@ export const SInput = styled.input`
 // CreateChallengeModal
 export const SCreateChallengeModalWrapper = styled.div`
   color: white;
-  margin: 10px 5%;
+  margin: 0 5%;
 `;
 export const STitleChallenge = styled.input`
   color: white;
-  width: 100%;
-  height: 80px;
+  width: 48%;
+  height: 50px;
   background: rgba(0, 0, 0, 0);
   border: 0;
   border-bottom: 1px solid white;
-  font-size: 35px;
+  font-size: 25px;
+  padding: 15px;
+  font-family: Pretendard;
+  font-weight: 500;
+
   &::placeholder {
     color: white;
   }
 `;
+
+export const SChallengeImage = styled.div`
+  width: 100px;
+  position: relative;
+  ${"" /* bottom: 10px; */}
+  left: 880px;
+  input {
+    width: 100%;
+  }
+`;
+
 export const SInfoChallenge = styled.div`
   height: 450px;
+  font-family: Pretendard;
 `;
 
 export const STextArea = styled.textarea`
   background-color: rgb(40, 40, 40);
   border: none;
   border-ridus: 10px;
-  width: 620px;
-  height: 150px;
-  font-size: 18px;
+  width: 482px;
+  height: 100px;
+  font-size: 16px;
   border: none;
   border-radius: 10px;
   color: white;
   margin: 30px 0 20px 0;
+  padding: 15px;
   resize: none;
-
+  font-weight: 800;
   &::placeholder {
-    padding: 15px 10px;
+    font-weight: 800;
     color: rgb(150, 150, 150);
   }
 `;
 
 export const SSelectChallengeWrapper = styled.div`
-  width: 260px;
-  height: 160px;
+  width: 200px;
+  height: 140px;
   background-color: rgb(40, 40, 40);
   border: none;
   border-ridus: 10px;
   border: 0.5px solid white;
   border-radius: 10px;
   color: white;
-  font-size: 20px;
+  font-size: 18px;
   padding: 0 20px;
   margin: 0 0 20px 0;
+  font-weight: 440;
+  div {
+    margin: 20px 0;
+  }
   h4 {
-    margin: 10px 0 5px 0;
+    margin: 10px 0 15px 0;
   }
-  li {
-    list-style: none;
-    margin: 3px 0;
-  }
+
   input {
     width: 30px;
     height: 15px;
   }
 `;
 export const SChallengeTimeWrapper = styled.div`
-  width: 260px;
-  height: 160px;
+  width: 200px;
+  height: 140px;
   border: 0.5px solid white;
   border-radius: 10px;
   color: white;
-  font-size: 20px;
+  font-size: 18px;
   padding: 0 20px;
   background-color: rgb(40, 40, 40);
-
+  font-weight: 440;
   h4 {
     margin: 10px 0 15px 0;
   }
@@ -210,35 +238,35 @@ export const SChallengeTimeWrapper = styled.div`
     width: 255px;
   }
   input {
-    width: 150px;
-    height: 23px;
-    font-size: 20px;
+    width: 120px;
+    height: 20px;
+    font-size: 15px;
     font-weight: 700;
-    background-color: rgb(70, 70, 70);
     border: none;
-    border-raidus: 10px;
+    border-radius: 6px;
     margin: 10px;
   }
 `;
 
 export const SAuthenticationMethodWrapper = styled.div`
   position: relative;
-  bottom: 342px;
-  left: 320px;
-  width: 260px;
-  height: 160px;
+  bottom: 302px;
+  left: 270px;
+  width: 200px;
+  height: 140px;
   border: 0.5px solid white;
   border-radius: 10px;
   color: white;
-  font-size: 20px;
+  font-size: 18px;
   padding: 0 20px;
   background-color: rgb(40, 40, 40);
-
+  font-weight: 440;
   h4 {
     margin: 10px 0 15px 0;
   }
   li {
     list-style: none;
+    margin: 20px 0;
   }
   input {
     width: 30px;
@@ -248,14 +276,14 @@ export const SAuthenticationMethodWrapper = styled.div`
 // 인원수 설정
 export const SMemberWrapper = styled.div`
   position: relative;
-  bottom: 323px;
-  left: 320px;
-  width: 260px;
-  height: 160px;
+  bottom: 282px;
+  left: 270px;
+  width: 200px;
+  height: 140px;
   border: 0.5px solid white;
   border-radius: 10px;
   color: white;
-  font-size: 20px;
+  font-size: 18px;
   padding: 0 20px;
   background-color: rgb(40, 40, 40);
 
@@ -263,7 +291,7 @@ export const SMemberWrapper = styled.div`
     list-style: none;
   }
   input {
-    width: 250px;
+    width: 200px;
     height: 15px;
   }
   h4 {
@@ -271,23 +299,33 @@ export const SMemberWrapper = styled.div`
   }
   select {
     position: relative;
-    left: 180px;
+    left: 135px;
+    bottom: -51px;
     margin: 8px 0 5px 0;
+    font-size: 15px;
     border: none;
-    background-color: rgb(120, 120, 120);
+    border-radius: 6px;
   }
   h5 {
-    margin: 0 110px;
+    position: relative;
+    bottom: 25px;
+    left: 70px;
   }
 `;
 
 export const SCalendarwrapper = styled.div`
   position: relative;
-  bottom: 844px;
-  left: 650px;
+  bottom: 740px;
+  left: 550px;
   width: 435px;
+  height: 200px;
   text-align: center;
-
+  font-size: 10px;
+  #date {
+    font-weight: 500;
+    font-size: 20px;
+    margin: 10px;
+  }
   .react-calendar {
     background-color: rgb(40, 40, 40);
     border: none;
@@ -302,7 +340,7 @@ export const SCalendarwrapper = styled.div`
   }
   ${"" /* 연도 월 */}
   .react-calendar__navigation__label__labelText {
-    font-size: 22px;
+    font-size: 20px;
     color: white;
   }
   ${"" /* 연도 월 화살표 */}
@@ -327,7 +365,7 @@ export const SCalendarwrapper = styled.div`
   ${"" /* 요일  */}
   .react-calendar__month-view__weekdays {
     abbr {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 500;
       text-decoration: none;
     }
@@ -335,7 +373,7 @@ export const SCalendarwrapper = styled.div`
   ${"" /* 현재월 평일 */}
   .react-calendar__tile.react-calendar__month-view__days__day {
     color: white;
-    font-size: 17px;
+    font-size: 15px;
   }
   ${"" /* 전월 or 다음월 평일 */}
   .react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--neighboringMonth {
@@ -352,17 +390,17 @@ export const SCalendarwrapper = styled.div`
 `;
 export const SMoneyWrapper = styled.div`
   position: relative;
-  bottom: 840px;
-  left: 650px;
+  bottom: 650px;
+  left: 550px;
   width: 435px;
   text-align: center;
   h3 {
-    font-size: 30px;
-    margin: 5px;
+    font-size: 22px;
+    margin: 10px;
   }
   h4 {
-    font-size: 20px;
-    margin: 15px;
+    font-size: 18px;
+    margin: 10px;
   }
   select {
     width: 200px;
@@ -371,20 +409,20 @@ export const SMoneyWrapper = styled.div`
     border-radius: 10px;
     font-family: "Roboto";
     font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
+    font-weight: 500;
+    font-size: 16px;
   }
 `;
 export const SButtonWrapper = styled.div`
   position: relative;
-  bottom: -41px;
-  left: 650px;
+  bottom: 10px;
+  left: 575px;
   width: 435px;
 `;
 export const SCompleteButton = styled.button`
-  width: 200px;
+  width: 180px;
   margin: 0 8px;
-  height: 60px;
+  height: 50px;
   background-color: #0000c5;
   border: none;
   border-radius: 10px;
@@ -393,9 +431,9 @@ export const SCompleteButton = styled.button`
   font-weight: 700;
 `;
 export const SCloseButton = styled.button`
-  width: 200px;
+  width: 180px;
   margin: 0 8px;
-  height: 60px;
+  height: 50px;
   background-color: #33ff00;
   border: none;
   border-radius: 10px;

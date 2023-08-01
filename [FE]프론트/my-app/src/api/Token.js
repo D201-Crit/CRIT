@@ -1,10 +1,10 @@
-// Token.js (예시 컴포넌트)
+// MyComponent.js (예시 컴포넌트)
 
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { api, getNewAccessToken } from "./api";
 
-const Token = () => {
+const MyComponent = () => {
   const user = useSelector((state) => state.users);
 
   useEffect(() => {
@@ -59,6 +59,8 @@ const Token = () => {
       console.log("No data found in localStorage.");
     }
   }, [user.accessToken, user.refreshToken]);
+
+  // ... (컴포넌트의 나머지 코드)
 };
 
-export default Token;
+export default MyComponent;

@@ -18,7 +18,6 @@ import {
   SMidWrapper,
   SBotWrapper,
 } from "../../styles/pages/SChallengePage";
-import axios from "axios";
 import { useSelector } from "react-redux";
 
 const MyChallenge = () => {
@@ -26,23 +25,19 @@ const MyChallenge = () => {
   const [myChallenges, setMyChallenges] = useState([]);
   const getMyChallenge = () => {
     api
-      .get("http://localhost:8080/challenge/list/all", {
-        header: {
+      .get("http://localhost:8080/challenge/list/mine", {
+        headers: {
           Authorization: `Bearer ${user.accessToken}`,
         },
       })
       .then((res) => {
+        console.log(res);
         setMyChallenges(res.data.data);
-        console.log(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  // 테스트용
-  const [overView] = useState(
-    "내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글"
-  );
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -50,10 +45,30 @@ const MyChallenge = () => {
   const detailClick = () => {
     navigate("/ChallengePage/:id");
   };
+  // 날짜 형식
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const month = (date.getMonth() + 1).toString();
+    const day = date.getDate().toString().padStart(2, "0");
+    const dayOfWeek = date.toLocaleString("ko-KR", { weekday: "short" });
+    return `${month}.${day} (${dayOfWeek})`;
+  };
+  // 며칠째 진행 중인지 계산하는 함수
+  const getDaysInProgress = (startDate) => {
+    const today = new Date();
+    const start = new Date(startDate);
+    const timeDiff = today.getTime() - start.getTime();
+    const daysInProgress = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+    return daysInProgress >= 0
+      ? `현재 ${daysInProgress}일째 참여 중`
+      : `D-day ${Math.abs(daysInProgress)}일`;
+  };
 
   useEffect(() => {
     getMyChallenge();
   }, []);
+  console.log(myChallenges);
   return (
     <>
       <SSwiper
@@ -63,34 +78,51 @@ const MyChallenge = () => {
         navigation
         scrollbar={{ draggable: true }}
       >
-        <SSwiperSlide>
-          <STopWrapper>
-            <h1>나의 챌린지</h1>
-            <h2>7/11(화) ~ 8/15(화)</h2>
-            <h3>현재 3일째 참여 중</h3>
-          </STopWrapper>
-          <SMidWrapper>
-            <img
-              src="https://github.com/Jinga02/Review/assets/110621233/e8edd4c4-dd18-42d8-904c-4a04c6618018"
-              alt="예싱이미지"
-            />
-            <p>
-              {overView.split(" ").length > 32 ? (
-                <>{overView.split(" ").slice(0, 32)} </>
-              ) : (
-                overView
-              )}
-            </p>
-          </SMidWrapper>
-          <SBotWrapper>
-            <h2>15/15</h2>
-            <button id="enter">입장하기</button>
-            <button id="detail" onClick={detailClick}>
-              {" "}
-              {location.pathname === "/ChallengePage" ? "상세보기" : "참여내역"}
-            </button>{" "}
-          </SBotWrapper>
-        </SSwiperSlide>
+        <ul>
+          {myChallenges.map((challenge) => {
+            const daysInProgress = getDaysInProgress(
+              challenge.challengeStartDate
+            );
+
+            return (
+              <SSwiperSlide>
+                <li>
+                  <STopWrapper>
+                    <p id="name">{challenge.challengeName}</p>
+                    <p id="date">
+                      {formatDate(challenge.challengeStartDate)} ~{" "}
+                      {formatDate(challenge.challengeEndDate)}
+                    </p>
+                    <p id="dday">{daysInProgress}</p>
+                  </STopWrapper>
+                  <SMidWrapper>
+                    <img
+                      src="https://github.com/Jinga02/Review/assets/110621233/e8edd4c4-dd18-42d8-904c-4a04c6618018"
+                      alt="예상이미지"
+                    />
+                    <p id="info">
+                      {challenge.challengeInfo.length > 150 ? (
+                        <>{challenge.challengeInfo.slice(0, 150) + "....."} </>
+                      ) : (
+                        challenge.challengeInfo
+                      )}
+                    </p>
+                  </SMidWrapper>
+                  <SBotWrapper>
+                    <p id="people">{challenge.challengePeople}명 참여 중</p>
+                    <button id="enter">입장하기</button>
+                    <button id="detail" onClick={detailClick}>
+                      {" "}
+                      {location.pathname === "/ChallengePage"
+                        ? "상세보기"
+                        : "참여내역"}
+                    </button>{" "}
+                  </SBotWrapper>
+                </li>
+              </SSwiperSlide>
+            );
+          })}
+        </ul>
       </SSwiper>
     </>
   );

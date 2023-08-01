@@ -54,7 +54,7 @@ function AppRoutes() {
   if (isAuthorizedPage) {
     Swal.fire({
       position: "center",
-      icon: "success",
+      icon: "warning",
       title: "로그인 필수!",
       text: "로그인 해주세요~",
       showConfirmButton: false,
