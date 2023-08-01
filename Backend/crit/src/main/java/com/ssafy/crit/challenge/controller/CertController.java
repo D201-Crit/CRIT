@@ -24,13 +24,18 @@ public class CertController {
     private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
 
+    /**
+     * 0801 조경호
+     * 사진 인증 추가
+     * */
     @PostMapping(path = "/img", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Response<String>> imgCertification(@RequestPart(value = "file") MultipartFile file, @RequestPart(value = "requestDto") CertImgRequestDto requestDto, HttpServletRequest httpServletRequest)
             throws Exception {
         User user = getUser(httpServletRequest);
         certService.imgCertification(requestDto, user, file);
 
-        return new ResponseEntity<>(new Response<>("", "", ""), HttpStatus.OK);
+        return new ResponseEntity<>(new Response<>("success", "사진 인증 성공", "인증이 완료되었습니다."),
+                HttpStatus.OK);
     }
 
     private User getUser(HttpServletRequest httpServletRequest) {

@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,8 +52,8 @@ public class ChallengeService {
                 .money(challengeDto.getMoney())
                 .startDate(challengeDto.getStartDate())
                 .endDate(challengeDto.getEndDate())
-                .startTime(challengeDto.getStartTime())
-                .endTime(challengeDto.getEndTime())
+                .startTime(LocalTime.of(challengeDto.getStartTime().getHour(), challengeDto.getStartTime().getMinute(), 0))
+                .endTime(LocalTime.of(challengeDto.getStartTime().getHour(), challengeDto.getStartTime().getMinute(), 0))
                 .createUser(user)
                 .build(); // 챌린지 생성
 
