@@ -18,7 +18,7 @@ FROM nginx:stable-alpine
 RUN rm -rf /etc/nginx/conf.d/default.conf
 
 # EC2 서버의 Nginx 설정 파일 복사
-COPY ./nginx/sites-available/default /etc/nginx/conf.d/default.conf
+COPY /etc/nginx/sites-available/default /etc/nginx/conf.d/default.conf
 
 # 리액트 애플리케이션 빌드 결과물 복사
 COPY --from=builder /app/build /usr/share/nginx/html
