@@ -2,18 +2,14 @@ package com.ssafy.crit.shorts.entity;
 
 import javax.persistence.*;
 
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.NaturalId;
-
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
 @NoArgsConstructor
 public class HashTag {
 
@@ -24,8 +20,9 @@ public class HashTag {
 
     private String hashTag;
 
-
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name = "shorts_id")
-//	private Shorts shorts;
+    @Builder
+    public HashTag(Long id, String hashTag) {
+        this.id = id;
+        this.hashTag = hashTag;
+    }
 }

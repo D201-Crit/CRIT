@@ -1,4 +1,4 @@
-package com.ssafy.crit.boards.entity;
+package com.ssafy.crit.boards.entity.board;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,4 +27,7 @@ public class LikeTable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Board board;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Feeds feeds;
 }

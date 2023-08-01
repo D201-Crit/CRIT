@@ -3,7 +3,7 @@ package com.ssafy.crit.boards.controller;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.repository.UserRepository;
-import com.ssafy.crit.boards.entity.Comment;
+import com.ssafy.crit.boards.entity.board.Comment;
 import com.ssafy.crit.boards.repository.CommentRepository;
 import com.ssafy.crit.boards.service.dto.CommentDto;
 import com.ssafy.crit.message.response.Response;

@@ -1,11 +1,13 @@
-package com.ssafy.crit.boards.entity;
+package com.ssafy.crit.boards.entity.board;
 
 import com.ssafy.crit.auth.entity.BaseTimeEntity;
 import com.ssafy.crit.auth.entity.User;
+import com.ssafy.crit.boards.entity.Classification;
 
 import lombok.*;
 
 import javax.persistence.*;
+
 import java.util.List;
 
 @Getter
@@ -23,6 +25,10 @@ public class Board extends BaseTimeEntity {
 
     private int views;
 
+    private String BoardImageUrl;
+
+    private String BoardImageName;
+
     @ManyToOne
     @JoinColumn(name = "board")
     private Classification classification;
@@ -35,11 +41,14 @@ public class Board extends BaseTimeEntity {
     private List<LikeTable> likes;
 
     @Builder
-    public Board(Long id, String title, String content, int views, Classification classification, User user, List<LikeTable> likes) {
+    public Board(Long id, String title, String content, int views, String boardImageUrl, String boardImageName,
+        Classification classification, User user, List<LikeTable> likes) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.views = views;
+        BoardImageUrl = boardImageUrl;
+        BoardImageName = boardImageName;
         this.classification = classification;
         this.user = user;
         this.likes = likes;

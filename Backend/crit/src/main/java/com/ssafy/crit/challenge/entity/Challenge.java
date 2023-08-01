@@ -18,7 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.ssafy.crit.auth.entity.User;
-import com.ssafy.crit.boards.entity.Board;
+import com.ssafy.crit.boards.entity.board.Board;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

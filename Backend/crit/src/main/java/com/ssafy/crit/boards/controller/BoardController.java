@@ -3,7 +3,7 @@ package com.ssafy.crit.boards.controller;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.repository.UserRepository;
-import com.ssafy.crit.boards.entity.Board;
+import com.ssafy.crit.boards.entity.board.Board;
 import com.ssafy.crit.boards.repository.BoardRepository;
 import com.ssafy.crit.boards.service.dto.BoardDto;
 import com.ssafy.crit.boards.service.dto.BoardSaveRequestDto;
@@ -13,12 +13,9 @@ import com.ssafy.crit.boards.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController

@@ -17,19 +17,19 @@ public class ShortsDto {
     private Long id;
     private String title;
     private String shortsUrl;
-    private String userId;
     private List<String> hashTagNames = new ArrayList<>();
     private String content;
     private String shortsName;
+    private String thumbnailUrl;
 
     public static ShortsDto toDto(Shorts shorts) {
         ShortsDto shortsDto = new ShortsDto();
         shortsDto.setId(shorts.getId());
         shortsDto.setTitle(shorts.getTitle());
         shortsDto.setShortsUrl(shorts.getShortsUrl());
-        shortsDto.setUserId(shorts.getUser().getId());
         shortsDto.setContent(shorts.getContent());
         shortsDto.setShortsName(shorts.getShortsName());
+        shortsDto.setThumbnailUrl(shorts.getThumbnailUrl());
 
         List<String> hashTagNames = shorts.getHashTags()
                 .stream()

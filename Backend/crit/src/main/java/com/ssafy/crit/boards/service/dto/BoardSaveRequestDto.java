@@ -1,7 +1,7 @@
 package com.ssafy.crit.boards.service.dto;
 
-import com.ssafy.crit.boards.entity.Board;
-import com.ssafy.crit.boards.entity.Classification;
+import com.ssafy.crit.boards.entity.board.Board;
+
 import lombok.*;
 
 @Getter

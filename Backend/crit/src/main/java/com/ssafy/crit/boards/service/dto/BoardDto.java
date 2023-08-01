@@ -1,6 +1,6 @@
 package com.ssafy.crit.boards.service.dto;
 
-import com.ssafy.crit.boards.entity.Board;
+import com.ssafy.crit.boards.entity.board.Board;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
