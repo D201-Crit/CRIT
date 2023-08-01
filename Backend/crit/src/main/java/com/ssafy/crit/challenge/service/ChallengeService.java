@@ -1,7 +1,6 @@
 package com.ssafy.crit.challenge.service;
 
 import com.ssafy.crit.auth.entity.User;
-import com.ssafy.crit.boards.entity.Board;
 import com.ssafy.crit.challenge.dto.ChallengeCreateRequestDto;
 import com.ssafy.crit.challenge.entity.Challenge;
 import com.ssafy.crit.challenge.entity.ChallengeCategory;
@@ -20,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
@@ -49,7 +47,7 @@ public class ChallengeService {
         Challenge challenge = null;
 
         if (file != null) { // 사진이 존재하는 경우
-            if(!checkExtension(file)) throw new BadRequestException("잘못된 확장자입니다.");
+            if (!checkExtension(file)) throw new BadRequestException("잘못된 확장자입니다.");
             String projectPath = "C:\\upload\\chalImg/";
             /*식별자 . 랜덤으로 이름 만들어줌*/
             UUID uuid = UUID.randomUUID();
@@ -79,7 +77,7 @@ public class ChallengeService {
                     .fileName(fileName)
                     .build(); // 챌린지 생성
 
-        } else{
+        } else {
             // 저장
             ChallengeCategory category = getCategory(challengeDto);
             challenge = Challenge.builder()
@@ -96,8 +94,6 @@ public class ChallengeService {
                     .createUser(user)
                     .build(); // 챌린지 생성
         }
-
-
 
 
         try {
@@ -180,7 +176,7 @@ public class ChallengeService {
 
     // 확장자 확인
     public boolean checkExtension(MultipartFile file) {
-        String[] fileExtension = {"jpeg", "jpg", "png"};
+        String[] fileExtension = {"jpeg", "jpg", "png"}; // 체크할 확장자
         String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
         return Arrays.stream(fileExtension).anyMatch(extension::equals);
     }

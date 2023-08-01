@@ -27,12 +27,19 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
+/**
+ * 230801 조경호
+ * 인증 서비스
+ * */
+
+
 public class CertService {
     private final ChallengeRepository challengeRepository;
     private final ChallengeUserRepository challengeUserRepository;
@@ -48,14 +55,14 @@ public class CertService {
 
         LocalDate now = LocalDate.now();
         // 챌린지 기간인지 확인
-        if(challenge.getStartDate().isAfter(now) || challenge.getEndDate().isBefore(now)){
+        if (challenge.getStartDate().isAfter(now) || challenge.getEndDate().isBefore(now)) {
             throw new BadRequestException("해당 챌린지 참여기간이 아닙니다.");
         }
 
         // 이미지 정보 확인 -> 챌린지 시작 시간이랑 사진 시간이랑 비교 -> (X)
         // 사진 올린 시간과 현재 시간을 비교
 
-        if(Math.abs(Duration.between(LocalTime.now(), challenge.getStartTime()).getSeconds()) > 605 ){ // 시작 시간이랑  10분이상 차이나는 경우
+        if (Math.abs(Duration.between(LocalTime.now(), challenge.getStartTime()).getSeconds()) > 605) { // 시작 시간이랑  10분이상 차이나는 경우
             throw new BadRequestException("잘못된 시간에 인증을 요청하였습니다.");
         }
 
@@ -92,5 +99,17 @@ public class CertService {
 
         return isCert;
 
+    }
+
+
+    public List<IsCert> getIsCertList(Long challengeId, User user) {
+        Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(
+                () -> new BadRequestException("해당 챌린지를 찾을 수 없습니다."));
+
+        // 유저가 챌린지 참여중인지 확인
+        ChallengeUser challengeUser = challengeUserRepository.findByChallengeAndUser(challenge, user).orElseThrow(
+                () -> new BadRequestException("해당 챌린지에 참여 중이지 않습니다."));
+
+        return isCertRepository.findAllByChallengeAndUser(challenge, user);
     }
 }
