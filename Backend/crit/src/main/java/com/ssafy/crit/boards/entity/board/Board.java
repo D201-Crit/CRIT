@@ -4,6 +4,7 @@ import com.ssafy.crit.auth.entity.BaseTimeEntity;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.boards.entity.Classification;
 
+import com.ssafy.crit.boards.entity.feeds.UploadFile;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,9 +26,8 @@ public class Board extends BaseTimeEntity {
 
     private int views;
 
-    private String BoardImageUrl;
-
-    private String BoardImageName;
+    @OneToMany(mappedBy = "board")
+    private List<UploadFile> uploadFiles;
 
     @ManyToOne
     @JoinColumn(name = "board")
@@ -40,15 +40,14 @@ public class Board extends BaseTimeEntity {
     @OneToMany(mappedBy = "board")
     private List<LikeTable> likes;
 
+
     @Builder
-    public Board(Long id, String title, String content, int views, String boardImageUrl, String boardImageName,
-        Classification classification, User user, List<LikeTable> likes) {
+    public Board(Long id, String title, String content, int views, List<UploadFile> uploadFiles, Classification classification, User user, List<LikeTable> likes) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.views = views;
-        BoardImageUrl = boardImageUrl;
-        BoardImageName = boardImageName;
+        this.uploadFiles = uploadFiles;
         this.classification = classification;
         this.user = user;
         this.likes = likes;
