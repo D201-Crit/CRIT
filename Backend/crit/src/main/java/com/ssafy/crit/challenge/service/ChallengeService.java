@@ -50,7 +50,8 @@ public class ChallengeService {
 
         if (file != null) { // 사진이 존재하는 경우
             if (!checkExtension(file)) throw new BadRequestException("잘못된 확장자입니다.");
-            String projectPath = "C:\\upload\\chalImg/";
+            String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/challenge/"; // 리눅스
+//            String projectPath = "C:\\upload\\chalImg/";
             /*식별자 . 랜덤으로 이름 만들어줌*/
             UUID uuid = UUID.randomUUID();
             log.info("UUID = {}", uuid);
