@@ -16,10 +16,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
-@Data
+@Getter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class IsCert {
 
     @Id

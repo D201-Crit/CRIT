@@ -56,6 +56,9 @@ public class Challenge {
 
     private LocalTime endTime; // 종료 시간
 
+    private String filePath;
+    private String fileName;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User createUser; // 챌린지 만든 사람

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -24,14 +25,22 @@ public class CertController {
     private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
 
+    /**
+     * 0801 조경호
+     * 사진 인증 추가
+     * */
     @PostMapping(path = "/img", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Response<String>> imgCertification(@RequestPart(value = "file") MultipartFile file, @RequestPart(value = "requestDto") CertImgRequestDto requestDto, HttpServletRequest httpServletRequest)
             throws Exception {
         User user = getUser(httpServletRequest);
         certService.imgCertification(requestDto, user, file);
 
-        return new ResponseEntity<>(new Response<>("", "", ""), HttpStatus.OK);
+        return new ResponseEntity<>(new Response<>("success", "사진 인증 성공", "인증이 완료되었습니다."),
+                HttpStatus.OK);
     }
+
+//    @GetMapping("/list/{challengeId}")
+//    public ResponseEntity<Response<List<IsCert>>>
 
     private User getUser(HttpServletRequest httpServletRequest) {
         String bearer = httpServletRequest.getHeader("Authorization").substring(7);

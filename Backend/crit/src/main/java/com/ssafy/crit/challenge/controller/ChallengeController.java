@@ -11,8 +11,10 @@ import com.ssafy.crit.message.response.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -34,12 +36,11 @@ public class ChallengeController {
     private final JwtProvider jwtProvider;
 
     // 챌린지 만들기
-    @PostMapping("/create")
-    public ResponseEntity<Response<String>> createChallenge(@RequestBody ChallengeCreateRequestDto requestDto,
+    @PostMapping(path = "/create", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Response<String>> createChallenge(@RequestPart(value = "file", required = false) MultipartFile file, @RequestPart(value = "requestDto") ChallengeCreateRequestDto requestDto,
                                                             HttpServletRequest httpServletRequest) throws Exception {
         User user = getUser(httpServletRequest);
-        Challenge challenge = challengeService.createChallenge(requestDto, user);
-        log.info("Challenge Is OK");
+        challengeService.createChallenge(file, requestDto, user);
         return new ResponseEntity<>(new Response<>("success", "챌린지 만들기 성공!", "OK"), HttpStatus.OK);
     }
 
