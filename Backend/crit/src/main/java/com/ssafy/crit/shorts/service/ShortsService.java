@@ -46,10 +46,10 @@ public class ShortsService {
     private final HashTagShortsRepository hashTagShortsRepository;
 
     private static final String EXTENSION = "png";
-    private static final String DEFAULT_IMAGE_PATH = "src/main/resources/static/crit-demo.png";
+    private static final String DEFAULT_IMAGE_PATH = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\thumbnail\\crit-demo.png";
+    private static final String shortsSavePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\shorts\\";
+    private static final String thumbnailSavePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\thumbnail\\";
 
-    /*우리의 프로젝트경로를 담아주게 된다 - 저장할 경로를 지정*/
-    private static final String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\";
 
     @Transactional
     public ShortsResponseDto create(ShortsDto shortsDto, MultipartFile file, String userId) throws Exception{
@@ -58,7 +58,7 @@ public class ShortsService {
 
         /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
         String savedFileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-        String savedFilePath = projectPath + savedFileName;
+        String savedFilePath = shortsSavePath + savedFileName;
         // 로컬에 파일 저장
         Files.copy(file.getInputStream(), Paths.get(savedFilePath));
         // 썸네일 이미지 추출 및 로컬에 저장
@@ -162,14 +162,14 @@ public class ShortsService {
 
             // 이미지 파일 이름 설정 (영상 파일 이름에 "_thumbnail"을 붙임)
             String thumbnailFileName = shortsName.replaceFirst("[.][^.]+$", "") + "_thumbnail." + EXTENSION;
-            String thumbnailFilePath = projectPath + thumbnailFileName;
+            String thumbnailFilePath = thumbnailSavePath + thumbnailFileName;
 
             // 썸네일 이미지 저장
             ImageIO.write(bufferedImage, EXTENSION, new File(thumbnailFilePath));
             return thumbnailFilePath;
         } catch (IOException | JCodecException e) {
             e.printStackTrace();
-            return null;
         }
+        return DEFAULT_IMAGE_PATH;
     }
 }
