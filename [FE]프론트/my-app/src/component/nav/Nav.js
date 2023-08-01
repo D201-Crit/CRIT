@@ -47,7 +47,7 @@ const Nav = () => {
               <FaRegUserCircle size={35} style={{ cursor: "pointer" }} />{" "}
             </li>
             <li>
-              <NavLink to="/">{view && <h3>내 정보</h3>}</NavLink>
+              <NavLink to="/ProfilePage">{view && <h3>내 정보</h3>}</NavLink>
             </li>
             <li>{view && <LogOut />}</li>
           </ul>

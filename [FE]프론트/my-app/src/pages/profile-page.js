@@ -68,7 +68,7 @@ const ProfilePage = () => {
         <Row rawSpan={3}>
           <Col>
             <h2>그랜드 챌린저</h2>
-            <h1>{user.id}</h1>
+            <h1>{user.nickname}</h1>
           </Col>
         </Row>
         <Empty/>
