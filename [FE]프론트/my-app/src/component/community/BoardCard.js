@@ -9,7 +9,7 @@ const BoardCard = ({ classification, boards }) => {
       {boards
         .filter((board) => board.classification === classification)
         .map((board) => (
-         <div key={board.id}>
+         <div key={board.id} className="board-item">
           <p>{board.title}</p>
           <p>작성자: {board.writer}</p>
             <p>조회수: {board.views}</p>

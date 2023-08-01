@@ -70,7 +70,16 @@ export const SBoardCard = styled.div`
   padding: 20px;
   margin: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
+  .board-item {
+    display: flex;
+    justify-content: space-between;
+    /* 필요한 스타일 추가 */
+  }
+  
+  .board-item p {
+    margin: 0; /* 모든 p 태그의 상하 여백을 없애기 위해 */
+    margin-right: 100px; /* 작성자와 조회수 사이의 간격을 조정 */
+  }
 `;
 
 export const SBoardContainer = styled.div`
