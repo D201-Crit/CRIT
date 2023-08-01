@@ -64,23 +64,60 @@ export const CategoryButton = styled.div`
 `;
 
 export const SBoardCard = styled.div`
+  position: relative; /* 자식 요소에 대한 쌓임 맥락을 만들기 위해 추가합니다. */
   background-color: #dark;
+  width: 400px;
+  height: 470px;
   border: 1px solid #dddddd;
   border-radius: 10px;
   padding: 20px;
   margin: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  h1{
+
+    text-align : center;
+    margin: 25px 0px 110px 0px;
+  }
   .board-item {
+
     display: flex;
     justify-content: space-between;
     /* 필요한 스타일 추가 */
   }
-  
+
   .board-item p {
+    
     margin: 0; /* 모든 p 태그의 상하 여백을 없애기 위해 */
-    margin-right: 100px; /* 작성자와 조회수 사이의 간격을 조정 */
+    margin-right: 10px; /* 작성자와 조회수 사이의 간격을 조정 */
   }
+
+
+  .gotodetail{
+    text-align : center;
+    font-weight : 500;
+    font-size : 20px;
+    margin-top : 38px
+
+  }
+  overflow: hidden
+
+
 `;
+
+export const SBoardTitle = styled.div`
+  background: #0000C5;
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  top: -450px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index : -1;
+
+`;
+
 
 export const SBoardContainer = styled.div`
   display: flex;

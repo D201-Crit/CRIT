@@ -13,7 +13,7 @@ const CommunityBoard = () => {
 
   useEffect(() => {
     fetchBoards();
-  }, []);
+  }, [boards]);
 
   const fetchBoards = async () => {
     try {
