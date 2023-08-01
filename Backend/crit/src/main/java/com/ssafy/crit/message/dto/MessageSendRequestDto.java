@@ -1,29 +1,23 @@
 package com.ssafy.crit.message.dto;
 
+
 import com.ssafy.crit.message.entity.Message;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class MessageDto {
+public class MessageSendRequestDto {
 
-
-    private Long id;
     private String title;
     private String content;
-    private String senderName;
     private String receiverName;
 
-    public static MessageDto toDto(Message message) {
-        return new MessageDto(
-                message.getId(),
+    @Builder
+    public static MessageSendRequestDto toDto(Message message) {
+        return new MessageSendRequestDto(
                 message.getTitle(),
                 message.getContent(),
-                message.getSender().getId(),
                 message.getReceiver().getId()
         );
     }

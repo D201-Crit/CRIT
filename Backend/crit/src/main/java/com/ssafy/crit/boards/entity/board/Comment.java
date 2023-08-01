@@ -1,7 +1,8 @@
-package com.ssafy.crit.boards.entity;
+package com.ssafy.crit.boards.entity.board;
 
 import com.ssafy.crit.auth.entity.User;
-import com.ssafy.crit.imsimember.entity.Member;
+import com.ssafy.crit.boards.entity.board.Board;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

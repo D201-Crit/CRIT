@@ -4,7 +4,7 @@ package com.ssafy.crit.boards.controller;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.repository.UserRepository;
-import com.ssafy.crit.boards.entity.Board;
+import com.ssafy.crit.boards.entity.board.Board;
 import com.ssafy.crit.boards.repository.BoardRepository;
 import com.ssafy.crit.boards.service.LikeService;
 import com.ssafy.crit.message.response.Response;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/like")
+@RequestMapping("/api")
 public class LikeController {
 	private final LikeService likeService;
 	private final UserRepository userRepository;

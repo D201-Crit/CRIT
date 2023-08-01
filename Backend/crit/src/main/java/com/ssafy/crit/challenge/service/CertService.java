@@ -1,6 +1,9 @@
 package com.ssafy.crit.challenge.service;
 
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.metadata.Metadata;
 import com.ssafy.crit.auth.entity.User;
+import com.ssafy.crit.challenge.dto.CertImgRequestDto;
 import com.ssafy.crit.challenge.entity.Challenge;
 import com.ssafy.crit.challenge.entity.ChallengeUser;
 import com.ssafy.crit.challenge.entity.IsCert;
@@ -15,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.UUID;
 
 @Service
@@ -26,8 +31,8 @@ public class CertService {
     private final ChallengeUserRepository challengeUserRepository;
     private final IsCertRepository isCertRepository;
 
-    public IsCert imgCertification(Long challengeId, User user, MultipartFile file) throws Exception {
-        Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(
+    public IsCert imgCertification(CertImgRequestDto requestDto, User user, MultipartFile file) throws Exception {
+        Challenge challenge = challengeRepository.findById(requestDto.getChallengeId()).orElseThrow(
                 () -> new BadRequestException("해당 챌린지를 찾을 수 없습니다."));
 
         // 유저가 챌린지 참여중인지 확인
@@ -37,7 +42,8 @@ public class CertService {
         // 이미지 정보 확인 -> 챌린지 시작 시간이랑 사진 시간이랑 비교
 
         /*우리의 프로젝트경로를 담아주게 된다 - 저장할 경로를 지정*/
-        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\cert";
+//        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\cert";
+        String projectPath = "C:\\upload\\cert/";
         log.info(projectPath);
         /*식별자 . 랜덤으로 이름 만들어줌*/
         UUID uuid = UUID.randomUUID();
@@ -49,10 +55,15 @@ public class CertService {
         /*File을 생성할건데, 이름은 "name" 으로할거고, projectPath 라는 경로에 담긴다는 뜻*/
         File saveFile = new File(projectPath, fileName);
 
+        log.info("saveFile 전 : {}", saveFile.getTotalSpace());
         file.transferTo(saveFile);
+        log.info("saveFile 후 : {}", saveFile.getTotalSpace());
 
+        Metadata metadata = ImageMetadataReader.readMetadata(saveFile); // 이미지 메타데이터 읽어오기
+        log.info("metadata : {}", metadata);
         // 다 만족하면 Cert테이블에 삽입
         return null;
 
     }
+
 }

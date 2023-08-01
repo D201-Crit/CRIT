@@ -1,7 +1,7 @@
-package com.ssafy.crit.boards.service;
+package com.ssafy.crit.boards.service.dto;
 
-import com.ssafy.crit.boards.entity.Board;
-import com.ssafy.crit.boards.entity.Classification;
+import com.ssafy.crit.boards.entity.board.Board;
+
 import lombok.*;
 
 @Getter
@@ -11,7 +11,7 @@ public class BoardSaveRequestDto {
     private Long id;
     private String title;
     private String content;
-    private Classification classification;
+    private String classification;
     private String writer;
 
     @Builder
@@ -20,7 +20,7 @@ public class BoardSaveRequestDto {
                 board.getId(),
                 board.getTitle(),
                 board.getContent(),
-                board.getClassification(),
+                board.getClassification().getCategory(),
                 board.getUser().getId());
 
         return BoardSaveRequestDto;

@@ -16,15 +16,15 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class ChallengeCreateRequestDto {
     private String title;
-    private String info;
-    private String category;
-    private Cert cert; // 인증 타입
-    private int people; // 인원수
+    private String introduce;
+    private String select;
+    private Cert authentication; // 인증 타입
+    private int member; // 인원수
     private int money; // 돈
 
-    @JsonFormat(pattern = "kk:mm:ss")
+    @JsonFormat(pattern = "kk:mm")
     private LocalTime startTime; // 시작 시간
-    @JsonFormat(pattern = "kk:mm:ss")
+    @JsonFormat(pattern = "kk:mm")
     private LocalTime endTime; // 종료 시간
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate; // 시작 기간
