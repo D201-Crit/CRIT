@@ -2,8 +2,8 @@ package com.ssafy.crit.boards.service;
 
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
-import com.ssafy.crit.boards.entity.Board;
-import com.ssafy.crit.boards.entity.Comment;
+import com.ssafy.crit.boards.entity.board.Board;
+import com.ssafy.crit.boards.entity.board.Comment;
 import com.ssafy.crit.boards.repository.BoardRepository;
 import com.ssafy.crit.boards.repository.CommentRepository;
 import com.ssafy.crit.boards.service.dto.CommentDto;

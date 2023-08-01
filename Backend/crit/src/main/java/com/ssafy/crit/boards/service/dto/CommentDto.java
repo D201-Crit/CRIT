@@ -1,5 +1,5 @@
 package com.ssafy.crit.boards.service.dto;
-import com.ssafy.crit.boards.entity.Comment;
+import com.ssafy.crit.boards.entity.board.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

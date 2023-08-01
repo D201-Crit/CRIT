@@ -5,7 +5,7 @@ import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.boards.entity.Classification;
 import com.ssafy.crit.boards.repository.ClassificationRepository;
 import com.ssafy.crit.boards.service.dto.BoardDto;
-import com.ssafy.crit.boards.entity.Board;
+import com.ssafy.crit.boards.entity.board.Board;
 import com.ssafy.crit.boards.repository.BoardRepository;
 
 import com.ssafy.crit.boards.service.dto.BoardSaveRequestDto;
@@ -18,10 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

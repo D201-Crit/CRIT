@@ -1,7 +1,7 @@
 package com.ssafy.crit.boards.repository;
 
 
-import com.ssafy.crit.boards.entity.Comment;
+import com.ssafy.crit.boards.entity.board.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
