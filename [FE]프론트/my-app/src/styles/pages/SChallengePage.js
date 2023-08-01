@@ -163,10 +163,10 @@ export const STitleChallenge = styled.input`
 export const SChallengeImage = styled.div`
   width: 100px;
   position: relative;
-  ${"" /* bottom: 10px; */}
-  left: 880px;
+
+  left: 800px;
   input {
-    width: 100%;
+    width: 200px;
   }
 `;
 
