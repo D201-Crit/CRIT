@@ -62,3 +62,18 @@ export const CategoryButton = styled.div`
     background-color: #efefef;
   }
 `;
+
+export const SBoardCard = styled.div`
+  background-color: #dark;
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+`;
+
+export const SBoardContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;

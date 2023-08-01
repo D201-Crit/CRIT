@@ -1,18 +1,21 @@
 // PaymentComponent.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const PaymentComponent = () => {
+  const user = useSelector((state) => state.users);
   const [amount, setAmount] = useState('');
   const [tid, setTid] = useState('');
   
   const handlePayment = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/payment/pay', {
+      const response = await axios.get('http://localhost:8080/api/payment/pay', {
         params: { amount: amount },
-        headers: {Authorization:"KakaoAK abc570fb116bd926266e60e2e34149bb",
-        'Content-type':"application/x-www-form-urlencoded;charset=utf-8"
-
+        headers: {Authorization: `Bearer ${user.accessToken}`
+        // headers: {Authorization:"KakaoAK abc570fb116bd926266e60e2e34149bb",
+        // 'Content-type':"application/x-www-form-urlencoded;charset=utf-8"
+       
         },
       });
 
