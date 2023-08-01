@@ -43,6 +43,7 @@ const MyComponent = () => {
               // 새로운 AccessToken을 받아와서 다시 요청을 보냄
               const newAccessToken = await getNewAccessToken(refreshToken);
               error.config.headers.Authorization = `Bearer ${newAccessToken}`;
+              console.log("됨?");
               return api.request(error.config);
             } catch (refreshError) {
               // RefreshToken으로 AccessToken 재발급에 실패한 경우

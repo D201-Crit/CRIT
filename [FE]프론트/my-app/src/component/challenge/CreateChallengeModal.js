@@ -23,7 +23,7 @@ import ChallengeImage from "./createChallenge/ChallengeImage";
 const CreateChallengeModal = ({ closeModal }) => {
   const user = useSelector((state) => state.users);
 
-  const [formData, setFormData] = useState({
+  const [requestDto, setRequestDto] = useState({
     title: "",
     introduce: "",
     select: "",
@@ -35,35 +35,39 @@ const CreateChallengeModal = ({ closeModal }) => {
     startDate: "",
     endDate: "",
   });
+  const [image, setImage] = useState([]);
 
   const onChangeTitle = (title) => {
-    setFormData((prevData) => ({ ...prevData, title }));
+    setRequestDto((prevData) => ({ ...prevData, title }));
   };
   const onChangeIntroduce = (introduce) => {
-    setFormData((prevData) => ({ ...prevData, introduce }));
+    setRequestDto((prevData) => ({ ...prevData, introduce }));
   };
   const onChangeSelectChallenge = (select) => {
-    setFormData((prevData) => ({ ...prevData, select }));
+    setRequestDto((prevData) => ({ ...prevData, select }));
   };
   const onChangeAuthentication = (authentication) => {
-    setFormData((prevData) => ({ ...prevData, authentication }));
+    setRequestDto((prevData) => ({ ...prevData, authentication }));
   };
   const onChangeMember = (member) => {
-    setFormData((prevData) => ({ ...prevData, member }));
+    setRequestDto((prevData) => ({ ...prevData, member }));
   };
   const onChangeTime = (startTime, endTime) => {
-    setFormData((prevData) => ({ ...prevData, startTime, endTime }));
+    setRequestDto((prevData) => ({ ...prevData, startTime, endTime }));
   };
   const onChangeDate = (startDate, endDate) => {
-    setFormData((prevData) => ({ ...prevData, startDate, endDate }));
+    setRequestDto((prevData) => ({ ...prevData, startDate, endDate }));
   };
   const onChangeMoney = (money) => {
-    setFormData((prevData) => ({ ...prevData, money }));
+    setRequestDto((prevData) => ({ ...prevData, money }));
   };
-
+  const onChangeImage = (imageFile) => {
+    setRequestDto((prevData) => ({ ...prevData, image: imageFile }));
+  };
   const createChallenge = () => {
+    console.log(requestDto.image);
     // 참여비(money)가 3000, 5000, 7000, 10000이 아닌 경우 챌린지 생성하지 않음
-    if (![3000, 5000, 7000, 10000].includes(formData.money)) {
+    if (![3000, 5000, 7000, 10000].includes(requestDto.money)) {
       Swal.fire({
         position: "center",
         icon: "error",
@@ -75,10 +79,19 @@ const CreateChallengeModal = ({ closeModal }) => {
       });
       return;
     }
+    const formData = new FormData();
+    formData.append("file", image[0]); // 이미지 파일 첨부
+    formData.append(
+      "requestDto",
+      new Blob([JSON.stringify(requestDto)], { type: "application/json" })
+    ); // 나머지 데이터를 JSON 형태로 첨부
+
     api
       .post("http://localhost:8080/challenge/create", formData, {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
+          "Content-Type": `multipart/form-data`,
+          // Note: Content-Type will be set automatically to multipart/form-data by the browser
         },
       })
       .then((res) => {
@@ -123,7 +136,7 @@ const CreateChallengeModal = ({ closeModal }) => {
   return (
     <SCreateChallengeModalWrapper>
       <TitleChallenge onChangeTitle={onChangeTitle} />
-      {/* <ChallengeImage /> */}
+      <ChallengeImage onChangeImage={onChangeImage} />
       <SInfoChallenge>
         <IntroduceChallenge onChangeIntroduce={onChangeIntroduce} />
         <SelectChallenge onChangeSelectChallenge={onChangeSelectChallenge} />
