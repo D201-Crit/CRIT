@@ -6,9 +6,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 // 나머지
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Modal from "react-modal";
 
 // 스타일
 import {
@@ -18,10 +17,27 @@ import {
   SMidWrapper,
   SBotWrapper,
 } from "../../styles/pages/SChallengePage";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const MyChallenge = () => {
-  const token = localStorage.getItem("refreshToken");
-
+  const user = useSelector((state) => state.users);
+  const [myChallenges, setMyChallenges] = useState([]);
+  const getMyChallenge = () => {
+    axios
+      .get("http://localhost:8080/challenge/list/all", {
+        header: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      })
+      .then((res) => {
+        setMyChallenges(res.data.data);
+        console.log(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   // 테스트용
   const [overView] = useState(
     "내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글"
@@ -34,6 +50,9 @@ const MyChallenge = () => {
     navigate("/ChallengePage/:id");
   };
 
+  useEffect(() => {
+    getMyChallenge();
+  }, []);
   return (
     <>
       <SSwiper
