@@ -2,8 +2,7 @@ package com.ssafy.crit.shorts.service;
 
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
-import com.ssafy.crit.imsimember.entity.Member;
-import com.ssafy.crit.imsimember.repository.MemberRepository;
+
 import com.ssafy.crit.shorts.dto.ShortsDto;
 import com.ssafy.crit.shorts.entity.HashTag;
 import com.ssafy.crit.shorts.entity.HashTagShorts;

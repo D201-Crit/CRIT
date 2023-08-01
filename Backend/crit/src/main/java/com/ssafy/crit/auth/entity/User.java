@@ -85,7 +85,7 @@ public class User extends BaseTimeEntity {
         this.tid = tid;
         this.exp = exp;
         this.grade = grade;
-        this.isChecked = isChecked;
+        this.isChecked = false;
         this.followers = followers;
         this.followings = followings;
     }

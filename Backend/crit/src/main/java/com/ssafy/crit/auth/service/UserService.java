@@ -156,10 +156,10 @@ public class UserService {
     }
 
     public UserResponseDto follow(FollowRequestDto followRequestDto) {
-        User user1 = userRepository.findById(followRequestDto.getFollower())
-            .orElseThrow(() -> new IllegalArgumentException("User with nickname " + followRequestDto.getFollower() + " does not exist."));
-        User user2 = userRepository.findById(followRequestDto.getFollowing())
-            .orElseThrow(() -> new IllegalArgumentException("User with nickname " + followRequestDto.getFollowing() + " does not exist."));
+        User user1 = userRepository.findById(followRequestDto.getFollowerId())
+            .orElseThrow(() -> new IllegalArgumentException("User with nickname " + followRequestDto.getFollowerId() + " does not exist."));
+        User user2 = userRepository.findById(followRequestDto.getFollowingId())
+            .orElseThrow(() -> new IllegalArgumentException("User with nickname " + followRequestDto.getFollowingId() + " does not exist."));
         Optional<Follow> optionalFollow = followRepository.findByFollowerAndFollowing(user1,user2);
 
         if (optionalFollow.isEmpty()) {

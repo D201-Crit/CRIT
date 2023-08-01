@@ -13,8 +13,11 @@ import com.ssafy.crit.boards.service.dto.BoardShowSortDto;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +34,9 @@ public class BoardService {
 
 	//전체 게시물
 	@Transactional(readOnly = true)
-	public List<BoardDto> getBoards() {
-		List<Board> boards = boardRepository.findAll();
-		List<BoardDto> boardDtos = new ArrayList<>();
-		boards.forEach(s -> {
-			boardDtos.add(BoardDto.toDto(s));
-		});
-		return boardDtos;
+	public Page<BoardShowSortDto> getBoards(Pageable pageable) {
+		Page<Board> boards = boardRepository.findAll(pageable);
+		return getBoardShowSortDtos(boards);
 	}
 
 	//개별 게시물 조회
@@ -101,11 +100,11 @@ public class BoardService {
 
 		User user = userRepository.findById(board.getUser().getId()).orElseThrow();
 
-		return BoardDto.toDto(Board.builder()
-			.title(boardDto.getTitle())
-			.content(board.getContent())
-			.user(user)
-			.build());
+		board.setUpdate(boardDto.getTitle(),boardDto.getContent());
+
+		boardRepository.save(board);
+
+		return BoardDto.toDto(board);
 	}
 
 	// 게시글 삭제
@@ -119,41 +118,46 @@ public class BoardService {
 		boardRepository.deleteById(id);
 	}
 
-	// 챌린지 생성 완료시 방 만들기
-	//    public Board createChallengeBoard(Challenge challenge) throws Exception{
-	//        Board.builder()
-	//                .title(challenge.getName() + "Board")
-	//                .c
-	//    }
+	public Page<BoardShowSortDto> findAllDesc(Pageable pageable) {
+		Page<Board> boards = boardRepository.findAllDesc(pageable);
+		return getBoardShowSortDtos(boards);
+	}
 
-	public List<BoardShowSortDto> findAllDesc() {
-		return boardRepository.findAllDesc().stream()
-			.map(board -> {
-				if (board.getUser() == null) {
-					throw new RuntimeException("User is null for board id: " + board.getId());
-				}
-				return new BoardShowSortDto(board.getId(),
+
+	public Page<BoardShowSortDto> findAllAsc(Pageable pageable) {
+		Page<Board> boards = boardRepository.findAllAsc(pageable);
+		return getBoardShowSortDtos(boards);
+	}
+
+
+
+	public Page<BoardShowSortDto> orderByViewsDesc(Pageable pageable) {
+		Page<Board> boards = boardRepository.orderByViewsDesc(pageable);
+		return getBoardShowSortDtos(boards);
+	}
+
+	public Page<BoardShowSortDto> orderByViewsAsc(Pageable pageable) {
+		Page<Board> boards = boardRepository.orderByViewsAsc(pageable);
+		return getBoardShowSortDtos(boards);
+	}
+
+
+	public Page<BoardShowSortDto> findByTitleContaining(@RequestParam String find, Pageable pageable) {
+		Page<Board> boards = boardRepository.findByTitleContaining(find, pageable);
+		return getBoardShowSortDtos(boards);
+	}
+
+	private Page<BoardShowSortDto> getBoardShowSortDtos(Page<Board> boards) {
+		return boards.map(board -> {
+			if (board.getUser() == null) {
+				throw new RuntimeException("User is null for board id: " + board.getId());
+			}
+			return new BoardShowSortDto(board.getId(),
 					board.getTitle(),
 					board.getContent(),
 					board.getViews(),
 					board.getUser().getId().toString(),
 					board.getLikes().size());
-			}).collect(Collectors.toList());
+		});
 	}
-
-	public List<BoardShowSortDto> findAllAsc() {
-		return boardRepository.findAllAsc().stream()
-			.map(board -> {
-				if (board.getUser() == null) {
-					throw new RuntimeException("User is null for board id: " + board.getId());
-				}
-				return new BoardShowSortDto(board.getId(),
-					board.getTitle(),
-					board.getContent(),
-					board.getViews(),
-					board.getUser().getId().toString(),
-					board.getLikes().size());
-			}).collect(Collectors.toList());
-	}
-
 }
