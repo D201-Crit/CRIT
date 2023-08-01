@@ -1,7 +1,6 @@
 package com.ssafy.crit.shorts.entity;
 
 import com.ssafy.crit.auth.entity.User;
-import com.ssafy.crit.imsimember.entity.Member;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;

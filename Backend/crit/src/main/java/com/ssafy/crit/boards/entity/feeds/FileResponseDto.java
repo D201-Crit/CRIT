@@ -1,5 +1,6 @@
 package com.ssafy.crit.boards.entity.feeds;
 
+import com.ssafy.crit.boards.entity.board.Board;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +26,9 @@ public class FileResponseDto {
 	}
 
 	@Builder
-	public static FileResponseDto toDto(Feeds feeds){
+	public static FileResponseDto toDto(Board feeds){
 		// Transform the list of UploadFile objects to a list of filenames
-		List<String> filenames = feeds.getImageFiles().stream()
+		List<String> filenames = feeds.getUploadFiles().stream()
 			.map(UploadFile::getUploadFileName)
 			.collect(Collectors.toList());
 
