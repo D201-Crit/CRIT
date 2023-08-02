@@ -31,13 +31,12 @@ public class FileResponseDto {
 			.map(UploadFile::getUploadFileName)
 			.collect(Collectors.toList());
 
-		FileResponseDto fileResponseDto = new FileResponseDto(
+		return new FileResponseDto(
 			board.getId(),
 			board.getContent(),
 			board.getUser().getId(),
 			filenames
 		);
-		return fileResponseDto;
 	}
 
 
