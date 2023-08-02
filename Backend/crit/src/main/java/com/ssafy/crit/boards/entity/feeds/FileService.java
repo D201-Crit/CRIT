@@ -11,6 +11,7 @@ import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.auth.util.UploadUtil;
 import com.ssafy.crit.boards.entity.board.Board;
 
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,9 +28,21 @@ public class FileService {
 
 	public FileResponseDto storeFiles(FileResponseDto fileResponseDto,List<MultipartFile> multipartFiles) throws IOException {
 		List<String> storeFileResult = new ArrayList<>();
+
 		for (MultipartFile multipartFile : multipartFiles) {
 			if (!multipartFile.isEmpty()) {
-				String fullPath = uploadUtil.getFullPath(uploadUtil.storeFile(multipartFile).getStoreFileName());
+
+				UploadUtil.NeedsUpload needsUpload = uploadUtil.storeFile(multipartFile);
+
+				UploadFile uploadFile = UploadFile.builder()
+					.storeFilePath(needsUpload.getStorePath())
+					.uploadFileName(needsUpload.getOriginalName())
+					.storeFileName(needsUpload.getStoreName())
+					.build();
+
+				uploadFileRepository.save(uploadFile);
+
+				String fullPath = uploadUtil.getFullPath(needsUpload.getStoreName());
 				storeFileResult.add(fullPath);
 			}
 		}
@@ -44,6 +57,8 @@ public class FileService {
 
 		return fileResponseDto;
 	}
+
+
 
 }
 
