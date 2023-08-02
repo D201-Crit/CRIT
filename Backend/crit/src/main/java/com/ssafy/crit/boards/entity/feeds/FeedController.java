@@ -3,9 +3,12 @@ package com.ssafy.crit.boards.entity.feeds;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,6 +45,19 @@ public class FeedController {
 		}
 		return new Response<>("성공","피드 생성 실패","다시해보게나");
 	}
+
+	@GetMapping("/feed_id}")
+	public Response<?> getFeed(@PathVariable("feed_id") Long id){
+		return new Response<>("성공", "개별 피드 가져오기", feedService.getFeed(id));
+	}
+
+	@GetMapping("/whole")
+	public Response<?> getFeeds(Pageable pageable, HttpServletRequest httpServletRequest){
+		User user = getUser(httpServletRequest);
+		return new Response<>("성공", "전체 피드 가져오기", feedService.getFeeds(pageable, user));
+	}
+
+	@DeleteMapping("/delete")
 
 
 	private User getUser(HttpServletRequest httpServletRequest) {

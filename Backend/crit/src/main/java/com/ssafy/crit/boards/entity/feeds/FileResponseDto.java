@@ -26,15 +26,15 @@ public class FileResponseDto {
 	}
 
 	@Builder
-	public static FileResponseDto toDto(Board feeds){
-		List<String> filenames = feeds.getUploadFiles().stream()
+	public static FileResponseDto toDto(Board board){
+		List<String> filenames = board.getUploadFiles().stream()
 			.map(UploadFile::getUploadFileName)
 			.collect(Collectors.toList());
 
 		FileResponseDto fileResponseDto = new FileResponseDto(
-			feeds.getId(),
-			feeds.getContent(),
-			feeds.getUser().getId(),
+			board.getId(),
+			board.getContent(),
+			board.getUser().getId(),
 			filenames
 		);
 		return fileResponseDto;
