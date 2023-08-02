@@ -9,7 +9,7 @@ const KakaoLogin = () => {
   return (
     <SKakaoLoginButton
       alt="카카오 로그인"
-      src="https://github.com/Jinga02/React/assets/110621233/ae318c12-05f7-4318-947d-d60f181bf2c1"
+      src="https://github.com/Jinga02/ChallengePJT/assets/110621233/d34e9cf1-b931-4236-aa31-efec76d9dfca"
       onClick={() => (window.location.href = kakaoURL)}
     />
   );

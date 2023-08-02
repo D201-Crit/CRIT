@@ -28,7 +28,7 @@ const SignUp = () => {
       setMismatchError(e.target.value !== passwordCheck);
     },
     // 함수 기준 외부 변수만 deps[]에 작성
-    [passwordCheck]
+    [passwordCheck],
   );
 
   const onChangePasswordCheck = useCallback(
@@ -36,7 +36,7 @@ const SignUp = () => {
       setPasswordCheck(e.target.value);
       setMismatchError(e.target.value !== password);
     },
-    [password]
+    [password],
   );
   const [mismatchError, setMismatchError] = useState(false);
   // 가입 실패
@@ -85,7 +85,7 @@ const SignUp = () => {
           .finally(() => {});
       }
     },
-    [email, nickname, password, passwordCheck]
+    [email, nickname, password, passwordCheck],
   );
 
   return (

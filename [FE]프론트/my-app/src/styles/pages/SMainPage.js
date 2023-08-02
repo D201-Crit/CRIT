@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 export const SEntranceButtonWrapper = styled.div`
   width: 100%;
   height: 100px;
+  font-family: "Pretendard";
 `;
 export const SEntranceButton = styled.button`
   position: relative;
@@ -17,6 +18,7 @@ export const SEntranceButton = styled.button`
   font-size: 18px;
   color: white;
   cursor: pointer;
+  font-family: "Pretendard";
 `;
 export const SEntranceUl = styled.ul`
   position: relative;
@@ -24,9 +26,9 @@ export const SEntranceUl = styled.ul`
   width: 400px;
   left: 72%;
   padding: 0;
+  font-family: "Pretendard";
 `;
 export const SEntranceLi = styled.li`
-  ${"" /* background-color: red; */}
   display: flex;
   width: 100%;
   height: 100px;
@@ -34,6 +36,7 @@ export const SEntranceLi = styled.li`
   border-radius: 8px;
   padding: 8px;
   margin: 5px 0;
+  font-family: "Pretendard";
   p {
     position: relative;
     top: -10px;
@@ -61,6 +64,7 @@ export const SEntranceLiButton = styled.button`
   border-radius: 6px;
   font-weight: 800;
   cursor: pointer;
+  font-family: "Pretendard";
 `;
 // 챌스 검색
 export const SSearchShortsWrapper = styled.div`
@@ -72,10 +76,13 @@ export const SInput = styled.input`
   width: 50%;
   border: none;
   border-radius: 5px;
-  font-size: 18px;
+
   padding: 13px;
   margin: 0 auto;
   display: block;
+  font-size: 18px;
+  font-weight: 500;
+  font-family: "Pretendard";
 
   & + hr {
     width: 50%;

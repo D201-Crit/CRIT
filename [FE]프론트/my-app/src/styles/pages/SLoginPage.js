@@ -16,6 +16,9 @@ export const SSpan = styled.span`
     width: 60%;
     height: 50px;
     border-radius: 5px;
+    font-size: 18px;
+    font-weight: 500;
+    font-family: "Pretendard";
   }
 `;
 
@@ -29,12 +32,17 @@ export const SLoginButton = styled.button`
   font-size: 18px;
   font-weight: 1000;
   type: submit;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: "Pretendard";
 `;
 
 export const SMoveSignUp = styled(Link)`
   text-decoration: none;
   color: blue;
   text-align: center;
+  font-size: 18px;
+  font-weight: 500;
 `;
 
 export const SKakaoLoginButton = styled.img`
@@ -50,9 +58,12 @@ export const SNaverLoginButton = styled.img`
   border-radius: 5px;
   cursor: pointer;
   margin-right: 10px;
+  font-family: "Pretendard";
 `;
 export const Error = styled.div`
   color: #e01e5a;
-  margin: 8px 0 16px;
+
+  text-align: center;
   font-weight: bold;
+  font-family: "Pretendard";
 `;

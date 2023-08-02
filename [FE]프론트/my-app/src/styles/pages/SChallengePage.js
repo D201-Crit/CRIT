@@ -3,12 +3,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 // ChallengPage
 export const SCreateChallengeWrapper = styled.div`
-  width: 85%;
+  font-family: "Pretendard";
+  width: 1200px;
   display: flex;
   justify-content: flex-end;
-  margin: 30px 0px -40px 0px;
+  margin: 30px auto -40px auto;
 `;
 export const SCreateChallengeButton = styled.button`
+  font-family: "Pretendard";
   background-color: #ff007a;
   border: none;
   border-radius: 10px;
@@ -31,6 +33,7 @@ export const SSwiper = styled(Swiper)`
   border: 0.5px solid white;
   border-radius: 10px;
   box-shadow: 5px 5px 20px #ff007a;
+  font-family: "Pretendard";
 
   .swiper-button-next::after,
   .swiper-button-prev::after {
@@ -41,30 +44,33 @@ export const SSwiper = styled(Swiper)`
 export const SSwiperSlide = styled(SwiperSlide)``;
 
 export const STopWrapper = styled.div`
+  font-family: "Pretendard";
+
   #name {
     position: relative;
     font-size: 25px;
     left: 30px;
-    top: -15px;
+    top: -5px;
   }
   #date {
     position: relative;
     top: -65px;
     font-size: 18px;
-    left: 580px;
+    left: 610px;
   }
 
   #dday {
     position: relative;
     top: -75px;
     font-size: 18px;
-    left: 650px;
+    left: 670px;
   }
 `;
 
 export const SMidWrapper = styled.div`
   position: relative;
   top: 80px;
+  font-family: "Pretendard";
 
   img {
     position: relative;
@@ -77,15 +83,20 @@ export const SMidWrapper = styled.div`
     bottom: 310px;
     font-size: 18px;
     width: 500px;
+    whitespace: "pre-wrap";
   }
 `;
 
 export const SBotWrapper = styled.div`
+  position: absolute;
+  top: 420px;
+  font-family: "Pretendard";
+
   #people {
     position: relative;
     font-size: 18px;
     left: 45px;
-    bottom: -20px;
+    top: -190px;
   }
   #enter {
     position: relative;
@@ -128,6 +139,7 @@ export const SInput = styled.input`
   padding: 13px;
   margin: 0 auto;
   display: block;
+  font-family: "Pretendard";
 
   & + hr {
     width: 780px;
@@ -141,18 +153,22 @@ export const SInput = styled.input`
 // CreateChallengeModal
 export const SCreateChallengeModalWrapper = styled.div`
   color: white;
-  margin: 0 5%;
+  margin: -15px 50px 10px 50px;
+  font-family: "Pretendard";
 `;
 export const STitleChallenge = styled.input`
+  font-family: "Pretendard";
+
+  position: relative;
+  top: 30px;
   color: white;
-  width: 48%;
-  height: 50px;
+  width: 480px;
   background: rgba(0, 0, 0, 0);
   border: 0;
   border-bottom: 1px solid white;
   font-size: 25px;
   padding: 15px;
-  font-family: Pretendard;
+  font-family: "Pretendard";
   font-weight: 500;
 
   &::placeholder {
@@ -167,12 +183,13 @@ export const SChallengeImage = styled.div`
   left: 800px;
   input {
     width: 200px;
+    font-family: "Pretendard";
   }
 `;
 
 export const SInfoChallenge = styled.div`
   height: 450px;
-  font-family: Pretendard;
+  font-family: "Pretendard";
 `;
 
 export const STextArea = styled.textarea`
@@ -189,13 +206,17 @@ export const STextArea = styled.textarea`
   padding: 15px;
   resize: none;
   font-weight: 800;
+  font-family: "Pretendard";
+
   &::placeholder {
     font-weight: 800;
     color: rgb(150, 150, 150);
+    font-family: "Pretendard";
   }
 `;
 
 export const SSelectChallengeWrapper = styled.div`
+  font-family: "Pretendard";
   width: 200px;
   height: 140px;
   background-color: rgb(40, 40, 40);
@@ -230,6 +251,7 @@ export const SChallengeTimeWrapper = styled.div`
   padding: 0 20px;
   background-color: rgb(40, 40, 40);
   font-weight: 440;
+  font-family: "Pretendard";
   h4 {
     margin: 10px 0 15px 0;
   }
@@ -249,6 +271,7 @@ export const SChallengeTimeWrapper = styled.div`
 `;
 
 export const SAuthenticationMethodWrapper = styled.div`
+  font-family: "Pretendard";
   position: relative;
   bottom: 302px;
   left: 270px;
@@ -275,6 +298,7 @@ export const SAuthenticationMethodWrapper = styled.div`
 `;
 // 인원수 설정
 export const SMemberWrapper = styled.div`
+  font-family: "Pretendard";
   position: relative;
   bottom: 282px;
   left: 270px;
@@ -321,6 +345,7 @@ export const SCalendarwrapper = styled.div`
   height: 200px;
   text-align: center;
   font-size: 10px;
+  font-family: "Pretendard";
   #date {
     font-weight: 500;
     font-size: 20px;
@@ -394,6 +419,7 @@ export const SMoneyWrapper = styled.div`
   left: 550px;
   width: 435px;
   text-align: center;
+  font-family: "Pretendard";
   h3 {
     font-size: 22px;
     margin: 10px;
@@ -414,6 +440,7 @@ export const SMoneyWrapper = styled.div`
   }
 `;
 export const SButtonWrapper = styled.div`
+  font-family: "Pretendard";
   position: relative;
   bottom: 10px;
   left: 575px;
@@ -429,6 +456,7 @@ export const SCompleteButton = styled.button`
   color: white;
   font-size: 23px;
   font-weight: 700;
+  font-family: "Pretendard";
 `;
 export const SCloseButton = styled.button`
   width: 180px;
@@ -441,4 +469,5 @@ export const SCloseButton = styled.button`
   font-size: 23px;
   font-weight: 700;
   cursor: pointer;
+  font-family: "Pretendard";
 `;

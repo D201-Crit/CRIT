@@ -22,7 +22,6 @@ import ChallengeImage from "./createChallenge/ChallengeImage";
 
 const CreateChallengeModal = ({ closeModal }) => {
   const user = useSelector((state) => state.users);
-
   const [requestDto, setRequestDto] = useState({
     title: "",
     introduce: "",
@@ -35,7 +34,7 @@ const CreateChallengeModal = ({ closeModal }) => {
     startDate: "",
     endDate: "",
   });
-  const [image, setImage] = useState([]);
+  const [image, setImage] = useState(null);
 
   const onChangeTitle = (title) => {
     setRequestDto((prevData) => ({ ...prevData, title }));
@@ -62,10 +61,10 @@ const CreateChallengeModal = ({ closeModal }) => {
     setRequestDto((prevData) => ({ ...prevData, money }));
   };
   const onChangeImage = (imageFile) => {
-    setRequestDto((prevData) => ({ ...prevData, image: imageFile }));
+    setImage(imageFile); // 이미지 상태 업데이트
   };
+  // 챌린지 생성
   const createChallenge = () => {
-    console.log(requestDto.image);
     // 참여비(money)가 3000, 5000, 7000, 10000이 아닌 경우 챌린지 생성하지 않음
     if (![3000, 5000, 7000, 10000].includes(requestDto.money)) {
       Swal.fire({
@@ -80,21 +79,21 @@ const CreateChallengeModal = ({ closeModal }) => {
       return;
     }
     const formData = new FormData();
-    formData.append("file", image[0]); // 이미지 파일 첨부
+    formData.append("file", image); // 이미지 파일 첨부
     formData.append(
       "requestDto",
-      new Blob([JSON.stringify(requestDto)], { type: "application/json" })
-    ); // 나머지 데이터를 JSON 형태로 첨부
-
+      new Blob([JSON.stringify(requestDto)], { type: "application/json" }),
+    ); // requestDto를 JSON 형식으로 추가
+    console.log(requestDto);
     api
       .post("http://localhost:8080/challenge/create", formData, {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
           "Content-Type": `multipart/form-data`,
-          // Note: Content-Type will be set automatically to multipart/form-data by the browser
         },
       })
       .then((res) => {
+        console.log(res);
         closeModal();
         Swal.fire({
           position: "center",

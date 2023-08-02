@@ -35,7 +35,7 @@ const Login = () => {
               nickname: res.data.nickname,
               accessToken: res.data.accessToken,
               refreshToken: res.data.refreshToken,
-            })
+            }),
           );
           persistor.flush(); // 상태를 영구적으로 저장
           Swal.fire({
@@ -54,7 +54,6 @@ const Login = () => {
             // imageHeight: 200,
             // imageAlt: 'Custom image',
           });
-
           nav("/MainPage");
         })
         .catch((error) => {
@@ -62,7 +61,7 @@ const Login = () => {
           setLogInError(error.response?.status === 400);
         });
     },
-    [id, password]
+    [id, password],
   );
   return (
     <SForm onSubmit={onSubmit}>
