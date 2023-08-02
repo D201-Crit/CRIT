@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/oauth")
 public class OAuthController {
     private final OAuthService OAuthService;
 
@@ -26,7 +27,7 @@ public class OAuthController {
                             .build()));
     }
     // accessToken 생성 컨트롤러
-    @PostMapping("/auth/token")
+    @PostMapping("/token")
     public ResponseEntity<OAuthSignInResponse> refreshToken(@RequestBody TokenRequest tokenRequest){
         return ResponseEntity.ok(OAuthService.refreshToken(tokenRequest));
     }
