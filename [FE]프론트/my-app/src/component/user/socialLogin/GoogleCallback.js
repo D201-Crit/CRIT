@@ -6,11 +6,11 @@ import { useDispatch } from "react-redux";
 import { persistor } from "../../../store";
 import Swal from "sweetalert2";
 
-const KakaoCallback = () => {
+const GoogleCallback = () => {
   const nav = useNavigate();
   const dispatch = useDispatch();
   const code = new URL(window.location.href).searchParams.get("code");
-  const registrationId = "kakao";
+  const registrationId = "google";
   const state = "200";
   const kakaoLogin = () => {
     axios({
@@ -25,7 +25,7 @@ const KakaoCallback = () => {
             nickname: res.data.nickname,
             accessToken: res.data.accessToken,
             refreshToken: res.data.refreshToken,
-          }),
+          })
         );
         persistor.flush(); // 상태를 영구적으로 저장
         Swal.fire({
@@ -67,4 +67,4 @@ const KakaoCallback = () => {
   );
 };
 
-export default KakaoCallback;
+export default GoogleCallback;

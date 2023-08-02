@@ -22,6 +22,8 @@ import SignUpPage from "./pages/signup-page";
 import StartPage from "./pages/start-page";
 import { Sfont } from "./styles/SCommon";
 import Swal from "sweetalert2";
+import GoogleCallback from "./component/user/socialLogin/GoogleCallback";
+import NaverCallback from "./component/user/socialLogin/NaverCallback";
 
 function App() {
   return (
@@ -78,6 +80,8 @@ function AppRoutes() {
       <Routes>
         <Route path="/" element={<StartPage />} />
         <Route path="/login/oauth2/code/kakao" element={<KakaoCallback />} />
+        <Route path="/login/oauth2/code/naver" element={<NaverCallback />} />
+        <Route path="/login/oauth2/code/google" element={<GoogleCallback />} />
         <Route path="/IntroPage" element={<IntroPage />} />
         <Route path="/MainPage" element={<MainPage />} />
         <Route path="/ChallengePage" element={<ChallengePage />} />

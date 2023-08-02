@@ -2,11 +2,14 @@ import React from "react";
 import { SNaverLoginButton } from "../../../styles/pages/SLoginPage";
 
 const NaverLogin = () => {
-  const naverUrl = "http://localhost:8080/oauth2/authorization/naver";
+  const CLIENT_ID = "L61z2MvnsWFQfYi7kRi2";
+  const REDIRECT_URI = "http://localhost:3000/login/oauth2/code/naver";
+  const STATE = "false";
+  const naverUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${CLIENT_ID}&state=${STATE}&redirect_uri=${REDIRECT_URI}`;
   return (
     <SNaverLoginButton
       alt="네이버 로그인"
-      src="https://github.com/Jinga02/React/assets/110621233/656c14d8-04de-48c9-aeac-acc7d80542b1"
+      src="https://github.com/Jinga02/ChallengePJT/assets/110621233/f4a3b544-c7ba-430a-9fb0-d0d158a66d71"
       onClick={() => (window.location.href = naverUrl)}
     />
   );

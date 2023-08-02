@@ -1,10 +1,11 @@
 // swiper
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import { EffectCards } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
+import "swiper/css/effect-cards";
 // 나머지
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -28,6 +29,7 @@ const MyChallenge = () => {
 
   const getMyChallenge = () => {
     api
+      // .get("https://i9d201.p.ssafy.io/api/challenge/list/mine", {
       .get("http://localhost:8080/challenge/list/mine", {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
@@ -48,6 +50,13 @@ const MyChallenge = () => {
       });
     }
   };
+  // 입장하기 클릭
+  const EntranceClick = (challenge) => {
+    navigate(`/ChallengePage/${challenge.id}`, {
+      state: { challenge },
+    });
+  };
+
   // 날짜 형식
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -74,11 +83,10 @@ const MyChallenge = () => {
   return (
     <>
       <SSwiper
-        modules={[Navigation, Pagination, Scrollbar, A11y]}
-        spaceBetween={20}
-        slidesPerView={1}
-        navigation
-        scrollbar={{ draggable: true }}
+        effect={"cards"}
+        grabCursor={true}
+        modules={[EffectCards]}
+        className="mySwiper"
       >
         {myChallenges.map((challenge) => {
           const daysInProgress = getDaysInProgress(challenge.startDate);
@@ -94,10 +102,7 @@ const MyChallenge = () => {
                 <p id="dday">{daysInProgress}</p>
               </STopWrapper>
               <SMidWrapper>
-                <img
-                  src="https://github.com/Jinga02/Review/assets/110621233/e8edd4c4-dd18-42d8-904c-4a04c6618018"
-                  alt="예상이미지"
-                />
+                <img src={challenge.imgPath} alt="예상이미지" />
                 <p id="info">
                   {challenge.info.length > 150 ? (
                     <>{challenge.info.slice(0, 150) + "....."} </>

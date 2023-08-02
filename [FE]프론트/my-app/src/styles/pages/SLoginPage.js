@@ -13,7 +13,7 @@ export const SSpan = styled.span`
   margin: 20px 0;
   text-align: center;
   input {
-    width: 60%;
+    width: 200px;
     height: 50px;
     border-radius: 5px;
     font-size: 18px;
@@ -46,23 +46,31 @@ export const SMoveSignUp = styled(Link)`
 `;
 
 export const SKakaoLoginButton = styled.img`
-  width: 40%;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 5px;
   cursor: pointer;
-  margin-left: 10px;
+  margin: 10px;
 `;
 export const SNaverLoginButton = styled.img`
-  width: 40%;
+  width: 60px;
+  height: 60px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
+`;
+export const SGoogleButton = styled.img`
+  width: 50px;
   height: 50px;
   border-radius: 5px;
   cursor: pointer;
-  margin-right: 10px;
-  font-family: "Pretendard";
+  margin: 10px;
+  padding: 5px;
+  background-color: white;
 `;
+
 export const Error = styled.div`
   color: #e01e5a;
-
   text-align: center;
   font-weight: bold;
   font-family: "Pretendard";

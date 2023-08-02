@@ -12,6 +12,7 @@ import useInput from "../hooks/useInput";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import PopUp from "../component/PopUp";
+import Swal from "sweetalert2";
 
 const SignUp = () => {
   const [id, onChangeId] = useInput("");
@@ -27,7 +28,7 @@ const SignUp = () => {
       setMismatchError(e.target.value !== passwordCheck);
     },
     // 함수 기준 외부 변수만 deps[]에 작성
-    [passwordCheck],
+    [passwordCheck]
   );
 
   const onChangePasswordCheck = useCallback(
@@ -35,7 +36,7 @@ const SignUp = () => {
       setPasswordCheck(e.target.value);
       setMismatchError(e.target.value !== password);
     },
-    [password],
+    [password]
   );
   const [mismatchError, setMismatchError] = useState(false);
   // 가입 실패
@@ -53,7 +54,7 @@ const SignUp = () => {
         setSignUpError("");
         setSignUpSuccess(false);
         axios
-          .post("http://localhost:8080/api/auth/signup", {
+          .post("http://localhost:8080/auth/signup", {
             id,
             password,
             email,
@@ -63,7 +64,18 @@ const SignUp = () => {
             console.log(response);
             setSignUpSuccess(true);
             nav("/LoginPage");
-            return <PopUp type="success" title="회원가입 완료!" text="CRIT" />;
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "회원가입 완료!",
+              showConfirmButton: false,
+              timer: 1500,
+              // 먼지
+              // imageUrl: 'https://unsplash.it/400/200',
+              // imageWidth: 400,
+              // imageHeight: 200,
+              // imageAlt: 'Custom image',
+            });
           })
           .catch((error) => {
             console.log(error);
@@ -73,7 +85,7 @@ const SignUp = () => {
           .finally(() => {});
       }
     },
-    [email, nickname, password, passwordCheck],
+    [email, nickname, password, passwordCheck]
   );
 
   return (

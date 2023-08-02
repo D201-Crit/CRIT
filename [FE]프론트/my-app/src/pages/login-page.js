@@ -1,7 +1,10 @@
 import Login from "../component/user/Login";
-import SKakaoLoginButton from "../component/user/socialLogin/KakaoLogin";
-import SNaverLoginButton from "../component/user/socialLogin/NaverLogin";
+import KakaoLoginButton from "../component/user/socialLogin/KakaoLogin";
+import NaverLoginButton from "../component/user/socialLogin/NaverLogin";
+import GoogleLoginButton from "../component/user/socialLogin/GoogleLogin";
+
 import {
+  SGoogleButton,
   SLoginPageWrapper,
   SMoveSignUp,
   SSpan,
@@ -16,8 +19,9 @@ const LoginPage = () => {
         <SMoveSignUp to="/SignUpPage">회원가입</SMoveSignUp>
       </SSpan>
       <SSpan>
-        <SNaverLoginButton />
-        <SKakaoLoginButton />
+        <NaverLoginButton />
+        <KakaoLoginButton />
+        {/* <GoogleLoginButton /> */}
       </SSpan>
     </SLoginPageWrapper>
   );
