@@ -1,6 +1,8 @@
 package com.ssafy.crit.challenge.service;
 
 import com.ssafy.crit.auth.entity.User;
+import com.ssafy.crit.boards.entity.Classification;
+import com.ssafy.crit.boards.repository.ClassificationRepository;
 import com.ssafy.crit.challenge.dto.ChallengeCreateRequestDto;
 import com.ssafy.crit.challenge.entity.Challenge;
 import com.ssafy.crit.challenge.entity.ChallengeCategory;
@@ -42,11 +44,25 @@ public class ChallengeService {
     private final ChallengeRepository challengeRepository;
     private final ChallengeUserRepository challengeUserRepository;
     private final ChallengeCategoryRepository challengeCategoryRepository;
+    private final ClassificationRepository classificationRepository;
     private final IsCertRepository isCertRepository;
 
     public Challenge createChallenge(MultipartFile file, ChallengeCreateRequestDto challengeDto, User user) throws Exception {
+
         // 파일 저장 후
-        Challenge challenge = null;
+        ChallengeCategory category = getCategory(challengeDto);
+        Challenge.ChallengeBuilder challengeBuilder = Challenge.builder()
+                .name(challengeDto.getTitle())
+                .info(challengeDto.getIntroduce())
+                .challengeCategory(category)
+                .cert(challengeDto.getAuthentication())
+                .people(challengeDto.getMember())
+                .money(challengeDto.getMoney())
+                .startDate(challengeDto.getStartDate())
+                .endDate(challengeDto.getEndDate())
+                .startTime(LocalTime.of(challengeDto.getStartTime().getHour(), challengeDto.getStartTime().getMinute(), 0))
+                .endTime(LocalTime.of(challengeDto.getEndTime().getHour(), challengeDto.getEndTime().getMinute(), 0))
+                .createUser(user);
 
         if (file != null) { // 사진이 존재하는 경우
             if (!checkExtension(file)) throw new BadRequestException("잘못된 확장자입니다.");
@@ -63,51 +79,35 @@ public class ChallengeService {
             File saveFile = new File(projectPath, fileName);
 
             file.transferTo(saveFile);
-            ChallengeCategory category = getCategory(challengeDto);
-            challenge = Challenge.builder()
-                    .name(challengeDto.getTitle())
-                    .info(challengeDto.getIntroduce())
-                    .challengeCategory(category)
-                    .cert(challengeDto.getAuthentication())
-                    .people(challengeDto.getMember())
-                    .money(challengeDto.getMoney())
-                    .startDate(challengeDto.getStartDate())
-                    .endDate(challengeDto.getEndDate())
-                    .startTime(LocalTime.of(challengeDto.getStartTime().getHour(), challengeDto.getStartTime().getMinute(), 0))
-                    .endTime(LocalTime.of(challengeDto.getStartTime().getHour(), challengeDto.getStartTime().getMinute(), 0))
-                    .createUser(user)
+            challengeBuilder
                     .filePath(projectPath)
-                    .fileName(fileName)
-                    .build(); // 챌린지 생성
-
-        } else {
-            // 저장
-            ChallengeCategory category = getCategory(challengeDto);
-            challenge = Challenge.builder()
-                    .name(challengeDto.getTitle())
-                    .info(challengeDto.getIntroduce())
-                    .challengeCategory(category)
-                    .cert(challengeDto.getAuthentication())
-                    .people(challengeDto.getMember())
-                    .money(challengeDto.getMoney())
-                    .startDate(challengeDto.getStartDate())
-                    .endDate(challengeDto.getEndDate())
-                    .startTime(LocalTime.of(challengeDto.getStartTime().getHour(), challengeDto.getStartTime().getMinute(), 0))
-                    .endTime(LocalTime.of(challengeDto.getStartTime().getHour(), challengeDto.getStartTime().getMinute(), 0))
-                    .createUser(user)
-                    .build(); // 챌린지 생성
+                    .fileName(fileName);
         }
+
+        Challenge challenge = challengeBuilder.build();
 
 
         try {
             Challenge result = challengeRepository.saveAndFlush(challenge);
+
+            // 게시판 아이디
+            Classification classification = Classification.builder()
+                    .category("challenge_" + result.getId())
+                    .build(); // 챌린지 게시판 생성
+            Classification challengeBoard = classificationRepository.saveAndFlush(classification);
+
+            result.addBoard(challengeBoard);
+
+
             ChallengeUser challengeUser = ChallengeUser.createChallengeUser(result, user); // 생성자도 챌린지 참가
             challengeUserRepository.save(challengeUser);
+
+
             return result;
 
         } catch (Exception e) {
             log.info(e.getMessage());
-            throw new BadRequestException("챌린지 생성 실패");
+            throw new BadRequestException("챌린지 생성 실패 " + e.getMessage());
         }
 
     }

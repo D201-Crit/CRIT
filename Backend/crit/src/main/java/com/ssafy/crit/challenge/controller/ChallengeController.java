@@ -42,6 +42,7 @@ public class ChallengeController {
                                                             HttpServletRequest httpServletRequest) throws Exception {
         User user = getUser(httpServletRequest);
         challengeService.createChallenge(file, requestDto, user);
+
         return new ResponseEntity<>(new Response<>("success", "챌린지 만들기 성공!", "OK"), HttpStatus.OK);
     }
 
