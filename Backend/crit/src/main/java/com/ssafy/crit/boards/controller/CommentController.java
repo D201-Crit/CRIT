@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/boards/comments")
+@RequestMapping("/boards/comments")
 public class CommentController {
 
     private final CommentService commentService;

@@ -28,4 +28,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     // 찾기 메서드
     @Query("SELECT b FROM Board b WHERE b.title LIKE %:ti%")
     Page<Board> findByTitleContaining(@Param("ti") String ti, Pageable pageable);
+
+    Page<Board> findAllByClassification_Id(Pageable pageable, Long id);
 }

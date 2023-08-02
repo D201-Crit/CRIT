@@ -15,7 +15,7 @@ public class FileResponseDto {
 	private Long Id;
 	private String content;
 	private String userName;
-	private List<String> imageFiles; // This is now a list of filenames
+	private List<String> imageFiles;
 
 	@Builder
 	public FileResponseDto(Long id, String content, String userName, List<String> imageFiles) {
@@ -27,7 +27,6 @@ public class FileResponseDto {
 
 	@Builder
 	public static FileResponseDto toDto(Board feeds){
-		// Transform the list of UploadFile objects to a list of filenames
 		List<String> filenames = feeds.getUploadFiles().stream()
 			.map(UploadFile::getUploadFileName)
 			.collect(Collectors.toList());
@@ -35,8 +34,8 @@ public class FileResponseDto {
 		FileResponseDto fileResponseDto = new FileResponseDto(
 			feeds.getId(),
 			feeds.getContent(),
-			feeds.getUser().getId(), // Assume there is a method to get username in User class
-			filenames // Pass the list of filenames instead of UploadFile objects
+			feeds.getUser().getId(),
+			filenames
 		);
 		return fileResponseDto;
 	}
