@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { SChallengeImage } from "../../../styles/pages/SChallengePage";
 
 const ChallengeImage = ({ onChangeImage }) => {
