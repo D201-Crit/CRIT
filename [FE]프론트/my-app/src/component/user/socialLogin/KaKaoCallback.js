@@ -15,7 +15,7 @@ const KakaoCallback = () => {
   const kakaoLogin = () => {
     axios({
       method: "POST",
-      url: `http://localhost:8080/login/oauth2/code/${registrationId}?code=${code}&state=${state}`,
+      url: `http://localhost:8080/oauth/login/oauth2/code/${registrationId}?code=${code}&state=${state}`,
     })
       .then((res) => {
         console.log(res);
@@ -25,7 +25,7 @@ const KakaoCallback = () => {
             nickname: res.data.nickname,
             accessToken: res.data.accessToken,
             refreshToken: res.data.refreshToken,
-          }),
+          })
         );
         persistor.flush(); // 상태를 영구적으로 저장
         Swal.fire({
