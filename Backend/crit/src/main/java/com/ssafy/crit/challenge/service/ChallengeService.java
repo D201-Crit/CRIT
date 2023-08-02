@@ -106,6 +106,7 @@ public class ChallengeService {
             return result;
 
         } catch (Exception e) {
+            log.info(e.getMessage());
             throw new BadRequestException("챌린지 생성 실패");
         }
 
@@ -179,7 +180,7 @@ public class ChallengeService {
 
     // 확장자 확인
     public boolean checkExtension(MultipartFile file) {
-        String[] fileExtension = {"jpeg", "jpg", "png"}; // 체크할 확장자
+        String[] fileExtension = {"jpeg", "jpg", "png", "JPG", "JPEG", "PNG"}; // 체크할 확장자
         String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
         return Arrays.stream(fileExtension).anyMatch(extension::equals);
     }

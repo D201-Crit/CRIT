@@ -20,35 +20,35 @@ import java.util.stream.Collectors;
  */
 public class ChallengeListResponseDto {
 
-    private Long challengeId; // 챌린지 아이디
-    private String challengeName; // 챌린지 이름
-    private String challengeInfo; // 챌린지 정보
-    private Cert challengeCert; // 챌린지 인증 정보
-    private int challengePeople; // 챌린지 최대 인원
-    private int challengeCurPeople; // 현재 참여중인 챌린지 인원
-    private int challengeMoney; // 챌린지 입장 금액
-    private String challengeStartDate; // 챌린지 시작 일자
-    private String challengeEndDate; // 챌린지 종료 일자
-    private String challengeStartTime; // 챌린지 시작 시간
-    private String challengeEndTime; // 챌린지 종료 시간
-    private String challengeCreateUserId; // 챌린지 만든 사람
-    private List<String> challengeUserList; // 챌린지 참여 중인 사람
+    private Long id; // 챌린지 아이디
+    private String name; // 챌린지 이름
+    private String info; // 챌린지 정보
+    private Cert cert; // 챌린지 인증 정보
+    private int people; // 챌린지 최대 인원
+    private int curPeople; // 현재 참여중인 챌린지 인원
+    private int money; // 챌린지 입장 금액
+    private String startDate; // 챌린지 시작 일자
+    private String endDate; // 챌린지 종료 일자
+    private String startTime; // 챌린지 시작 시간
+    private String endTime; // 챌린지 종료 시간
+    private String createUserId; // 챌린지 만든 사람
+    private List<String> userList; // 챌린지 참여 중인 사람 닉네임
 
 
     public ChallengeListResponseDto(Challenge challenge) {
-        challengeId = challenge.getId();
-        challengeName = challenge.getName();
-        challengeInfo = challenge.getInfo();
-        challengeCert = challenge.getCert();
-        challengePeople = challenge.getPeople();
-        challengeCurPeople = challenge.getChallengeUserList().size();
-        challengeMoney = challenge.getMoney();
-        challengeStartDate = challenge.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        challengeEndDate = challenge.getEndDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        challengeStartTime = challenge.getStartTime().format(DateTimeFormatter.ofPattern("kk:mm"));
-        challengeEndTime = challenge.getEndTime().format(DateTimeFormatter.ofPattern("kk:mm"));
-        challengeCreateUserId = challenge.getCreateUser().getId();
-        challengeUserList = challenge.getChallengeUserList().stream()
-                .map(challengeUser -> { return challengeUser.getUser().getId(); }).collect(Collectors.toList());
+        id = challenge.getId();
+        name = challenge.getName();
+        info = challenge.getInfo();
+        cert = challenge.getCert();
+        people = challenge.getPeople();
+        curPeople = challenge.getChallengeUserList().size();
+        money = challenge.getMoney();
+        startDate = challenge.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        endDate = challenge.getEndDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        startTime = challenge.getStartTime().format(DateTimeFormatter.ofPattern("kk:mm"));
+        endTime = challenge.getEndTime().format(DateTimeFormatter.ofPattern("kk:mm"));
+        createUserId = challenge.getCreateUser().getId();
+        userList = challenge.getChallengeUserList().stream()
+                .map(challengeUser -> { return challengeUser.getUser().getNickname(); }).collect(Collectors.toList());
     }
 }
