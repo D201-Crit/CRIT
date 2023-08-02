@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/boards")
+@RequestMapping("/boards")
 public class BoardController {
 
     private final BoardService boardService;
