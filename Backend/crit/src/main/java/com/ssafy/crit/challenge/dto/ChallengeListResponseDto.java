@@ -32,6 +32,8 @@ public class ChallengeListResponseDto {
     private String startTime; // 챌린지 시작 시간
     private String endTime; // 챌린지 종료 시간
     private String createUserId; // 챌린지 만든 사람
+    private Long boardId; // 챌린지 보드에 해당하는 아이디
+    private String imgPath; // 챌린지 이미지 경로
     private List<String> userList; // 챌린지 참여 중인 사람 닉네임
 
 
@@ -48,6 +50,8 @@ public class ChallengeListResponseDto {
         startTime = challenge.getStartTime().format(DateTimeFormatter.ofPattern("kk:mm"));
         endTime = challenge.getEndTime().format(DateTimeFormatter.ofPattern("kk:mm"));
         createUserId = challenge.getCreateUser().getId();
+        boardId = challenge.getBoard().getId();
+        imgPath = challenge.getFilePath();
         userList = challenge.getChallengeUserList().stream()
                 .map(challengeUser -> { return challengeUser.getUser().getNickname(); }).collect(Collectors.toList());
     }

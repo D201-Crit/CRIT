@@ -1,5 +1,8 @@
 package com.ssafy.crit.challenge.service;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.boards.entity.Classification;
 import com.ssafy.crit.boards.repository.ClassificationRepository;
@@ -14,6 +17,7 @@ import com.ssafy.crit.challenge.repository.IsCertRepository;
 import com.ssafy.crit.common.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -41,13 +45,18 @@ import java.util.stream.Collectors;
  */
 public class ChallengeService {
 
+    private final AmazonS3Client amazonS3Client; // S3 서비스 이용을 위한 의존성 주입
     private final ChallengeRepository challengeRepository;
     private final ChallengeUserRepository challengeUserRepository;
     private final ChallengeCategoryRepository challengeCategoryRepository;
     private final ClassificationRepository classificationRepository;
     private final IsCertRepository isCertRepository;
 
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+
     public Challenge createChallenge(MultipartFile file, ChallengeCreateRequestDto challengeDto, User user) throws Exception {
+        String filePath = "challenge";
 
         // 파일 저장 후
         ChallengeCategory category = getCategory(challengeDto);
@@ -67,7 +76,6 @@ public class ChallengeService {
         if (file != null) { // 사진이 존재하는 경우
             if (!checkExtension(file)) throw new BadRequestException("잘못된 확장자입니다.");
             String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/challenge/"; // 리눅스
-//            String projectPath = "C:\\upload\\chalImg/";
             /*식별자 . 랜덤으로 이름 만들어줌*/
             UUID uuid = UUID.randomUUID();
             log.info("UUID = {}", uuid);
@@ -79,8 +87,12 @@ public class ChallengeService {
             File saveFile = new File(projectPath, fileName);
 
             file.transferTo(saveFile);
+
+            String uploadFileName = filePath + "/" + UUID.randomUUID() + saveFile.getName();   // S3에 저장된 파일 이름
+            String uploadImageUrl = putS3(saveFile, uploadFileName); // s3로 업로드
+
             challengeBuilder
-                    .filePath(projectPath)
+                    .filePath(uploadImageUrl)
                     .fileName(fileName);
         }
 
@@ -183,5 +195,20 @@ public class ChallengeService {
         String[] fileExtension = {"jpeg", "jpg", "png", "JPG", "JPEG", "PNG"}; // 체크할 확장자
         String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
         return Arrays.stream(fileExtension).anyMatch(extension::equals);
+    }
+
+    // 로컬에 저장된 이미지 지우기
+    private void removeNewFile(File targetFile) {
+        if (targetFile.delete()) {
+            System.out.println("File delete success");
+            return;
+        }
+        System.out.println("File delete fail");
+    }
+
+    // S3로 업로드
+    private String putS3(File uploadFile, String fileName) {
+        amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
+        return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 }
