@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class UploadUtil {
 
 	// @Value("${file.dir}")
-	private static String fileDir =  "C:\\files\\";
+	private static String fileDir =  "/Users/seunnng/Desktop/";
 
 	public NeedsUpload storeFile(MultipartFile multipartFile) throws IOException {
 		if (multipartFile.isEmpty()) {

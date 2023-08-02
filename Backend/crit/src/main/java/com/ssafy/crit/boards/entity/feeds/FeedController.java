@@ -1,6 +1,8 @@
 package com.ssafy.crit.boards.entity.feeds;
 
 
+import com.ssafy.crit.boards.entity.board.Board;
+import com.ssafy.crit.boards.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,6 +32,7 @@ public class FeedController {
 	private final FeedService feedService;
 	private final JwtProvider jwtProvider;
 	private final UserRepository userRepository;
+	private final BoardRepository boardRepository;
 
 
 	@PostMapping(value = "/create",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -46,7 +49,7 @@ public class FeedController {
 		return new Response<>("성공","피드 생성 실패","다시해보게나");
 	}
 
-	@GetMapping("/feed_id}")
+	@GetMapping("/{feed_id}")
 	public Response<?> getFeed(@PathVariable("feed_id") Long id){
 		return new Response<>("성공", "개별 피드 가져오기", feedService.getFeed(id));
 	}
@@ -57,7 +60,18 @@ public class FeedController {
 		return new Response<>("성공", "전체 피드 가져오기", feedService.getFeeds(pageable, user));
 	}
 
-	@DeleteMapping("/delete")
+	@DeleteMapping("/delete/{id}")
+	public Response<?> delete(@PathVariable("id") Long id, HttpServletRequest httpServletRequest){
+		User user = getUser(httpServletRequest);
+
+		Board board = boardRepository.findById(id).orElseThrow();
+		if(board.getUser().getId().equals(user.getId())){
+			return new Response<>("성공","피드 삭제 완료", feedService.delete(id));
+
+		}
+		return new Response<>("실패","피드 삭제 실패", null);
+
+	}
 
 
 	private User getUser(HttpServletRequest httpServletRequest) {

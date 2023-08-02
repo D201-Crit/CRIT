@@ -12,15 +12,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FileResponseDto {
 
-	private Long Id;
+	private Long id;
 	private String content;
+	private String classification;
 	private String userName;
 	private List<String> imageFiles;
 
-	@Builder
-	public FileResponseDto(Long id, String content, String userName, List<String> imageFiles) {
-		this.Id = id;
+	public FileResponseDto(Long id, String content, String classification, String userName, List<String> imageFiles) {
+		this.id = id;
 		this.content = content;
+		this.classification = classification;
 		this.userName = userName;
 		this.imageFiles = imageFiles;
 	}
@@ -34,11 +35,13 @@ public class FileResponseDto {
 		FileResponseDto fileResponseDto = new FileResponseDto(
 			board.getId(),
 			board.getContent(),
+				board.getClassification().getCategory(),
 			board.getUser().getId(),
 			filenames
 		);
 		return fileResponseDto;
 	}
+
 
 
 	public void setImageFiles(List<String> storeFileResult) {
@@ -47,6 +50,10 @@ public class FileResponseDto {
 
 	public void setUserName(String id) {
 		this.userName = id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 }
 
