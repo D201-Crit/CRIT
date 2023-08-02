@@ -1,5 +1,7 @@
 package com.ssafy.crit.boards.service;
 
+import java.util.Optional;
+
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.boards.entity.Classification;
@@ -30,8 +32,9 @@ public class BoardService {
 
 	//전체 게시물
 	@Transactional(readOnly = true)
-	public Page<BoardShowSortDto> getBoards(Pageable pageable) {
-		Page<Board> boards = boardRepository.findAll(pageable);
+	public Page<BoardShowSortDto> getBoards(Pageable pageable, Long id) {
+		Long ids = classificationRepository.findById(id).orElseThrow().getId();
+		Page<Board> boards = boardRepository.findAllByClassification_Id(pageable, ids);
 		return getBoardShowSortDtos(boards);
 	}
 

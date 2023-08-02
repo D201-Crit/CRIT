@@ -29,9 +29,9 @@ public class BoardController {
 
 
     // 전체 게시글 조회
-    @GetMapping
-    public Response getBoards(Pageable pageable) {
-        return new Response("성공", "전체 게시물 리턴", boardService.getBoards(pageable));
+    @GetMapping("whole/{boards_id}")
+    public Response getBoards(Pageable pageable,@PathVariable("boards_id") Long id) {
+        return new Response("성공", "전체 게시물 리턴", boardService.getBoards(pageable, id));
     }
 
 
