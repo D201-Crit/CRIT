@@ -16,30 +16,31 @@ import javax.servlet.http.HttpServletRequest;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.repository.UserRepository;
+import com.ssafy.crit.message.response.Response;
 
 @Slf4j
-@Controller
+@RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/feeds")
-public class UploadController {
+@RequestMapping("/feeds")
+public class FeedController {
 
-	private final FileService fileService;
+	private final FeedService feedService;
 	private final JwtProvider jwtProvider;
 	private final UserRepository userRepository;
 
 
-	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-	public ResponseEntity<FileResponseDto> create(@RequestPart(value="fileResponseDto") FileResponseDto fileResponseDto,
+	@PostMapping(value = "/create",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+	public Response<?> create(@RequestPart(value="fileResponseDto") FileResponseDto fileResponseDto,
 		@RequestPart(value="file") List<MultipartFile> multipartFiles,
 		HttpServletRequest httpServletRequest) throws Exception {
 
 		User user = getUser(httpServletRequest);
 
 		if(fileResponseDto.getUserName().equals(user.getId())) {
-			return ResponseEntity.status(HttpStatus.CREATED)
-				.body(fileService.storeFiles(fileResponseDto, multipartFiles));
+			return new Response<>("성공","피드 생성 성공",feedService.storeFiles(fileResponseDto, multipartFiles,user));
+
 		}
-		return null;
+		return new Response<>("성공","피드 생성 실패","다시해보게나");
 	}
 
 
