@@ -23,7 +23,6 @@ import com.ssafy.crit.auth.repository.UserRepository;
 @RequestMapping("/api/feeds")
 public class UploadController {
 
-	private final FeedsRepository feedsRepository;
 	private final FileService fileService;
 	private final JwtProvider jwtProvider;
 	private final UserRepository userRepository;
@@ -35,18 +34,11 @@ public class UploadController {
 		HttpServletRequest httpServletRequest) throws Exception {
 
 		User user = getUser(httpServletRequest);
-		// fileResponseDto.setUserName(user.getId()); // Set the user id
-		log.info("user = {} ", user);
-		log.info("fileResponseDto.getUserName() = {} ", fileResponseDto.getUserName());
 
 		if(fileResponseDto.getUserName().equals(user.getId())) {
-
-			log.info("=====================TRUE========================");
 			return ResponseEntity.status(HttpStatus.CREATED)
 				.body(fileService.storeFiles(fileResponseDto, multipartFiles));
 		}
-
-		log.info("=======================FALSE=========================");
 		return null;
 	}
 

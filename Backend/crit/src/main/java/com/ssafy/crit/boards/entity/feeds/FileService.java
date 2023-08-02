@@ -10,7 +10,7 @@ import java.util.List;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.auth.util.UploadUtil;
 import com.ssafy.crit.boards.entity.board.Board;
-
+import com.ssafy.crit.boards.repository.BoardRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FileService {
 
-	private final FeedsRepository feedsRepository;
 	private final UploadFileRepository uploadFileRepository;
 	private final UserRepository userRepository;
 	private final UploadUtil uploadUtil;
+	private final BoardRepository boardRepository;
 
 	public FileResponseDto storeFiles(FileResponseDto fileResponseDto,List<MultipartFile> multipartFiles) throws IOException {
 		List<String> storeFileResult = new ArrayList<>();
@@ -51,7 +51,7 @@ public class FileService {
 			.user(userRepository.findById(fileResponseDto.getUserName()).get())
 			.build();
 
-		feedsRepository.save(feeds);
+		boardRepository.save(feeds);
 
 		fileResponseDto.setImageFiles(storeFileResult);
 

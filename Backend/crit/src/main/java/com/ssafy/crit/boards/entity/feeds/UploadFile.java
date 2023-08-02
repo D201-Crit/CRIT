@@ -46,14 +46,4 @@ public class UploadFile extends BaseTimeEntity {
 		this.storeFileName = storeFileName;
 		this.storeFilePath = storeFilePath;
 	}
-
-	public UploadFile(String uploadFileName, String storeFileName, String storeFilePath) {
-		this.uploadFileName = uploadFileName;
-		this.storeFileName = storeFileName;
-		this.storeFilePath = storeFilePath;
-	}
-
-	public void setFeeds(Board board) {
-		this.board = board;
-	}
 }
