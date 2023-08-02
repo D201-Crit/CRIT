@@ -13,7 +13,7 @@ const CommunityBoard = () => {
 
   useEffect(() => {
     fetchBoards();
-  }, [boards]);
+  }, []); // 빈 의존성 배열을 사용하여 초기 렌더링 시에만 실행
 
   const fetchBoards = async () => {
     try {
@@ -44,12 +44,11 @@ const CommunityBoard = () => {
   return (
     <div>
       <div>
-        <h1>게시판</h1>
         <SHr/>
         <SEmpty/>
        {/* 각 classification에 해당하는 게시글을 분류하여 표시합니다. */}
        {topic.map((classification) => (
-          <BoardCard key={classification} classification={classification} boards={boards} />))}
+          <BoardCard key={classification} classification={classification} boards={boards}/>))}
       </div>
     </div>
   );

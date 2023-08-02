@@ -11,6 +11,8 @@ import Nav from "./component/nav/Nav";
 import KakaoCallback from "./component/user/socialLogin/KaKaoCallback";
 import ChallengePage from "./pages/challenge-page";
 import CommunityPage from "./pages/community-page";
+import CommunityArticleDetailPage from "./pages/community-article-detail-page";
+import CommunityBoardPage from "./pages/community-board-page";
 import DetailChallengePage from "./pages/detail-challenge-page";
 import IntroPage from "./pages/intro-page";
 import LoginPage from "./pages/login-page";
@@ -80,6 +82,10 @@ function AppRoutes() {
         <Route path="/ChallengePage" element={<ChallengePage />} />
         <Route path="/ChallengePage/:id" element={<DetailChallengePage />} />
         <Route path="/CommunityPage" element={<CommunityPage />} />
+        <Route path="/CommunityBoardPage/:id" element={<CommunityBoardPage/>}/>
+        <Route path="/CommunityBoardPage/:classification/:articleid" element={<CommunityArticleDetailPage/>}/>
+
+
         <Route path="/SignUpPage" element={<SignUpPage />} />
         <Route path="/LoginPage" element={<LoginPage />} />
         <Route path="/ProfilePage" element={<ProfilePage />} />
@@ -89,6 +95,7 @@ function AppRoutes() {
         <Route path="/PayCanclePage" element={<PayCanclePage />} />
         <Route path="/PayConflictPage" element={<PayConflictPage />} />
 
+        
 
       </Routes>
     </>

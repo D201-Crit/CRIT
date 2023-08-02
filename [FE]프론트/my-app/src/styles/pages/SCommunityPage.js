@@ -14,6 +14,12 @@ export const SHr = styled.hr`
   margin: 30px 0px -40px 0px;
 `;
 
+export const SHr2 = styled.hr`
+background: white;
+opacity : 30%;
+height:1px;
+border:0;
+`;
 export const SEmpty = styled.div`
 margin : 120px 0px 0px 0px;
 
@@ -72,7 +78,9 @@ export const SBoardCard = styled.div`
   border-radius: 10px;
   padding: 20px;
   margin: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 5px 10px -5px grey;
+
+  
 
   h1{
 
@@ -83,7 +91,6 @@ export const SBoardCard = styled.div`
 
     display: flex;
     justify-content: space-between;
-    /* 필요한 스타일 추가 */
   }
 
   .board-item p {
@@ -123,3 +130,16 @@ export const SBoardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
 `;
+
+export const SBoardArticleRow = styled.div`
+  display: flex;
+  display: block;
+  justify-content: space-between;
+`;
+
+export const SBoardArticleCol = styled.div`
+  display: block;
+  flex: 0 0 25%; /* 한 줄에 4개의 게시글이 보이도록 설정합니다. */
+  padding: 10px; /* 각 게시글 사이의 간격을 조정합니다. */
+`;
+
