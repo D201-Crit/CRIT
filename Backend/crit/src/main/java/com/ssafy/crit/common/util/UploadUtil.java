@@ -1,4 +1,4 @@
-package com.ssafy.crit.auth.util;
+package com.ssafy.crit.common.util;
 
 import java.io.File;
 import java.io.IOException;

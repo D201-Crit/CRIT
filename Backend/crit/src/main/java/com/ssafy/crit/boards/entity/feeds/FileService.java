@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import com.ssafy.crit.auth.repository.UserRepository;
-import com.ssafy.crit.auth.util.UploadUtil;
+import com.ssafy.crit.common.util.UploadUtil;
 import com.ssafy.crit.boards.entity.board.Board;
 import com.ssafy.crit.boards.repository.BoardRepository;
 

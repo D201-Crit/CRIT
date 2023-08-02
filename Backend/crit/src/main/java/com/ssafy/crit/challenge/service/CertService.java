@@ -6,6 +6,7 @@ import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.challenge.dto.CertImgRequestDto;
+import com.ssafy.crit.challenge.entity.Cert;
 import com.ssafy.crit.challenge.entity.Challenge;
 import com.ssafy.crit.challenge.entity.ChallengeUser;
 import com.ssafy.crit.challenge.entity.IsCert;
@@ -16,6 +17,7 @@ import com.ssafy.crit.common.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -27,6 +29,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,8 +49,12 @@ public class CertService {
     private final IsCertRepository isCertRepository;
 
     public IsCert imgCertification(CertImgRequestDto requestDto, User user, MultipartFile file) throws Exception {
+        if(!checkExtension(file)) throw new BadRequestException("이미지 형식이 아닙니다.");
+
         Challenge challenge = challengeRepository.findById(requestDto.getChallengeId()).orElseThrow(
                 () -> new BadRequestException("해당 챌린지를 찾을 수 없습니다."));
+
+        if(challenge.getCert() == Cert.WEBRTC) throw new BadRequestException("WEBRTC 인증만 가능합니다.");
 
         // 유저가 챌린지 참여중인지 확인
         ChallengeUser challengeUser = challengeUserRepository.findByChallengeAndUser(challenge, user).orElseThrow(
@@ -68,8 +75,8 @@ public class CertService {
 
         // 올바르게 올린경우 사진 저장
         /*우리의 프로젝트경로를 담아주게 된다 - 저장할 경로를 지정*/
-//        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\cert";
-        String projectPath = "C:\\upload\\cert/";
+        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\cert";
+//        String projectPath = "C:\\upload\\cert/";
 //        String projectPath = "/home/ubuntu/cert";
         log.info(projectPath);
         /*식별자 . 랜덤으로 이름 만들어줌*/
@@ -111,5 +118,12 @@ public class CertService {
                 () -> new BadRequestException("해당 챌린지에 참여 중이지 않습니다."));
 
         return isCertRepository.findAllByChallengeAndUser(challenge, user);
+    }
+
+    // 확장자 확인
+    public boolean checkExtension(MultipartFile file) {
+        String[] fileExtension = {"jpeg", "jpg", "png"}; // 체크할 확장자
+        String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
+        return Arrays.stream(fileExtension).anyMatch(extension::equals);
     }
 }

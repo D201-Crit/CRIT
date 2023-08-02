@@ -10,6 +10,7 @@ import com.ssafy.crit.challenge.service.ChallengeService;
 import com.ssafy.crit.message.response.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -106,7 +107,8 @@ public class ChallengeController {
         return new ResponseEntity<>(new Response<>("success",
                 "진행중인 챌린지 불러오기", challenges), HttpStatus.OK);
     }
-
+//    @GetMapping("/img/{challengeId}")
+//    public ResponseEntity<Response<InputStreamResource>> getChallengeImg(@PathVariable("challengeId") Long challengeId) throws Exception{}
 
     private User getUser(HttpServletRequest httpServletRequest) {
         String bearer = httpServletRequest.getHeader("Authorization").substring(7);
@@ -115,8 +117,11 @@ public class ChallengeController {
         User user = userRepository.findById(userId).orElseThrow(() -> {
             return new IllegalArgumentException("유저 ID를 찾을수 없습니다.");
         });
+
+
         return user;
     }
+
 
 
 }
