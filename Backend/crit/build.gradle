@@ -38,6 +38,8 @@ dependencies {
 
 //	implementation 'org.mariadb.jdbc:mariadb-java-client:2.4.1' // MariaDB 연결을 위한 의존성
 
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE' // AwsS3 관련 의존성
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'
