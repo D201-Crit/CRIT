@@ -22,7 +22,10 @@ import { useSelector } from "react-redux";
 
 const MyChallenge = () => {
   const user = useSelector((state) => state.users);
+  const location = useLocation();
+  const navigate = useNavigate();
   const [myChallenges, setMyChallenges] = useState([]);
+
   const getMyChallenge = () => {
     api
       .get("http://localhost:8080/challenge/list/mine", {
@@ -31,20 +34,16 @@ const MyChallenge = () => {
         },
       })
       .then((res) => {
-        console.log(res);
         setMyChallenges(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
-  const location = useLocation();
-  const navigate = useNavigate();
   // 상세보기 클릭
   const detailClick = (challenge) => {
     if (location.pathname === "/ChallengePage") {
-      navigate(`/ChallengePage/${challenge.challengeId}`, {
+      navigate(`/ChallengePage/${challenge.id}`, {
         state: { challenge },
       });
     }
@@ -81,54 +80,48 @@ const MyChallenge = () => {
         navigation
         scrollbar={{ draggable: true }}
       >
-        <ul>
-          {myChallenges.map((challenge) => {
-            const daysInProgress = getDaysInProgress(
-              challenge.challengeStartDate
-            );
+        {myChallenges.map((challenge) => {
+          const daysInProgress = getDaysInProgress(challenge.startDate);
 
-            return (
-              <SSwiperSlide key={challenge.challengeId}>
-                <li>
-                  <STopWrapper>
-                    <p id="name">{challenge.challengeName}</p>
-                    <p id="date">
-                      {formatDate(challenge.challengeStartDate)} ~{" "}
-                      {formatDate(challenge.challengeEndDate)}
-                    </p>
-                    <p id="dday">{daysInProgress}</p>
-                  </STopWrapper>
-                  <SMidWrapper>
-                    <img
-                      src="https://github.com/Jinga02/Review/assets/110621233/e8edd4c4-dd18-42d8-904c-4a04c6618018"
-                      alt="예상이미지"
-                    />
-                    <p id="info">
-                      {challenge.challengeInfo.length > 150 ? (
-                        <>{challenge.challengeInfo.slice(0, 150) + "....."} </>
-                      ) : (
-                        challenge.challengeInfo
-                      )}
-                    </p>
-                  </SMidWrapper>
-                  <SBotWrapper>
-                    <p id="people">{challenge.challengePeople}명 참여 중</p>
-                    <button id="enter">입장하기</button>
-                    <button
-                      id="detail"
-                      onClick={() => detailClick(challenge)} // 수정된 부분
-                    >
-                      {" "}
-                      {location.pathname === "/ChallengePage"
-                        ? "상세보기"
-                        : "참여내역"}
-                    </button>{" "}
-                  </SBotWrapper>
-                </li>
-              </SSwiperSlide>
-            );
-          })}
-        </ul>
+          return (
+            <SSwiperSlide key={challenge.id}>
+              <STopWrapper>
+                <p id="name">{challenge.name}</p>
+                <p id="date">
+                  {formatDate(challenge.startDate)} ~{" "}
+                  {formatDate(challenge.endDate)}
+                </p>
+                <p id="dday">{daysInProgress}</p>
+              </STopWrapper>
+              <SMidWrapper>
+                <img
+                  src="https://github.com/Jinga02/Review/assets/110621233/e8edd4c4-dd18-42d8-904c-4a04c6618018"
+                  alt="예상이미지"
+                />
+                <p id="info">
+                  {challenge.info.length > 150 ? (
+                    <>{challenge.info.slice(0, 150) + "....."} </>
+                  ) : (
+                    challenge.info
+                  )}
+                </p>
+              </SMidWrapper>
+              <SBotWrapper>
+                <p id="people">{challenge.userList.length}명 참여 중</p>
+                <button id="enter">입장하기</button>
+                <button
+                  id="detail"
+                  onClick={() => detailClick(challenge)} // 수정된 부분
+                >
+                  {" "}
+                  {location.pathname === "/ChallengePage"
+                    ? "상세보기"
+                    : "참여내역"}
+                </button>{" "}
+              </SBotWrapper>
+            </SSwiperSlide>
+          );
+        })}
       </SSwiper>
     </>
   );

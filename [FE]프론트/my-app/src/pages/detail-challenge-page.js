@@ -6,24 +6,16 @@ const DetailChallengePage = () => {
   return (
     <>
       <h1>Detail Challenge Page 입니다.</h1>
-      <h2 style={{ color: "white" }}>챌린지이름 : {challenge.challengeName}</h2>
+      <h2 style={{ color: "white" }}>챌린지이름 : {challenge.name}</h2>
+      <h2 style={{ color: "white" }}>챌린지 인증수단 : {challenge.cert}</h2>
+      <h2 style={{ color: "white" }}>챌린지 내용 : {challenge.info}</h2>
       <h2 style={{ color: "white" }}>
-        챌린지 인증수단 : {challenge.challengeCert}
+        챌린지 기간 : {challenge.startDate} ~ {challenge.endDate}
       </h2>
       <h2 style={{ color: "white" }}>
-        챌린지 내용 : {challenge.challengeInfo}
+        챌린지 시간 : {challenge.startTime} ~ {challenge.endTime}
       </h2>
-      <h2 style={{ color: "white" }}>
-        챌린지 기간 : {challenge.challengeStartDate} ~{" "}
-        {challenge.challengeEndDate}
-      </h2>
-      <h2 style={{ color: "white" }}>
-        챌린지 시간 : {challenge.challengeStartTime} ~{" "}
-        {challenge.challengeEndTime}
-      </h2>
-      <h2 style={{ color: "white" }}>
-        챌린지 참가자 : {challenge.challengeUserList}
-      </h2>
+      <h2 style={{ color: "white" }}>챌린지 참가자 : {challenge.userList}</h2>
     </>
   );
 };

@@ -2,15 +2,21 @@
 import {
   SCreateChallengeWrapper,
   SCreateChallengeButton,
+  customModalStyles,
 } from "../styles/pages/SChallengePage";
 
 // 나머지
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import MyChallenge from "../component/challenge/MyChallenge";
-import ChallengeBoard from "../component/challenge/ChallengeBoard";
+import { api } from ".././api/api";
 import CreateChallengeModal from "../component/challenge/CreateChallengeModal";
+import SearchChallenge from "../component/challenge/SearchChallenge";
+import { useSelector } from "react-redux";
+
 const ChallengePage = () => {
+  const user = useSelector((state) => state.users);
+  const [allChallenge, setAllChallenge] = useState([]);
   // 챌린지 만들기 모달
   const [isOpen, setIsOpen] = useState(false);
   const openModal = () => {
@@ -19,27 +25,26 @@ const ChallengePage = () => {
   const closeModal = () => {
     setIsOpen(false);
   };
-  const customModalStyles = {
-    content: {
-      backgroundColor: "rgba(22, 22, 22, 1)",
-      border: "0.5px solid white",
-      borderRadius: "6px",
-      boxShadow: "5px 5px 20px #ff007a",
-      margin: "auto",
-      width: "1100px",
-      height: "600px",
-      padding: "20px",
-      color: "black",
-    },
-    overlay: {
-      background: "rgba(0, 0, 0, 0.5)",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: "999",
-    },
+  // 모든 챌린지 불러오기
+  const getAllChallenge = () => {
+    api
+      .get("http://localhost:8080/challenge/list/all", {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      })
+      .then((res) => {
+        setAllChallenge(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
+  useEffect(() => {
+    getAllChallenge();
+  }, []);
+  console.log(allChallenge);
   return (
     <>
       <h1>챌린지</h1>
@@ -50,7 +55,7 @@ const ChallengePage = () => {
         </SCreateChallengeButton>
       </SCreateChallengeWrapper>
       <MyChallenge />
-      <ChallengeBoard />
+      <SearchChallenge allChallenge={allChallenge} />
       {/*  모달  */}
       <Modal
         style={customModalStyles}
