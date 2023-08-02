@@ -18,8 +18,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
+@NoArgsConstructor
 public class UploadFile extends BaseTimeEntity {
 
 	@Id
@@ -29,7 +29,7 @@ public class UploadFile extends BaseTimeEntity {
 
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "id")
+	@JoinColumn(name = "board_id")
 	private Board board;
 
 	private String userName;

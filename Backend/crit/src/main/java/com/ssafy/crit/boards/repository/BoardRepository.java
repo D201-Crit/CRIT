@@ -1,6 +1,7 @@
 package com.ssafy.crit.boards.repository;
 
 import com.ssafy.crit.auth.entity.User;
+import com.ssafy.crit.boards.entity.Classification;
 import com.ssafy.crit.boards.entity.board.Board;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +33,11 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     Page<Board> findAllByClassification_Id(Pageable pageable, Long id);
 
-    Page<Board> findByClassification (Pageable pageable, String classification);
+//    Page<Board> findByClassification (Pageable pageable, String classification);
+//
+//    Page<Board> findByClassificationAndAndUser(Pageable pageable, String classification, User user);
 
-    Page<Board> findByClassificationAndAndUser(Pageable pageable, String classification, User user);
+    Page<Board> findByClassification (Pageable pageable, Classification classification);
+
+    Page<Board> findByClassificationAndUser(Pageable pageable, Classification classification, User user);
 }

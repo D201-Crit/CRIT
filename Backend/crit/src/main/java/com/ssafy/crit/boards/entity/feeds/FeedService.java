@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,6 @@ import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.boards.entity.Classification;
 import com.ssafy.crit.boards.repository.ClassificationRepository;
-import com.ssafy.crit.boards.service.dto.BoardShowSortDto;
 import com.ssafy.crit.common.util.UploadUtil;
 import com.ssafy.crit.boards.entity.board.Board;
 import com.ssafy.crit.boards.repository.BoardRepository;
@@ -38,20 +36,39 @@ public class FeedService {
 	private final BoardRepository boardRepository;
 	private final ClassificationRepository classificationRepository;
 
-	public FileResponseDto storeFiles(FileResponseDto fileResponseDto,List<MultipartFile> multipartFiles, User user) throws IOException {
+	public FileResponseDto storeFiles(FileResponseDto fileResponseDto, List<MultipartFile> multipartFiles, User user) throws IOException {
+
+		Classification classification = classificationRepository.findByCategory(fileResponseDto.getClassification())
+				.orElseGet(() -> {
+					// Create and save a new Classification.
+					Classification newClassification = new Classification();
+					// Ensure that you're setting the Category here.
+					newClassification.setCategory(fileResponseDto.getClassification());
+					classificationRepository.save(newClassification);
+					return newClassification;
+				});
+
 		List<String> storeFileResult = new ArrayList<>();
+		Board board = Board.builder()
+				.id(fileResponseDto.getId())
+				.content(fileResponseDto.getContent())
+				.user(userRepository.findById(fileResponseDto.getUserName()).get())
+				.classification(classification)
+				.build();
+
+		boardRepository.save(board);
 
 		for (MultipartFile multipartFile : multipartFiles) {
 			if (!multipartFile.isEmpty()) {
-
 				UploadUtil.NeedsUpload needsUpload = uploadUtil.storeFile(multipartFile);
 
 				UploadFile uploadFile = UploadFile.builder()
-					.userName(user.getId())
-					.storeFilePath(needsUpload.getStorePath())
-					.uploadFileName(needsUpload.getOriginalName())
-					.storeFileName(needsUpload.getStoreName())
-					.build();
+						.board(board)
+						.userName(user.getId())
+						.storeFilePath(needsUpload.getStorePath())
+						.uploadFileName(needsUpload.getOriginalName())
+						.storeFileName(needsUpload.getStoreName())
+						.build();
 
 				uploadFileRepository.save(uploadFile);
 
@@ -59,32 +76,65 @@ public class FeedService {
 				storeFileResult.add(fullPath);
 			}
 		}
-		Board board = Board.builder()
-			.content(fileResponseDto.getContent())
-			.user(userRepository.findById(fileResponseDto.getUserName()).get())
-			.build();
 
-		boardRepository.save(board);
 
+
+		fileResponseDto.setId(board.getId());
 		fileResponseDto.setImageFiles(storeFileResult);
-
 		return fileResponseDto;
 	}
 
-	public Page<FileResponseDto> getFeeds(Pageable pageable, User user){
-		User referenceById = userRepository.getReferenceById(user.getId());
+//	public Page<FileResponseDto> getFeeds(Pageable pageable, User user){
+//		User referenceById = userRepository.getReferenceById(user.getId());
+//
+//		if(user.getId().equals(referenceById.getId())) {
+//			Optional<Classification> feeds = classificationRepository.findByCategory("Feeds");
+//			Page<Board> byClassification = boardRepository.findByClassificationAndAndUser(pageable, String.valueOf(feeds), user);
+//
+//			return getFileResponseDto(byClassification);
+//		}
+//		return null;
+//	}
+public Page<FileResponseDto> getFeeds(Pageable pageable, User user){
+	User referenceById = userRepository.getReferenceById(user.getId());
 
-		if(user.getId().equals(referenceById.getId())) {
-			Optional<Classification> feeds = classificationRepository.findByCategory("Feeds");
-			Page<Board> byClassification = boardRepository.findByClassificationAndAndUser(pageable, String.valueOf(feeds), user);
-
+	if(user.getId().equals(referenceById.getId())) {
+		Optional<Classification> feeds = classificationRepository.findByCategory("Feeds");
+		if(feeds.isPresent()) {
+			Page<Board> byClassification = boardRepository.findByClassificationAndUser(pageable, feeds.get(), user);
 			return getFileResponseDto(byClassification);
+		} else {
+			throw new RuntimeException("Classification 'Feeds' not found");
 		}
-		return null;
 	}
+	return null;
+}
 
 	public FileResponseDto getFeed( Long id){
 		Board board = boardRepository.findById(id).orElseThrow();
+		return FileResponseDto.toDto(board);
+	}
+
+	public String delete(Long id) {
+		Board board = boardRepository.findById(id).orElseThrow(() -> {
+			return new IllegalArgumentException("Board Id를 찾을 수 없습니다!");
+		});
+		boardRepository.deleteById(id);
+
+		return "성공";
+	}
+
+	public FileResponseDto update(Long id, FileResponseDto fileResponseDto){
+		Board board = boardRepository.findById(id).orElseThrow(() -> {
+			return new IllegalArgumentException("Board Id를 찾을 수 없습니다!");
+		});
+
+		User user = userRepository.findById(board.getUser().getId()).orElseThrow();
+
+		board.setFeedUpdate(fileResponseDto.getContent());
+
+		boardRepository.save(board);
+
 		return FileResponseDto.toDto(board);
 	}
 
@@ -96,6 +146,7 @@ public class FeedService {
 			}
 			return new FileResponseDto(board.getId(),
 				board.getContent(),
+				board.getClassification().getCategory(),
 				board.getUser().getId(),
 				board.getUploadFiles().stream()
 					.map(UploadFile::getUploadFileName).collect(Collectors.toList()));

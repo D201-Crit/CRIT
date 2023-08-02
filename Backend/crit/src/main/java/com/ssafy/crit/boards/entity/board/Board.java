@@ -26,9 +26,9 @@ public class Board extends BaseTimeEntity {
 
     private int views;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UploadFile> uploadFiles;
-
+    
     @ManyToOne
     @JoinColumn(name = "board")
     private Classification classification;
@@ -67,4 +67,7 @@ public class Board extends BaseTimeEntity {
         this.content = content;
     }
 
+    public void setFeedUpdate(String content) {
+        this.content = content;
+    }
 }
