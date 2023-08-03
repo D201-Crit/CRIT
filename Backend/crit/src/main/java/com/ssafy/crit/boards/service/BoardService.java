@@ -176,8 +176,9 @@ public class BoardService {
 					board.getTitle(),
 					board.getContent(),
 					board.getViews(),
-					board.getUser().getId().toString(),
-					board.getLikes().size());
+					board.getUser().getId(),
+					board.getLikes().size(),
+				board.getClassification().getCategory());
 		});
 	}
 }
