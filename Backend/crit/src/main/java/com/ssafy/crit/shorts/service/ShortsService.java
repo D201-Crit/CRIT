@@ -4,6 +4,7 @@ import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.common.s3.S3Uploader;
 import com.ssafy.crit.shorts.dto.HashTagDto;
+import com.ssafy.crit.shorts.dto.MainThumbnailDto;
 import com.ssafy.crit.shorts.dto.ShortsDto;
 import com.ssafy.crit.shorts.dto.ShortsResponseDto;
 import com.ssafy.crit.shorts.entity.HashTag;
@@ -43,7 +44,6 @@ public class ShortsService {
 
     private static final String shortsDirectory = "shorts";
     private static final String thumnailDirectory = "thumbnail";
-
 
 
     @Transactional
@@ -138,5 +138,31 @@ public class ShortsService {
         return shortsRepository.findById(id)
                 .map(ShortsDto::toDto)
                 .orElseThrow(() -> new RuntimeException("Shorts not found with id " + id));
+    }
+
+    public MainThumbnailDto getMainThumbnail() {
+        List<Shorts> shortsViewsDesc = shortsRepository.findAllByOrderByViewsDesc();
+        List<Shorts> shortsCreatedDateDesc = shortsRepository.findAllByOrderByCreatedDateDesc();
+
+        List<ShortsDto> sellectedViewShorts = shortsViewsDesc.stream()
+                .limit(10)
+                .map(ShortsDto::toDto)
+                .collect(Collectors.toList());
+        log.info("sellectedViewShorts" + sellectedViewShorts.size());
+
+        List<ShortsDto> sellectedCreatedShorts = shortsCreatedDateDesc.stream()
+                .limit(10)
+                .map(ShortsDto::toDto)
+                .collect(Collectors.toList());
+        log.info("sellectedCreatedDateShorts" + sellectedCreatedShorts.size());
+
+        MainThumbnailDto mainThumbnailDto = MainThumbnailDto.builder()
+                .thumbnailsByView(sellectedViewShorts)
+                .thumbnailsByDate(sellectedCreatedShorts)
+                .thumbnailsByLike(null)
+                .build();
+
+        return mainThumbnailDto;
+
     }
 }

@@ -3,6 +3,7 @@ package com.ssafy.crit.shorts.controller;
 
 import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.util.JwtUtil;
+import com.ssafy.crit.shorts.dto.MainThumbnailDto;
 import com.ssafy.crit.shorts.dto.ShortsDto;
 import com.ssafy.crit.shorts.dto.ShortsResponseDto;
 import com.ssafy.crit.shorts.service.ShortsService;
@@ -51,10 +52,11 @@ public class ShortsController {
         shortsService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
     // 최신순, 좋아요순, 조회순 -> 메인 페이지에 썸네일 이미지
-    @GetMapping("/thunbnail")
-    public ResponseEntity<String> getMainThumbnail() {
-        return ResponseEntity.ok("success");
+    @GetMapping("/thumbnail")
+    public ResponseEntity<MainThumbnailDto> getMainThumbnail() {
+        return ResponseEntity.ok(shortsService.getMainThumbnail());
     }
 
 

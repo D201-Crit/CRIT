@@ -18,6 +18,7 @@ public class ShortsDto {
     private String title;
     private String shortsUrl;
     private List<String> hashTagNames = new ArrayList<>();
+    private int views;
     private String content;
     private String shortsName;
     private String thumbnailUrl;
@@ -30,6 +31,7 @@ public class ShortsDto {
         shortsDto.setContent(shorts.getContent());
         shortsDto.setShortsName(shorts.getShortsName());
         shortsDto.setThumbnailUrl(shorts.getThumbnailUrl());
+        shortsDto.setViews(shortsDto.getViews());
 
         List<String> hashTagNames = shorts.getHashTags()
                 .stream()
