@@ -18,5 +18,4 @@ echo '컨테이너 삭제'
 docker rm crit_be
  
 echo '컨테이너 실행'
-docker run -p 8080:8080 --name crit_be --network ubuntu_default 
--d crit_be
+docker run -p 8080:8080 --name crit_be --network ubuntu_default -d crit_be
