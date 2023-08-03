@@ -1,5 +1,6 @@
 package com.ssafy.crit.auth.service;
 
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.ssafy.crit.auth.entity.Follow;
 import com.ssafy.crit.auth.entity.enumType.Grade;
 import com.ssafy.crit.auth.repository.FollowRepository;
@@ -10,10 +11,12 @@ import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.auth.entity.enumType.AuthProvider;
 import com.ssafy.crit.auth.entity.enumType.Role;
+import com.ssafy.crit.common.s3.S3Uploader;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,6 +41,12 @@ public class UserService {
     private final JwtProvider jwtProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final FollowRepository followRepository;
+    private final S3Uploader s3Uploader;
+
+    private final AmazonS3Client amazonS3Client;
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+
 
     public String signUp(SignUpRequestDto signUpRequestDto) throws Exception {
         if (userRepository.findById(signUpRequestDto.getId()).isPresent()) {
@@ -103,36 +112,18 @@ public class UserService {
 
 
     @Transactional
-    public UpdateProfilePictureDto updateProfilePictureDto(MultipartFile file, String userId) throws IOException {
+    public UpdateProfilePictureDto updateProfilePictureDto(MultipartFile multipartFile, String userId) throws IOException {
 
         User user = userRepository.findById(userId).orElseThrow();
 
-        /*우리의 프로젝트경로를 담아주게 된다 - 저장할 경로를 지정*/
-        String projectPath = "C:\\files/";
+        String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Boards");
 
-        /*식별자 . 랜덤으로 이름 만들어줌*/
-        UUID uuid = UUID.randomUUID();
-
-        /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
-        String ImageName = uuid + "_" + file.getOriginalFilename();
-
-        /*빈 껍데기 생성*/
-        /*File을 생성할건데, 이름은 "name" 으로할거고, projectPath 라는 경로에 담긴다는 뜻*/
-        File saveShorts = new File(projectPath, ImageName);
-
-        file.transferTo(saveShorts);
-
-        log.info("projectPath={}", projectPath);
-        log.info("Image={}", ImageName);
-
-        user.setProfileImageName(ImageName);
-        user.setProfileImageUrl(projectPath);
+        user.setProfileImageUrl(uploadFiles);
 
         userRepository.save(user);
         /*파일 저장*/
 
-        return new UpdateProfilePictureDto(user.getProfileImageUrl(), user.getProfileImageName());
-        // return null;
+        return new UpdateProfilePictureDto(user.getProfileImageUrl());
     }
 
     /*

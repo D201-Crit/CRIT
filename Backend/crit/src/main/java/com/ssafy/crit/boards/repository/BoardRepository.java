@@ -31,11 +31,8 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query("SELECT b FROM Board b WHERE b.title LIKE %:ti%")
     Page<Board> findByTitleContaining(@Param("ti") String ti, Pageable pageable);
 
-    Page<Board> findAllByClassification_Id(Pageable pageable, Long id);
-
-//    Page<Board> findByClassification (Pageable pageable, String classification);
-//
-//    Page<Board> findByClassificationAndAndUser(Pageable pageable, String classification, User user);
+    @Query("select b from Board b where b.classification.category = :category")
+    Page<Board> findAllByClassificationCategory(Pageable pageable, @Param("category") String category);
 
     Page<Board> findByClassification (Pageable pageable, Classification classification);
 
