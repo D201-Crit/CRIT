@@ -62,6 +62,12 @@ const SearchChallenge = (props) => {
           clickable: true,
         }}
         modules={[Grid, Pagination]}
+        // modules={[Navigation, Pagination, Scrollbar, A11y]}
+        // spaceBetween={20}
+        // slidesPerView={3}
+        // slidesPerColumn={2} // 세로 방향으로 2줄의 슬라이드가 보여짐
+        // navigation
+        // scrollbar={{ draggable: true }}
       >
         {renderChallenges.map((challenge) => {
           return (

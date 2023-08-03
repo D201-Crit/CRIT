@@ -16,7 +16,10 @@ const KakaoCallback = () => {
     axios({
       method: "POST",
       url: `http://localhost:8080/oauth/login/oauth2/code/${registrationId}?code=${code}&state=${state}`,
+<<<<<<< HEAD
       // url: `http://i9d201.p.ssafy.io/api/oauth/login/oauth2/code/${registrationId}?code=${code}&state=${state}`,
+=======
+>>>>>>> 21d2acdadde545da8cea79833f938cdb7143873d
     })
       .then((res) => {
         console.log(res);

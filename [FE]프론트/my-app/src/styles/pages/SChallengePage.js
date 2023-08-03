@@ -156,6 +156,15 @@ export const SSearchSwiper = styled(Swiper)`
   height: 600px;
   padding: 10px;
   border: none;
+  gap: 20px; // 수정: spaceBetween가 아닌 gap으로 변경
+  grid-template-columns: repeat(
+    3,
+    1fr
+  ); // 수정: slidesPerView가 아닌 grid-template-columns로 변경
+  grid-template-rows: repeat(
+    2,
+    1fr
+  ); // 수정: slidesPerColumn이 아닌 grid-template-rows로 변경
   .swiper-button-next::after,
   .swiper-button-prev::after {
     display: none;
