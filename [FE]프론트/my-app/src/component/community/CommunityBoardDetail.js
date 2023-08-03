@@ -35,18 +35,26 @@ const CommunityBoardDetail = ({ classification }) => {
   const fetchBoards = async () => {
     try {
       const response = await axios.get(
-        `${API_BASE_URL}?page=${page}&classification=${classification}`, // classification을 API 요청에 포함시킵니다.
+        `${API_BASE_URL}?page=${page}&classification=${classification}`,
         {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
           },
         }
       );
-      const fetchedBoards = response.data.data.content; // 서버에서 받아온 모든 게시글 배열
+      const fetchedBoards = response.data.data.content;
       if (Array.isArray(fetchedBoards)) {
-        setBoards(fetchedBoards); // 모든 게시글을 상태로 업데이트
+        // 모든 게시글을 상태로 업데이트하면서 liked 속성 추가
+        const boardsWithLiked = fetchedBoards.map((board) => ({
+          ...board,
+          liked: false, // 초기에는 좋아요가 되지 않은 상태로 설정
+        }));
+        setBoards(boardsWithLiked);
+  
         // classification에 따라 게시글을 필터링하여 filteredBoards 상태에 저장합니다.
-        const filteredBoards = fetchedBoards.filter((board) => board.classification === classification);
+        const filteredBoards = boardsWithLiked.filter(
+          (board) => board.classification === classification
+        );
         setFilteredBoards(filteredBoards);
       } else {
         setBoards([]);
@@ -57,6 +65,7 @@ const CommunityBoardDetail = ({ classification }) => {
       console.log('전체 게시글 조회 실패');
     }
   };
+
 
   const handleGoToDetail = (id) => {
     // 자세히 보기 버튼을 누를 때 해당 경로로 이동합니다.
@@ -87,6 +96,7 @@ const CommunityBoardDetail = ({ classification }) => {
     setNewBoard({
       ...newBoard,
       [name]: value,
+      classification: classification, // classification 값을 고정시킴
     });
   };
 
@@ -114,6 +124,8 @@ const CommunityBoardDetail = ({ classification }) => {
     }
   };
 
+
+  
   const handlePrevPage = () => {
     setPage((prevPage) => Math.max(prevPage - 1, 0));
   };
@@ -121,55 +133,46 @@ const CommunityBoardDetail = ({ classification }) => {
   const handleNextPage = () => {
     setPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
   };
-  const handleLikeClick = async (boardId) => {
-    try {
-      const response = await api.post(`${API_BASE_URL}/likes/${boardId}`, null, {
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-      });
-      // 좋아요 성공 시 서버에서 받은 데이터를 기반으로 해당 게시글에 좋아요를 표시하도록 업데이트합니다.
-      setBoards((prevBoards) =>
-        prevBoards.map((board) =>
-          board.id === boardId
-            ? {
-                ...board,
-                liked: true,
-                likesCount: response.data.data.likesCount,
-              }
-            : board
-        )
-      );
-    } catch (error) {
-      console.error(error);
-      console.log('게시글 좋아요 실패');
-    }
-  };
 
-  const handleUnlikeClick = async (boardId) => {
-    try {
-      const response = await api.delete(`${API_BASE_URL}/likes/${boardId}`, {
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-      });
-      // 좋아요 삭제 성공 시 서버에서 받은 데이터를 기반으로 해당 게시글에 좋아요를 해제하도록 업데이트합니다.
-      setBoards((prevBoards) =>
-        prevBoards.map((board) =>
-          board.id === boardId
-            ? {
-                ...board,
-                liked: false,
-                likesCount: response.data.data.likesCount,
-              }
-            : board
-        )
-      );
-    } catch (error) {
-      console.error(error);
-      console.log('게시글 좋아요 취소 실패');
-    }
-  };
+
+const handleLikeClick = async (boardId) => {
+  try {
+    await api.post(`${API_BASE_URL}/likes/${boardId}`, null, {
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    });
+    // 좋아요 성공 시 해당 게시글의 liked를 true로 업데이트
+    setBoards((boards) =>
+      boards.map((board) =>
+        board.id === boardId ? { ...board, liked: true } : board
+      )
+    );
+  } catch (error) {
+    console.error(error);
+    console.log('게시글 좋아요 실패');
+  }
+};
+
+const handleUnlikeClick = async (boardId) => {
+  try {
+    await api.delete(`${API_BASE_URL}/likes/${boardId}`, {
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    });
+    // 좋아요 삭제 성공 시 해당 게시글의 liked를 false로 업데이트
+    setBoards((boards) =>
+    boards.map((board) =>
+        board.id === boardId ? { ...board, liked: false } : board
+      )
+    );
+  } catch (error) {
+    console.error(error);
+    console.log('게시글 좋아요 취소 실패');
+  }
+};
+
   return (
     <div>
       <h1>{classification}</h1>
@@ -182,6 +185,8 @@ const CommunityBoardDetail = ({ classification }) => {
               <h3 onClick={() => handleGoToDetail(board.id)}>{board.title}</h3>
               <p>작성자: {board.writer}</p>
               <p>조회수: {board.views}</p>
+              <p>추천수: {board.likesCount}</p>
+              <p>{board.liked}</p>
             </SBoardArticleRow>
             <div>
               {board.liked ? (
@@ -211,15 +216,7 @@ const CommunityBoardDetail = ({ classification }) => {
                 <label>내용:</label>
                 <textarea name="content" value={newBoard.content} onChange={handleInputChange}></textarea>
               </div>
-              <div>
-                <label>게시판 종류:</label>
-                <select
-                  name="classification"
-                  value={boards.classification}
-                  onChange={handleInputChange}
-                >
-                </select>
-              </div>
+        
               <button type="submit">작성 완료</button>
             </form>
           </div>

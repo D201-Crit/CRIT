@@ -66,7 +66,7 @@ const CommunityBoard = () => {
         const response = await axios.post(`${API_BASE_URL}/write`, newBoard, {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
-          },
+          },  
         });
         setBoards([...boards, response.data.data]);
       }
