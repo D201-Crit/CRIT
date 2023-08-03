@@ -28,7 +28,6 @@ const MyChallenge = () => {
   const navigate = useNavigate();
   const [myChallenges, setMyChallenges] = useState([]);
 
-  const [check, setCheck] = useState(false);
   const getMyChallenge = () => {
     api
       // .get("https://i9d201.p.ssafy.io/api/challenge/list/mine", {
@@ -39,12 +38,19 @@ const MyChallenge = () => {
       })
       .then((res) => {
         setMyChallenges(res.data.data);
-        setCheck(!check);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+  // 시작일 기준 오름차순 정렬
+  const sortByStartDate = (a, b) => {
+    const startDateA = new Date(a.startDate);
+    const startDateB = new Date(b.startDate);
+    return startDateA - startDateB;
+  };
+  const sortedMyChallenges = myChallenges.sort(sortByStartDate);
+  console.log(sortedMyChallenges);
   // 상세보기 클릭
   const detailClick = (challenge) => {
     if (location.pathname === "/ChallengePage") {
@@ -82,10 +88,10 @@ const MyChallenge = () => {
 
   useEffect(() => {
     getMyChallenge();
-  }, [check]);
+  }, []);
   return (
     <>
-      {myChallenges.length === 0 ? (
+      {sortedMyChallenges.length === 0 ? (
         <SImg src="https://github.com/Jinga02/ChallengePJT/assets/110621233/8329c57e-d554-4956-803d-68508c07b007" />
       ) : (
         <SSwiper

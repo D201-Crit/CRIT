@@ -5,7 +5,7 @@ const JoinChallenge = ({ challenge }) => {
   const user = useSelector((state) => state.users);
   const entranceChallenge = () => {
     api
-      .post(`http://localhost:8080/challenge/join/${challenge.id}`, {
+      .post(`http://localhost:8080/challenge/join/${challenge.id}`, null, {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
         },

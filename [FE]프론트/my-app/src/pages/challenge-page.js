@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 const ChallengePage = () => {
   const user = useSelector((state) => state.users);
   const [allChallenge, setAllChallenge] = useState([]);
+
   // 챌린지 만들기 모달
   const [isOpen, setIsOpen] = useState(false);
   const openModal = () => {
