@@ -46,6 +46,12 @@ public class BoardService {
 		return getBoardShowSortDtos(boards);
 	}
 
+	@Transactional(readOnly = true)
+	public Page<BoardShowSortDto> getWholeBoards(Pageable pageable) {
+		Page<Board> boards = boardRepository.findAll(pageable);
+		return getBoardShowSortDtos(boards);
+	}
+
 	//개별 게시물 조회
 	@Transactional
 	public BoardDto getBoard(Long id) {
