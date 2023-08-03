@@ -29,7 +29,7 @@ const ChallengePage = () => {
   const getAllChallenge = () => {
     api
       // .get("https://i9d201.p.ssafy.io/api/challenge/list/all", {
-      .get("https://localhost:8080/challenge/list/all", {
+      .get("http://localhost:8080/challenge/list/all", {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
         },

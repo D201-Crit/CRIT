@@ -22,7 +22,7 @@ const SearchChallenge = (props) => {
   const [searchResult, setSearchResult] = useState([]);
   const onSearchChallenge = () => {
     const filterChallenge = allChallenge.filter((challenge) =>
-      challenge.name.includes(title)
+      challenge.name.includes(title),
     );
     setSearchResult(filterChallenge);
   };
@@ -71,12 +71,11 @@ const SearchChallenge = (props) => {
       >
         {renderChallenges.map((challenge) => {
           return (
-            <SSearchSwiperSlide
-              key={challenge.id}
-              onClick={() => detailClick(challenge)}
-            >
-              <img src={challenge.imgPath} alt="챌린지 이미지" />
+            <SSearchSwiperSlide key={challenge.id}>
+              {/* <h2>{challenge.}</h2> */}
               <h2>{challenge.name}</h2>
+              <img src={challenge.imgPath} alt="챌린지 이미지" />
+              <button onClick={() => detailClick(challenge)}>상세보기</button>
             </SSearchSwiperSlide>
           );
         })}

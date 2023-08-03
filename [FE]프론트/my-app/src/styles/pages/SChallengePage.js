@@ -136,16 +136,15 @@ export const SBotWrapper = styled.div`
 //  SearchChallenge
 export const SSearchChallengeWrapper = styled.div`
   position: absolute;
-  width: 820px;
+  width: 100%;
   top: 650px;
-  left: 25%;
   margin: 0 auto;
   text-align: center;
 `;
 export const SInput = styled.input`
   background-color: rgba(22, 22, 22, 0.599);
   color: white;
-  width: 780px;
+  width: 820px;
   border: none;
   border-radius: 10px;
   padding: 13px;
@@ -154,7 +153,7 @@ export const SInput = styled.input`
   font-family: "Pretendard";
 
   & + hr {
-    width: 780px;
+    width: 820px;
     border: none;
     height: 0.5px;
     background-color: #ccc;
@@ -163,21 +162,14 @@ export const SInput = styled.input`
 `;
 
 export const SSearchSwiper = styled(Swiper)`
-  // background-color: rgba(22, 22, 22, 0.599);
-  width: 948px;
+  width: 900px;
   margin: 30px auto 50px;
   height: 600px;
   padding: 10px;
   border: none;
-  gap: 20px; // 수정: spaceBetween가 아닌 gap으로 변경
-  grid-template-columns: repeat(
-    3,
-    1fr
-  ); // 수정: slidesPerView가 아닌 grid-template-columns로 변경
-  grid-template-rows: repeat(
-    2,
-    1fr
-  ); // 수정: slidesPerColumn이 아닌 grid-template-rows로 변경
+  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   .swiper-button-next::after,
   .swiper-button-prev::after {
     display: none;
@@ -186,17 +178,41 @@ export const SSearchSwiper = styled(Swiper)`
 
 export const SSearchSwiperSlide = styled(SwiperSlide)`
   text-align: center;
-  height: calc((100% - 30px) / 2) !important;
-  cursor: pointer;
+  height: calc((100% - 20px) / 2) !important;
+  transition: background-color 0.25s ease-in-out, box-shadow 0.5s ease-in-out; /* box-shadow에도 transition 추가 */
+  // webkit-tap-highlight-color: red;
+  margin: 5px;
+  border-radius: 10px;
+  &:hover {
+    background-color: rgba(28, 28, 28, 28);
+    box-shadow: 0px 0px 15px gray;
+  }
   img {
-    width: 150px;
-    height: 150px;
-    margin: 25px;
+    position: absolute;
+    top: 80px;
+    left: 30px;
+    width: 120px;
+    height: 120px;
+    margin: 10px 25px 0px 25px;
     border-radius: 10px;
   }
   h2 {
-    margin: -10px 0 0 0;
+    margin: 15px 0 0 0;
     font-size: 18px;
+  }
+  button {
+    position: absolute;
+    width: 150px;
+    height: 40px;
+    top: 230px;
+    left: 43px;
+    border: 0.2px solid gray;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: rgba(40, 40, 40, 40);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
   }
 `;
 

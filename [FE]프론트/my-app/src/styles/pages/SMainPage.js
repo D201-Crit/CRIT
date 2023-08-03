@@ -29,14 +29,15 @@ export const SEntranceSwiper = styled(Swiper)`
   top: 200px;
   padding: 0;
   font-family: "Pretendard";
+  box-shadow: 0px 0px 15px gray;
 `;
 export const SEntranceSlide = styled(SwiperSlide)`
   display: flex;
-  width: 400px;
+  width: 390px;
   height: 120px;
   list-style: none;
   background-color: rgba(22, 22, 22, 1);
-  border: 0.5px solid rgba(80, 80, 80);
+  // border: 0.5px solid rgba(80, 80, 80);
   border-radius: 10px;
   box-shadow: 0px 0px 15px gray;
   font-family: "Pretendard";

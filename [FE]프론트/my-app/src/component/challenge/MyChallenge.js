@@ -28,6 +28,7 @@ const MyChallenge = () => {
   const navigate = useNavigate();
   const [myChallenges, setMyChallenges] = useState([]);
 
+  const [check, setCheck] = useState(false);
   const getMyChallenge = () => {
     api
       // .get("https://i9d201.p.ssafy.io/api/challenge/list/mine", {
@@ -38,6 +39,7 @@ const MyChallenge = () => {
       })
       .then((res) => {
         setMyChallenges(res.data.data);
+        setCheck(!check);
       })
       .catch((err) => {
         console.log(err);
@@ -80,7 +82,7 @@ const MyChallenge = () => {
 
   useEffect(() => {
     getMyChallenge();
-  }, []);
+  }, [check]);
   return (
     <>
       {myChallenges.length === 0 ? (

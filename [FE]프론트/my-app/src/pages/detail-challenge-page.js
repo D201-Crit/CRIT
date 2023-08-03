@@ -1,4 +1,5 @@
 import { useLocation } from "react-router";
+import JoinChallenge from "../component/challenge/JoinChallenge";
 const DetailChallengePage = () => {
   const location = useLocation();
   const challenge = location.state.challenge;
@@ -16,6 +17,7 @@ const DetailChallengePage = () => {
         챌린지 시간 : {challenge.startTime} ~ {challenge.endTime}
       </h2>
       <h2 style={{ color: "white" }}>챌린지 참가자 : {challenge.userList}</h2>
+      <JoinChallenge challenge={challenge} />
     </>
   );
 };
