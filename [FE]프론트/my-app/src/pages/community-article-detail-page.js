@@ -1,43 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { api } from './../../src/api/api.js'
+
 import axios from 'axios';
 import { useSelector } from "react-redux";
 
-const API_BASE_URL = 'http://localhost:8080/api/boards';
+const API_BASE_URL = 'http://localhost:8080/boards';
 
 const CommunityArticleDetailPage = () => {
   const user = useSelector((state) => state.users);
   const { classification, articleid } = useParams();
-  const [board, setBoard] = useState({});
+  const [ articles, setArticles] = useState(null); // 게시글 목록 State
   const [newComment, setNewComment] = useState('');
   const [isEditOpen, setIsEditOpen] = useState(false); // 수정 폼 표시 여부
 
   useEffect(() => {
     // fetchBoard와 fetchComments를 순차적으로 실행하기 위해 async 함수를 사용
     const fetchData = async () => {
-      await fetchBoard();
+      await fetchArticles();
       await fetchComments();
     };
 
     fetchData();
   }, []);
 
-  const fetchBoard = async () => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/${articleid}`, {
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-      });
-      console.log(user.accessToken)
-      console.log(articleid)
-      const data = response.data.data;
-      setBoard({ ...data, comments: data.comments || [] });
-    } catch (error) {
-      console.error(error);
-      console.log('게시글 조회 실패');
-    }
+  const fetchArticles = async () => {
+    api.get(`${API_BASE_URL}/${articleid}`, {
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+    .then((res) => {
+      setArticles(res.data.data.content);
+      console.log(res);
+
+    })
+    .catch((error) => {
+      console.log(error)
+    })
   };
+
 
   const fetchComments = async () => {
     try {
@@ -46,7 +48,7 @@ const CommunityArticleDetailPage = () => {
           Authorization: `Bearer ${user.accessToken}`,
         },
       });
-      setBoard((prevBoard) => ({ ...prevBoard, comments: response.data.data || [] }));
+      setArticles((prevBoard) => ({ ...prevBoard, comments: response.data.data || [] }));
     } catch (error) {
       console.error(error);
       console.log('댓글 조회 실패');
@@ -74,7 +76,7 @@ const CommunityArticleDetailPage = () => {
       );
       if (response.data.success) {
         setNewComment('');
-        await fetchBoard();
+        await fetchArticles();
         await fetchComments();
       } else {
         console.log('댓글 작성 실패');
@@ -92,7 +94,7 @@ const CommunityArticleDetailPage = () => {
           Authorization: `Bearer ${user.accessToken}`,
         },
       });
-      await fetchBoard();
+      await fetchArticles();
       await fetchComments();
     } catch (error) {
       console.error(error);
@@ -105,7 +107,7 @@ const CommunityArticleDetailPage = () => {
   };
 
   const isMyBoard = () => {
-    return user.nickname === board.writer;
+    return user.nickname === articles.writer;
   };
 
   const handleEditClick = () => {
@@ -122,8 +124,8 @@ const CommunityArticleDetailPage = () => {
       const response = await axios.put(
         `${API_BASE_URL}/${articleid}`,
         {
-          title: board.title,
-          content: board.content,
+          title: articles.title,
+          content: articles.content,
         },
         {
           headers: {
@@ -131,7 +133,7 @@ const CommunityArticleDetailPage = () => {
           },
         }
       );
-      setBoard({ ...board, title: response.data.data.title, content: response.data.data.content });
+      setArticles({ ...articles, title: response.data.data.title, content: response.data.data.content });
       setIsEditOpen(false);
     } catch (error) {
       console.error(error);
@@ -155,65 +157,8 @@ const CommunityArticleDetailPage = () => {
 
   return (
     <div>
-      {Object.keys(board).length > 0 ? (
-        <div>
-          {isEditOpen ? (
-            // 수정 폼 표시
-            <form onSubmit={handleEditSubmit}>
-              <input
-                type="text"
-                value={board.title}
-                onChange={(e) => setBoard({ ...board, title: e.target.value })}
-              />
-              <textarea
-                value={board.content}
-                onChange={(e) => setBoard({ ...board, content: e.target.value })}
-              />
-              <button type="submit">수정 완료</button>
-              <button onClick={handleEditCancel}>수정 취소</button>
-            </form>
-          ) : (
-            <div>
-              <h3>{board.title}</h3>
-              <p>{board.content}</p>
-              <p>작성자: {board.writer}</p>
-              <p>조회수: {board.views}</p>
-              {isMyBoard() && (
-                <div>
-                  <button onClick={handleEditClick}>수정</button>
-                  <button onClick={handleDeleteClick}>삭제</button>
-                </div>
-              )}
-              <hr />
-              <h4>댓글 작성</h4>
-              <form onSubmit={handleCommentSubmit}>
-                <input
-                  type="text"
-                  value={newComment}
-                  onChange={handleCommentChange}
-                  placeholder="댓글을 입력하세요"
-                />
-                <button type="submit">작성</button>
-              </form>
-              <hr />
-              <div>
-                <h4>댓글 목록</h4>
-                {board.comments.map((comment) => (
-                  <div key={comment.id}>
-                    <p>{comment.content}</p>
-                    <p>작성자: {comment.writer}</p>
-                    {isMyComment(comment) && (
-                      <button onClick={() => handleCommentDelete(comment.id)}>삭제</button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div>작성된 댓글이 없습니다.</div>
-      )}
+        
+          
     </div>
   );
 };

@@ -16,7 +16,7 @@ const API_BASE_URL = 'http://localhost:8080/boards';
 const CommunityBoardDetail = ({classification}) => {
   const user = useSelector((state) => state.users);
   
-  const [articles, setArticles] = useState([]); // 게시글 목록 State
+  const [articles, setArticles] = useState(null); // 게시글 목록 State
   const [showmodal,setModal] = useState(false);
 
   // 초기 렌더링 시 실행
@@ -33,7 +33,8 @@ const CommunityBoardDetail = ({classification}) => {
       },
     })
     .then((res) => {
-      setArticles(res);
+      setArticles(res.data.data.content);
+      
       console.log(res);
 
     })
@@ -64,7 +65,8 @@ const CommunityBoardDetail = ({classification}) => {
       <SHr />
       <SEmpty />
       <SCommunityWrapper>
-        {articles.map((article) => (
+      {Array.isArray(articles) ? ( 
+        articles.map((article) => (
           <SBoardArticleCol key={article.id}>
             <SBoardArticleRow>
               <h3 onClick={() => goToArticleDetail(article.id)}>{article.title}</h3>
@@ -75,7 +77,9 @@ const CommunityBoardDetail = ({classification}) => {
             </SBoardArticleRow>
        
           </SBoardArticleCol>
-        ))}
+        ))) : (
+          <p>Loading...</p>
+        )}
         {/* <button onClick={handleCreatePost}>게시글 작성</button> */}
       </SCommunityWrapper>
 
