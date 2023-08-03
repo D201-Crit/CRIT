@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.ssafy.crit.auth.entity.User;
+import com.ssafy.crit.boards.entity.Classification;
 import com.ssafy.crit.boards.entity.board.Board;
 
 import lombok.AllArgsConstructor;
@@ -65,7 +66,7 @@ public class Challenge {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
-    private Board board; // 보드
+    private Classification board; // 보드
 
     @OneToMany(mappedBy = "challenge")
     private List<IsCert> isCerts; // 챌린지별 인증을 모아 두는곳?
@@ -80,7 +81,10 @@ public class Challenge {
     /**  */
     public void addChallengeUser(ChallengeUser user){
         this.challengeUserList.add(user);
+    }
 
+    public void addBoard(Classification classification){
+        this.board = classification;
     }
 
 }

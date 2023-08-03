@@ -1,6 +1,11 @@
 package com.ssafy.crit.challenge.service;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ssafy.crit.auth.entity.User;
+import com.ssafy.crit.boards.entity.Classification;
+import com.ssafy.crit.boards.repository.ClassificationRepository;
 import com.ssafy.crit.challenge.dto.ChallengeCreateRequestDto;
 import com.ssafy.crit.challenge.entity.Challenge;
 import com.ssafy.crit.challenge.entity.ChallengeCategory;
@@ -10,8 +15,10 @@ import com.ssafy.crit.challenge.repository.ChallengeRepository;
 import com.ssafy.crit.challenge.repository.ChallengeUserRepository;
 import com.ssafy.crit.challenge.repository.IsCertRepository;
 import com.ssafy.crit.common.exception.BadRequestException;
+import com.ssafy.crit.common.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -42,72 +49,63 @@ public class ChallengeService {
     private final ChallengeRepository challengeRepository;
     private final ChallengeUserRepository challengeUserRepository;
     private final ChallengeCategoryRepository challengeCategoryRepository;
+    private final ClassificationRepository classificationRepository;
     private final IsCertRepository isCertRepository;
+    private final S3Uploader s3Uploader;
+
 
     public Challenge createChallenge(MultipartFile file, ChallengeCreateRequestDto challengeDto, User user) throws Exception {
+        String filePath = "challenge";
+
         // 파일 저장 후
-        Challenge challenge = null;
+        ChallengeCategory category = getCategory(challengeDto);
+        Challenge.ChallengeBuilder challengeBuilder = Challenge.builder()
+                .name(challengeDto.getTitle())
+                .info(challengeDto.getIntroduce())
+                .challengeCategory(category)
+                .cert(challengeDto.getAuthentication())
+                .people(challengeDto.getMember())
+                .money(challengeDto.getMoney())
+                .startDate(challengeDto.getStartDate())
+                .endDate(challengeDto.getEndDate())
+                .startTime(LocalTime.of(challengeDto.getStartTime().getHour(), challengeDto.getStartTime().getMinute(), 0))
+                .endTime(LocalTime.of(challengeDto.getEndTime().getHour(), challengeDto.getEndTime().getMinute(), 0))
+                .createUser(user);
 
         if (file != null) { // 사진이 존재하는 경우
             if (!checkExtension(file)) throw new BadRequestException("잘못된 확장자입니다.");
-            String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/challenge/"; // 리눅스
-//            String projectPath = "C:\\upload\\chalImg/";
-            /*식별자 . 랜덤으로 이름 만들어줌*/
-            UUID uuid = UUID.randomUUID();
-            log.info("UUID = {}", uuid);
-            /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
-            String fileName = uuid + "_" + file.getOriginalFilename();
-            log.info("fileName = {}", fileName);
-            /*빈 껍데기 생성*/
-            /*File을 생성할건데, 이름은 "name" 으로할거고, projectPath 라는 경로에 담긴다는 뜻*/
-            File saveFile = new File(projectPath, fileName);
 
-            file.transferTo(saveFile);
-            ChallengeCategory category = getCategory(challengeDto);
-            challenge = Challenge.builder()
-                    .name(challengeDto.getTitle())
-                    .info(challengeDto.getIntroduce())
-                    .challengeCategory(category)
-                    .cert(challengeDto.getAuthentication())
-                    .people(challengeDto.getMember())
-                    .money(challengeDto.getMoney())
-                    .startDate(challengeDto.getStartDate())
-                    .endDate(challengeDto.getEndDate())
-                    .startTime(LocalTime.of(challengeDto.getStartTime().getHour(), challengeDto.getStartTime().getMinute(), 0))
-                    .endTime(LocalTime.of(challengeDto.getStartTime().getHour(), challengeDto.getStartTime().getMinute(), 0))
-                    .createUser(user)
-                    .filePath(projectPath)
-                    .fileName(fileName)
-                    .build(); // 챌린지 생성
+            String uploadImageUrl = s3Uploader.uploadFiles(file, "challenge");
 
-        } else {
-            // 저장
-            ChallengeCategory category = getCategory(challengeDto);
-            challenge = Challenge.builder()
-                    .name(challengeDto.getTitle())
-                    .info(challengeDto.getIntroduce())
-                    .challengeCategory(category)
-                    .cert(challengeDto.getAuthentication())
-                    .people(challengeDto.getMember())
-                    .money(challengeDto.getMoney())
-                    .startDate(challengeDto.getStartDate())
-                    .endDate(challengeDto.getEndDate())
-                    .startTime(LocalTime.of(challengeDto.getStartTime().getHour(), challengeDto.getStartTime().getMinute(), 0))
-                    .endTime(LocalTime.of(challengeDto.getStartTime().getHour(), challengeDto.getStartTime().getMinute(), 0))
-                    .createUser(user)
-                    .build(); // 챌린지 생성
+
+            challengeBuilder
+                    .filePath(uploadImageUrl);
         }
+
+        Challenge challenge = challengeBuilder.build();
 
 
         try {
             Challenge result = challengeRepository.saveAndFlush(challenge);
+
+            // 게시판 아이디
+            Classification classification = Classification.builder()
+                    .category("challenge_" + result.getId())
+                    .build(); // 챌린지 게시판 생성
+            Classification challengeBoard = classificationRepository.saveAndFlush(classification);
+
+            result.addBoard(challengeBoard);
+
+
             ChallengeUser challengeUser = ChallengeUser.createChallengeUser(result, user); // 생성자도 챌린지 참가
             challengeUserRepository.save(challengeUser);
+
+
             return result;
 
         } catch (Exception e) {
             log.info(e.getMessage());
-            throw new BadRequestException("챌린지 생성 실패");
+            throw new BadRequestException("챌린지 생성 실패 " + e.getMessage());
         }
 
     }
@@ -184,4 +182,14 @@ public class ChallengeService {
         String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
         return Arrays.stream(fileExtension).anyMatch(extension::equals);
     }
+
+    // 로컬에 저장된 이미지 지우기
+    private void removeNewFile(File targetFile) {
+        if (targetFile.delete()) {
+            System.out.println("File delete success");
+            return;
+        }
+        System.out.println("File delete fail");
+    }
+
 }

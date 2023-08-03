@@ -1,9 +1,5 @@
 package com.ssafy.crit.challenge.service;
 
-import com.drew.imaging.ImageMetadataReader;
-import com.drew.metadata.Directory;
-import com.drew.metadata.Metadata;
-import com.drew.metadata.Tag;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.challenge.dto.CertImgRequestDto;
 import com.ssafy.crit.challenge.entity.Cert;
@@ -16,33 +12,32 @@ import com.ssafy.crit.challenge.repository.IsCertRepository;
 import com.ssafy.crit.common.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.FileTime;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-@Service
-@Transactional
-@RequiredArgsConstructor
-@Slf4j
 /**
  * 230801 조경호
  * 인증 서비스
  * */
 
-
+@Service
+@Transactional
+@RequiredArgsConstructor
+@Slf4j
 public class CertService {
     private final ChallengeRepository challengeRepository;
     private final ChallengeUserRepository challengeUserRepository;
@@ -96,8 +91,7 @@ public class CertService {
         IsCert isCert = IsCert.builder()
                 .certTime(LocalDateTime.now())
                 .isCert(true)
-                .filepath(projectPath)
-                .filename(fileName)
+                .filePath(projectPath)
                 .challenge(challenge)
                 .user(user)
                 .build();
@@ -109,6 +103,7 @@ public class CertService {
     }
 
 
+
     public List<IsCert> getIsCertList(Long challengeId, User user) {
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(
                 () -> new BadRequestException("해당 챌린지를 찾을 수 없습니다."));
@@ -118,6 +113,33 @@ public class CertService {
                 () -> new BadRequestException("해당 챌린지에 참여 중이지 않습니다."));
 
         return isCertRepository.findAllByChallengeAndUser(challenge, user);
+    }
+
+
+    // 날마다 챌린지 인증을 넣기
+    @Transactional(propagation= Propagation.REQUIRES_NEW)
+    @Scheduled(cron = "0 * * * * *")
+    public void dailyInsertionIsCert() throws Exception {
+        log.info("Working Scheduling");
+        List<Challenge> allOngoingChallenge = challengeRepository.findAllOngoingChallenge(LocalDate.now());
+        List<IsCert> insertedIsCert = new ArrayList<>();
+        for(Challenge challenge : allOngoingChallenge){
+            log.info("challengeId : {}", challenge.getId());
+
+            challenge.getChallengeUserList().forEach(challengeUser -> {
+                User user = challengeUser.getUser();
+
+                IsCert isCert = IsCert.builder()
+                        .challenge(challenge)
+                        .isCert(false)
+                        .user(user)
+                        .build();
+
+                insertedIsCert.add(isCert);
+            });
+        }
+
+        isCertRepository.saveAllAndFlush(insertedIsCert);
     }
 
     // 확장자 확인

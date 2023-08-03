@@ -13,11 +13,11 @@ spring:
     multipart:
       max-file-size: 300MB
       max-request-size: 300MB
-#  datasource:
-#    url: jdbc:h2:tcp://localhost/~/critt
-#    username: sa
-#    password:
-#    driver-class-name: org.h2.Driver
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/critt
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
   main:
     allow-circular-references: true
 
@@ -25,12 +25,12 @@ spring:
     include: db
 
   jpa:
-#    hibernate:
-#      ddl-auto: create #create update none
-    show-sql: true
+    hibernate:
+      ddl-auto: create #create update none
+    show-sql: false
     properties:
       hibernate:
-        show_sql: true
+        show_sql: false
         format_sql: true
 
 
