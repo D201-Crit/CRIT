@@ -17,7 +17,7 @@ const CommunityBoard = () => {
 
   const fetchBoards = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}`, {
+      const response = await axios.get(`${API_BASE_URL}/whole`, {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
         },
@@ -34,6 +34,7 @@ const CommunityBoard = () => {
         setTopic(fetchedTopics);
       } else {
         setBoards([]);
+        setTopic(fetchedTopics);
       }
     } catch (error) {
       console.error(error);
@@ -50,6 +51,9 @@ const CommunityBoard = () => {
        {topic.map((classification) => (
           <BoardCard key={classification} classification={classification} boards={boards}/>))}
       </div>
+          
+
+      
     </div>
   );
 };
