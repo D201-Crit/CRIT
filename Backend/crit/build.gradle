@@ -38,6 +38,8 @@ dependencies {
 
 	implementation 'org.mariadb.jdbc:mariadb-java-client:2.4.1' // MariaDB 연결을 위한 의존성
 
+	implementation group: 'p6spy', name: 'p6spy', version: '3.9.1' // sql 보려고 의존성 
+
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE' // AwsS3 관련 의존성
 
 	compileOnly 'org.projectlombok:lombok'

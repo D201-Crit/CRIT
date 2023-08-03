@@ -10,6 +10,7 @@ import com.ssafy.crit.challenge.entity.IsCert;
 import com.ssafy.crit.challenge.service.CertService;
 import com.ssafy.crit.message.response.Response;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 @RequestMapping("/cert")
 public class CertController {
     private final CertService certService;
@@ -46,6 +48,7 @@ public class CertController {
     public ResponseEntity<Response<List<IsCertResponseDto>>> getCertifcation(@PathVariable("challengeId") Long challengeId, HttpServletRequest httpServletRequest) throws Exception{
         User user = getUser(httpServletRequest);
         List<IsCert> isCertList = certService.getIsCertList(challengeId, user);
+        log.info("IsCert List : {}", isCertList);
         List<IsCertResponseDto> result = isCertList.stream().map(isCert -> new IsCertResponseDto(isCert)).collect(Collectors.toList());
         return new ResponseEntity<>(new Response<>("success", "인증 목록 반환", result), HttpStatus.OK);
     }

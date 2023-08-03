@@ -15,6 +15,7 @@ import com.ssafy.crit.challenge.repository.ChallengeRepository;
 import com.ssafy.crit.challenge.repository.ChallengeUserRepository;
 import com.ssafy.crit.challenge.repository.IsCertRepository;
 import com.ssafy.crit.common.exception.BadRequestException;
+import com.ssafy.crit.common.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,15 +46,13 @@ import java.util.stream.Collectors;
  */
 public class ChallengeService {
 
-    private final AmazonS3Client amazonS3Client; // S3 서비스 이용을 위한 의존성 주입
     private final ChallengeRepository challengeRepository;
     private final ChallengeUserRepository challengeUserRepository;
     private final ChallengeCategoryRepository challengeCategoryRepository;
     private final ClassificationRepository classificationRepository;
     private final IsCertRepository isCertRepository;
+    private final S3Uploader s3Uploader;
 
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
 
     public Challenge createChallenge(MultipartFile file, ChallengeCreateRequestDto challengeDto, User user) throws Exception {
         String filePath = "challenge";
@@ -75,25 +74,12 @@ public class ChallengeService {
 
         if (file != null) { // 사진이 존재하는 경우
             if (!checkExtension(file)) throw new BadRequestException("잘못된 확장자입니다.");
-            String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/challenge/"; // 리눅스
-            /*식별자 . 랜덤으로 이름 만들어줌*/
-            UUID uuid = UUID.randomUUID();
-            log.info("UUID = {}", uuid);
-            /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
-            String fileName = uuid + "_" + file.getOriginalFilename();
-            log.info("fileName = {}", fileName);
-            /*빈 껍데기 생성*/
-            /*File을 생성할건데, 이름은 "name" 으로할거고, projectPath 라는 경로에 담긴다는 뜻*/
-            File saveFile = new File(projectPath, fileName);
 
-            file.transferTo(saveFile);
+            String uploadImageUrl = s3Uploader.uploadFiles(file, "challenge");
 
-            String uploadFileName = filePath + "/" + UUID.randomUUID() + saveFile.getName();   // S3에 저장된 파일 이름
-            String uploadImageUrl = putS3(saveFile, uploadFileName); // s3로 업로드
 
             challengeBuilder
-                    .filePath(uploadImageUrl)
-                    .fileName(fileName);
+                    .filePath(uploadImageUrl);
         }
 
         Challenge challenge = challengeBuilder.build();
@@ -206,9 +192,4 @@ public class ChallengeService {
         System.out.println("File delete fail");
     }
 
-    // S3로 업로드
-    private String putS3(File uploadFile, String fileName) {
-        amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
-        return amazonS3Client.getUrl(bucket, fileName).toString();
-    }
 }

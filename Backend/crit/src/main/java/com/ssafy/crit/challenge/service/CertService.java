@@ -131,6 +131,7 @@ public class CertService {
 
                 IsCert isCert = IsCert.builder()
                         .challenge(challenge)
+                        .isCert(false)
                         .user(user)
                         .build();
 
