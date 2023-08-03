@@ -58,17 +58,14 @@ public class RoomController {
 
     // 방 토큰 얻기
     @PostMapping("/sessions/{sessionId}/connections")
-    public ResponseEntity<String> createConnection(@PathVariable("sessionId") String sessionId,
-                                                   @RequestBody(required = false) Map<String, Object> params)
+    public ResponseEntity<Response<String>> createConnection(@PathVariable("sessionId") String sessionId,
+                                                   @RequestBody(required = false) Map<String, Object> params, HttpServletRequest httpServletRequest)
             throws Exception {
-        Session session = openVidu.getActiveSession(sessionId);
-        if (session == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
-        Connection connection = session.createConnection(properties);
-        return new ResponseEntity<>(connection.getToken(), HttpStatus.OK);
+        User user = userTokenUtil.getUser(httpServletRequest);
+        String token = roomService.createConnection(user, openVidu, sessionId, params);
+        
+        return new ResponseEntity<>(new Response<>("success", "커넥션 맺기 성공", token), HttpStatus.OK);
+        // 토큰 반환
     }
 
 
