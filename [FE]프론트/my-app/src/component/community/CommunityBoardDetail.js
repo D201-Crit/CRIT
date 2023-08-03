@@ -109,6 +109,7 @@ const CommunityBoardDetail = ({ classification }) => {
         },
       });
       // 새로운 게시글 작성 성공 시, 모달 닫기 및 게시글 목록에 추가
+      fetchBoards();
       setShowModal(false);
       setBoards([...boards, response.data.data]);
       // 입력 폼 초기화
