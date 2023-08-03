@@ -1,3 +1,10 @@
-
-./src/main/resources/application.yml
-./src/main/resources/application.properties
+.idea
+.git
+.gitignore
+.dockerignore
+Dockerfile
+*.md
+*.sh
+*.yml
+*.properties
+scripts
