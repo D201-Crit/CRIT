@@ -249,41 +249,36 @@ export const SChallengeImage = styled.div`
 
   div {
     position: absolute;
-    width: 140px;
-    height: 140px;
+    width: 180px;
+    height: 180px;
     top: 95px;
-    background: #d9d9d9;
+    background: white;
     border-radius: 50px;
   }
   label {
     position: absolute;
-    top: 90px;
+    top: 95px;
     left: 300px;
-    font-size: 25px;
+    font-size: 30px;
     width: 300px;
   }
   img {
     position: absolute;
-    width: 140px;
-    height: 140px;
-    top: 95px;
+    width: 180px;
+    height: 180px;
+    top: px;
   }
   input {
     position: absolute;
-    top: 130px;
+    top: 140px;
     left: 300px;
+    font-size: 20px;
     font-weight: 500;
     font-family: "Pretendard";
   }
 `;
 
-export const SInfoChallenge = styled.div`
-  ${
-    "" /* position: absolute;
-  top: 300px;
-  height: 450px; */
-  }
-`;
+export const SInfoChallenge = styled.div``;
 
 export const STextArea = styled.textarea`
   position: absolute;
@@ -293,7 +288,7 @@ export const STextArea = styled.textarea`
   width: 482px;
   height: 120px;
   font-size: 16px;
-  top: 220px;
+  top: 270px;
   color: white;
   margin: 30px 0 20px 0;
   padding: 15px;
@@ -320,7 +315,7 @@ export const SSelectChallengeWrapper = styled.div`
   padding: 0 20px;
   margin: 0 0 20px 0;
   font-weight: 440;
-  top: 410px;
+  top: 460px;
   div {
     margin: 20px 0;
   }
@@ -345,7 +340,7 @@ export const SChallengeTimeWrapper = styled.div`
   background-color: rgb(40, 40, 40);
   font-weight: 440;
   font-family: "Pretendard";
-  top: 565px;
+  top: 615px;
   h4 {
     margin: 10px 0 15px 0;
   }
@@ -369,7 +364,7 @@ export const SAuthenticationMethodWrapper = styled.div`
   position: absolute;
   bottom: 302px;
   left: 332px;
-  top: 410px;
+  top: 460px;
   width: 210px;
   height: 145px;
   border: 0.5px solid gray;
@@ -395,7 +390,7 @@ export const SAuthenticationMethodWrapper = styled.div`
 export const SMemberWrapper = styled.div`
   font-family: "Pretendard";
   position: absolute;
-  top: 565px;
+  top: 615px;
   left: 332px;
   width: 210px;
   height: 145px;

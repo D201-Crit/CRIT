@@ -30,8 +30,8 @@ const MyChallenge = () => {
 
   const getMyChallenge = () => {
     api
-      .get("https://i9d201.p.ssafy.io/api/challenge/list/mine", {
-        // .get("http://localhost:8080/challenge/list/mine", {
+      // .get("https://i9d201.p.ssafy.io/api/challenge/list/mine", {
+      .get("http://localhost:8080/challenge/list/mine", {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
         },

@@ -18,11 +18,10 @@ const JoinChallenge = () => {
   //     });
   // };
 
-  return (
-    // <button id="enter" onClick={entranceChallenge}>
-      // 참여하기
-    // </button>
-  );
+  return;
+  // <button id="enter" onClick={entranceChallenge}>
+  // 참여하기
+  // </button>
 };
 
 export default JoinChallenge;
