@@ -20,7 +20,7 @@ import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import ChallengeImage from "./createChallenge/ChallengeImage";
 
-const CreateChallengeModal = ({ closeModal }) => {
+const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
   const user = useSelector((state) => state.users);
   const [requestDto, setRequestDto] = useState({
     title: "",
@@ -63,20 +63,78 @@ const CreateChallengeModal = ({ closeModal }) => {
   const onChangeImage = (imageFile) => {
     setImage(imageFile); // 이미지 상태 업데이트
   };
+  const showValidationError = (icon, title, text) => {
+    Swal.fire({
+      position: "center",
+      icon,
+      title,
+      text,
+      showConfirmButton: false,
+      timer: 1500,
+      background: "#272727",
+      color: "white",
+      // width: "500px",
+      // 먼지
+      // imageUrl: 'https://unsplash.it/400/200',
+      // imageWidth: 400,
+      // imageHeight: 200,
+      // imageAlt: 'Custom image',
+    });
+  };
   // 챌린지 생성
   const createChallenge = () => {
-    // 참여비(money)가 3000, 5000, 7000, 10000이 아닌 경우 챌린지 생성하지 않음
-    if (![3000, 5000, 7000, 10000].includes(requestDto.money)) {
-      Swal.fire({
-        position: "center",
+    const validationData = [
+      {
         icon: "error",
-        title: "참여비를 설정해주세요.",
-        showConfirmButton: false,
-        timer: 1500,
-        background: "#272727",
-        color: "white",
-      });
-      return;
+        condition: ![3000, 5000, 7000, 10000].includes(requestDto.money),
+        message: "참여비를 설정해주세요.",
+      },
+      {
+        icon: "error",
+        condition: !requestDto.title,
+        message: "제목을 입력해주세요.",
+      },
+      {
+        icon: "error",
+        condition: !requestDto.introduce,
+        message: "소개글을 입력해주세요.",
+      },
+      {
+        icon: "error",
+        condition: !requestDto.select,
+        message: "챌린지 종류를 선택해주세요.",
+      },
+      {
+        icon: "error",
+        condition: !requestDto.authentication,
+        message: "인증수단을 선택해주세요.",
+      },
+      {
+        icon: "error",
+        condition: !requestDto.startTime || !requestDto.endTime,
+        message: "챌린지 시간을 선택해주세요.",
+      },
+      {
+        icon: "error",
+        condition: !requestDto.member,
+        message: "인원수를 설정해주세요.",
+      },
+      {
+        icon: "error",
+        condition: !image,
+        message: "챌린지 썸네일을 업로드해주세요.",
+      },
+      {
+        icon: "error",
+        condition: !requestDto.startDate || !requestDto.endDate,
+        message: "챌린지 기간을 설정해주세요.",
+      },
+    ];
+    for (const { icon, condition, message } of validationData) {
+      if (condition) {
+        showValidationError(icon, message, "CRIT");
+        return;
+      }
     }
     const formData = new FormData();
     formData.append("file", image); // 이미지 파일 첨부
@@ -86,8 +144,8 @@ const CreateChallengeModal = ({ closeModal }) => {
     ); // requestDto를 JSON 형식으로 추가
     console.log(requestDto);
     api
-      // .post("http://i9d201.p.ssafy.io/api/challenge/create", formData, {
-      .post("http://localhost:8080/challenge/create", formData, {
+      .post("https://i9d201.p.ssafy.io/api/challenge/create", formData, {
+        // .post("http://localhost:8080/challenge/create", formData, {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
           "Content-Type": `multipart/form-data`,
@@ -112,6 +170,7 @@ const CreateChallengeModal = ({ closeModal }) => {
           // imageHeight: 200,
           // imageAlt: 'Custom image',
         });
+        getAllChallenge();
       })
       .catch((error) => {
         console.error("챌린지 생성 에러:", error);

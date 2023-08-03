@@ -54,7 +54,7 @@ const SignUp = () => {
         setSignUpError("");
         setSignUpSuccess(false);
         axios
-          .post("http://localhost:8080/auth/signup", {
+          .post("https://i9d201.p.ssafy.io/api/auth/signup", {
             id,
             password,
             email,

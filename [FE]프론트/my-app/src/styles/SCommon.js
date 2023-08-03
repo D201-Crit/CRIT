@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const SNav = styled.nav`
   display: flex;
   justify-content: space-between;
-  background-color: black;
+  background: rgba(20, 20, 20, 20);
   font-size: 20px;
 `;
 

@@ -1,32 +1,22 @@
+// components/PopUp.js
 import React, { useEffect } from "react";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
 
-const PopUp = ({ type, title, text, redirect }) => {
-  const nav = useNavigate();
-
+const PopUp = ({ icon, title, text }) => {
   useEffect(() => {
-    const showPopup = () => {
-      Swal.fire({
-        position: "center",
-        icon: type,
-        title,
-        text,
-        showConfirmButton: false,
-        timer: 1500,
-        background: "#272727",
-        color: "white",
-      }).then(() => {
-        if (redirect) {
-          nav(redirect); // redirect 프로퍼티가 존재하는 경우 해당 주소로 리다이렉트
-        }
-      });
-    };
+    Swal.fire({
+      position: "center",
+      icon,
+      title,
+      text,
+      showConfirmButton: false,
+      timer: 1500,
+      background: "#272727",
+      color: "white",
+    });
+  }, []); // 빈 배열을 두어 마운트될 때만 호출되도록 설정
 
-    showPopup();
-  }, [type, title, text, nav, redirect]);
-
-  return null;
+  return null; // 실제로 DOM에는 렌더링되지 않도록 null을 반환
 };
 
 export default PopUp;

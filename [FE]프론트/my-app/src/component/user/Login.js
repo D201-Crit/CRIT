@@ -23,8 +23,8 @@ const Login = () => {
       e.preventDefault();
       setLogInError(false);
       api
-        // .post("http://i9d201.p.ssafy.io/api/auth/login", {
-        .post("http://localhost:8080/auth/login", {
+        .post("https://i9d201.p.ssafy.io/api/auth/login", {
+          // .post("http://localhost:8080/auth/login", {
           id,
           password,
         })

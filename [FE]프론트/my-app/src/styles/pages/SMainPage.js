@@ -35,9 +35,12 @@ export const SEntranceSlide = styled(SwiperSlide)`
   width: 400px;
   height: 120px;
   list-style: none;
-  border-radius: 8px;
+  background-color: rgba(22, 22, 22, 1);
+  border: 0.5px solid rgba(80, 80, 80);
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px gray;
   font-family: "Pretendard";
-  background-color: rgba(22, 22, 22, 22);
+
   p {
     position: absolute;
     width: 185px;
@@ -65,15 +68,30 @@ export const SEntranceSlide = styled(SwiperSlide)`
 export const SEntranceLiButton = styled.button`
   position: absolute;
   bottom: 10px;
-  right: 10px;
-  width: 80px;
+  right: 15px;
+  width: 100px;
   height: 30px;
   background-color: #33ff00;
   border: none;
   border-radius: 6px;
   font-weight: 800;
-  cursor: pointer;
+  font-size: 15px;
   font-family: "Pretendard";
+  cursor: pointer;
+`;
+export const SDetailButton = styled.button`
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  width: 100px;
+  height: 30px;
+  background-color: #33ff00;
+  border: none;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 15px;
+  font-family: "Pretendard";
+  cursor: pointer;
 `;
 // 챌스 검색
 export const SSearchShortsWrapper = styled.div`
