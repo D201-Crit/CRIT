@@ -44,11 +44,13 @@ public class CertController {
                 HttpStatus.OK);
     }
 
-    @GetMapping("/list/mine/{challengeId}")
+    
+    // 해당 챌린지의 내 인증 목록 불러오기
+    @GetMapping("/list/{challengeId}")
     public ResponseEntity<Response<List<IsCertResponseDto>>> getCertifcation(@PathVariable("challengeId") Long challengeId, HttpServletRequest httpServletRequest) throws Exception{
         User user = getUser(httpServletRequest);
         List<IsCert> isCertList = certService.getIsCertList(challengeId, user);
-        log.info("IsCert List : {}", isCertList);
+
         List<IsCertResponseDto> result = isCertList.stream().map(isCert -> new IsCertResponseDto(isCert)).collect(Collectors.toList());
         return new ResponseEntity<>(new Response<>("success", "인증 목록 반환", result), HttpStatus.OK);
     }

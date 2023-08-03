@@ -30,7 +30,7 @@ public class IsCert {
     private Long id;
 
     @ColumnDefault("false")
-    private boolean isCert;
+    private boolean isCertified;
 
     // 인증시간
     @CreationTimestamp
@@ -49,5 +49,9 @@ public class IsCert {
     @JoinColumn(name = "user_id")
     private User user;
 
+
+    public void certification(boolean bool){
+        this.isCertified = bool;
+    }
 
 }
