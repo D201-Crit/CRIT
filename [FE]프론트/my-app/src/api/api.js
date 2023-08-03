@@ -11,7 +11,7 @@ const getNewAccessToken = async (refreshToken) => {
     console.log(222);
     console.log(refreshToken);
     const response = await axios
-      .post("http://localhost:8080/api/auth/token", {
+      .post("http://localhost:8080/auth/token", {
         headers: {
           Authorization: `Bearer ${refreshToken}`,
         },
