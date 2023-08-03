@@ -7,6 +7,8 @@ import com.ssafy.crit.boards.entity.board.Comment;
 import com.ssafy.crit.boards.repository.BoardRepository;
 import com.ssafy.crit.boards.repository.CommentRepository;
 import com.ssafy.crit.boards.service.dto.CommentDto;
+import com.ssafy.crit.boards.service.dto.FileResponseDto;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +54,16 @@ public class CommentService {
         return commentDtos;
     }
 
+    // public CommentDto update(Long boardId, Long commnetId, CommentDto commentDto){
+    //     Comment comments = commentRepository.findById(boardId).orElseThrow();
+    //
+    //     comments.setContent(commentDto.getContent());
+    //
+    //     commentRepository.save(comments);
+    //
+    //     return CommentDto.toDto(comments);
+    // }
+
 
     // 댓글 삭제하기
     @Transactional
@@ -62,4 +74,6 @@ public class CommentService {
         commentRepository.deleteById(commentId);
         return "삭제 완료";
     }
+
+
 }

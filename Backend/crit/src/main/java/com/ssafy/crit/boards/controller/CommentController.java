@@ -42,6 +42,14 @@ public class CommentController {
         return new Response<>("성공", "댓글을 불러왔습니다.", commentService.getComments(boardId));
     }
 
+    // @PutMapping("/{boardId}/{commentId}")
+    // public Response<?> updateComment(@PathVariable("boardId") Long boardId, @PathVariable("commentId") Long commentId,
+    //     CommentDto commentDto,
+    //     HttpServletRequest httpServletRequest){
+    //     User user = getUser(httpServletRequest);
+    //     return new Response<>("성공", "수정 완료", commentService.update(boardId, commentId, commentDto))
+    // }
+
 
     // 댓글 삭제
     @DeleteMapping("/{boardId}/{commentId}")
