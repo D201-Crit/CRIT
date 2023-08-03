@@ -5,11 +5,11 @@ import com.ssafy.crit.challenge.entity.Challenge;
 import com.ssafy.crit.challenge.repository.ChallengeRepository;
 import com.ssafy.crit.challenge.repository.ChallengeUserRepository;
 import com.ssafy.crit.common.exception.BadRequestException;
-import io.openvidu.java.client.OpenVidu;
-import io.openvidu.java.client.Session;
-import io.openvidu.java.client.SessionProperties;
+import io.openvidu.java.client.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -27,20 +27,9 @@ public class RoomService {
      * 230803 조경호
      * */
     public String initializeSession(User user, Map<String, Object> params, OpenVidu openVidu) throws Exception {
-        // 세션아이디를 가지고 챌린지 아이디 가져오기
-        Object customSessionId = params.get("customSessionId");
-        log.debug("customSessionId : {}", String.valueOf(customSessionId));
-        String[] sessionInfo = String.valueOf(customSessionId).split("_");
-        Long challengeId = Long.parseLong(sessionInfo[sessionInfo.length - 1]);
-        log.debug("challenge_id : {}", challengeId);
-        Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(
-                () -> new BadRequestException("챌린지를 찾을 수 없습니다.")
-        );
-
-        // 유저가 챌린지에 참여 중인지 확인하기
-        challengeUserRepository.findByChallengeAndUser(challenge, user).orElseThrow(
-                () -> new BadRequestException("챌린지에 참여 중이지 않습니다.")
-        );
+        // 세션 아이디와 유저 정보를 가지고 해당 유저가 챌린지에 해당하는지 확인
+        String customSessionId = String.valueOf(params.get("customSessionId"));
+        isInChallenge(customSessionId, user);
 
 
         // 인가 된 경우 세션 만들어서 세션 아이디 돌려주기
@@ -49,6 +38,39 @@ public class RoomService {
         return session.getSessionId();
     }
 
+    public String createConnection(User user, OpenVidu openVidu, String sessionId, Map<String, Object> params)
+            throws Exception{
+        // 세션 아이디와 유저 정보를 가지고 해당 유저가 챌린지에 해당하는지 확인
+        log.debug("isInChallenge Not OK");
+        isInChallenge(sessionId, user);
+        log.debug("isInChallenge OK");
+        Session session = openVidu.getActiveSession(sessionId); // OpenVidu 미디어 서버에서 세션이 존재하는 지 확인
+        if (session == null) {
+            throw new BadRequestException("세션을 찾을 수 없습니다.");
+        }
 
+        ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
+        Connection connection = session.createConnection(properties); // connection 만들기
+        return connection.getToken(); // 토큰 반환
+    }
+
+
+    // 유저와 세션아이디를 넘겨주면 챌린지 아이디를 뽑아서 유저가 해당 챌린지에 들어갈 수 있는지 확인
+    private void isInChallenge(String sessionId, User user) {
+        
+        // _ 뒤에 challengeId를 추출
+        String[] sessionInfo = sessionId.split("_"); 
+        Long challengeId = Long.parseLong(sessionInfo[sessionInfo.length - 1]); 
+        
+        log.debug("challenge_id : {}", challengeId);
+        Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(
+                () -> new BadRequestException("챌린지를 찾을 수 없습니다.")
+        ); // 챌린지가 존재하지 않는 경우
+
+        // 유저가 챌린지에 참여 중인지 확인하기
+        challengeUserRepository.findByChallengeAndUser(challenge, user).orElseThrow(
+                () -> new BadRequestException("챌린지에 참여 중이지 않습니다.")
+        );
+    }
 
 }
