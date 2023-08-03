@@ -1,10 +1,2 @@
-.idea
-.git
-.gitignore
-.dockerignore
-Dockerfile
-*.md
-*.sh
 *.yml
 *.properties
-scripts
