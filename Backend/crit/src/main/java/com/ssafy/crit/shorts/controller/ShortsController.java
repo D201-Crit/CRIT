@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/shorts")
@@ -50,4 +51,12 @@ public class ShortsController {
         shortsService.delete(id);
         return ResponseEntity.noContent().build();
     }
+    // 최신순, 좋아요순, 조회순 -> 메인 페이지에 썸네일 이미지
+    @GetMapping("/thunbnail")
+    public ResponseEntity<String> getMainThumbnail() {
+        return ResponseEntity.ok("success");
+    }
+
+
+
 }
