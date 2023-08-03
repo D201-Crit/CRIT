@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -89,8 +90,15 @@ public class JwtProvider {
         return new Date().getTime() > (expirationTime - weekTime);
     }
 
-    public String getUserId(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token)
-                .getBody().get("userId", String.class);
+    /**
+    * userId 추출하기
+     */
+    public String extractUserId(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        String token = null;
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            token = authorizationHeader.substring(7);
+        }
+        return (String)get(token).get("userId");
     }
 }

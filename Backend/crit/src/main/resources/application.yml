@@ -13,11 +13,11 @@ spring:
     multipart:
       max-file-size: 300MB
       max-request-size: 300MB
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/critt
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/critt
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
   main:
     allow-circular-references: true
 
@@ -25,12 +25,12 @@ spring:
     include: db
 
   jpa:
-    hibernate:
-      ddl-auto: create #create update none
+#    hibernate:
+#      ddl-auto: create #create update none
     show-sql: true
     properties:
       hibernate:
-        show_sql: false
+        show_sql: true
         format_sql: true
 
 
@@ -82,6 +82,8 @@ spring:
 file:
   dir: C:\Users\SSAFY\Desktop\파일저장
 
+OPENVIDU_URL: https://i9d201.p.ssafy.io:8443/
+OPENVIDU_SECRET: CRITCRIT
 
 
 logging:
@@ -91,9 +93,26 @@ logging:
         type:
           descriptor:
             sql: debug
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: ERROR
 
 app:
   auth:
     token-secret: critservicecritservice
+
+cloud:
+  aws:
+    s3:
+      bucket: critservice
+    credentials:
+      access-key: AKIA4NDE6FWZN6X2GUWP
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
 
 
