@@ -40,12 +40,15 @@ public class BoardService {
 
 	//전체 게시물
 	@Transactional(readOnly = true)
-	public Page<BoardShowSortDto> getBoards(Pageable pageable, Long id) {
-		Long ids = classificationRepository.findById(id).orElseThrow().getId();
-		Page<Board> boards = boardRepository.findAllByClassification_Id(pageable, ids);
+	public Page<BoardShowSortDto> getBoards(Pageable pageable, String category) {
+		classificationRepository.findByCategory(category).orElseThrow(
+			() -> {
+				return new IllegalArgumentException("찾으시는 " + category + "가 없습니다.");
+			});
+
+		Page<Board> boards = boardRepository.findAllByClassificationCategory(pageable, category);
 		return getBoardShowSortDtos(boards);
 	}
-
 	@Transactional(readOnly = true)
 	public Page<BoardShowSortDto> getWholeBoards(Pageable pageable) {
 		Page<Board> boards = boardRepository.findAll(pageable);

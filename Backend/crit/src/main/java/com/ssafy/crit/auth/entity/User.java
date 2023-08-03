@@ -36,8 +36,6 @@ public class User extends BaseTimeEntity {
     @Column
     private String profileImageUrl;
 
-    private String profileImageName;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
@@ -69,7 +67,6 @@ public class User extends BaseTimeEntity {
 
     @Builder
     public User(String id, String nickname, String password, String email, String profileImageUrl,
-        String profileImageName,
         Role role, AuthProvider authProvider, String refreshToken, Date tokenExpirationTime, String tid, int exp,
         Grade grade, Boolean isChecked, List<Follow> followers, List<Follow> followings) {
         this.id = id;
@@ -77,7 +74,6 @@ public class User extends BaseTimeEntity {
         this.password = password;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
-        this.profileImageName = profileImageName;
         this.role = role;
         this.authProvider = authProvider;
         this.refreshToken = refreshToken;
@@ -135,11 +131,6 @@ public class User extends BaseTimeEntity {
     public void setProfileImageUrl(String s) {
         this.profileImageUrl = s;
     }
-
-    public void setProfileImageName(String imageName) {
-        this.profileImageName = imageName;
-    }
-
 
     public void addMemberTofollower(Follow follow) {
         followers.add(follow);
