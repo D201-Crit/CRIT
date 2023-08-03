@@ -60,7 +60,7 @@ const CommunityBoardDetail = ({classification}) => {
 
       {/* 게시글 작성 모달 */}
       {showmodal && (
-          <CreateArticleModal/>)}
+          <CreateArticleModal classification={classification} setModal={setModal}/>)}
 
       <SHr />
       <SEmpty />
