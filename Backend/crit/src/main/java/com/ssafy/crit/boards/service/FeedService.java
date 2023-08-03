@@ -1,4 +1,4 @@
-package com.ssafy.crit.boards.entity.feeds;
+package com.ssafy.crit.boards.service;
 
 
 import org.springframework.beans.factory.annotation.Value;
@@ -8,20 +8,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.boards.entity.Classification;
+import com.ssafy.crit.boards.entity.feeds.UploadFile;
+import com.ssafy.crit.boards.repository.UploadFileRepository;
 import com.ssafy.crit.boards.repository.ClassificationRepository;
+import com.ssafy.crit.boards.service.dto.FileResponseDto;
 import com.ssafy.crit.common.s3.S3Uploader;
-import com.ssafy.crit.common.util.UploadUtil;
 import com.ssafy.crit.boards.entity.board.Board;
 import com.ssafy.crit.boards.repository.BoardRepository;
 
@@ -88,17 +88,6 @@ public class FeedService {
 	}
 
 
-//	public Page<FileResponseDto> getFeeds(Pageable pageable, User user){
-//		User referenceById = userRepository.getReferenceById(user.getId());
-//
-//		if(user.getId().equals(referenceById.getId())) {
-//			Optional<Classification> feeds = classificationRepository.findByCategory("Feeds");
-//			Page<Board> byClassification = boardRepository.findByClassificationAndAndUser(pageable, String.valueOf(feeds), user);
-//
-//			return getFileResponseDto(byClassification);
-//		}
-//		return null;
-//	}
 public Page<FileResponseDto> getFeeds(Pageable pageable, User user){
 	User referenceById = userRepository.getReferenceById(user.getId());
 
@@ -132,8 +121,6 @@ public Page<FileResponseDto> getFeeds(Pageable pageable, User user){
 		Board board = boardRepository.findById(id).orElseThrow(() -> {
 			return new IllegalArgumentException("Board Id를 찾을 수 없습니다!");
 		});
-
-		User user = userRepository.findById(board.getUser().getId()).orElseThrow();
 
 		board.setFeedUpdate(fileResponseDto.getContent());
 

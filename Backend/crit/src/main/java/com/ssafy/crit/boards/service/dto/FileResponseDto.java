@@ -1,6 +1,8 @@
-package com.ssafy.crit.boards.entity.feeds;
+package com.ssafy.crit.boards.service.dto;
 
 import com.ssafy.crit.boards.entity.board.Board;
+import com.ssafy.crit.boards.entity.feeds.UploadFile;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

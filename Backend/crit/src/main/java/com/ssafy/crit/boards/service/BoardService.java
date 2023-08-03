@@ -3,13 +3,12 @@ package com.ssafy.crit.boards.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.boards.entity.Classification;
 import com.ssafy.crit.boards.entity.feeds.UploadFile;
-import com.ssafy.crit.boards.entity.feeds.UploadFileRepository;
+import com.ssafy.crit.boards.repository.UploadFileRepository;
 import com.ssafy.crit.boards.repository.ClassificationRepository;
 import com.ssafy.crit.boards.service.dto.BoardDto;
 import com.ssafy.crit.boards.entity.board.Board;
@@ -114,8 +113,6 @@ public class BoardService {
 		Board board = boardRepository.findById(id).orElseThrow(() -> {
 			return new IllegalArgumentException("Board Id를 찾을 수 없습니다!");
 		});
-
-		User user = userRepository.findById(board.getUser().getId()).orElseThrow();
 
 		board.setUpdate(boardDto.getTitle(),boardDto.getContent());
 
