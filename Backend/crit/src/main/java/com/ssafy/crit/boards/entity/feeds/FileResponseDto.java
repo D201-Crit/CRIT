@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
+
 @Getter
 @RequiredArgsConstructor
 public class FileResponseDto {
@@ -17,6 +19,10 @@ public class FileResponseDto {
 	private String classification;
 	private String userName;
 	private List<String> imageFiles;
+
+	@Value("${cloud.aws.s3.bucket}")
+	private String bucket;
+
 
 	public FileResponseDto(Long id, String content, String classification, String userName, List<String> imageFiles) {
 		this.id = id;
@@ -29,7 +35,7 @@ public class FileResponseDto {
 	@Builder
 	public static FileResponseDto toDto(Board board){
 		List<String> filenames = board.getUploadFiles().stream()
-			.map(UploadFile::getUploadFileName)
+			.map(UploadFile::getStoreFilePath)
 			.collect(Collectors.toList());
 
 		return new FileResponseDto(

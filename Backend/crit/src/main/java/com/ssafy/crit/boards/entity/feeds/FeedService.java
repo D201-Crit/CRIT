@@ -1,22 +1,26 @@
 package com.ssafy.crit.boards.entity.feeds;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.boards.entity.Classification;
 import com.ssafy.crit.boards.repository.ClassificationRepository;
+import com.ssafy.crit.common.s3.S3Uploader;
 import com.ssafy.crit.common.util.UploadUtil;
 import com.ssafy.crit.boards.entity.board.Board;
 import com.ssafy.crit.boards.repository.BoardRepository;
@@ -32,9 +36,12 @@ public class FeedService {
 
 	private final UploadFileRepository uploadFileRepository;
 	private final UserRepository userRepository;
-	private final UploadUtil uploadUtil;
 	private final BoardRepository boardRepository;
 	private final ClassificationRepository classificationRepository;
+	private final S3Uploader s3Uploader;
+
+	@Value("${cloud.aws.s3.bucket}")
+	private String bucket;
 
 	public FileResponseDto storeFiles(FileResponseDto fileResponseDto, List<MultipartFile> multipartFiles, User user) throws IOException {
 
@@ -60,29 +67,26 @@ public class FeedService {
 
 		for (MultipartFile multipartFile : multipartFiles) {
 			if (!multipartFile.isEmpty()) {
-				UploadUtil.NeedsUpload needsUpload = uploadUtil.storeFile(multipartFile);
+
+				String uploadFiles = s3Uploader.uploadFiles(multipartFile, "feeds");
 
 				UploadFile uploadFile = UploadFile.builder()
-						.board(board)
-						.userName(user.getId())
-						.storeFilePath(needsUpload.getStorePath())
-						.uploadFileName(needsUpload.getOriginalName())
-						.storeFileName(needsUpload.getStoreName())
-						.build();
+					.board(board)
+					.userName(user.getId())
+					.storeFilePath(uploadFiles)
+					.build();
 
 				uploadFileRepository.save(uploadFile);
 
-				String fullPath = uploadUtil.getFullPath(needsUpload.getStoreName());
-				storeFileResult.add(fullPath);
+				storeFileResult.add(uploadFiles);
 			}
 		}
-
-
 
 		fileResponseDto.setId(board.getId());
 		fileResponseDto.setImageFiles(storeFileResult);
 		return fileResponseDto;
 	}
+
 
 //	public Page<FileResponseDto> getFeeds(Pageable pageable, User user){
 //		User referenceById = userRepository.getReferenceById(user.getId());
@@ -149,7 +153,7 @@ public Page<FileResponseDto> getFeeds(Pageable pageable, User user){
 				board.getClassification().getCategory(),
 				board.getUser().getId(),
 				board.getUploadFiles().stream()
-					.map(UploadFile::getUploadFileName).collect(Collectors.toList()));
+					.map(UploadFile::getStoreFilePath).collect(Collectors.toList()));
 		});
 	}
 }
