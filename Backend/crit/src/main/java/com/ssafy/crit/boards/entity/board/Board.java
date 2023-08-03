@@ -53,7 +53,7 @@ public class Board extends BaseTimeEntity {
         this.likes = likes;
     }
 
-    public int getLikes(List<LikeTable> likes){
+    public int getNNumberOfLikes(List<LikeTable> likes){
         return likes.size();
     }
 
