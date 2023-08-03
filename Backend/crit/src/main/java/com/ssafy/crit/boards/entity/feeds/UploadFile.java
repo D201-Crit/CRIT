@@ -18,8 +18,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
-@NoArgsConstructor
 public class UploadFile extends BaseTimeEntity {
 
 	@Id
@@ -29,21 +29,25 @@ public class UploadFile extends BaseTimeEntity {
 
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "board_id")
+	@JoinColumn(name = "id")
 	private Board board;
 
 	private String userName;
 
-	private String classification;
+	private String uploadFileName;  // 파일 원본명
 
-	private String storeFilePath;
+	private String storeFileName;
+
+	private String storeFilePath;  // 파일 저장 경로
 
 	@Builder
-	public UploadFile(Long id, Board board, String userName, String classification, String storeFilePath) {
+	public UploadFile(Long id, Board board, String userName, String uploadFileName, String storeFileName,
+		String storeFilePath) {
 		this.id = id;
 		this.board = board;
 		this.userName = userName;
-		this.classification = classification;
+		this.uploadFileName = uploadFileName;
+		this.storeFileName = storeFileName;
 		this.storeFilePath = storeFilePath;
 	}
 }

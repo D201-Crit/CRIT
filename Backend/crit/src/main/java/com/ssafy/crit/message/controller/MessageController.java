@@ -26,6 +26,7 @@ public class MessageController {
 	@PostMapping
 	public Response<?> sendMessage(@RequestBody MessageSendRequestDto messageSendRequestDto, HttpServletRequest httpServletRequest) {
 		User sender = getUser(httpServletRequest);
+
 		return new Response<>("성공", "쪽지를 보냈습니다.", messageService.write(messageSendRequestDto, sender.getId()));
 	}
 
@@ -43,6 +44,7 @@ public class MessageController {
 
 	@DeleteMapping("/received/{id}")
 	public Response<?> deleteReceivedMessage(@PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
+		// 임의로 유저 정보를 넣었지만, JWT 도입하고 현재 로그인 된 유저의 정보를 넘겨줘야함
 		User user = userRepository.findById(getUser(httpServletRequest).getId()).orElseThrow(() -> {
 			return new IllegalArgumentException("유저를 찾을 수 없습니다.");
 		});

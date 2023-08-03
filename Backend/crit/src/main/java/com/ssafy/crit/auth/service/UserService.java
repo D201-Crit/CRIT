@@ -18,7 +18,6 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -91,7 +90,6 @@ public class UserService {
             .build();
     }
 
-    @Transactional(propagation= Propagation.REQUIRES_NEW)
     @Scheduled(cron = "0 0 12 * * ?")
     public void resetIsChecked() {
         List<User> allUsers = userRepository.findAll();

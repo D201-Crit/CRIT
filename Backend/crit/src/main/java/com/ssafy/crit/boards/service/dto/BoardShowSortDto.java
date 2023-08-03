@@ -14,18 +14,14 @@ public class BoardShowSortDto {
     private int views;
     private String writer;
     private int likesCount;
-    private String classification;
 
     @Builder
-
-    public BoardShowSortDto(Long id, String title, String content, int views, String writer, int likesCount,
-        String classification) {
+    public BoardShowSortDto(Long id, String title, String content, int views, String writer, int likesCount) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.views = views;
         this.writer = writer;
         this.likesCount = likesCount;
-        this.classification = classification;
     }
 }

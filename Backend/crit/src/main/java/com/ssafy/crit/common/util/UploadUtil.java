@@ -4,12 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.ssafy.crit.common.s3.S3Uploader;
+import com.ssafy.crit.boards.entity.feeds.UploadFile;
+import com.ssafy.crit.boards.entity.feeds.UploadFileRepository;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -21,15 +21,9 @@ import lombok.RequiredArgsConstructor;
 public class UploadUtil {
 
 	// @Value("${file.dir}")
-	// private static String fileDir =  "/Users/seunnng/Desktop/";
+	private static String fileDir =  "C:\\files\\";
 
-	private final AmazonS3Client amazonS3Client;
-	@Value("${cloud.aws.s3.bucket}")
-	private String bucket;
-
-	private final S3Uploader s3Uploader;
-
-	public String storeFile(MultipartFile multipartFile) throws IOException {
+	public NeedsUpload storeFile(MultipartFile multipartFile) throws IOException {
 		if (multipartFile.isEmpty()) {
 			return null;
 		}
@@ -37,10 +31,15 @@ public class UploadUtil {
 		String uploadFileName = multipartFile.getOriginalFilename();
 		String storeFileName = createStoreFileName(uploadFileName);
 		String fullPath = getFullPath(storeFileName);
+		multipartFile.transferTo(new File(fullPath));
 
-		String uploadFiles = s3Uploader.uploadFiles(multipartFile, uploadFileName);
+		NeedsUpload needsUpload = NeedsUpload.builder()
+			.originalName(uploadFileName)
+			.storeName(storeFileName)
+			.storePath(fullPath)
+			.build();
 
-		return uploadFiles;
+		return needsUpload;
 
 	}
 
@@ -56,6 +55,20 @@ public class UploadUtil {
 	}
 
 	public String getFullPath(String filename) {
-		return bucket + filename;
+		return fileDir + filename;
+	}
+
+	@Getter
+	@Builder
+	public static class NeedsUpload{
+		String originalName;
+		String storeName;
+		String storePath;
+
+		public NeedsUpload(String originalName, String storeName, String storePath) {
+			this.originalName = originalName;
+			this.storeName = storeName;
+			this.storePath = storePath;
+		}
 	}
 }
