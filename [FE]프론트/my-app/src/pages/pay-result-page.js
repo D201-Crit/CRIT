@@ -1,32 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-class PayResultPage extends React.Component {
-  constructor(props) {
-    super(props);
-    const { params } = this.state;
-    const {
-      location: { search },
-    } = props;
+const PayResultPage = (props) => {
+  const {
+    location: { search },
+  } = props;
 
-    // url에 붙어서 온 pg_token을 결제 API에 줄 params에 할당
-    params.pg_token = search.split("=")[1];
-  }
+  const pg_token = search.split("=")[1];
+  const tid = window.localStorage.getItem("tid");
 
-  state = {
-    params: {
-      cid: "TC0ONETIME",
-      // localstorage에서 tid값을 읽어온다.
-      tid: window.localStorage.getItem("tid"),
-      partner_order_id: "partner_order_id",
-      partner_user_id: "partner_user_id",
-      pg_token: "",
-    },
-  };
+  const [params, setParams] = useState({
+    cid: "TC0ONETIME",
+    tid,
+    partner_order_id: "partner_order_id",
+    partner_user_id: "partner_user_id",
+    pg_token,
+  });
 
-  componentDidMount() {
-    const { params } = this.state;
-
+  useEffect(() => {
     axios({
       url: "/v1/payment/approve",
       method: "POST",
@@ -39,14 +30,13 @@ class PayResultPage extends React.Component {
       // 결제 승인에 대한 응답 출력
       console.log(response);
     });
-  }
+  }, []);
 
-  render() {
-    return (
-      <div>
-        <h2>Result page</h2>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <h2>Result page</h2>
+    </div>
+  );
+};
+
 export default PayResultPage;

@@ -1,45 +1,57 @@
-import React from "react";
-import { useParams } from "react-router-dom"; // useParams 훅을 임포트합니다.
-import ArticleList from "./ArticleList"; // ArticleList 컴포넌트를 임포트합니다.
-import { useState, useEffect } from "react"; // useState와 useEffect를 임포트합니다.
-import axios from "axios"; // axios를 임포트합니다.
-
-const useTopics = () => {
-  const [topics, setTopics] = useState([]); // 주제 목록을 저장할 상태 변수입니다.
-
-  useEffect(() => {
-    const fetchTopics = async () => {
-      try {
-        // axios를 사용하여 주제 데이터를 가져와 topics 상태에 저장합니다.
-        const response = await axios.get("/api/topics");
-        setTopics(response.data);
-      } catch (error) {
-        // 에러 발생시 콘솔에 에러를 출력합니다.
-        console.error("Error fetching topics:", error);
-      }
-    };
-
-    fetchTopics(); // 주제 데이터를 가져오는 함수를 호출합니다.
-  }, []);
-
-  return topics; // 주제 데이터를 반환합니다.
-};
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { api, getNewAccessToken } from '../../api/api';
+import BoardCard from './BoardCard.js'
+import { SHr, SEmpty } from '../../styles/pages/SCommunityPage';
+const API_BASE_URL = 'http://localhost:8080/api/boards';
 
 const CommunityBoard = () => {
-  const { topicId } = useParams(); // 주제별로 구분하기 위해 주제 ID를 가져옵니다.
-  const topics = useTopics(); // 주제 목록을 가져옵니다.
-  // 선택된 주제를 topics에서 찾습니다.
-  const selectedTopic = topics.find((topic) => topic.id === topicId);
+  const user = useSelector((state) => state.users);
+  const [boards, setBoards] = useState([]);
+  const [topic, setTopic] = useState([]);
 
-  // 선택된 주제에 해당하는 게시글 목록을 렌더링합니다.
+  useEffect(() => {
+    fetchBoards();
+  }, []); // 빈 의존성 배열을 사용하여 초기 렌더링 시에만 실행
+
+  const fetchBoards = async () => {
+    try {
+      const response = await api.get(`${API_BASE_URL}`, {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      });
+      const fetchedBoards = response.data.data.content;
+      console.log(fetchedBoards);
+      
+      // fetchedBoards에서 classification 값을 추출하여 중복을 제거하고, topic 상태에 배열 형태로 저장합니다.
+      const fetchedTopics = Array.from(new Set(fetchedBoards.map((board) => board.classification)));
+      console.log(fetchedTopics);
+
+      if (Array.isArray(fetchedBoards)) {
+        setBoards(fetchedBoards);
+        setTopic(fetchedTopics);
+      } else {
+        setBoards([]);
+      }
+    } catch (error) {
+      console.error(error);
+      console.log('전체 게시글 조회 실패');
+    }
+  };
+
   return (
     <div>
-      {/* 선택된 주제의 이름을 출력하거나 로딩 중임을 나타냅니다. */}
-      <h1>{selectedTopic ? selectedTopic.name : "Loading..."}</h1>
-      {/* 선택된 주제의 ArticleList를 출력합니다. */}
-      <ArticleList topicId={topicId} />
+      <div>
+        <SHr/>
+        <SEmpty/>
+       {/* 각 classification에 해당하는 게시글을 분류하여 표시합니다. */}
+       {topic.map((classification) => (
+          <BoardCard key={classification} classification={classification} boards={boards}/>))}
+      </div>
     </div>
   );
 };
 
-export default CommunityBoard; // CommunityBoard 컴포넌트를 export합니다.
+export default CommunityBoard;
