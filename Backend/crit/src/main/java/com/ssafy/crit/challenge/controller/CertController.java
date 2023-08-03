@@ -4,6 +4,8 @@ import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.challenge.dto.CertImgRequestDto;
+import com.ssafy.crit.challenge.dto.ChallengeListResponseDto;
+import com.ssafy.crit.challenge.dto.IsCertResponseDto;
 import com.ssafy.crit.challenge.entity.IsCert;
 import com.ssafy.crit.challenge.service.CertService;
 import com.ssafy.crit.message.response.Response;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -39,8 +42,14 @@ public class CertController {
                 HttpStatus.OK);
     }
 
-//    @GetMapping("/list/{challengeId}")
-//    public ResponseEntity<Response<List<IsCert>>>
+    @GetMapping("/list/mine/{challengeId}")
+    public ResponseEntity<Response<List<IsCertResponseDto>>> getCertifcation(@PathVariable("challengeId") Long challengeId, HttpServletRequest httpServletRequest) throws Exception{
+        User user = getUser(httpServletRequest);
+        List<IsCert> isCertList = certService.getIsCertList(challengeId, user);
+        List<IsCertResponseDto> result = isCertList.stream().map(isCert -> new IsCertResponseDto(isCert)).collect(Collectors.toList());
+        return new ResponseEntity<>(new Response<>("success", "인증 목록 반환", result), HttpStatus.OK);
+    }
+
 
     private User getUser(HttpServletRequest httpServletRequest) {
         String bearer = httpServletRequest.getHeader("Authorization").substring(7);
