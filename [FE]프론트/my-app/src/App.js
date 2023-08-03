@@ -19,14 +19,16 @@ import LoginPage from "./pages/login-page";
 import MainPage from "./pages/main-page";
 import MyPage from "./pages/my-page";
 import PayPage from "./pages/pay-page";
-import ProfilePage from "./pages/profile-page";
-import SignUpPage from "./pages/signup-page";
-import StartPage from "./pages/start-page";
 import PaySuccessPage from "./pages/pay-success-page";
 import PayCanclePage from "./pages/pay-cancle-page";
 import PayConflictPage from "./pages/pay-conflict-page";
+import ProfilePage from "./pages/profile-page";
+import SignUpPage from "./pages/signup-page";
+import StartPage from "./pages/start-page";
 import { Sfont } from "./styles/SCommon";
 import Swal from "sweetalert2";
+import GoogleCallback from "./component/user/socialLogin/GoogleCallback";
+import NaverCallback from "./component/user/socialLogin/NaverCallback";
 
 function App() {
   return (
@@ -45,7 +47,13 @@ function AppRoutes() {
 
   const showNav = location.pathname !== "/";
 
-  const authorizedPages = ["/", "/IntroPage", "/LoginPage", "/SignUpPage" , "/login/oauth2/code/kakao"];
+  const authorizedPages = [
+    "/",
+    "/IntroPage",
+    "/LoginPage",
+    "/SignUpPage",
+    "/login/oauth2/code/kakao",
+  ];
 
   const isAuthorizedPage = !authorizedPages.includes(location.pathname) & !user;
 
@@ -53,7 +61,7 @@ function AppRoutes() {
   if (isAuthorizedPage) {
     Swal.fire({
       position: "center",
-      icon: "success",
+      icon: "warning",
       title: "로그인 필수!",
       text: "로그인 해주세요~",
       showConfirmButton: false,
@@ -77,6 +85,8 @@ function AppRoutes() {
       <Routes>
         <Route path="/" element={<StartPage />} />
         <Route path="/login/oauth2/code/kakao" element={<KakaoCallback />} />
+        <Route path="/login/oauth2/code/naver" element={<NaverCallback />} />
+        <Route path="/login/oauth2/code/google" element={<GoogleCallback />} />
         <Route path="/IntroPage" element={<IntroPage />} />
         <Route path="/MainPage" element={<MainPage />} />
         <Route path="/ChallengePage" element={<ChallengePage />} />
@@ -84,8 +94,6 @@ function AppRoutes() {
         <Route path="/CommunityPage" element={<CommunityPage />} />
         <Route path="/CommunityBoardPage/:id" element={<CommunityBoardPage/>}/>
         <Route path="/CommunityBoardPage/:classification/:articleid" element={<CommunityArticleDetailPage/>}/>
-
-
         <Route path="/SignUpPage" element={<SignUpPage />} />
         <Route path="/LoginPage" element={<LoginPage />} />
         <Route path="/ProfilePage" element={<ProfilePage />} />
@@ -96,7 +104,6 @@ function AppRoutes() {
         <Route path="/PayConflictPage" element={<PayConflictPage />} />
 
         
-
       </Routes>
     </>
   );

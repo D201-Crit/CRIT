@@ -1,4 +1,4 @@
-import axios from "axios";
+import { api } from "../../api/api";
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -22,8 +22,9 @@ const Login = () => {
     (e) => {
       e.preventDefault();
       setLogInError(false);
-      axios
-        .post("http://localhost:8080/api/auth/login", {
+      api
+        // .post("http://i9d201.p.ssafy.io/api/auth/login", {
+        .post("http://localhost:8080/auth/login", {
           id,
           password,
         })
@@ -35,7 +36,7 @@ const Login = () => {
               nickname: res.data.nickname,
               accessToken: res.data.accessToken,
               refreshToken: res.data.refreshToken,
-            }),
+            })
           );
           persistor.flush(); // 상태를 영구적으로 저장
           Swal.fire({
@@ -54,7 +55,6 @@ const Login = () => {
             // imageHeight: 200,
             // imageAlt: 'Custom image',
           });
-
           nav("/MainPage");
         })
         .catch((error) => {
@@ -62,7 +62,7 @@ const Login = () => {
           setLogInError(error.response?.status === 400);
         });
     },
-    [id, password],
+    [id, password]
   );
   return (
     <SForm onSubmit={onSubmit}>

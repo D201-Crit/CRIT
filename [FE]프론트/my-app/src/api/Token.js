@@ -1,10 +1,10 @@
-// Token.js (예시 컴포넌트)
+// MyComponent.js (예시 컴포넌트)
 
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { api, getNewAccessToken } from "./api";
 
-const Token = () => {
+const MyComponent = () => {
   const user = useSelector((state) => state.users);
 
   useEffect(() => {
@@ -43,6 +43,7 @@ const Token = () => {
               // 새로운 AccessToken을 받아와서 다시 요청을 보냄
               const newAccessToken = await getNewAccessToken(refreshToken);
               error.config.headers.Authorization = `Bearer ${newAccessToken}`;
+              console.log("됨?");
               return api.request(error.config);
             } catch (refreshError) {
               // RefreshToken으로 AccessToken 재발급에 실패한 경우
@@ -59,6 +60,8 @@ const Token = () => {
       console.log("No data found in localStorage.");
     }
   }, [user.accessToken, user.refreshToken]);
+
+  // ... (컴포넌트의 나머지 코드)
 };
 
-export default Token;
+export default MyComponent;

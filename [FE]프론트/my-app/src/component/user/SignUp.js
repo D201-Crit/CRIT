@@ -9,9 +9,10 @@ import {
   SuccessWrapper,
 } from "../styles/pages/SSignUpPage";
 import useInput from "../hooks/useInput";
-import axios from "axios";
+import api from "../../api/api";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import { api } from "../../api/api";
 const SignUp = () => {
   returnconst[(id, onChangeId)] = useInput("");
   const [password, setPassword] = useState("");
@@ -26,7 +27,7 @@ const SignUp = () => {
       setMismatchError(e.target.value !== passwordCheck);
     },
     // 함수 기준 외부 변수만 deps[]에 작성
-    [passwordCheck],
+    [passwordCheck]
   );
 
   const onChangePasswordCheck = useCallback(
@@ -34,7 +35,7 @@ const SignUp = () => {
       setPasswordCheck(e.target.value);
       setMismatchError(e.target.value !== password);
     },
-    [password],
+    [password]
   );
   const [mismatchError, setMismatchError] = useState(false);
   // 가입 실패
@@ -51,8 +52,10 @@ const SignUp = () => {
         // 요청을 여러번 할때 초기값이 이상할 수 있으니
         setSignUpError("");
         setSignUpSuccess(false);
-        axios
-          .post("http://localhost:8080/api/auth/signup", {
+        console.log("시발");
+        api
+          // .post("http://i9d201.p.ssafy.io/api/auth/signup", {
+          .post("http://localhost:8080/auth/signup", {
             id,
             password,
             email,
@@ -77,13 +80,14 @@ const SignUp = () => {
           })
           .catch((error) => {
             console.log(error);
+            console.log(12321321321);
             setSignUpError(error.response.data);
           })
           // 성공하든 실패하든 실행
           .finally(() => {});
       }
     },
-    [email, nickname, password, passwordCheck],
+    [email, nickname, password, passwordCheck]
   );
 
   return (

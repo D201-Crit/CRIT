@@ -5,10 +5,25 @@ const api = axios.create({
 });
 
 const getNewAccessToken = async (refreshToken) => {
+  console.log(111);
   try {
     // 서버로 RefreshToken을 보내어 새로운 AccessToken을 받아옴
-    const response = await api.post("/refresh", { refreshToken });
-    const newAccessToken = response.data.accessToken;
+    console.log(222);
+    console.log(refreshToken);
+    const response = await axios
+      .post("http://localhost:8080/api/auth/token", {
+        headers: {
+          Authorization: `Bearer ${refreshToken}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    const newAccessToken = response.data.token;
+    console.log(newAccessToken);
     return newAccessToken;
   } catch (error) {
     console.error("Failed to refresh access token:", error);

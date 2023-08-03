@@ -16,6 +16,8 @@ export const SForm = styled.form`
     margin-bottom: 5px;
   }
   input {
+    font-family: "Pretendard";
+    font-weight: 500;
     type: text;
     width: 300px;
     height: 35px;
@@ -32,6 +34,9 @@ export const SCheckButton = styled.button`
   margin: 0px 10px;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: "Pretendard";
 `;
 
 export const SButtonWrapper = styled.div`
@@ -46,15 +51,22 @@ export const SSignUpbutton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   type: submit;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: "Pretendard";
 `;
 
 export const ErrorWrapper = styled.div`
   color: #e01e5a;
   margin: 8px 0 16px;
   font-weight: bold;
+  font-size: 16px;
+  font-family: "Pretendard";
 `;
 
 export const SuccessWrapper = styled.div`
   color: #2eb67d;
   font-weight: bold;
+  font-size: 16px;
+  font-family: "Pretendard";
 `;

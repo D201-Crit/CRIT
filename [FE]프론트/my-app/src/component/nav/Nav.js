@@ -8,12 +8,11 @@ import { useSelector } from "react-redux";
 const Nav = () => {
   const user = useSelector((state) => state.users); // useSelector를 통해 userSlice의 상태를 가져옴
   const [view, setView] = useState(false);
-  console.log(user);
 
   return (
     <SNav>
       <SMenuWrapper>
-        {user ? (
+        {user && user.accessToken ? (
           <ul>
             <li>
               <NavLink to="/IntroPage">CRIT</NavLink>
@@ -37,7 +36,7 @@ const Nav = () => {
         )}
       </SMenuWrapper>
       <SUserWrapper>
-        {user ? (
+        {user && user.accessToken ? (
           <ul
             onClick={() => {
               setView(!view);
@@ -47,7 +46,7 @@ const Nav = () => {
               <FaRegUserCircle size={35} style={{ cursor: "pointer" }} />{" "}
             </li>
             <li>
-              <NavLink to="/ProfilePage">{view && <h3>내 정보</h3>}</NavLink>
+              <NavLink to="/">{view && <h3>내 정보</h3>}</NavLink>
             </li>
             <li>{view && <LogOut />}</li>
           </ul>

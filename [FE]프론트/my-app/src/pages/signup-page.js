@@ -11,6 +11,7 @@ import {
 import useInput from "../hooks/useInput";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import PopUp from "../component/PopUp";
 import Swal from "sweetalert2";
 
 const SignUp = () => {
@@ -53,7 +54,7 @@ const SignUp = () => {
         setSignUpError("");
         setSignUpSuccess(false);
         axios
-          .post("http://localhost:8080/api/auth/signup", {
+          .post("http://localhost:8080/auth/signup", {
             id,
             password,
             email,
@@ -62,6 +63,7 @@ const SignUp = () => {
           .then((response) => {
             console.log(response);
             setSignUpSuccess(true);
+            nav("/LoginPage");
             Swal.fire({
               position: "center",
               icon: "success",
@@ -74,7 +76,6 @@ const SignUp = () => {
               // imageHeight: 200,
               // imageAlt: 'Custom image',
             });
-            nav("/LoginPage");
           })
           .catch((error) => {
             console.log(error);

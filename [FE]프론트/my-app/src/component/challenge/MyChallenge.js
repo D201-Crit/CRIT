@@ -1,14 +1,15 @@
 // swiper
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import { EffectCards } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
+import "swiper/css/effect-cards";
 // 나머지
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Modal from "react-modal";
+import { api } from "../../api/api";
 
 // 스타일
 import {
@@ -18,241 +19,115 @@ import {
   SMidWrapper,
   SBotWrapper,
 } from "../../styles/pages/SChallengePage";
+import { useSelector } from "react-redux";
 
 const MyChallenge = () => {
-  const token = localStorage.getItem("refreshToken");
-
-  // 테스트용
-  const [overView] = useState(
-    "내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글내가 참여중인 챌린지 소개글 내가 참여중인 챌린지 소개글",
-  );
-
+  const user = useSelector((state) => state.users);
   const location = useLocation();
   const navigate = useNavigate();
+  const [myChallenges, setMyChallenges] = useState([]);
+
+  const getMyChallenge = () => {
+    api
+      // .get("https://i9d201.p.ssafy.io/api/challenge/list/mine", {
+      .get("http://localhost:8080/challenge/list/mine", {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      })
+      .then((res) => {
+        setMyChallenges(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   // 상세보기 클릭
-  const detailClick = () => {
+  const detailClick = (challenge) => {
     if (location.pathname === "/ChallengePage") {
-      navigate("/ChallengePage/:id");
-    } else {
-      openModal();
+      navigate(`/ChallengePage/${challenge.id}`, {
+        state: { challenge },
+      });
     }
   };
-  // 챌린지 만들기 모달
-  const [isOpen, setIsOpen] = useState(false);
-  const openModal = () => {
-    setIsOpen(true);
-  };
-  const closeModal = () => {
-    setIsOpen(false);
-  };
-  const customModalStyles = {
-    content: {
-      background: "white",
-      border: "1px solid #ccc",
-      borderRadius: "4px",
-      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-      margin: "auto",
-      maxWidth: "400px",
-      height: "600px",
-      padding: "20px",
-      color: "black",
-    },
-    overlay: {
-      background: "rgba(0, 0, 0, 0.5)",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: "999",
-    },
+  // 입장하기 클릭
+  const EntranceClick = (challenge) => {
+    navigate(`/ChallengePage/${challenge.id}`, {
+      state: { challenge },
+    });
   };
 
+  // 날짜 형식
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const month = (date.getMonth() + 1).toString();
+    const day = date.getDate().toString().padStart(2, "0");
+    const dayOfWeek = date.toLocaleString("ko-KR", { weekday: "short" });
+    return `${month}.${day} (${dayOfWeek})`;
+  };
+  // 며칠째 진행 중인지 계산하는 함수
+  const getDaysInProgress = (startDate) => {
+    const today = new Date();
+    const start = new Date(startDate);
+    const timeDiff = today.getTime() - start.getTime();
+    const daysInProgress = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+    return daysInProgress >= 0
+      ? `현재 ${daysInProgress}일째 참여 중`
+      : `D-day ${Math.abs(daysInProgress)}일`;
+  };
+
+  useEffect(() => {
+    getMyChallenge();
+  }, []);
   return (
     <>
       <SSwiper
-        modules={[Navigation, Pagination, Scrollbar, A11y]}
-        spaceBetween={20}
-        slidesPerView={1}
-        navigation
-        scrollbar={{ draggable: true }}
+        effect={"cards"}
+        grabCursor={true}
+        modules={[EffectCards]}
+        className="mySwiper"
       >
-        <SSwiperSlide>
-          <STopWrapper>
-            <h1>나의 챌린지</h1>
-            <h2>7/11(화) ~ 8/15(화)</h2>
-            <h3>현재 3일째 참여 중</h3>
-          </STopWrapper>
-          <SMidWrapper>
-            <img
-              src="https://github.com/Jinga02/Review/assets/110621233/e8edd4c4-dd18-42d8-904c-4a04c6618018"
-              alt="예싱이미지"
-            />
-            <p>
-              {overView.split(" ").length > 32 ? (
-                <>{overView.split(" ").slice(0, 32)} </>
-              ) : (
-                overView
-              )}
-            </p>
-          </SMidWrapper>
-          <SBotWrapper>
-            <h2>15/15</h2>
-            <button id="enter">입장하기</button>
-            <button id="detail" onClick={detailClick}>
-              {" "}
-              {location.pathname === "/ChallengePage" ? "상세보기" : "참여내역"}
-            </button>{" "}
-          </SBotWrapper>
-        </SSwiperSlide>
-        <SSwiperSlide>
-          <STopWrapper>
-            <h1>나의 챌린지</h1>
-            <h2>7/11(화) ~ 8/15(화)</h2>
-            <h3>현재 3일째 참여 중</h3>
-          </STopWrapper>
-          <SMidWrapper>
-            <img
-              src="https://github.com/Jinga02/Review/assets/110621233/e8edd4c4-dd18-42d8-904c-4a04c6618018"
-              alt="예싱이미지"
-            />
-            <p>
-              {overView.split(" ").length > 32 ? (
-                <>{overView.split(" ").slice(0, 32)} </>
-              ) : (
-                overView
-              )}
-            </p>
-          </SMidWrapper>
-          <SBotWrapper>
-            <h2>15/15</h2>
-            <button id="enter">입장하기</button>
-            <button id="detail">
-              {" "}
-              {location.pathname === "/ChallengePage" ? "상세보기" : "참여내역"}
-            </button>{" "}
-          </SBotWrapper>
-        </SSwiperSlide>
-        <SSwiperSlide>
-          <STopWrapper>
-            <h1>나의 챌린지</h1>
-            <h2>7/11(화) ~ 8/15(화)</h2>
-            <h3>현재 3일째 참여 중</h3>
-          </STopWrapper>
-          <SMidWrapper>
-            <img
-              src="https://github.com/Jinga02/Review/assets/110621233/e8edd4c4-dd18-42d8-904c-4a04c6618018"
-              alt="예싱이미지"
-            />
-            <p>
-              {overView.split(" ").length > 32 ? (
-                <>{overView.split(" ").slice(0, 32)} </>
-              ) : (
-                overView
-              )}
-            </p>
-          </SMidWrapper>
-          <SBotWrapper>
-            <h2>15/15</h2>
-            <button id="enter">입장하기</button>
-            <button id="detail">
-              {" "}
-              {location.pathname === "/ChallengePage" ? "상세보기" : "참여내역"}
-            </button>{" "}
-          </SBotWrapper>
-        </SSwiperSlide>
-        <SSwiperSlide>
-          <STopWrapper>
-            <h1>나의 챌린지</h1>
-            <h2>7/11(화) ~ 8/15(화)</h2>
-            <h3>현재 3일째 참여 중</h3>
-          </STopWrapper>
-          <SMidWrapper>
-            <img
-              src="https://github.com/Jinga02/Review/assets/110621233/e8edd4c4-dd18-42d8-904c-4a04c6618018"
-              alt="예싱이미지"
-            />
-            <p>
-              {overView.split(" ").length > 32 ? (
-                <>{overView.split(" ").slice(0, 32)} </>
-              ) : (
-                overView
-              )}
-            </p>
-          </SMidWrapper>
-          <SBotWrapper>
-            <h2>15/15</h2>
-            <button id="enter">입장하기</button>
-            <button id="detail">
-              {" "}
-              {location.pathname === "/ChallengePage" ? "상세보기" : "참여내역"}
-            </button>{" "}
-          </SBotWrapper>
-        </SSwiperSlide>
-        <SSwiperSlide>
-          <STopWrapper>
-            <h1>나의 챌린지</h1>
-            <h2>7/11(화) ~ 8/15(화)</h2>
-            <h3>현재 3일째 참여 중</h3>
-          </STopWrapper>
-          <SMidWrapper>
-            <img
-              src="https://github.com/Jinga02/Review/assets/110621233/e8edd4c4-dd18-42d8-904c-4a04c6618018"
-              alt="예싱이미지"
-            />
-            <p>
-              {overView.split(" ").length > 32 ? (
-                <>{overView.split(" ").slice(0, 32)} </>
-              ) : (
-                overView
-              )}
-            </p>
-          </SMidWrapper>
-          <SBotWrapper>
-            <h2>15/15</h2>
-            <button id="enter">입장하기</button>
-            <button id="detail">
-              {" "}
-              {location.pathname === "/ChallengePage" ? "상세보기" : "참여내역"}
-            </button>{" "}
-          </SBotWrapper>
-        </SSwiperSlide>
-        <SSwiperSlide>
-          <STopWrapper>
-            <h1>나의 챌린지</h1>
-            <h2>7/11(화) ~ 8/15(화)</h2>
-            <h3>현재 3일째 참여 중</h3>
-          </STopWrapper>
-          <SMidWrapper>
-            <img
-              src="https://github.com/Jinga02/Review/assets/110621233/e8edd4c4-dd18-42d8-904c-4a04c6618018"
-              alt="예싱이미지"
-            />
-            <p>
-              {overView.split(" ").length > 32 ? (
-                <>{overView.split(" ").slice(0, 32)} </>
-              ) : (
-                overView
-              )}
-            </p>
-          </SMidWrapper>
-          <SBotWrapper>
-            <h2>15/15</h2>
-            <button id="enter">입장하기</button>
-            <button id="detail">
-              {" "}
-              {location.pathname === "/ChallengePage" ? "상세보기" : "참여내역"}
-            </button>{" "}
-          </SBotWrapper>
-        </SSwiperSlide>
+        {myChallenges.map((challenge) => {
+          const daysInProgress = getDaysInProgress(challenge.startDate);
+
+          return (
+            <SSwiperSlide key={challenge.id}>
+              <STopWrapper>
+                <p id="name">{challenge.name}</p>
+                <p id="date">
+                  {formatDate(challenge.startDate)} ~{" "}
+                  {formatDate(challenge.endDate)}
+                </p>
+                <p id="dday">{daysInProgress}</p>
+              </STopWrapper>
+              <SMidWrapper>
+                <img src={challenge.imgPath} alt="예상이미지" />
+                <p id="info">
+                  {challenge.info.length > 150 ? (
+                    <>{challenge.info.slice(0, 150) + "....."} </>
+                  ) : (
+                    challenge.info
+                  )}
+                </p>
+              </SMidWrapper>
+              <SBotWrapper>
+                <p id="people">{challenge.userList.length}명 참여 중</p>
+                <button id="enter">입장하기</button>
+                <button
+                  id="detail"
+                  onClick={() => detailClick(challenge)} // 수정된 부분
+                >
+                  {" "}
+                  {location.pathname === "/ChallengePage"
+                    ? "상세보기"
+                    : "참여내역"}
+                </button>{" "}
+              </SBotWrapper>
+            </SSwiperSlide>
+          );
+        })}
       </SSwiper>
-      {/*  모달  */}
-      <Modal
-        style={customModalStyles}
-        isOpen={isOpen}
-        onRequestClose={closeModal}
-      >
-        <h1>참여내역</h1>
-        <button onClick={closeModal}>닫기</button>
-      </Modal>
     </>
   );
 };

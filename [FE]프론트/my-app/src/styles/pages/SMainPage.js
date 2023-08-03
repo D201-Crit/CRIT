@@ -1,12 +1,15 @@
 import { styled } from "styled-components";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 export const SEntranceButtonWrapper = styled.div`
   width: 100%;
   height: 100px;
+  font-family: "Pretendard";
 `;
 export const SEntranceButton = styled.button`
-  position: relative;
-  left: 75%;
+  position: absolute;
+  left: 78%;
+  top: 100px;
   background-color: #0000c5;
   border: none;
   border-radius: 6px;
@@ -17,50 +20,60 @@ export const SEntranceButton = styled.button`
   font-size: 18px;
   color: white;
   cursor: pointer;
+  font-family: "Pretendard";
 `;
-export const SEntranceUl = styled.ul`
-  position: relative;
-  background-color: rgba(22, 22, 22, 0.599);
+export const SEntranceSwiper = styled(Swiper)`
+  position: absolute;
   width: 400px;
   left: 72%;
+  top: 200px;
   padding: 0;
+  font-family: "Pretendard";
 `;
-export const SEntranceLi = styled.li`
-  ${"" /* background-color: red; */}
+export const SEntranceSlide = styled(SwiperSlide)`
   display: flex;
-  width: 100%;
-  height: 100px;
+  width: 400px;
+  height: 120px;
   list-style: none;
   border-radius: 8px;
-  padding: 8px;
-  margin: 5px 0;
+  font-family: "Pretendard";
+  background-color: rgba(22, 22, 22, 22);
   p {
-    position: relative;
-    top: -10px;
-    right: 40px;
+    position: absolute;
+    width: 185px;
+    height: 60px;
+    top: 30px;
+    left: 110px;
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-all;
   }
   h4 {
-    position: relative;
-    top: 77px;
-    right: 73px;
+    position: absolute;
+    width: 200px;
+    height: 20px;
+    top: 5px;
+    right: 70px;
     margin: 0;
   }
   img {
-    margin: 5px;
-    height: 70%;
+    margin: 15px 10px;
+    width: 85px;
+    height: 85px;
   }
 `;
 export const SEntranceLiButton = styled.button`
-  position: relative;
-  top: 50px;
-  left: 20px;
-  width: 25%;
-  height: 40%;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 80px;
+  height: 30px;
   background-color: #33ff00;
   border: none;
   border-radius: 6px;
   font-weight: 800;
   cursor: pointer;
+  font-family: "Pretendard";
 `;
 // 챌스 검색
 export const SSearchShortsWrapper = styled.div`
@@ -72,10 +85,13 @@ export const SInput = styled.input`
   width: 50%;
   border: none;
   border-radius: 5px;
-  font-size: 18px;
+
   padding: 13px;
   margin: 0 auto;
   display: block;
+  font-size: 18px;
+  font-weight: 500;
+  font-family: "Pretendard";
 
   & + hr {
     width: 50%;
