@@ -73,7 +73,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.updateProfilePicture(file, user.getId()));
     }
 
-
     private User getUser(HttpServletRequest httpServletRequest) {
         String header = httpServletRequest.getHeader("Authorization");
         String bearer = header.substring(7);
@@ -85,7 +84,12 @@ public class UserController {
         return user;
     }
 
+    @PostMapping("/follow")
+    public Response<?> follow(@RequestBody FollowRequestDto followRequestDto, HttpServletRequest httpServletRequest) {
+        User user = getUser(httpServletRequest);
 
+        return new Response<>("true","follow 성공",userService.follow(followRequestDto));
+    }
 
 
 }

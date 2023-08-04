@@ -118,15 +118,15 @@ public class UserService {
             () -> new IllegalArgumentException("아이디 " + userId + "를 찾을 수 없습니다.")
         );
 
-        String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Profile");
+        String upload = s3Uploader.uploadFiles(multipartFile, "Profile");
 
 
-        user.setProfileImageUrl(uploadFiles);
+        user.setProfileImageUrl(upload);
 
-        userRepository.save(user);
+        // userRepository.save(user);
         /*파일 저장*/
 
-        return new UpdateProfilePictureDto(user.getId(), uploadFiles);
+        return new UpdateProfilePictureDto(upload);
     }
 
     /*
