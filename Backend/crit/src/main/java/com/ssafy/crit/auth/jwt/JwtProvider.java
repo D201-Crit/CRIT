@@ -1,7 +1,9 @@
 package com.ssafy.crit.auth.jwt;
 
 import com.ssafy.crit.auth.dto.TokenDto;
+import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.entity.enumType.AuthProvider;
+import com.ssafy.crit.auth.repository.UserRepository;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,8 +16,8 @@ import java.util.HashMap;
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
+    private final UserRepository userRepository;
     @Value("app.auth.token-secret") private String secret;
-
     private static final Long ACCESS_TOKEN_EXPIRATION_TIME = 1000 * 60 * 60L; // 1 hours
     private static final Long REFRESH_TOKEN_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30L; // 30 days
 
@@ -100,5 +102,15 @@ public class JwtProvider {
             token = authorizationHeader.substring(7);
         }
         return (String)get(token).get("userId");
+    }
+
+    public User extractUser(HttpServletRequest httpServletRequest) {
+        String header = httpServletRequest.getHeader("Authorization");
+        String token = header.substring(7);
+        String userId = (String) get(token).get("userId");
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("유저 ID를 찾을수 없습니다."));
+        return user;
     }
 }
