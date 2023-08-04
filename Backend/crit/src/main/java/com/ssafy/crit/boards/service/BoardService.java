@@ -117,11 +117,41 @@ public class BoardService {
 	}
 
 
-	// 게시물 수정
-	public BoardDto update(Long id, BoardDto boardDto) {
+	public BoardDto update(Long id, BoardDto boardDto, List<MultipartFile> multipartFiles) throws IOException {
 		Board board = boardRepository.findById(id).orElseThrow(() -> {
 			return new IllegalArgumentException("Board Id를 찾을 수 없습니다!");
 		});
+
+		User user = board.getUser();
+
+		List<UploadFile> uploadFile = uploadFileRepository.findAllByBoardsId(id);
+
+		uploadFileRepository.deleteAll(uploadFile);
+
+		// Clear and re-add the files to the existing collection.
+		board.getUploadFiles().clear();
+
+		List<String> storeFileResult = new ArrayList<>();
+		List<UploadFile> uploadFilePut = new ArrayList<>();
+
+		for (MultipartFile multipartFile : multipartFiles) {
+			if (!multipartFile.isEmpty()) {
+
+				String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Boards");
+
+				UploadFile uploadFileSave = UploadFile.builder()
+					.board(board)
+					.userName(user.getId())
+					.storeFilePath(uploadFiles)
+					.classification(board.getClassification().getCategory())
+					.build();
+
+				uploadFileRepository.save(uploadFileSave);
+				// directly add the new files to the existing collection
+				board.getUploadFiles().add(uploadFileSave);
+				storeFileResult.add(uploadFiles);
+			}
+		}
 
 		board.setUpdate(boardDto.getTitle(),boardDto.getContent());
 
