@@ -183,13 +183,4 @@ public class ChallengeService {
         return Arrays.stream(fileExtension).anyMatch(extension::equals);
     }
 
-    // 로컬에 저장된 이미지 지우기
-    private void removeNewFile(File targetFile) {
-        if (targetFile.delete()) {
-            System.out.println("File delete success");
-            return;
-        }
-        System.out.println("File delete fail");
-    }
-
 }

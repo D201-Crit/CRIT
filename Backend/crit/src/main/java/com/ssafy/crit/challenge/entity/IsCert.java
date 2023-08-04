@@ -1,20 +1,17 @@
 package com.ssafy.crit.challenge.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 import com.ssafy.crit.auth.entity.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 
 @Getter
@@ -37,7 +34,12 @@ public class IsCert {
     private LocalDateTime certTime;
 
     // 이탈시간
-    private LocalDateTime outTime;
+    private LocalTime absentTime;
+    
+    // 자리 있었던 시간
+    private LocalTime presenceTime;
+    
+    private int percentage; // 자리에 있었던 비율
 
     private String filePath; // 이미지 저장 경로
 
@@ -50,8 +52,20 @@ public class IsCert {
     private User user;
 
 
-    public void certification(boolean bool){
+    public void certification(boolean bool) {
         this.isCertified = bool;
+    }
+
+    public void setOutTime(LocalTime absentTime) {
+        this.absentTime = absentTime;
+    }
+
+    public void setPresenceTime(LocalTime presenceTime){
+        this.presenceTime = presenceTime;
+    }
+
+    public void setPercentage(int percentage){
+        this.percentage = percentage;
     }
 
 }
