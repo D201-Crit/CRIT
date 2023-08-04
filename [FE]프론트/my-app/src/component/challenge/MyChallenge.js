@@ -20,6 +20,7 @@ import {
   SBotWrapper,
 } from "../../styles/pages/SChallengePage";
 import { useSelector } from "react-redux";
+import { SImg } from "./../../styles/pages/SChallengePage";
 
 const MyChallenge = () => {
   const user = useSelector((state) => state.users);
@@ -42,6 +43,14 @@ const MyChallenge = () => {
         console.log(err);
       });
   };
+  // 시작일 기준 오름차순 정렬
+  const sortByStartDate = (a, b) => {
+    const startDateA = new Date(a.startDate);
+    const startDateB = new Date(b.startDate);
+    return startDateA - startDateB;
+  };
+  const sortedMyChallenges = myChallenges.sort(sortByStartDate);
+  console.log(sortedMyChallenges);
   // 상세보기 클릭
   const detailClick = (challenge) => {
     if (location.pathname === "/ChallengePage") {
@@ -82,52 +91,56 @@ const MyChallenge = () => {
   }, []);
   return (
     <>
-      <SSwiper
-        effect={"cards"}
-        grabCursor={true}
-        modules={[EffectCards]}
-        className="mySwiper"
-      >
-        {myChallenges.map((challenge) => {
-          const daysInProgress = getDaysInProgress(challenge.startDate);
+      {sortedMyChallenges.length === 0 ? (
+        <SImg src="https://github.com/Jinga02/ChallengePJT/assets/110621233/8329c57e-d554-4956-803d-68508c07b007" />
+      ) : (
+        <SSwiper
+          effect={"cards"}
+          grabCursor={true}
+          modules={[EffectCards]}
+          className="mySwiper"
+        >
+          {myChallenges.map((challenge) => {
+            const daysInProgress = getDaysInProgress(challenge.startDate);
 
-          return (
-            <SSwiperSlide key={challenge.id}>
-              <STopWrapper>
-                <p id="name">{challenge.name}</p>
-                <p id="date">
-                  {formatDate(challenge.startDate)} ~{" "}
-                  {formatDate(challenge.endDate)}
-                </p>
-                <p id="dday">{daysInProgress}</p>
-              </STopWrapper>
-              <SMidWrapper>
-                <img src={challenge.imgPath} alt="예상이미지" />
-                <p id="info">
-                  {challenge.info.length > 150 ? (
-                    <>{challenge.info.slice(0, 150) + "....."} </>
-                  ) : (
-                    challenge.info
-                  )}
-                </p>
-              </SMidWrapper>
-              <SBotWrapper>
-                <p id="people">{challenge.userList.length}명 참여 중</p>
-                <button id="enter">입장하기</button>
-                <button
-                  id="detail"
-                  onClick={() => detailClick(challenge)} // 수정된 부분
-                >
-                  {" "}
-                  {location.pathname === "/ChallengePage"
-                    ? "상세보기"
-                    : "참여내역"}
-                </button>{" "}
-              </SBotWrapper>
-            </SSwiperSlide>
-          );
-        })}
-      </SSwiper>
+            return (
+              <SSwiperSlide key={challenge.id}>
+                <STopWrapper>
+                  <p id="name">{challenge.name}</p>
+                  <p id="date">
+                    {formatDate(challenge.startDate)} ~{" "}
+                    {formatDate(challenge.endDate)}
+                  </p>
+                  <p id="dday">{daysInProgress}</p>
+                </STopWrapper>
+                <SMidWrapper>
+                  <img src={challenge.imgPath} alt="예상이미지" />
+                  <p id="info">
+                    {challenge.info.length > 150 ? (
+                      <>{challenge.info.slice(0, 150) + "....."} </>
+                    ) : (
+                      challenge.info
+                    )}
+                  </p>
+                </SMidWrapper>
+                <SBotWrapper>
+                  <p id="people">{challenge.userList.length}명 참여 중</p>
+                  <button id="enter">입장하기</button>
+                  <button
+                    id="detail"
+                    onClick={() => detailClick(challenge)} // 수정된 부분
+                  >
+                    {" "}
+                    {location.pathname === "/ChallengePage"
+                      ? "상세보기"
+                      : "참여내역"}
+                  </button>{" "}
+                </SBotWrapper>
+              </SSwiperSlide>
+            );
+          })}
+        </SSwiper>
+      )}
     </>
   );
 };

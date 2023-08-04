@@ -22,6 +22,14 @@ export const SCreateChallengeButton = styled.button`
 `;
 
 // MyChallenge
+export const SImg = styled.img`
+  position: absolute;
+  top: 10px;
+  left: 25%;
+  width: 600px;
+  height: 600px;
+  margin: 100px auto;
+`;
 
 export const SSwiper = styled(Swiper)`
   // background-color: rgba(22, 22, 22, 0.599);
@@ -126,22 +134,26 @@ export const SBotWrapper = styled.div`
   }
 `;
 //  SearchChallenge
-export const SSearchChallengeWrapper = styled.div``;
+export const SSearchChallengeWrapper = styled.div`
+  position: absolute;
+  width: 100%;
+  top: 650px;
+  margin: 0 auto;
+  text-align: center;
+`;
 export const SInput = styled.input`
   background-color: rgba(22, 22, 22, 0.599);
   color: white;
-  width: 780px;
+  width: 820px;
   border: none;
   border-radius: 10px;
   padding: 13px;
-  margin: 0 auto;
-  display: block;
   font-size: 18px;
   font-weight: 500;
   font-family: "Pretendard";
 
   & + hr {
-    width: 780px;
+    width: 820px;
     border: none;
     height: 0.5px;
     background-color: #ccc;
@@ -150,21 +162,14 @@ export const SInput = styled.input`
 `;
 
 export const SSearchSwiper = styled(Swiper)`
-  // background-color: rgba(22, 22, 22, 0.599);
-  width: 948px;
+  width: 900px;
   margin: 30px auto 50px;
   height: 600px;
   padding: 10px;
   border: none;
-  gap: 20px; // 수정: spaceBetween가 아닌 gap으로 변경
-  grid-template-columns: repeat(
-    3,
-    1fr
-  ); // 수정: slidesPerView가 아닌 grid-template-columns로 변경
-  grid-template-rows: repeat(
-    2,
-    1fr
-  ); // 수정: slidesPerColumn이 아닌 grid-template-rows로 변경
+  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   .swiper-button-next::after,
   .swiper-button-prev::after {
     display: none;
@@ -173,16 +178,41 @@ export const SSearchSwiper = styled(Swiper)`
 
 export const SSearchSwiperSlide = styled(SwiperSlide)`
   text-align: center;
-  height: calc((100% - 30px) / 2) !important;
-  cursor: pointer;
+  height: calc((100% - 20px) / 2) !important;
+  transition: background-color 0.25s ease-in-out, box-shadow 0.5s ease-in-out; /* box-shadow에도 transition 추가 */
+  // webkit-tap-highlight-color: red;
+  margin: 5px;
+  border-radius: 10px;
+  &:hover {
+    background-color: rgba(28, 28, 28, 28);
+    box-shadow: 0px 0px 15px gray;
+  }
   img {
-    width: 150px;
-    height: 150px;
-    margin: 25px;
+    position: absolute;
+    top: 80px;
+    left: 30px;
+    width: 120px;
+    height: 120px;
+    margin: 10px 25px 0px 25px;
     border-radius: 10px;
   }
   h2 {
-    margin: -10px 0 0 0;
+    margin: 15px 0 0 0;
+    font-size: 18px;
+  }
+  button {
+    position: absolute;
+    width: 150px;
+    height: 40px;
+    top: 230px;
+    left: 43px;
+    border: 0.2px solid gray;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: rgba(40, 40, 40, 40);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
   }
 `;
 
@@ -194,9 +224,8 @@ export const customModalStyles = {
     borderRadius: "10px",
     boxShadow: "0px 0px 15px gray",
     margin: "auto",
-    width: "1100px",
-    height: "600px",
-    padding: "20px",
+    width: "1000px",
+    height: "750px",
     color: "black",
   },
   overlay: {
@@ -209,17 +238,17 @@ export const customModalStyles = {
 };
 export const SCreateChallengeModalWrapper = styled.div`
   color: white;
-  margin: -15px 50px 10px 50px;
+  margin: -15px 60px 10px 50px;
 `;
 export const STitleChallenge = styled.input`
-  position: relative;
-  top: 30px;
+  position: absolute;
+  top: 15px;
   color: white;
-  width: 480px;
+  width: 80%;
   background: rgba(0, 0, 0, 0);
   border: 0;
-  border-bottom: 1px solid white;
-  font-size: 25px;
+  border-bottom: 0.5px solid gray;
+  font-size: 30px;
   padding: 15px;
   font-family: "Pretendard";
   font-weight: 500;
@@ -230,29 +259,52 @@ export const STitleChallenge = styled.input`
 `;
 
 export const SChallengeImage = styled.div`
-  width: 100px;
-  position: relative;
   font-family: "Pretendard";
   font-weight: 500;
-  left: 800px;
+  font-size: 30px;
+
+  div {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    top: 95px;
+    background: white;
+    border-radius: 50px;
+  }
+  label {
+    position: absolute;
+    top: 95px;
+    left: 300px;
+    font-size: 30px;
+    width: 300px;
+  }
+  img {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    top: px;
+  }
   input {
-    width: 200px;
+    position: absolute;
+    top: 140px;
+    left: 300px;
+    font-size: 20px;
     font-weight: 500;
     font-family: "Pretendard";
   }
 `;
 
-export const SInfoChallenge = styled.div`
-  height: 450px;
-`;
+export const SInfoChallenge = styled.div``;
 
 export const STextArea = styled.textarea`
+  position: absolute;
   background-color: rgb(40, 40, 40);
   border-radius: 10px;
   border: 0.5px solid gray;
   width: 482px;
-  height: 100px;
+  height: 120px;
   font-size: 16px;
+  top: 270px;
   color: white;
   margin: 30px 0 20px 0;
   padding: 15px;
@@ -267,9 +319,10 @@ export const STextArea = styled.textarea`
 `;
 
 export const SSelectChallengeWrapper = styled.div`
+  position: absolute;
   font-family: "Pretendard";
-  width: 200px;
-  height: 140px;
+  width: 210px;
+  height: 145px;
   background-color: rgb(40, 40, 40);
   border-radius: 10px;
   border: 0.5px solid gray;
@@ -278,6 +331,7 @@ export const SSelectChallengeWrapper = styled.div`
   padding: 0 20px;
   margin: 0 0 20px 0;
   font-weight: 440;
+  top: 460px;
   div {
     margin: 20px 0;
   }
@@ -291,8 +345,9 @@ export const SSelectChallengeWrapper = styled.div`
   }
 `;
 export const SChallengeTimeWrapper = styled.div`
-  width: 200px;
-  height: 140px;
+  position: absolute;
+  width: 210px;
+  height: 145px;
   border: 0.5px solid gray;
   border-radius: 10px;
   color: white;
@@ -301,6 +356,7 @@ export const SChallengeTimeWrapper = styled.div`
   background-color: rgb(40, 40, 40);
   font-weight: 440;
   font-family: "Pretendard";
+  top: 615px;
   h4 {
     margin: 10px 0 15px 0;
   }
@@ -321,11 +377,12 @@ export const SChallengeTimeWrapper = styled.div`
 
 export const SAuthenticationMethodWrapper = styled.div`
   font-family: "Pretendard";
-  position: relative;
+  position: absolute;
   bottom: 302px;
-  left: 270px;
-  width: 200px;
-  height: 140px;
+  left: 332px;
+  top: 460px;
+  width: 210px;
+  height: 145px;
   border: 0.5px solid gray;
   border-radius: 10px;
   color: white;
@@ -348,11 +405,11 @@ export const SAuthenticationMethodWrapper = styled.div`
 // 인원수 설정
 export const SMemberWrapper = styled.div`
   font-family: "Pretendard";
-  position: relative;
-  bottom: 282px;
-  left: 270px;
-  width: 200px;
-  height: 140px;
+  position: absolute;
+  top: 615px;
+  left: 332px;
+  width: 210px;
+  height: 145px;
   border: 0.5px solid gray;
   border-radius: 10px;
   color: white;
@@ -365,6 +422,8 @@ export const SMemberWrapper = styled.div`
   }
   input {
     width: 200px;
+    position: absolute;
+    bottom: 50px;
   }
   h4 {
     margin: 10px 0 10px 0;
@@ -372,26 +431,28 @@ export const SMemberWrapper = styled.div`
   select {
     font-family: "Pretendard";
     font-weight: 500;
-    position: relative;
-    left: 135px;
-    bottom: -51px;
+    position: absolute;
+    left: 160px;
+    bottom: 10px;
     margin: 8px 0 5px 0;
     font-size: 15px;
     border: none;
     border-radius: 6px;
   }
   h5 {
-    position: relative;
-    bottom: 25px;
-    left: 70px;
+    position: absolute;
+    font-size: 20px;
+    bottom: 75px;
+    left: 110px;
+    margin: 0;
   }
 `;
 
 export const SCalendarwrapper = styled.div`
-  position: relative;
-  bottom: 740px;
-  left: 550px;
-  width: 435px;
+  position: absolute;
+  bottom: 233px;
+  left: 600px;
+  width: 355px;
   height: 255px;
   text-align: center;
   font-size: 10px;
@@ -487,7 +548,7 @@ export const SCalendarwrapper = styled.div`
   ${"" /* 요일  */}
   .react-calendar__month-view__weekdays {
     abbr {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 500;
       text-decoration: none;
     }
@@ -511,9 +572,9 @@ export const SCalendarwrapper = styled.div`
   }
 `;
 export const SMoneyWrapper = styled.div`
-  position: relative;
-  bottom: 705px;
-  left: 550px;
+  position: absolute;
+  bottom: 85px;
+  left: 560px;
   width: 435px;
   text-align: center;
   font-family: "Pretendard";
@@ -542,13 +603,13 @@ export const SMoneyWrapper = styled.div`
 `;
 export const SButtonWrapper = styled.div`
   font-family: "Pretendard";
-  position: relative;
-  bottom: 10px;
-  left: 575px;
-  width: 435px;
+  position: absolute;
+  bottom: 28px;
+  left: 620px;
+  width: 360px;
 `;
 export const SCompleteButton = styled.button`
-  width: 180px;
+  width: 150px;
   margin: 0 8px;
   height: 50px;
   background-color: #0000c5;
@@ -560,7 +621,7 @@ export const SCompleteButton = styled.button`
   font-family: "Pretendard";
 `;
 export const SCloseButton = styled.button`
-  width: 180px;
+  width: 150px;
   margin: 0 8px;
   height: 50px;
   background-color: #33ff00;

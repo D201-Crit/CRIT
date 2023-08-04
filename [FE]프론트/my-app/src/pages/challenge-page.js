@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 const ChallengePage = () => {
   const user = useSelector((state) => state.users);
   const [allChallenge, setAllChallenge] = useState([]);
+
   // 챌린지 만들기 모달
   const [isOpen, setIsOpen] = useState(false);
   const openModal = () => {
@@ -28,6 +29,7 @@ const ChallengePage = () => {
   // 모든 챌린지 불러오기
   const getAllChallenge = () => {
     api
+      // .get("https://i9d201.p.ssafy.io/api/challenge/list/all", {
       .get("http://localhost:8080/challenge/list/all", {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
@@ -47,8 +49,6 @@ const ChallengePage = () => {
   console.log(allChallenge);
   return (
     <>
-      <h1>챌린지</h1>
-      <hr />
       <SCreateChallengeWrapper>
         <SCreateChallengeButton onClick={openModal}>
           챌린지 만들기
@@ -62,7 +62,10 @@ const ChallengePage = () => {
         isOpen={isOpen}
         onRequestClose={closeModal}
       >
-        <CreateChallengeModal closeModal={closeModal} />
+        <CreateChallengeModal
+          closeModal={closeModal}
+          getAllChallenge={getAllChallenge}
+        />
       </Modal>
     </>
   );
