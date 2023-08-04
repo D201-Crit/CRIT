@@ -1,8 +1,10 @@
 package com.ssafy.crit.shorts.entity;
 
+import com.ssafy.crit.auth.entity.BaseTimeEntity;
 import com.ssafy.crit.auth.entity.User;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
+import net.minidev.json.annotate.JsonIgnore;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -14,7 +16,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Setter
-public class Shorts {
+public class Shorts extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
@@ -24,18 +26,27 @@ public class Shorts {
 
     private String title;
 
+    @ColumnDefault("0")
     private int views;
+
+    @ColumnDefault("0")
+    private int likes;
 
     private String content;
 
     private String shortsName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private User user;
 
-    @OneToMany(mappedBy = "shorts", fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "shorts")
+    private List<ShortsLikeTable> shortsLikeTables;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "shorts", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HashTagShorts> hashTagShortsList = new ArrayList<>(); // 해시태그 리스트
 
     private String thumbnailUrl;
@@ -57,4 +68,9 @@ public class Shorts {
     public List<HashTagShorts> getHashTags() {
         return this.hashTagShortsList;
     }
+
+    public void getLikesCount() {
+        this.likes = this.shortsLikeTables.size();
+    }
+
 }

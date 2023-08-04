@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +37,6 @@ public class ShortsResponseDto {
                 .content(content)
                 .thumbnailUrl(thumbnailUrl)
                 .user(user)
-                .views(0)
                 .build();
     }
 }
