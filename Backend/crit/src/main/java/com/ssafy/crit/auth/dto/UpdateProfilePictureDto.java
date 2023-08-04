@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
+// @RequiredArgsConstructor
 public class UpdateProfilePictureDto {
 	private String profileImageUrl;
 
