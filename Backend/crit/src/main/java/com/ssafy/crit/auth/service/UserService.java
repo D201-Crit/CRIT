@@ -125,9 +125,8 @@ public class UserService {
 
         userRepository.save(user);
         /*파일 저장*/
-        UpdateProfilePictureDto updateProfilePictureDto = UpdateProfilePictureDto.builder()
-            .profileImageUrl(uploadFiles).build();
-        return updateProfilePictureDto;
+
+        return new UpdateProfilePictureDto(user.getId(), uploadFiles);
     }
 
     /*
