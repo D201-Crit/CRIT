@@ -21,6 +21,8 @@ spring:
     url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S09P13D201?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
     username: S09P13D201
     password: sMTWKgddDr
+    hikari:
+      maximum-pool-size: 1
     driver-class-name: org.mariadb.jdbc.Driver
 
   main:
