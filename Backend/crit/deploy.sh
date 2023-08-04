@@ -21,4 +21,4 @@ echo '이미지 삭제'
 docker images -f "dangling=true" -q | xargs docker rmi
  
 echo '컨테이너 실행'
-docker run -p 8080:8080 --name crit_be --network ubuntu_default -d crit_be
+docker run --env-file ./.env -p 8080:8080 --name crit_be --network ubuntu_default -d crit_be
