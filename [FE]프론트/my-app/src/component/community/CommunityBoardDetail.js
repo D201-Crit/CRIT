@@ -97,30 +97,21 @@ const handleSortMethodChange = (e) => {
     })
   };
 
-// 좋아요 취소 기능
-const toggleLike = async (articleid, isLiked) => {
-  // 좋아요 상태에 따라 URL과 메소드를 설정
-  const method = isLiked ? "delete" : "post";
-  const url = isLiked
-    ? `${API_BASE_URL}/likes/${articleid}`
-    : `${API_BASE_URL}/likes/${articleid}`;
-
-  api({
-    method: method,
-    url: url,
-    headers: {
-      Authorization: `Bearer ${user.accessToken}`,
-    },
-  })
+  const deleteLike = async (articleid) =>{
+    api.delete(`${API_BASE_URL}/likes/${articleid}`,{
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
     .then((res) => {
-      console.log(res);
-      fetchArticles(); // 게시글 정보를 다시 불러와 상태를 업데이트합니다.
+      console.log('Delete Like Response:',res);
+      return fetchArticles();
+      
     })
     .catch((error) => {
-      console.log(error);
-    });
-};
-
+      console.log(error)
+    })
+  };
   
 
 
@@ -166,12 +157,19 @@ const toggleLike = async (articleid, isLiked) => {
               <p>추천수: {article.likesCount}</p>
               <p>{article.liked}</p>
 
-              <div>
-              <button onClick={() => toggleLike(article.id, article.liked?.includes(user.id))}>
-                {article.liked?.includes(user.id) ? "좋아요 취소" : "좋아요"}
-              </button>
-            </div>
 
+            
+              <div>
+              {article.liked.includes(user.id)? (
+                <button onClick={() => deleteLike(article.id)}>
+                  좋아요 취소
+                </button>
+              ) : (
+                <button onClick={() => articleLike(article.id)}>
+                  좋아요
+                </button>
+              )}
+            </div>
 
             </SBoardArticleRow>
           </SBoardArticleCol>

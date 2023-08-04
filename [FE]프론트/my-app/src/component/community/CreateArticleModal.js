@@ -31,12 +31,20 @@ const CreateArticleModal = ({ classification, setModal }) => {
     e.preventDefault();
   
     const formData = new FormData();
-    images.forEach((imageObj) => {
-      
-      formData.append("file", imageObj.file);
-    });
-    
-    formData.append('boardSaveRequestDto', new Blob([JSON.stringify(article)], { type: 'application/json' }))
+  
+    // 이미지가 없을 경우 빈 배열을 전달하려면 다음과 같이 작성하십시오.
+    if (images.length === 0) {
+      formData.append("file", new Blob([], { type: "application/json" }));
+    } else {
+      images.forEach((imageObj) => {
+        formData.append("file", imageObj.file);
+      });
+    }
+  
+    formData.append(
+      "boardSaveRequestDto",
+      new Blob([JSON.stringify(article)], { type: "application/json" })
+    );
     api
       .post(`${API_BASE_URL}/write`, formData, {
         headers: {
@@ -46,13 +54,12 @@ const CreateArticleModal = ({ classification, setModal }) => {
       })
       .then(() => {
         setModal(false);
-        
       })
-      .catch(()=>{
-        console.log("게시글 작성실패")
+      .catch(() => {
+        console.log("게시글 작성실패");
       });
   };
-
+  
   const handleArticleChange = (event) => {
     const { name, value } = event.target;
     setArticle({

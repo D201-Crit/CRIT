@@ -154,6 +154,12 @@ const CommunityArticleDetailPage = () => {
           <h1>{articles.title}</h1>
           <h3>{articles.content}</h3>
           <h3>{articles.liked}</h3>
+          <img
+              src={articles.imageFiles}
+              alt={``}
+              style={{ maxWidth: "100px", maxHeight: "px", margin: "5px" }}
+              ></img>
+              
           <div>
           {isMyArticle(articles) && (
           <div>
@@ -166,7 +172,7 @@ const CommunityArticleDetailPage = () => {
           <ModifyArticleModal classification={classification} setIsEditOpen={setIsEditOpen} prevArticles = {articles}/>)}
         </div>
       )}
-      
+
       <div>댓글 작성하기</div>
       <form onSubmit={writeComment}>
         <input type='textarea' value={newComment} onChange={handleCommentChange}></input>
@@ -182,6 +188,7 @@ const CommunityArticleDetailPage = () => {
               {isMyComment(comment) && (
                 <button onClick={() => deleteComment(comment.id)}>삭제</button>
               )}
+              
             </div>
           ))}
         </div>

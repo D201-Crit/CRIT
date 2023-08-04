@@ -7,7 +7,7 @@ const API_BASE_URL = "http://localhost:8080/boards";
 const ModifyArticleModal = ({ classification, setModal, prevArticles }) => {
   console.log(prevArticles);
   const user = useSelector((state) => state.users);
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([null]);
   const [article, setArticle] = useState(prevArticles);
 
   const onArticleImage = (e) => {
@@ -16,7 +16,7 @@ const ModifyArticleModal = ({ classification, setModal, prevArticles }) => {
   
     for (let i = 0; i < imageList.length; i++) {
       const imageUrl = URL.createObjectURL(imageList[i]);
-      imageObjList.push({ url: imageUrl, file: imageList[i] });
+      imageObjList.push({ url: imageUrl, file: imageList[i]});
     }
   
     setImages(imageObjList);
