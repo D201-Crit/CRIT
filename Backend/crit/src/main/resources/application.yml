@@ -7,9 +7,9 @@ server:
       enabled: true
       force: true
 
-jasypt:
-  encryptor:
-    password: asdkljfhawekjrawmnbvsjachgjhkermn12b34j2151872tdsfzsdbfkjaukjrahm
+#jasypt:
+#  encryptor:
+#    password: asdkljfhawekjrawmnbvsjachgjhkermn12b34j2151872tdsfzsdbfkjaukjrahm
 
 
 spring:
@@ -18,10 +18,10 @@ spring:
       max-file-size: 300MB
       max-request-size: 300MB
   datasource:
-    url: jdbc:h2:tcp://localhost/~/critt
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S09P13D201?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    username: S09P13D201
+    password: sMTWKgddDr
+    driver-class-name: org.mariadb.jdbc.Driver
   main:
     allow-circular-references: true
 
