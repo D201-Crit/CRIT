@@ -28,14 +28,14 @@ public class ShortsLikeService {
         }
 
         shorts.getLikesCount();
-        return new ShortsLikeDto(shorts.getTitle(), user.getId());
+        return new ShortsLikeDto(shorts.getTitle(), user.getNickname());
     }
 
     public ShortsLikeDto unlike(User user, Shorts shorts) {
         shortsLikeRepository.deleteByUserAndShorts(user, shorts);
         shortsLikeRepository.flush();
 
-        ShortsLikeDto shortsLikeDto = new ShortsLikeDto(shorts.getTitle(), user.getId());
+        ShortsLikeDto shortsLikeDto = new ShortsLikeDto(shorts.getTitle(), user.getNickname());
         shorts.getLikesCount();
         return shortsLikeDto;
     }

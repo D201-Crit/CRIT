@@ -41,7 +41,7 @@ public class BoardSaveRequestDto {
                 board.getTitle(),
                 board.getContent(),
                 board.getClassification().getCategory(),
-                board.getUser().getId(),
+                board.getUser().getNickname(),
                 filenames);
     }
 

@@ -32,7 +32,7 @@ public class BoardDto {
             .collect(Collectors.toList());
 
         List<String> likedName = board.getLikes().stream()
-            .map(like -> like.getUser().getId()) // change getName() to your method
+            .map(like -> like.getUser().getNickname()) // change getName() to your method
             .collect(Collectors.toList());
 
 
@@ -41,7 +41,7 @@ public class BoardDto {
                 board.getTitle(),
                 board.getContent(),
                 board.getViews(),
-                board.getUser().getId(),
+                board.getUser().getNickname(),
                 board.getClassification().getCategory(),
                 likedName,
             filenames);

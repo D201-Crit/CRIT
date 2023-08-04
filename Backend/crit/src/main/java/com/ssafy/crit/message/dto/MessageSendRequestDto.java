@@ -18,7 +18,7 @@ public class MessageSendRequestDto {
         return new MessageSendRequestDto(
                 message.getTitle(),
                 message.getContent(),
-                message.getReceiver().getId()
+                message.getReceiver().getNickname()
         );
     }
 }

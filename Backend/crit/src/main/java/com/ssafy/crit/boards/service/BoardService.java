@@ -99,7 +99,7 @@ public class BoardService {
 
 				UploadFile uploadFile = UploadFile.builder()
 					.board(board)
-					.userName(user.getId())
+					.userName(user.getNickname())
 					.storeFilePath(uploadFiles)
 					.classification(classification.getCategory())
 					.build();
@@ -207,14 +207,14 @@ public class BoardService {
 			}
 
 			List<String> likedName = board.getLikes().stream()
-				.map(like -> like.getUser().getId()) // change getName() to your method
+				.map(like -> like.getUser().getNickname()) // change getName() to your method
 				.collect(Collectors.toList());
 
 			return new BoardShowSortDto(board.getId(),
 					board.getTitle(),
 					board.getContent(),
 					board.getViews(),
-					board.getUser().getId(),
+					board.getUser().getNickname(),
 					board.getLikes().size(),
 				board.getClassification().getCategory(),
 				likedName);

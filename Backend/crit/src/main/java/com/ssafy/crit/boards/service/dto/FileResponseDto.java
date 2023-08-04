@@ -44,7 +44,7 @@ public class FileResponseDto {
 			board.getId(),
 			board.getContent(),
 				board.getClassification().getCategory(),
-			board.getUser().getId(),
+			board.getUser().getNickname(),
 			filenames
 		);
 	}
