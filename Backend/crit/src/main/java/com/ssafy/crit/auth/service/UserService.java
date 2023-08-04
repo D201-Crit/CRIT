@@ -112,18 +112,21 @@ public class UserService {
 
 
     @Transactional
-    public UpdateProfilePictureDto updateProfilePictureDto(MultipartFile multipartFile, String userId) throws IOException {
+    public UpdateProfilePictureDto updateProfilePicture(MultipartFile multipartFile, String userId) throws IOException {
 
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow(
+            () -> new IllegalArgumentException("아이디 " + userId + "를 찾을 수 없습니다.")
+        );
 
         String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Profile");
+
 
         user.setProfileImageUrl(uploadFiles);
 
         userRepository.save(user);
         /*파일 저장*/
 
-        return new UpdateProfilePictureDto(user.getProfileImageUrl());
+        return new UpdateProfilePictureDto(user.getId(), uploadFiles);
     }
 
     /*

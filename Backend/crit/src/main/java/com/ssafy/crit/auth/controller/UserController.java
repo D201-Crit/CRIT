@@ -70,8 +70,9 @@ public class UserController {
     @PutMapping(value = "/image",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<UpdateProfilePictureDto> create(@RequestPart(value="file", required = false) MultipartFile file, HttpServletRequest httpServletRequest) throws Exception {
         User user = getUser(httpServletRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.updateProfilePictureDto(file, user.getId()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.updateProfilePicture(file, user.getId()));
     }
+
 
     private User getUser(HttpServletRequest httpServletRequest) {
         String header = httpServletRequest.getHeader("Authorization");
@@ -84,12 +85,7 @@ public class UserController {
         return user;
     }
 
-    @PostMapping("/follow")
-    public Response<?> follow(@RequestBody FollowRequestDto followRequestDto, HttpServletRequest httpServletRequest) {
-        User user = getUser(httpServletRequest);
 
-        return new Response<>("true","follow 성공",userService.follow(followRequestDto));
-    }
 
 
 }

@@ -133,7 +133,6 @@ public class BoardService {
 		board.getUploadFiles().clear();
 
 		List<String> storeFileResult = new ArrayList<>();
-		List<UploadFile> uploadFilePut = new ArrayList<>();
 
 		for (MultipartFile multipartFile : multipartFiles) {
 			if (!multipartFile.isEmpty()) {
