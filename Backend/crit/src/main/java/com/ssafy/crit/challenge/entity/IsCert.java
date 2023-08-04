@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import com.ssafy.crit.auth.entity.User;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,18 +29,17 @@ public class IsCert {
     @Column(name = "is_cert_id")
     private Long id;
 
-    @ColumnDefault("FALSE")
-    private Boolean isCert;
+    @ColumnDefault("false")
+    private boolean isCertified;
 
     // 인증시간
+    @CreationTimestamp
     private LocalDateTime certTime;
 
     // 이탈시간
     private LocalDateTime outTime;
 
-    private String filename; // 이미지 이름
-
-    private String filepath; // 이미지 저장 경로
+    private String filePath; // 이미지 저장 경로
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_id")
@@ -49,5 +49,9 @@ public class IsCert {
     @JoinColumn(name = "user_id")
     private User user;
 
+
+    public void certification(boolean bool){
+        this.isCertified = bool;
+    }
 
 }

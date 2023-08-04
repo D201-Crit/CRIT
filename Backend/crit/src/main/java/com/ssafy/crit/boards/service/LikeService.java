@@ -33,12 +33,13 @@ public class LikeService {
 			likeRepository.save(like);
 		}
 
-		return new LikeDto(board.getTitle(), user.getId());
+		return new LikeDto(board.getTitle(), board.getClassification().getCategory() , user.getId(), board.getLikes().size() + 1);
 	}
 
 	public LikeDto unlike(User user, Board board) {
 		likeRepository.deleteByUserAndBoard(user, board);
-		LikeDto likeDto = new LikeDto(board.getTitle(), user.getId());
+		LikeDto likeDto = new LikeDto(board.getTitle(), board.getClassification().getCategory(), user.getId(),
+			board.getLikes().size() - 1);
 		return likeDto;
 	}
 }

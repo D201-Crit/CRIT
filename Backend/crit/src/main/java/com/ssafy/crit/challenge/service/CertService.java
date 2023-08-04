@@ -1,9 +1,5 @@
 package com.ssafy.crit.challenge.service;
 
-import com.drew.imaging.ImageMetadataReader;
-import com.drew.metadata.Directory;
-import com.drew.metadata.Metadata;
-import com.drew.metadata.Tag;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.challenge.dto.CertImgRequestDto;
 import com.ssafy.crit.challenge.entity.Cert;
@@ -14,39 +10,40 @@ import com.ssafy.crit.challenge.repository.ChallengeRepository;
 import com.ssafy.crit.challenge.repository.ChallengeUserRepository;
 import com.ssafy.crit.challenge.repository.IsCertRepository;
 import com.ssafy.crit.common.exception.BadRequestException;
+import com.ssafy.crit.common.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.FileTime;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-@Service
-@Transactional
-@RequiredArgsConstructor
-@Slf4j
 /**
  * 230801 조경호
  * 인증 서비스
  * */
 
-
+@Service
+@Transactional
+@RequiredArgsConstructor
+@Slf4j
 public class CertService {
     private final ChallengeRepository challengeRepository;
     private final ChallengeUserRepository challengeUserRepository;
     private final IsCertRepository isCertRepository;
+    private final S3Uploader s3Uploader;
 
     public IsCert imgCertification(CertImgRequestDto requestDto, User user, MultipartFile file) throws Exception {
         if(!checkExtension(file)) throw new BadRequestException("이미지 형식이 아닙니다.");
@@ -74,39 +71,24 @@ public class CertService {
         }
 
         // 올바르게 올린경우 사진 저장
-        /*우리의 프로젝트경로를 담아주게 된다 - 저장할 경로를 지정*/
-        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\cert";
-//        String projectPath = "C:\\upload\\cert/";
-//        String projectPath = "/home/ubuntu/cert";
-        log.info(projectPath);
-        /*식별자 . 랜덤으로 이름 만들어줌*/
-        UUID uuid = UUID.randomUUID();
-        log.info("UUID = {}", uuid);
-        /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
-        String fileName = uuid + "_" + file.getOriginalFilename();
-        log.info("fileName = {}", fileName);
-        /*빈 껍데기 생성*/
-        /*File을 생성할건데, 이름은 "name" 으로할거고, projectPath 라는 경로에 담긴다는 뜻*/
-        File saveFile = new File(projectPath, fileName);
+        String uploadImgPath = s3Uploader.uploadFiles(file, "cert/img");
 
-        file.transferTo(saveFile);
 
+        LocalDateTime startDatetime = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(1,0,0));
+        LocalDateTime endDatetime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59));
 
         // 다 만족하면 Cert테이블에 삽입
-        IsCert isCert = IsCert.builder()
-                .certTime(LocalDateTime.now())
-                .isCert(true)
-                .filepath(projectPath)
-                .filename(fileName)
-                .challenge(challenge)
-                .user(user)
-                .build();
+        IsCert isCert = isCertRepository.findByChallengeAndCertTimeBetween(challenge, startDatetime, endDatetime)
+                .orElseThrow(() -> new BadRequestException("해당 챌린지의 인증을 찾을 수 없습니다."));
+
+        isCert.certification(true); // 인증 완료로 설정
 
         isCertRepository.save(isCert);
 
         return isCert;
 
     }
+
 
 
     public List<IsCert> getIsCertList(Long challengeId, User user) {
@@ -118,6 +100,33 @@ public class CertService {
                 () -> new BadRequestException("해당 챌린지에 참여 중이지 않습니다."));
 
         return isCertRepository.findAllByChallengeAndUser(challenge, user);
+    }
+
+
+    // 날마다 챌린지 인증을 넣기
+    @Transactional(propagation= Propagation.REQUIRES_NEW)
+    @Scheduled(cron = "0 0 0 * * *")
+    public void dailyInsertionIsCert() throws Exception {
+        log.info("Working Scheduling");
+        List<Challenge> allOngoingChallenge = challengeRepository.findAllOngoingChallenge(LocalDate.now());
+        List<IsCert> insertedIsCert = new ArrayList<>();
+        for(Challenge challenge : allOngoingChallenge){
+            log.info("challengeId : {}", challenge.getId());
+
+            challenge.getChallengeUserList().forEach(challengeUser -> {
+                User user = challengeUser.getUser();
+
+                IsCert isCert = IsCert.builder()
+                        .challenge(challenge)
+                        .isCertified(false)
+                        .user(user)
+                        .build();
+
+                insertedIsCert.add(isCert);
+            });
+        }
+
+        isCertRepository.saveAllAndFlush(insertedIsCert);
     }
 
     // 확장자 확인

@@ -1,8 +1,15 @@
 package com.ssafy.crit.boards.service;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.boards.entity.Classification;
+import com.ssafy.crit.boards.entity.feeds.UploadFile;
+import com.ssafy.crit.boards.repository.UploadFileRepository;
 import com.ssafy.crit.boards.repository.ClassificationRepository;
 import com.ssafy.crit.boards.service.dto.BoardDto;
 import com.ssafy.crit.boards.entity.board.Board;
@@ -10,6 +17,7 @@ import com.ssafy.crit.boards.repository.BoardRepository;
 
 import com.ssafy.crit.boards.service.dto.BoardSaveRequestDto;
 import com.ssafy.crit.boards.service.dto.BoardShowSortDto;
+import com.ssafy.crit.common.s3.S3Uploader;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -27,10 +36,22 @@ public class BoardService {
 	private final BoardRepository boardRepository;
 	private final UserRepository userRepository;
 	private final ClassificationRepository classificationRepository;
+	private final S3Uploader s3Uploader;
+	private final UploadFileRepository uploadFileRepository;
 
 	//전체 게시물
 	@Transactional(readOnly = true)
-	public Page<BoardShowSortDto> getBoards(Pageable pageable) {
+	public Page<BoardShowSortDto> getBoards(Pageable pageable, String category) {
+		classificationRepository.findByCategory(category).orElseThrow(
+			() -> {
+				return new IllegalArgumentException("찾으시는 " + category + "가 없습니다.");
+			});
+
+		Page<Board> boards = boardRepository.findAllByClassificationCategory(pageable, category);
+		return getBoardShowSortDtos(boards);
+	}
+	@Transactional(readOnly = true)
+	public Page<BoardShowSortDto> getWholeBoards(Pageable pageable) {
 		Page<Board> boards = boardRepository.findAll(pageable);
 		return getBoardShowSortDtos(boards);
 	}
@@ -48,22 +69,8 @@ public class BoardService {
 		return BoardDto.toDto(board);
 	}
 
-	// 게시물 작성
-	// public BoardSaveRequestDto write(BoardSaveRequestDto boardSaveRequestDto, User user) {
-	//
-	//     Classification classification = classificationRepository.findById(boardSaveRequestDto.getClassification()).orElseThrow();
-	//
-	//     Board board = Board.builder()
-	//             .title(boardSaveRequestDto.getTitle())
-	//             .content(boardSaveRequestDto.getContent())
-	//             .classification(classification)
-	//             .user(user)
-	//             .build();
-	//     boardRepository.save(board);
-	//     return BoardSaveRequestDto.toSaveRequestDto(board);
-	// }
-
-	public BoardSaveRequestDto write(BoardSaveRequestDto boardSaveRequestDto, User user) {
+	public BoardSaveRequestDto write(List<MultipartFile> multipartFiles , BoardSaveRequestDto boardSaveRequestDto, User user) throws
+		IOException {
 
 		Classification classification = classificationRepository.findByCategory(boardSaveRequestDto.getClassification())
 			.orElseGet(() -> {
@@ -75,6 +82,7 @@ public class BoardService {
 				return newClassification;
 			});
 
+		List<String> storeFileResult = new ArrayList<>();
 		Board board = Board.builder()
 			.title(boardSaveRequestDto.getTitle())
 			.content(boardSaveRequestDto.getContent())
@@ -84,17 +92,66 @@ public class BoardService {
 
 		boardRepository.save(board);
 
-		return BoardSaveRequestDto.toSaveRequestDto(board);
+		for (MultipartFile multipartFile : multipartFiles) {
+			if (!multipartFile.isEmpty()) {
+
+				String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Boards");
+
+				UploadFile uploadFile = UploadFile.builder()
+					.board(board)
+					.userName(user.getId())
+					.storeFilePath(uploadFiles)
+					.classification(classification.getCategory())
+					.build();
+
+				uploadFileRepository.save(uploadFile);
+
+				storeFileResult.add(uploadFiles);
+			}
+		}
+
+		boardSaveRequestDto.setId(board.getId());
+		boardSaveRequestDto.setImageFiles(storeFileResult);
+
+
+		return boardSaveRequestDto;
 	}
 
 
-	// 게시물 수정
-	public BoardDto update(Long id, BoardDto boardDto) {
+	public BoardDto update(Long id, BoardDto boardDto, List<MultipartFile> multipartFiles) throws IOException {
 		Board board = boardRepository.findById(id).orElseThrow(() -> {
 			return new IllegalArgumentException("Board Id를 찾을 수 없습니다!");
 		});
 
-		User user = userRepository.findById(board.getUser().getId()).orElseThrow();
+		User user = board.getUser();
+
+		List<UploadFile> uploadFile = uploadFileRepository.findAllByBoardsId(id);
+
+		uploadFileRepository.deleteAll(uploadFile);
+
+		// Clear and re-add the files to the existing collection.
+		board.getUploadFiles().clear();
+
+		List<String> storeFileResult = new ArrayList<>();
+
+		for (MultipartFile multipartFile : multipartFiles) {
+			if (!multipartFile.isEmpty()) {
+
+				String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Boards");
+
+				UploadFile uploadFileSave = UploadFile.builder()
+					.board(board)
+					.userName(user.getId())
+					.storeFilePath(uploadFiles)
+					.classification(board.getClassification().getCategory())
+					.build();
+
+				uploadFileRepository.save(uploadFileSave);
+				// directly add the new files to the existing collection
+				board.getUploadFiles().add(uploadFileSave);
+				storeFileResult.add(uploadFiles);
+			}
+		}
 
 		board.setUpdate(boardDto.getTitle(),boardDto.getContent());
 
@@ -148,12 +205,19 @@ public class BoardService {
 			if (board.getUser() == null) {
 				throw new RuntimeException("User is null for board id: " + board.getId());
 			}
+
+			List<String> likedName = board.getLikes().stream()
+				.map(like -> like.getUser().getId()) // change getName() to your method
+				.collect(Collectors.toList());
+
 			return new BoardShowSortDto(board.getId(),
 					board.getTitle(),
 					board.getContent(),
 					board.getViews(),
-					board.getUser().getId().toString(),
-					board.getLikes().size());
+					board.getUser().getId(),
+					board.getLikes().size(),
+				board.getClassification().getCategory(),
+				likedName);
 		});
 	}
 }

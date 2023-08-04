@@ -4,16 +4,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@RequiredArgsConstructor
+@Setter
+@NoArgsConstructor
 public class UpdateProfilePictureDto {
+	private String user;
 	private String profileImageUrl;
-	private String profileImageName;
 
-	@Builder
-	public UpdateProfilePictureDto(String profileImageUrl, String profileImageName) {
+	public UpdateProfilePictureDto(String user, String profileImageUrl) {
+		this.user = user;
 		this.profileImageUrl = profileImageUrl;
-		this.profileImageName = profileImageName;
 	}
 }
