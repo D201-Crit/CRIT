@@ -25,6 +25,17 @@ spring:
       hibernate:
         show_sql: ${SPRING_JPA_PROPERTIES_HIBERNATE_SHOW_SQL:true}
         format_sql: ${SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL:true}
+    hibernate:
+        ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
+
+  datasource:
+      driverClassName: ${SPRING_DATASOURCE_DRIVERCLASSNAME}
+      url: ${SPRING_DATASOURCE_URL}
+      username: ${SPRING_DATASOURCE_USERNAME}
+      password: ${SPRING_DATASOURCE_PASSWORD}
+      hikari.maximum-pool-size: 1
+
+
 
   security:
     oauth2:
@@ -105,3 +116,5 @@ cloud:
       auto: ${CLOUD_AWS_REGION_AUTO:false}
     stack:
       auto: ${CLOUD_AWS_STACK_AUTO:false}
+
+
