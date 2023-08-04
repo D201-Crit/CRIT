@@ -4,15 +4,11 @@ import { api } from "../../api/api";
 
 const API_BASE_URL = "http://localhost:8080/boards";
 
-const CreateArticleModal = ({ classification, setModal }) => {
+const ModifyArticleModal = ({ classification, setModal, prevArticles }) => {
+  console.log(prevArticles);
   const user = useSelector((state) => state.users);
   const [images, setImages] = useState([]);
-  const [article, setArticle] = useState({
-    title: "",
-    content: "",
-    writer: user.id,
-    classification: classification,
-  });
+  const [article, setArticle] = useState(prevArticles);
 
   const onArticleImage = (e) => {
     const imageList = e.target.files;
@@ -32,13 +28,13 @@ const CreateArticleModal = ({ classification, setModal }) => {
   
     const formData = new FormData();
     images.forEach((imageObj) => {
-      
       formData.append("file", imageObj.file);
     });
     
-    formData.append('boardSaveRequestDto', new Blob([JSON.stringify(article)], { type: 'application/json' }))
+    formData.append('boardDto', new Blob([JSON.stringify(article)], { type: 'application/json' }))
+    console.log(formData)
     api
-      .post(`${API_BASE_URL}/write`, formData, {
+      .put(`${API_BASE_URL}/update/${article.id}`, formData, {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
           "Content-Type": "multipart/form-data",
@@ -49,7 +45,7 @@ const CreateArticleModal = ({ classification, setModal }) => {
         
       })
       .catch(()=>{
-        console.log("게시글 작성실패")
+        console.log("게시글 수정실패")
       });
   };
 
@@ -93,4 +89,4 @@ const CreateArticleModal = ({ classification, setModal }) => {
   );
 };
 
-export default CreateArticleModal;
+export default ModifyArticleModal;

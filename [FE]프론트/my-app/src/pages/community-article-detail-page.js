@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { api } from './../../src/api/api.js'
 import { useSelector } from "react-redux";
+import ModifyArticleModal from '../component/community/ModifyArticleModal.js';
 
 const API_BASE_URL = 'http://localhost:8080/boards';
 
@@ -112,13 +113,6 @@ const CommunityArticleDetailPage = () => {
       })
     };
 
-// 게시글 수정
-  // const editArticle = async (event) => {
-  //   api.put(`${API_BASE_URL}/update/${articleid}`, {
-  //   headers: {
-  //     Authorization: `Bearer ${user.accessToken}`,
-  //   },
-  // })
     
   //게시글 삭제
   const deleteArticle = async (articleid) => {
@@ -164,15 +158,15 @@ const CommunityArticleDetailPage = () => {
           {isMyArticle(articles) && (
           <div>
           <button onClick={()=>deleteArticle(articles.id)}>게시글 삭제</button>
-          <button>게시글 수정</button>
+          <button onClick={()=>setIsEditOpen(true)}>게시글 수정</button>
           </div>
           )}
           </div>
+          {isEditOpen && (
+          <ModifyArticleModal classification={classification} setIsEditOpen={setIsEditOpen} prevArticles = {articles}/>)}
         </div>
       )}
-
       
-
       <div>댓글 작성하기</div>
       <form onSubmit={writeComment}>
         <input type='textarea' value={newComment} onChange={handleCommentChange}></input>
@@ -192,7 +186,6 @@ const CommunityArticleDetailPage = () => {
           ))}
         </div>
       )}
-
       <button onClick={()=>{backtothePage()}}>돌아가기</button>
     </div>
   );

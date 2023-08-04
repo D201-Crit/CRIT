@@ -18,7 +18,12 @@ const CommunityBoardDetail = ({classification}) => {
   
   const [articles, setArticles] = useState(null); // 게시글 목록 State
   const [showmodal,setModal] = useState(false);
+  const [sortMethod, setSortMethod] = useState('전체게시물');
 
+const handleSortMethodChange = (e) => {
+  setSortMethod(e.target.value);
+  sortArticles(e.target.value);
+};
   // 초기 렌더링 시 실행
   useEffect(() => {
     fetchArticles();
@@ -34,7 +39,6 @@ const CommunityBoardDetail = ({classification}) => {
     })
     .then((res) => {
       setArticles(res.data.data.content);
-      
       console.log(res);
 
     })
@@ -43,11 +47,89 @@ const CommunityBoardDetail = ({classification}) => {
     })
   };
 
+  const sortArticles = async (sort = 'whole') => {
+    let url;
+  
+    switch (sort) {
+      case 'desc':
+        url = `${API_BASE_URL}/desc`;
+        break;
+      case 'asc':
+        url = `${API_BASE_URL}/asc`;
+        break;
+      case 'viewsdesc':
+        url = `${API_BASE_URL}/viewsdesc`;
+        break;
+      case 'viewsasc':
+        url = `${API_BASE_URL}/viewsasc`;
+        break;
+      default:
+        url = `${API_BASE_URL}/whole/${classification}`;
+    }
+  
+    api.get(url, {
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+      .then((res) => {
+        setArticles(res.data.data.content);
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  
+  // 좋아요 기능
+  const articleLike = async (articleid) =>{
+    api.post(`${API_BASE_URL}/likes/${articleid}`, null,{
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+    .then((res) => {
+      console.log(res);
+      fetchArticles();
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  };
+
+// 좋아요 취소 기능
+const toggleLike = async (articleid, isLiked) => {
+  // 좋아요 상태에 따라 URL과 메소드를 설정
+  const method = isLiked ? "delete" : "post";
+  const url = isLiked
+    ? `${API_BASE_URL}/likes/${articleid}`
+    : `${API_BASE_URL}/likes/${articleid}`;
+
+  api({
+    method: method,
+    url: url,
+    headers: {
+      Authorization: `Bearer ${user.accessToken}`,
+    },
+  })
+    .then((res) => {
+      console.log(res);
+      fetchArticles(); // 게시글 정보를 다시 불러와 상태를 업데이트합니다.
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+  
+
+
   const goToArticleDetail = (id) => {
     // 클릭하면 게시글 디테일로 넘어감
     window.location.href = `/CommunityBoardPage/${classification}/${id}`;
   };
 
+  // 모달 열기
   const openModal = () => {
     setModal(true);
   }
@@ -57,6 +139,15 @@ const CommunityBoardDetail = ({classification}) => {
       {/* 게시판 제목 */}
       <h1>{classification}</h1> 
       <button onClick={()=>{openModal()}}>게시글작성</button>
+
+      {/* 게시판 정렬 */}
+      <select value={sortMethod} onChange={handleSortMethodChange}>
+      <option value="whole">전체게시물</option>
+      <option value="desc">제목순 내림차순</option>
+      <option value="asc">제목순 오름차순</option>
+      <option value="viewsdesc">조회순 내림차순</option>
+      <option value="viewsasc">조회순 오름차순</option>
+       </select>
 
       {/* 게시글 작성 모달 */}
       {showmodal && (
@@ -74,26 +165,24 @@ const CommunityBoardDetail = ({classification}) => {
               <p>조회수: {article.views}</p>
               <p>추천수: {article.likesCount}</p>
               <p>{article.liked}</p>
+
+              <div>
+              <button onClick={() => toggleLike(article.id, article.liked?.includes(user.id))}>
+                {article.liked?.includes(user.id) ? "좋아요 취소" : "좋아요"}
+              </button>
+            </div>
+
+
             </SBoardArticleRow>
-       
           </SBoardArticleCol>
         ))) : (
           <p>Loading...</p>
         )}
-        {/* <button onClick={handleCreatePost}>게시글 작성</button> */}
       </SCommunityWrapper>
-
-    </div>
+    </div>  
   );
-};
+};    
 
 export default CommunityBoardDetail;
 
 
-// <div>
-// {article.liked ? (
-//   <button onClick={() => handleUnlikeClick(article.id)}>좋아요 취소</button>
-// ) : (
-//   <button onClick={() => handleLikeClick(article.id)}>좋아요</button>
-// )}
-// </div>
