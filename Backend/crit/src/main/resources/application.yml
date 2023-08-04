@@ -16,8 +16,8 @@ spring:
   main:
     allow-circular-references: ${SPRING_MAIN_ALLOW_CIRCULAR_REFERENCES:true}
 
-  profiles:
-    include: ${SPRING_PROFILES_INCLUDE:db}
+  #profiles:
+    #include: ${SPRING_PROFILES_INCLUDE:db}
 
   jpa:
     show-sql: ${SPRING_JPA_SHOW_SQL:true}
