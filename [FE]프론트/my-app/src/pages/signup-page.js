@@ -28,7 +28,7 @@ const SignUp = () => {
       setMismatchError(e.target.value !== passwordCheck);
     },
     // 함수 기준 외부 변수만 deps[]에 작성
-    [passwordCheck],
+    [passwordCheck]
   );
 
   const onChangePasswordCheck = useCallback(
@@ -36,7 +36,7 @@ const SignUp = () => {
       setPasswordCheck(e.target.value);
       setMismatchError(e.target.value !== password);
     },
-    [password],
+    [password]
   );
   const [mismatchError, setMismatchError] = useState(false);
   // 가입 실패
@@ -54,8 +54,8 @@ const SignUp = () => {
         setSignUpError("");
         setSignUpSuccess(false);
         axios
-          // .post("https://i9d201.p.ssafy.io/api/auth/signup", {
-          .post("http://localhost:8080/auth/signup", {
+          .post("https://i9d201.p.ssafy.io/api/auth/signup", {
+            // .post("http://localhost:8080/auth/signup", {
             id,
             password,
             email,
@@ -86,7 +86,7 @@ const SignUp = () => {
           .finally(() => {});
       }
     },
-    [email, nickname, password, passwordCheck],
+    [email, nickname, password, passwordCheck]
   );
 
   return (

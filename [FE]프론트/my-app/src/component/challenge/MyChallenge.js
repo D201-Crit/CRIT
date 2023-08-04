@@ -24,14 +24,15 @@ import { SImg } from "./../../styles/pages/SChallengePage";
 
 const MyChallenge = () => {
   const user = useSelector((state) => state.users);
+  console.log(user);
   const location = useLocation();
   const navigate = useNavigate();
   const [myChallenges, setMyChallenges] = useState([]);
 
   const getMyChallenge = () => {
     api
-      // .get("https://i9d201.p.ssafy.io/api/challenge/list/mine", {
-      .get("http://localhost:8080/challenge/list/mine", {
+      .get("https://i9d201.p.ssafy.io/api/challenge/list/mine", {
+        // .get("http://localhost:8080/challenge/list/mine", {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
         },
@@ -92,7 +93,14 @@ const MyChallenge = () => {
   return (
     <>
       {sortedMyChallenges.length === 0 ? (
-        <SImg src="https://github.com/Jinga02/ChallengePJT/assets/110621233/8329c57e-d554-4956-803d-68508c07b007" />
+        <SSwiper
+          effect={"cards"}
+          grabCursor={true}
+          modules={[EffectCards]}
+          className="mySwiper"
+        >
+          <SImg src="https://github.com/Jinga02/ChallengePJT/assets/110621233/8329c57e-d554-4956-803d-68508c07b007" />
+        </SSwiper>
       ) : (
         <SSwiper
           effect={"cards"}

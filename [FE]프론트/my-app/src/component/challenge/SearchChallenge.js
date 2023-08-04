@@ -13,6 +13,7 @@ import "swiper/css";
 import "swiper/css/grid";
 import "swiper/css/pagination";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const SearchChallenge = (props) => {
   const allChallenge = props.allChallenge;
@@ -22,9 +23,28 @@ const SearchChallenge = (props) => {
   const [searchResult, setSearchResult] = useState([]);
   const onSearchChallenge = () => {
     const filterChallenge = allChallenge.filter((challenge) =>
-      challenge.name.includes(title),
+      challenge.name.includes(title)
     );
-    setSearchResult(filterChallenge);
+    if (filterChallenge.length == 0) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "일치하는 챌린지가 없습니다.",
+        text: "CRIT",
+        showConfirmButton: false,
+        timer: 1500,
+        background: "#272727",
+        color: "white",
+        // width: "500px",
+        // 먼지
+        // imageUrl: 'https://unsplash.it/400/200',
+        // imageWidth: 400,
+        // imageHeight: 200,
+        // imageAlt: 'Custom image',
+      });
+    } else {
+      setSearchResult(filterChallenge);
+    }
   };
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
@@ -57,17 +77,10 @@ const SearchChallenge = (props) => {
         grid={{
           rows: 2,
         }}
-        // spaceBetween={0}
         pagination={{
           clickable: true,
         }}
         modules={[Grid, Pagination]}
-        // modules={[Navigation, Pagination, Scrollbar, A11y]}
-        // spaceBetween={20}
-        // slidesPerView={3}
-        // slidesPerColumn={2} // 세로 방향으로 2줄의 슬라이드가 보여짐
-        // navigation
-        // scrollbar={{ draggable: true }}
       >
         {renderChallenges.map((challenge) => {
           return (

@@ -82,13 +82,29 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
     });
   };
   // 챌린지 생성
+  const checkCreate = () => {
+    Swal.fire({
+      position: "center",
+      title: "챌린지를 생성하시겠습니까?",
+      text: "생성된 챌린지는 취소할 수 없습니다.",
+      showCancelButton: true,
+      confirmButtonText: "확인",
+      cancelButtonText: "취소",
+      background: "#272727",
+      color: "white",
+      preConfirm: () => {
+        return createChallenge();
+      },
+      // width: "500px",
+      // 먼지
+      // imageUrl: 'https://unsplash.it/400/200',
+      // imageWidth: 400,
+      // imageHeight: 200,
+      // imageAlt: 'Custom image',
+    });
+  };
   const createChallenge = () => {
     const validationData = [
-      {
-        icon: "error",
-        condition: ![3000, 5000, 7000, 10000].includes(requestDto.money),
-        message: "참여비를 설정해주세요.",
-      },
       {
         icon: "error",
         condition: !requestDto.title,
@@ -129,6 +145,11 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
         condition: !requestDto.startDate || !requestDto.endDate,
         message: "챌린지 기간을 설정해주세요.",
       },
+      {
+        icon: "error",
+        condition: ![3000, 5000, 7000, 10000].includes(requestDto.money),
+        message: "참여비를 설정해주세요.",
+      },
     ];
     for (const { icon, condition, message } of validationData) {
       if (condition) {
@@ -140,13 +161,13 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
     formData.append("file", image); // 이미지 파일 첨부
     formData.append(
       "requestDto",
-      new Blob([JSON.stringify(requestDto)], { type: "application/json" }),
+      new Blob([JSON.stringify(requestDto)], { type: "application/json" })
     ); // requestDto를 JSON 형식으로 추가
     console.log(requestDto);
     console.log(image);
     api
-      // .post("https://i9d201.p.ssafy.io/api/challenge/create", formData, {
-      .post("http://localhost:8080/challenge/create", formData, {
+      .post("https://i9d201.p.ssafy.io/api/challenge/create", formData, {
+        // .post("http://i9d201.p.ssafy.io/api/challenge/create", formData, {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
           "Content-Type": `multipart/form-data`,
@@ -184,6 +205,9 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
           timer: 1500,
           background: "#272727",
           color: "white",
+          preConfirm: () => {
+            return createChallenge();
+          },
           // width: "500px",
           // 먼지
           // imageUrl: 'https://unsplash.it/400/200',
@@ -209,7 +233,7 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
         <ChallengeMoney onChangeMoney={onChangeMoney} />
       </SInfoChallenge>
       <SButtonWrapper>
-        <SCompleteButton onClick={createChallenge}>생성완료</SCompleteButton>
+        <SCompleteButton onClick={checkCreate}>생성하기</SCompleteButton>
         <SCloseButton onClick={closeModal}>나가기</SCloseButton>
       </SButtonWrapper>
     </SCreateChallengeModalWrapper>

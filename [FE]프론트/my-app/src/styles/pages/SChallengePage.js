@@ -24,11 +24,10 @@ export const SCreateChallengeButton = styled.button`
 // MyChallenge
 export const SImg = styled.img`
   position: absolute;
-  top: 10px;
-  left: 25%;
+  bottom: -120px;
+  left: 120px;
   width: 600px;
   height: 600px;
-  margin: 100px auto;
 `;
 
 export const SSwiper = styled(Swiper)`
@@ -179,12 +178,17 @@ export const SSearchSwiper = styled(Swiper)`
 export const SSearchSwiperSlide = styled(SwiperSlide)`
   text-align: center;
   height: calc((100% - 20px) / 2) !important;
-  transition: background-color 0.25s ease-in-out, box-shadow 0.5s ease-in-out; /* box-shadow에도 transition 추가 */
+  transition: background-color 0.25s ease-in-out, box-shadow 0.3s ease-in-out; // Added 's' to seconds
   // webkit-tap-highlight-color: red;
   margin: 5px;
   border-radius: 10px;
   &:hover {
-    background-color: rgba(28, 28, 28, 28);
+    background-color: rgba(
+      28,
+      28,
+      28,
+      0.28
+    ); // Changed last value to 0.28 for transparency
     box-shadow: 0px 0px 15px gray;
   }
   img {
@@ -619,6 +623,7 @@ export const SCompleteButton = styled.button`
   font-size: 23px;
   font-weight: 700;
   font-family: "Pretendard";
+  cursor: pointer;
 `;
 export const SCloseButton = styled.button`
   width: 150px;
@@ -632,4 +637,16 @@ export const SCloseButton = styled.button`
   font-weight: 700;
   cursor: pointer;
   font-family: "Pretendard";
+`;
+
+export const ParticipationChallengeButton = styled.button`
+  position: absolute;
+  top: 250px;
+  left: 115px;
+  width: 110px;
+  height: 40px;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 10px;
+  border: none;
 `;
