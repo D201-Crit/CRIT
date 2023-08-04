@@ -10,4 +10,6 @@ public interface ShortsRepository extends JpaRepository<Shorts,Long> {
     List<Shorts> findAllByOrderByViewsDesc();
 
     List<Shorts> findAllByOrderByCreatedDateDesc();
+
+    List<Shorts> findAllByOrderByLikesDesc();
 }

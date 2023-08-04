@@ -4,7 +4,7 @@ import com.ssafy.crit.auth.entity.BaseTimeEntity;
 import com.ssafy.crit.auth.entity.User;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
-import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -26,7 +26,11 @@ public class Shorts extends BaseTimeEntity {
 
     private String title;
 
+    @ColumnDefault("0")
     private int views;
+
+    @ColumnDefault("0")
+    private int likes;
 
     private String content;
 
@@ -37,6 +41,9 @@ public class Shorts extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private User user;
+
+    @OneToMany(mappedBy = "shorts")
+    private List<ShortsLikeTable> shortsLikeTables;
 
     @JsonIgnore
     @OneToMany(mappedBy = "shorts", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -61,4 +68,9 @@ public class Shorts extends BaseTimeEntity {
     public List<HashTagShorts> getHashTags() {
         return this.hashTagShortsList;
     }
+
+    public void getLikesCount() {
+        this.likes = this.shortsLikeTables.size();
+    }
+
 }

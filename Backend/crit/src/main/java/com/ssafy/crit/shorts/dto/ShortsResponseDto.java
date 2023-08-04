@@ -36,7 +36,6 @@ public class ShortsResponseDto {
                 .content(content)
                 .thumbnailUrl(thumbnailUrl)
                 .user(user)
-                .views(0)
                 .build();
     }
 }

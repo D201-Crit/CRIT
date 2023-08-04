@@ -66,9 +66,6 @@ public class ShortsService {
         Shorts shorts = shortsResponseDto.toEntity(user);
         shortsRepository.save(shorts);
 
-        /**
-         * 해당하는 해쉬태그가 없으면 바로 생성하고 그 후 중간테이블 생성
-         */
         for(String hashTagName : shortsDto.getHashTagNames()) {
             Optional<HashTag> optionalHashTag = hashTagRepository.findByHashTag(hashTagName);
 
@@ -143,23 +140,27 @@ public class ShortsService {
     public MainThumbnailDto getMainThumbnail() {
         List<Shorts> shortsViewsDesc = shortsRepository.findAllByOrderByViewsDesc();
         List<Shorts> shortsCreatedDateDesc = shortsRepository.findAllByOrderByCreatedDateDesc();
+        List<Shorts> shortsLikesDesc = shortsRepository.findAllByOrderByLikesDesc();
 
         List<ShortsDto> sellectedViewShorts = shortsViewsDesc.stream()
                 .limit(10)
                 .map(ShortsDto::toDto)
                 .collect(Collectors.toList());
-        log.info("sellectedViewShorts" + sellectedViewShorts.size());
 
         List<ShortsDto> sellectedCreatedShorts = shortsCreatedDateDesc.stream()
                 .limit(10)
                 .map(ShortsDto::toDto)
                 .collect(Collectors.toList());
-        log.info("sellectedCreatedDateShorts" + sellectedCreatedShorts.size());
+
+        List<ShortsDto> sellectedLikesShorts = shortsLikesDesc.stream()
+                .limit(10)
+                .map(ShortsDto::toDto)
+                .collect(Collectors.toList());
 
         MainThumbnailDto mainThumbnailDto = MainThumbnailDto.builder()
                 .thumbnailsByView(sellectedViewShorts)
                 .thumbnailsByDate(sellectedCreatedShorts)
-                .thumbnailsByLike(null)
+                .thumbnailsByLike(sellectedLikesShorts)
                 .build();
 
         return mainThumbnailDto;

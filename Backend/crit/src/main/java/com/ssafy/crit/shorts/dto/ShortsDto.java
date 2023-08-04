@@ -16,12 +16,13 @@ import java.util.stream.Collectors;
 public class ShortsDto {
     private Long id;
     private String title;
-    private String shortsUrl;
-    private List<String> hashTagNames = new ArrayList<>();
-    private int views;
+    private String nickname;
+    private int viewsCount; // 조회수
+    private int likesCount; // 좋아요수
     private String content;
-    private String shortsName;
+    private String shortsUrl;
     private String thumbnailUrl;
+    private List<String> hashTagNames = new ArrayList<>();
 
     public static ShortsDto toDto(Shorts shorts) {
         ShortsDto shortsDto = new ShortsDto();
@@ -29,9 +30,10 @@ public class ShortsDto {
         shortsDto.setTitle(shorts.getTitle());
         shortsDto.setShortsUrl(shorts.getShortsUrl());
         shortsDto.setContent(shorts.getContent());
-        shortsDto.setShortsName(shorts.getShortsName());
         shortsDto.setThumbnailUrl(shorts.getThumbnailUrl());
-        shortsDto.setViews(shortsDto.getViews());
+        shortsDto.setViewsCount(shorts.getViews());
+        shortsDto.setNickname(shorts.getUser().getNickname());
+        shortsDto.setLikesCount(shorts.getLikes());
 
         List<String> hashTagNames = shorts.getHashTags()
                 .stream()
