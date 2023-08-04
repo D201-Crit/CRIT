@@ -2,6 +2,7 @@ package com.ssafy.crit.challenge.service;
 
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.challenge.dto.CertImgRequestDto;
+import com.ssafy.crit.challenge.dto.CertVideoRequestDto;
 import com.ssafy.crit.challenge.entity.Cert;
 import com.ssafy.crit.challenge.entity.Challenge;
 import com.ssafy.crit.challenge.entity.ChallengeUser;
@@ -48,20 +49,7 @@ public class CertService {
     public IsCert imgCertification(CertImgRequestDto requestDto, User user, MultipartFile file) throws Exception {
         if(!checkExtension(file)) throw new BadRequestException("이미지 형식이 아닙니다.");
 
-        Challenge challenge = challengeRepository.findById(requestDto.getChallengeId()).orElseThrow(
-                () -> new BadRequestException("해당 챌린지를 찾을 수 없습니다."));
-
-        if(challenge.getCert() == Cert.WEBRTC) throw new BadRequestException("WEBRTC 인증만 가능합니다.");
-
-        // 유저가 챌린지 참여중인지 확인
-        ChallengeUser challengeUser = challengeUserRepository.findByChallengeAndUser(challenge, user).orElseThrow(
-                () -> new BadRequestException("해당 챌린지에 참여 중이지 않습니다."));
-
-        LocalDate now = LocalDate.now();
-        // 챌린지 기간인지 확인
-        if (challenge.getStartDate().isAfter(now) || challenge.getEndDate().isBefore(now)) {
-            throw new BadRequestException("해당 챌린지 참여기간이 아닙니다.");
-        }
+        Challenge challenge = isChallenge(requestDto.getChallengeId(), Cert.WEBRTC, user);
 
         // 이미지 정보 확인 -> 챌린지 시작 시간이랑 사진 시간이랑 비교 -> (X)
         // 사진 올린 시간과 현재 시간을 비교
@@ -87,6 +75,18 @@ public class CertService {
 
         return isCert;
 
+    }
+
+
+    public IsCert videoCertification(CertVideoRequestDto requestDto, User user) throws Exception {
+        Challenge challenge = isChallenge(requestDto.getChallengeId(), Cert.PHOTO, user);
+        // 이탈시간
+        // 초단위로 보내줌
+        // 챌린지 끝나고 나서
+        // 결과를 모달을 띄어줌
+        // 참여시간 미참여시간, 퍼센테이지
+        return null;
+        
     }
 
 
@@ -134,5 +134,26 @@ public class CertService {
         String[] fileExtension = {"jpeg", "jpg", "png"}; // 체크할 확장자
         String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
         return Arrays.stream(fileExtension).anyMatch(extension::equals);
+    }
+
+    
+    // 챌린지 참여중인지 확인
+    private Challenge isChallenge(Long challengeId, Cert cert, User user) {
+        Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(
+                () -> new BadRequestException("해당 챌린지를 찾을 수 없습니다."));
+
+        if (challenge.getCert() == cert) throw new BadRequestException(String.format("%s 인증만 가능합니다.", cert.toString()));
+
+        // 유저가 챌린지 참여중인지 확인
+        ChallengeUser challengeUser = challengeUserRepository.findByChallengeAndUser(challenge, user).orElseThrow(
+                () -> new BadRequestException("해당 챌린지에 참여 중이지 않습니다."));
+
+        LocalDate now = LocalDate.now();
+        // 챌린지 기간인지 확인
+        if (challenge.getStartDate().isAfter(now) || challenge.getEndDate().isBefore(now)) {
+            throw new BadRequestException("해당 챌린지 기간이 아닙니다.");
+        }
+
+        return challenge;
     }
 }

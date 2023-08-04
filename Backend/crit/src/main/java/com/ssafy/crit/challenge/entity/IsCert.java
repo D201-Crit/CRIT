@@ -37,7 +37,7 @@ public class IsCert {
     private LocalDateTime certTime;
 
     // 이탈시간
-    private LocalDateTime outTime;
+    private Long outTime;
 
     private String filePath; // 이미지 저장 경로
 

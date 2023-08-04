@@ -44,7 +44,9 @@ public class CertController {
                 HttpStatus.OK);
     }
 
-    
+
+
+
     // 해당 챌린지의 내 인증 목록 불러오기
     @GetMapping("/list/{challengeId}")
     public ResponseEntity<Response<List<IsCertResponseDto>>> getCertifcation(@PathVariable("challengeId") Long challengeId, HttpServletRequest httpServletRequest) throws Exception{
@@ -56,6 +58,7 @@ public class CertController {
     }
 
 
+
     private User getUser(HttpServletRequest httpServletRequest) {
         String bearer = httpServletRequest.getHeader("Authorization").substring(7);
         String userId = (String) jwtProvider.get(bearer).get("userId");
@@ -65,4 +68,6 @@ public class CertController {
         });
         return user;
     }
+
+
 }
