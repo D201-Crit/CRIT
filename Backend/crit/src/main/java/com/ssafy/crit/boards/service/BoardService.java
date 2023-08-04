@@ -3,6 +3,7 @@ package com.ssafy.crit.boards.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
@@ -205,13 +206,19 @@ public class BoardService {
 			if (board.getUser() == null) {
 				throw new RuntimeException("User is null for board id: " + board.getId());
 			}
+
+			List<String> likedName = board.getLikes().stream()
+				.map(like -> like.getUser().getId()) // change getName() to your method
+				.collect(Collectors.toList());
+
 			return new BoardShowSortDto(board.getId(),
 					board.getTitle(),
 					board.getContent(),
 					board.getViews(),
 					board.getUser().getId(),
 					board.getLikes().size(),
-				board.getClassification().getCategory());
+				board.getClassification().getCategory(),
+				likedName);
 		});
 	}
 }
