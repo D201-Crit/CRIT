@@ -37,7 +37,7 @@ public class Board extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LikeTable> likes;
 
 
@@ -53,9 +53,10 @@ public class Board extends BaseTimeEntity {
         this.likes = likes;
     }
 
-    public int getNNumberOfLikes(List<LikeTable> likes){
-        return likes.size();
-    }
+    // public int getNNumberOfLikes(List<LikeTable> likes){
+    //
+    //     return likes.size();
+    // }
 
     public void setViews(int views){
         this.views = views;

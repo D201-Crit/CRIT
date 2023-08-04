@@ -1,6 +1,12 @@
 package com.ssafy.crit.boards.service.dto;
 
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.ssafy.crit.boards.entity.board.Board;
+import com.ssafy.crit.boards.entity.feeds.UploadFile;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,11 +21,12 @@ public class BoardShowSortDto {
     private String writer;
     private int likesCount;
     private String classification;
+    private List<String> liked;
 
     @Builder
 
     public BoardShowSortDto(Long id, String title, String content, int views, String writer, int likesCount,
-        String classification) {
+        String classification, List<String> liked) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -27,5 +34,7 @@ public class BoardShowSortDto {
         this.writer = writer;
         this.likesCount = likesCount;
         this.classification = classification;
+        this.liked = liked;
     }
+
 }

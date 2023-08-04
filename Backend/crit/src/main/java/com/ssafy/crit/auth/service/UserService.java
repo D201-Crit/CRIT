@@ -116,7 +116,7 @@ public class UserService {
 
         User user = userRepository.findById(userId).orElseThrow();
 
-        String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Boards");
+        String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Profile");
 
         user.setProfileImageUrl(uploadFiles);
 

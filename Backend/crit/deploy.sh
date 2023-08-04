@@ -21,4 +21,4 @@ echo '쓰레기 이미지 삭제'
 docker images -f "dangling=true" -q | xargs docker rmi
  
 echo '컨테이너 실행'
-docker run -p 8080:8080 --name crit_be --network ubuntu_default -d crit_be
+docker run -e JAVA_OPTS=-Djasypt.encryptor.password=asdkljfhawekjrawmnbvsjachgjhkermn12b34j2151872tdsfzsdbfkjaukjrahm -p 8080:8080 --name crit_be --network ubuntu_default -d crit_be

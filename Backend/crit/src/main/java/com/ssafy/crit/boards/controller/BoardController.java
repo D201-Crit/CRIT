@@ -55,7 +55,7 @@ public class BoardController {
 	// 게시글 작성
 	@PostMapping(value = "/write", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
 	public Response<?> write(@RequestPart BoardSaveRequestDto boardSaveRequestDto, HttpServletRequest httpServletRequest,
-		@RequestPart(value = "file") List<MultipartFile> multipartFiles) throws IOException {
+		@RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) throws IOException {
 
 		User user = getUser(httpServletRequest);
 
@@ -63,15 +63,17 @@ public class BoardController {
 	}
 
 	// 게시글 수정
-	@PutMapping("/update/{id}")
-	public Response<?> edit(@RequestBody BoardDto boardDto, @PathVariable("id") Long id,
-		HttpServletRequest httpServletRequest) {
+	@PatchMapping(value = "/update/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+	public Response<?> edit(@RequestPart BoardDto boardDto, @PathVariable("id") Long id,
+		HttpServletRequest httpServletRequest,
+		@RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) throws IOException {
+
 		User user = getUser(httpServletRequest);
 		Board board = boardRepository.findById(id).orElseThrow();
 
 		// Compare the ID of the logged-in user with the ID of the user who wrote the post
 		if (user.getId().equals(board.getUser().getId())) {
-			return new Response<>("성공", "글 수정 성공", boardService.update(id, boardDto));
+			return new Response<>("성공", "글 수정 성공", boardService.update(id, boardDto, multipartFiles));
 		}
 
 		// Return an error message if the user does not have permission to edit the post

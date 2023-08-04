@@ -13,5 +13,6 @@ public class LikeDto {
 	private String boardTitle;
 	private String classification;
 	private String userName;
+	private int ofLike;
 }
 
