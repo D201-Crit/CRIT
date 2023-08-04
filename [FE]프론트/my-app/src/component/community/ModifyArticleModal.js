@@ -4,10 +4,10 @@ import { api } from "../../api/api";
 
 const API_BASE_URL = "http://localhost:8080/boards";
 
-const ModifyArticleModal = ({ classification, setModal, prevArticles }) => {
-  console.log(prevArticles);
+const ModifyArticleModal = ({ classification, setIsEditOpen, prevArticles, fetchArticles }) => {
+  const initialImages = prevArticles.imageFiles.map((image) => ({ url: image, file: null }));
   const user = useSelector((state) => state.users);
-  const [images, setImages] = useState([null]);
+  const [images, setImages] = useState(initialImages);
   const [article, setArticle] = useState(prevArticles);
 
   const onArticleImage = (e) => {
@@ -27,25 +27,32 @@ const ModifyArticleModal = ({ classification, setModal, prevArticles }) => {
     e.preventDefault();
   
     const formData = new FormData();
-    images.forEach((imageObj) => {
-      formData.append("file", imageObj.file);
-    });
-    
+  
+    // 이미지가 없을 경우 빈 배열을 전달하려면 다음과 같이 작성하십시오.
+    if (images.length === 0) {
+      formData.append("file", new Blob([], { type: "application/json" }));
+    } else {
+      images.forEach((imageObj) => {
+        formData.append("file", imageObj.file);
+      });
+    }
+
     formData.append('boardDto', new Blob([JSON.stringify(article)], { type: 'application/json' }))
     console.log(formData)
     api
-      .put(`${API_BASE_URL}/update/${article.id}`, formData, {
+      .patch(`${API_BASE_URL}/update/${article.id}`, formData, {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
           "Content-Type": "multipart/form-data",
         },
       })
       .then(() => {
-        setModal(false);
+        setIsEditOpen(false);
+        fetchArticles();
         
       })
-      .catch(()=>{
-        console.log("게시글 수정실패")
+      .catch((err)=>{
+        console.log(err)
       });
   };
 

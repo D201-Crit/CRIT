@@ -4,7 +4,7 @@ import { api } from "../../api/api";
 
 const API_BASE_URL = "http://localhost:8080/boards";
 
-const CreateArticleModal = ({ classification, setModal }) => {
+const CreateArticleModal = ({ classification, setModal, fetchArticles}) => {
   const user = useSelector((state) => state.users);
   const [images, setImages] = useState([]);
   const [article, setArticle] = useState({
@@ -54,6 +54,7 @@ const CreateArticleModal = ({ classification, setModal }) => {
       })
       .then(() => {
         setModal(false);
+        fetchArticles();
       })
       .catch(() => {
         console.log("게시글 작성실패");

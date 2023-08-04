@@ -142,7 +142,7 @@ const handleSortMethodChange = (e) => {
 
       {/* 게시글 작성 모달 */}
       {showmodal && (
-          <CreateArticleModal classification={classification} setModal={setModal}/>)}
+          <CreateArticleModal classification={classification} setModal={setModal} fetchArticles={fetchArticles}/>)}
 
       <SHr />
       <SEmpty />

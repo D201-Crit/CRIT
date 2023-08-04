@@ -159,7 +159,7 @@ const CommunityArticleDetailPage = () => {
               alt={``}
               style={{ maxWidth: "100px", maxHeight: "px", margin: "5px" }}
               ></img>
-              
+
           <div>
           {isMyArticle(articles) && (
           <div>
@@ -169,7 +169,8 @@ const CommunityArticleDetailPage = () => {
           )}
           </div>
           {isEditOpen && (
-          <ModifyArticleModal classification={classification} setIsEditOpen={setIsEditOpen} prevArticles = {articles}/>)}
+          <ModifyArticleModal classification={classification} setIsEditOpen={setIsEditOpen} prevArticles = {articles}
+          fetchArticles={fetchArticles}/>)}
         </div>
       )}
 
