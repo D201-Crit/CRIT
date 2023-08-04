@@ -31,7 +31,7 @@ spring:
 
   jpa:
    hibernate:
-     ddl-auto: create #create update none
+     ddl-auto: update #create update none
 
 
   security:
