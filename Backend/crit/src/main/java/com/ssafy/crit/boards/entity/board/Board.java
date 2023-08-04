@@ -26,9 +26,9 @@ public class Board extends BaseTimeEntity {
 
     private int views;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UploadFile> uploadFiles;
-
+    
     @ManyToOne
     @JoinColumn(name = "board")
     private Classification classification;
@@ -53,9 +53,10 @@ public class Board extends BaseTimeEntity {
         this.likes = likes;
     }
 
-    public int getLikes(List<LikeTable> likes){
-        return likes.size();
-    }
+    // public int getNNumberOfLikes(List<LikeTable> likes){
+    //
+    //     return likes.size();
+    // }
 
     public void setViews(int views){
         this.views = views;
@@ -67,4 +68,7 @@ public class Board extends BaseTimeEntity {
         this.content = content;
     }
 
+    public void setFeedUpdate(String content) {
+        this.content = content;
+    }
 }
