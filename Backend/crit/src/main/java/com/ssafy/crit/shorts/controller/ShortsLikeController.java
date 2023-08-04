@@ -14,40 +14,29 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/shorts")
+@RequestMapping("/shorts/likes")
 public class ShortsLikeController {
     private final ShortsLikeService shortsLikeService;
     private final ShortsRepository shortsRepository;
     private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
 
-    @PostMapping("/likes/{shortsId}")
+    @PostMapping("/{shortsId}")
     public Response<?> like(HttpServletRequest httpServletRequest, @PathVariable Long shortsId) {
 
-        User user = getUser(httpServletRequest);
+        User user = jwtProvider.extractUser(httpServletRequest);
         Shorts shorts = shortsRepository.findById(shortsId)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 쇼츠룰 찾을 수 없습니다."));
         return new Response<>("성공", "좋아요 성공 완료", shortsLikeService.like(user, shorts));
     }
 
-    @DeleteMapping("/likes/{shortsId}")
+    @DeleteMapping("/{shortsId}")
     public Response<?> unlike(HttpServletRequest httpServletRequest, @PathVariable Long shortsId) {
 
-        User user = getUser(httpServletRequest);
+        User user = jwtProvider.extractUser(httpServletRequest);
         Shorts shorts = shortsRepository.findById(shortsId)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 쇼츠 X"));
         return new Response<>("성공", "좋아요 삭제 완료", shortsLikeService.unlike(user, shorts));
-    }
-
-    private User getUser(HttpServletRequest httpServletRequest) {
-        String header = httpServletRequest.getHeader("Authorization");
-        String bearer = header.substring(7);
-        String userId = (String) jwtProvider.get(bearer).get("userId");
-
-        User user = userRepository.findById(userId).orElseThrow(() -> {
-            return new IllegalArgumentException("유저 ID를 찾을수 없습니다.");
-        });
-        return user;
     }
 
 }

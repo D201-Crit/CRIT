@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ShortsLikeService {
     private final ShortsLikeRepository shortsLikeRepository;
     public ShortsLikeDto like(User user, Shorts shorts) {
-
         if (shortsLikeRepository.findByUserAndShorts(user, shorts).isEmpty()) {
             ShortsLikeTable like = new ShortsLikeTable();
             like.setUser(user);

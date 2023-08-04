@@ -1,8 +1,8 @@
 package com.ssafy.crit.shorts.controller;
 
 
+import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.jwt.JwtProvider;
-import com.ssafy.crit.auth.util.JwtUtil;
 import com.ssafy.crit.shorts.dto.MainThumbnailDto;
 import com.ssafy.crit.shorts.dto.ShortsDto;
 import com.ssafy.crit.shorts.dto.ShortsResponseDto;
@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/shorts")
@@ -28,8 +27,8 @@ public class ShortsController {
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ShortsResponseDto> create(@RequestPart(value="shortsDto") ShortsDto shortsDto, @RequestPart(value="file", required = false) MultipartFile file, HttpServletRequest request) throws Exception {
-        String userId = jwtProvider.extractUserId(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(shortsService.create(shortsDto, file, userId));
+        User user = jwtProvider.extractUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(shortsService.create(shortsDto, file, user));
     }
 
     @GetMapping

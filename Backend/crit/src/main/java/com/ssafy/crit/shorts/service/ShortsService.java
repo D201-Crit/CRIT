@@ -45,12 +45,8 @@ public class ShortsService {
     private static final String shortsDirectory = "shorts";
     private static final String thumnailDirectory = "thumbnail";
 
-
     @Transactional
-    public ShortsResponseDto create(ShortsDto shortsDto, MultipartFile file, String userId) throws Exception{
-        User user = userRepository.findById(userId)
-                .orElseThrow(()-> new IllegalArgumentException("userId가 없음"));
-
+    public ShortsResponseDto create(ShortsDto shortsDto, MultipartFile file, User user) throws Exception{
         String shortsUrl = s3Uploader.uploadFiles(file, shortsDirectory);
         String thumnailUrl = s3Uploader.uploadThumbnail(file, thumnailDirectory);
 
