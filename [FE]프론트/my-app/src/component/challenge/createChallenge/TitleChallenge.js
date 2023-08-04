@@ -6,15 +6,15 @@ const TitleChallenge = ({ onChangeTitle }) => {
   const [title, setTitle] = useState("");
   const onTitleChallenge = (e) => {
     const newTitle = e.target.value;
-    if (newTitle.length <= 15) {
+    if (newTitle.length <= 20) {
       setTitle(newTitle);
       onChangeTitle(newTitle);
     } else {
-      // 길이가 15를 초과하는 경우
+      // 길이가 20를 초과하는 경우
       Swal.fire({
         position: "center",
         icon: "warning",
-        title: "최대 15글자까지 가능합니다.",
+        title: "최대 20글자까지 가능합니다.",
         text: "다시 작성해주세요 ㅠㅠ.",
         showConfirmButton: false,
         timer: 1500,
