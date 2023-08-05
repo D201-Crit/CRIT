@@ -18,7 +18,6 @@ const InformationChallenge = () => {
       <SDiv>
         <p id="name">{challenge.name}</p>
       </SDiv>
-
       <ParticipationChallenge />
       <p id="cert">{challenge.cert}</p>
       <p id="info">{challenge.info}</p>

@@ -9,7 +9,7 @@ import {
 import SearchShorts from "../component/shorts/SearchShorts";
 import { useEffect, useState } from "react";
 import { api } from "../api/api";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 // import { EffectCards } from "swiper/modules";
 import { EffectCreative } from "swiper/modules";
@@ -20,17 +20,19 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css/effect-cards";
 import "swiper/css/effect-creative";
+import { setOnGoingChallenge } from "../slice/ChallengeSlice";
 
 const MainPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(true);
   const openChallenge = () => {
     setIsOpen(!isOpen);
   };
 
   const user = useSelector((state) => state.users);
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [myChallenges, setMyChallenges] = useState([]);
+  const dispatch = useDispatch();
+  const onGoingChallenges = useSelector((state) => state.onGoingChallengeSlice);
   const getMyChallenge = () => {
     api
       .get("https://i9d201.p.ssafy.io/api/challenge/list/mine", {
@@ -40,7 +42,7 @@ const MainPage = () => {
         },
       })
       .then((res) => {
-        setMyChallenges(res.data.data);
+        dispatch(setOnGoingChallenge(res.data.data));
       })
       .catch((err) => {
         console.log(err);
@@ -55,12 +57,12 @@ const MainPage = () => {
   useEffect(() => {
     getMyChallenge();
   }, []);
-  console.log(myChallenges);
+  console.log(onGoingChallenges);
   return (
     <>
       <SEntranceButtonWrapper>
         <SEntranceButton onClick={openChallenge}>바로입장</SEntranceButton>
-        {isOpen ? null : (
+        {isOpen ? null : onGoingChallenges === undefined ? null : (
           <SEntranceSwiper
             grabCursor={true}
             effect={"creative"}
@@ -79,7 +81,7 @@ const MainPage = () => {
             // modules={[EffectCards]}
             className="mySwiper"
           >
-            {myChallenges.map((challenge) => (
+            {onGoingChallenges.map((challenge) => (
               <SEntranceSlide key={challenge.id}>
                 <img src={challenge.imgPath} alt="챌린지 이미지" />
                 <h4>{challenge.name}</h4>
@@ -88,7 +90,9 @@ const MainPage = () => {
                     ? challenge.info.slice(0, 30) + "..."
                     : challenge.info}
                 </p>
-                <SDetailButton onClick={detailClick}>상세보기</SDetailButton>
+                <SDetailButton onClick={() => detailClick(challenge)}>
+                  상세보기
+                </SDetailButton>
                 <SEntranceLiButton>입장하기</SEntranceLiButton>
               </SEntranceSlide>
             ))}

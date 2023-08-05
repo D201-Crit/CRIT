@@ -12,11 +12,13 @@ import MyChallenge from "../component/challenge/MyChallenge";
 import { api } from ".././api/api";
 import CreateChallengeModal from "../component/challenge/CreateChallengeModal";
 import SearchChallenge from "../component/challenge/SearchChallenge";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setChallenge } from "../slice/ChallengeSlice";
 
 const ChallengePage = () => {
   const user = useSelector((state) => state.users);
-  const [allChallenge, setAllChallenge] = useState([]);
+  const challenges = useSelector((state) => state.challenges);
+  const dispatch = useDispatch();
 
   // 챌린지 만들기 모달
   const [isOpen, setIsOpen] = useState(false);
@@ -36,17 +38,15 @@ const ChallengePage = () => {
         },
       })
       .then((res) => {
-        setAllChallenge(res.data.data);
+        dispatch(setChallenge(res.data.data));
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
   useEffect(() => {
     getAllChallenge();
   }, []);
-  console.log(allChallenge);
   return (
     <>
       <SCreateChallengeWrapper>
@@ -55,7 +55,7 @@ const ChallengePage = () => {
         </SCreateChallengeButton>
       </SCreateChallengeWrapper>
       <MyChallenge />
-      <SearchChallenge allChallenge={allChallenge} />
+      <SearchChallenge allChallenge={challenges} />
       {/*  모달  */}
       <Modal
         style={customModalStyles}

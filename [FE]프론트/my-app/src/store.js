@@ -9,7 +9,8 @@ import rootReducer from "./rootReducer"; // rootReducer를 import 하도록 수�
 const persistConfig = {
   key: "root",
   storage, //local Storage에 저장
-  whitelist: ["users"], //auth Reducer만 저장
+  // whitelist: ["users"], //auth Reducer만 저장
+  whitelist: ["users", "challenges", "myChallenges", "onGoingChallenges"], //auth Reducer만 저장
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

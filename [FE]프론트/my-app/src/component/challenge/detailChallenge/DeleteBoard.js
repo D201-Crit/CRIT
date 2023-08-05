@@ -12,7 +12,7 @@ const DeleteBoard = ({ boardId }) => {
         },
       })
       .then((res) => {
-        console.log(res);
+        console.log(res.data.message);
       })
       .catch((err) => {
         console.log(err);

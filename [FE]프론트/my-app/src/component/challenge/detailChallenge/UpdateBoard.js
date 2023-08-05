@@ -25,7 +25,7 @@ const UpdateBoard = ({ classification }) => {
     const newContent = e.target.value;
     setBoard((prevBoard) => ({ ...prevBoard, content: newContent }));
   };
-  console.log(board);
+  // console.log(board);
   const writeBoard = (e) => {
     e.preventDefault();
 
@@ -40,7 +40,7 @@ const UpdateBoard = ({ classification }) => {
 
     formData.append(
       "boardSaveRequestDto",
-      new Blob([JSON.stringify(board)], { type: "application/json" })
+      new Blob([JSON.stringify(board)], { type: "application/json" }),
     );
     api
       .post(`http://i9d201.p.ssafy.io/api/boards/write`, formData, {

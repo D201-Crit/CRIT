@@ -14,6 +14,8 @@ const CreateBoard = ({ classification }) => {
 
   const onChangeImage = (e) => {
     const file = e.target.files[0];
+    console.log(e.target.files);
+    console.log(e.target.files[0]);
     setImage(file);
   };
   const onChangeTitle = (e) => {
@@ -28,14 +30,12 @@ const CreateBoard = ({ classification }) => {
   const writeBoard = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    if (image !== null) {
-      formData.append("file", image);
-    } else {
-      formData.append("file", []);
-    }
+
+    formData.append("file", image || "");
+
     formData.append(
       "boardSaveRequestDto",
-      new Blob([JSON.stringify(board)], { type: "application/json" })
+      new Blob([JSON.stringify(board)], { type: "application/json" }),
     );
     api
       .post(`https://i9d201.p.ssafy.io/api/boards/write`, formData, {
