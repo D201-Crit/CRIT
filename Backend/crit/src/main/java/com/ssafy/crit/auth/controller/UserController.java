@@ -67,7 +67,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getAccessToken(token));
     }
 
-    @PutMapping(value = "/image",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(value = "/image",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<UpdateProfilePictureDto> create(@RequestPart(value="file", required = false) MultipartFile file, HttpServletRequest httpServletRequest) throws Exception {
         User user = getUser(httpServletRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.updateProfilePictureDto(file, user.getId()));

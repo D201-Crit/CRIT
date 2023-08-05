@@ -3,9 +3,7 @@ package com.ssafy.crit.challenge.controller;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.repository.UserRepository;
-import com.ssafy.crit.challenge.dto.CertImgRequestDto;
-import com.ssafy.crit.challenge.dto.ChallengeListResponseDto;
-import com.ssafy.crit.challenge.dto.IsCertResponseDto;
+import com.ssafy.crit.challenge.dto.*;
 import com.ssafy.crit.challenge.entity.IsCert;
 import com.ssafy.crit.challenge.service.CertService;
 import com.ssafy.crit.message.response.Response;
@@ -33,7 +31,7 @@ public class CertController {
     /**
      * 0801 조경호
      * 사진 인증 추가
-     * */
+     */
     @PostMapping(path = "/img", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Response<String>> imgCertification(@RequestPart(value = "file") MultipartFile file, @RequestPart(value = "requestDto") CertImgRequestDto requestDto, HttpServletRequest httpServletRequest)
             throws Exception {
@@ -44,10 +42,20 @@ public class CertController {
                 HttpStatus.OK);
     }
 
-    
+
+    @PostMapping("/video")
+    public ResponseEntity<Response<CertVideoResponseDto>> videoCertification(@RequestBody CertVideoRequestDto certVideoRequestDto, HttpServletRequest httpServletRequest)
+            throws Exception {
+        User user = getUser(httpServletRequest);
+        IsCert isCert = certService.videoCertification(certVideoRequestDto, user);
+        return new ResponseEntity<>(new Response<>("success", "인증내역",
+                new CertVideoResponseDto(isCert)), HttpStatus.OK);
+    }
+
+
     // 해당 챌린지의 내 인증 목록 불러오기
     @GetMapping("/list/{challengeId}")
-    public ResponseEntity<Response<List<IsCertResponseDto>>> getCertifcation(@PathVariable("challengeId") Long challengeId, HttpServletRequest httpServletRequest) throws Exception{
+    public ResponseEntity<Response<List<IsCertResponseDto>>> getCertifcation(@PathVariable("challengeId") Long challengeId, HttpServletRequest httpServletRequest) throws Exception {
         User user = getUser(httpServletRequest);
         List<IsCert> isCertList = certService.getIsCertList(challengeId, user);
 
@@ -65,4 +73,6 @@ public class CertController {
         });
         return user;
     }
+
+
 }
