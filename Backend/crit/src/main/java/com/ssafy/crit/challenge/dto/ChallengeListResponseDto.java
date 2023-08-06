@@ -24,7 +24,7 @@ public class ChallengeListResponseDto {
     private Long id; // 챌린지 아이디
     private String name; // 챌린지 이름
     private String info; // 챌린지 정보
-    private Cert cert; // 챌린지 인증 정보
+    private String cert; // 챌린지 인증 정보
     private String category; // 챌린지 카테고리
     private int people; // 챌린지 최대 인원
     private int curPeople; // 현재 참여중인 챌린지 인원
@@ -44,7 +44,7 @@ public class ChallengeListResponseDto {
         name = challenge.getName();
         category = challenge.getChallengeCategory().getSpecies();
         info = challenge.getInfo();
-        cert = challenge.getCert();
+        cert = challenge.getCert() == Cert.WEBRTC ? "실시간" : "사진";
         people = challenge.getPeople();
         curPeople = challenge.getChallengeUserList().size();
         money = challenge.getMoney();
