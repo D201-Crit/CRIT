@@ -9,7 +9,6 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -35,11 +34,11 @@ public class IsCert {
 
     // 이탈시간
     private LocalTime absentTime;
-    
+
     // 자리 있었던 시간
     private LocalTime presenceTime;
-    
-    private int percentage; // 자리에 있었던 비율
+
+    private String percentage; // 자리에 있었던 비율
 
     private String filePath; // 이미지 저장 경로
 
@@ -52,6 +51,10 @@ public class IsCert {
     private User user;
 
 
+    public void setCertTimeNow() {
+        this.certTime = LocalDateTime.now();
+    }
+
     public void certification(boolean bool) {
         this.isCertified = bool;
     }
@@ -60,11 +63,11 @@ public class IsCert {
         this.absentTime = absentTime;
     }
 
-    public void setPresenceTime(LocalTime presenceTime){
+    public void setPresenceTime(LocalTime presenceTime) {
         this.presenceTime = presenceTime;
     }
 
-    public void setPercentage(int percentage){
+    public void setPercentage(String percentage) {
         this.percentage = percentage;
     }
 

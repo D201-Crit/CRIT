@@ -21,8 +21,8 @@ public class CertVideoResponseDto {
     public CertVideoResponseDto(IsCert isCert){
         this.challengeId = isCert.getChallenge().getId();
         this.isCertificated = isCert.isCertified();
-        this.absentTime = isCert.getAbsentTime().format(DateTimeFormatter.ofPattern("kk:mm"));
-        this.presenceTime = isCert.getPresenceTime().format(DateTimeFormatter.ofPattern("kk:mm"));
+        this.absentTime = isCert.getAbsentTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        this.presenceTime = isCert.getPresenceTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
         this.percentage = String.valueOf(isCert.getPercentage());
     }
 }

@@ -13,5 +13,5 @@ import java.time.LocalDateTime;
 @Builder
 public class CertVideoRequestDto {
     private Long challengeId;  // 해당 챌린지
-    private Long outTime;  // 이탈 시간
+    private int outTime;  // 이탈 시간
 }
