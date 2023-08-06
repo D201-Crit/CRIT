@@ -1,6 +1,5 @@
 import { useLocation } from "react-router";
 import { SDetailChallengeWrapper } from "./../styles/pages/SDeatilChallengePage";
-import CreateBoard from "./../component/challenge/detailChallenge/CreateBoard";
 import ShowBoard from "../component/challenge/detailChallenge/ShowBoard";
 import InformationChallenge from "../component/challenge/detailChallenge/InformationChallenge";
 import { api } from "../api/api";
@@ -37,8 +36,7 @@ const DetailChallengePage = () => {
   return (
     <SDetailChallengeWrapper>
       <InformationChallenge />
-      <CreateBoard classification={challenge.classification} />
-      <ShowBoard boards={boards} classification={challenge.classification} />
+      <ShowBoard boards={boards} challenge={challenge} getBoard={getBoard} />
     </SDetailChallengeWrapper>
   );
 };

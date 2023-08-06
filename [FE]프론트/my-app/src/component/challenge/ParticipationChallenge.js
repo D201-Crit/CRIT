@@ -1,7 +1,7 @@
 import { ParticipationChallengeButton } from "../../styles/pages/SChallengePage";
 
 const ParticipationChallenge = () => {
-  return <ParticipationChallengeButton>참여내역</ParticipationChallengeButton>;
+  return <button id="participation">참여내역</button>;
 };
 
 export default ParticipationChallenge;

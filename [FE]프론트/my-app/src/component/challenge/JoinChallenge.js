@@ -8,16 +8,15 @@ const JoinChallenge = ({ challenge }) => {
   const entranceChallenge = () => {
     api
       .post(
-        `http://i9d201.p.ssafy.io/api/challenge/join/${challenge.id}`,
+        `https://i9d201.p.ssafy.io/api/challenge/join/${challenge.id}`,
         null,
         {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
           },
-        }
+        },
       )
       .then((res) => {
-        console.log(res);
         Swal.fire({
           position: "center",
           icon: "success",
@@ -40,7 +39,7 @@ const JoinChallenge = ({ challenge }) => {
         Swal.fire({
           position: "center",
           icon: "error",
-          title: "챌린지 참여 실패...",
+          title: "이미 참여중인 챌린지입니다!",
           text: "CRIT",
           showConfirmButton: false,
           timer: 1500,
@@ -57,9 +56,9 @@ const JoinChallenge = ({ challenge }) => {
   };
 
   return (
-    <SEnreanceButton id="enter" onClick={entranceChallenge}>
+    <button id="enter" onClick={entranceChallenge}>
       참여하기
-    </SEnreanceButton>
+    </button>
   );
 };
 

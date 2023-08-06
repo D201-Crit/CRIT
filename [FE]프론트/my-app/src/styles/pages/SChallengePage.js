@@ -49,7 +49,7 @@ export const SSwiper = styled(Swiper)`
 
 export const SSwiperSlide = styled(SwiperSlide)`
   background-color: rgba(22, 22, 22, 22);
-  ${"" /* border: 0.5px solid white; */}
+
   border-radius: 10px;
   box-shadow: 0px 0px 15px gray;
 `;
@@ -640,13 +640,13 @@ export const SCloseButton = styled.button`
 `;
 
 export const ParticipationChallengeButton = styled.button`
-  position: absolute;
-  top: 250px;
-  left: 115px;
-  width: 110px;
-  height: 40px;
-  font-size: 18px;
-  font-weight: 700;
-  border-radius: 10px;
-  border: none;
+  // position: absolute;
+  // top: 130px;
+  // right: 400px;
+  // width: 150px;
+  // height: 40px;
+  // font-size: 18px;
+  // font-weight: 700;
+  // border-radius: 10px;
+  // border: none;
 `;
