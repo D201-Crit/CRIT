@@ -43,6 +43,7 @@ public class BoardService {
 	private final S3Uploader s3Uploader;
 	private final UploadFileRepository uploadFileRepository;
 
+
 	//전체 게시물
 	@Transactional(readOnly = true)
 	public Page<BoardShowSortDto> getBoards(Pageable pageable, String category) {
@@ -109,7 +110,7 @@ public class BoardService {
 
 				UploadFile uploadFile = UploadFile.builder()
 					.board(board)
-					.userName(user.getNickname())
+					.userName(user.getId())
 					.storeFilePath(uploadFiles)
 					.classification(classification.getCategory())
 					.build();
@@ -218,6 +219,29 @@ public class BoardService {
 		return getBoardShowSortDtos(boards);
 	}
 
+//	public Page<BoardShowSortDto> findAllByUserAndClassification(@RequestParam String classification, User user, Pageable pageable){
+//		Page<Board> boards = boardRepository.findAllByUserAndClassification(pageable, user, classification);
+//		return getBoardShowSortDtos(boards);
+//	}
+
+	public Page<BoardShowSortDto> findAllByUserAndClassification(User user, String classificationString, Pageable pageable){
+
+		Classification classification = classificationRepository.findByCategory(classificationString).orElseThrow(() -> {
+			return new IllegalArgumentException(classificationString + "에는 글 쓴 것이 없습니다.");
+		});
+
+
+		Page<Board> boards = boardRepository.findAllByUserAndClassification(user, classification, pageable);
+		return getBoardShowSortDtos(boards);
+	}
+
+
+	public Page<BoardShowSortDto> findAllByUser(User user, Pageable pageable){
+		Page<Board> boards = boardRepository.findAllByUser(user, pageable);
+		return getBoardShowSortDtos(boards);
+	}
+
+
 	private Page<BoardShowSortDto> getBoardShowSortDtos(Page<Board> boards) {
 		return boards.map(board -> {
 			if (board.getUser() == null) {
@@ -225,8 +249,12 @@ public class BoardService {
 			}
 
 			List<String> likedName = board.getLikes().stream()
-				.map(like -> like.getUser().getNickname()) // change getName() to your method
+				.map(like -> like.getUser().getNickname())
 				.collect(Collectors.toList());
+
+			List<String> filenames = board.getUploadFiles().stream()
+					.map(UploadFile::getStoreFilePath)
+					.collect(Collectors.toList());
 
 			return new BoardShowSortDto(board.getId(),
 					board.getTitle(),
@@ -235,7 +263,7 @@ public class BoardService {
 					board.getUser().getNickname(),
 					board.getLikes().size(),
 				board.getClassification().getCategory(),
-				likedName);
+				likedName,filenames);
 		});
 	}
 }
