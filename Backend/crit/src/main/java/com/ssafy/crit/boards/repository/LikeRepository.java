@@ -10,7 +10,9 @@ import org.springframework.data.repository.query.Param;
 
 import com.ssafy.crit.boards.entity.board.Board;
 import com.ssafy.crit.boards.entity.board.LikeTable;
-
+/**
+ * author : 강민승
+ */
 public interface LikeRepository extends JpaRepository<LikeTable,Long> {
 
     List<LikeTable> findByUserAndBoard(User user, Board board);

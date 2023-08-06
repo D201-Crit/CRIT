@@ -9,6 +9,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+/**
+ * author : 강민승
+ */
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
     // 타이틀 내림차순

@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
+/**
+ * author : 강민승
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -10,7 +10,9 @@ import com.ssafy.crit.boards.entity.feeds.UploadFile;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
+/**
+ * author : 강민승
+ */
 @Getter
 @NoArgsConstructor
 public class BoardShowSortDto {

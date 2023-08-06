@@ -11,6 +11,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Data
 
+/**
+ * author : 강민승
+ */
+
 public class Follow {
 
     @Id

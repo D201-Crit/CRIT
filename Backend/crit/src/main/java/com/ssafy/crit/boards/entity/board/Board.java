@@ -11,6 +11,9 @@ import javax.persistence.*;
 
 import java.util.List;
 
+/**
+ * author : 강민승
+ */
 @Getter
 @NoArgsConstructor
 @Entity

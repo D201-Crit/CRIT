@@ -12,6 +12,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * author : 강민승
+ */
 @Entity
 @NoArgsConstructor
 @Getter

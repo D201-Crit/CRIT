@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * author : 강민승
+ */
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -39,7 +43,7 @@ public class LikeService {
 	public LikeDto unlike(User user, Board board) {
 		likeRepository.deleteByUserAndBoard(user, board);
 		LikeDto likeDto = new LikeDto(board.getTitle(), board.getClassification().getCategory(), user.getNickname(),
-			board.getLikes().size() - 1);
+			board.getLikes().size());
 		return likeDto;
 	}
 }

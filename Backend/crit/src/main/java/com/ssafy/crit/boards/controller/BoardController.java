@@ -6,9 +6,8 @@ import java.util.List;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.repository.UserRepository;
-import com.ssafy.crit.boards.entity.board.Board;
 import com.ssafy.crit.boards.repository.BoardRepository;
-import com.ssafy.crit.boards.service.dto.BoardDto;
+import com.ssafy.crit.boards.service.dto.BoardResponseDto;
 import com.ssafy.crit.boards.service.dto.BoardSaveRequestDto;
 import com.ssafy.crit.boards.service.dto.BoardShowSortDto;
 import com.ssafy.crit.message.response.Response;
@@ -23,6 +22,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+
+/**
+ * author : 강민승
+ */
 
 @RequiredArgsConstructor
 @RestController
@@ -64,36 +67,22 @@ public class BoardController {
 
 	// 게시글 수정
 	@PatchMapping(value = "/update/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-	public Response<?> edit(@RequestPart BoardDto boardDto, @PathVariable("id") Long id,
-		HttpServletRequest httpServletRequest,
-		@RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) throws IOException {
+	public Response<?> edit(@RequestPart BoardResponseDto boardDto, @PathVariable("id") Long id,
+							HttpServletRequest httpServletRequest,
+							@RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) throws IOException {
 
 		User user = getUser(httpServletRequest);
-		Board board = boardRepository.findById(id).orElseThrow();
+		return new Response<>("성공", "글 수정 성공", boardService.update(id, boardDto, multipartFiles, user));
 
-		// Compare the ID of the logged-in user with the ID of the user who wrote the post
-		if (user.getId().equals(board.getUser().getId())) {
-			return new Response<>("성공", "글 수정 성공", boardService.update(id, boardDto, multipartFiles));
-		}
-
-		// Return an error message if the user does not have permission to edit the post
-		return new Response<>("실패", "글 수정 권한이 없습니다.", null);
 	}
 
 	// 게시글 삭제
 	@DeleteMapping("/delete/{id}")
 	public Response<?> delete(@PathVariable("id") Long id, HttpServletRequest httpServletRequest) {
 		User user = getUser(httpServletRequest);
-		Board board = boardRepository.findById(id).orElseThrow();
+		boardService.delete(id, user);
+		return new Response<>("성공", "글 삭제 성공", null);
 
-		// Compare the ID of the logged-in user with the ID of the user who wrote the post
-		if (user.getId().equals(board.getUser().getId())) {
-			boardService.delete(id);
-			return new Response<>("성공", "글 삭제 성공", null);
-		}
-
-		// Return an error message if the user does not have permission to delete the post
-		return new Response<>("실패", "글 삭제 권한이 없습니다.", null);
 	}
 
 	@GetMapping("/desc")

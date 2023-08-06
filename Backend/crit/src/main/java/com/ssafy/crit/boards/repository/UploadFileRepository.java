@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.ssafy.crit.boards.entity.feeds.UploadFile;
-
+/**
+ * author : 강민승
+ */
 public interface UploadFileRepository extends JpaRepository<UploadFile,Long> {
 
 	@Query("select m from UploadFile m where m.board.id = :id")

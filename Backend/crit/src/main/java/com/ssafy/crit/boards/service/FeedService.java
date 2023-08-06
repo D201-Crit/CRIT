@@ -27,7 +27,9 @@ import com.ssafy.crit.boards.repository.BoardRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
+/**
+ * author : 강민승
+ */
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -108,20 +110,28 @@ public Page<FileResponseDto> getFeeds(Pageable pageable, User user){
 		return FileResponseDto.toDto(board);
 	}
 
-	public String delete(Long id) {
+	public String delete(Long id, User user) {
 		Board board = boardRepository.findById(id).orElseThrow(() -> {
 			return new IllegalArgumentException("Board Id를 찾을 수 없습니다!");
 		});
+
+		if(!board.getUser().getId().equals(user.getId())){
+			throw new IllegalArgumentException("삭제 권한이 없습니다.");
+		}
+
 		boardRepository.deleteById(id);
 
 		return "성공";
 	}
 
-	public FileResponseDto update(Long id, FileResponseDto fileResponseDto){
+	public FileResponseDto update(Long id, FileResponseDto fileResponseDto, User user){
 		Board board = boardRepository.findById(id).orElseThrow(() -> {
 			return new IllegalArgumentException("Board Id를 찾을 수 없습니다!");
 		});
 
+		if(!board.getUser().getId().equals(user.getId())) {
+			throw new IllegalArgumentException("수정 권한이 없습니다.");
+		}
 		board.setFeedUpdate(fileResponseDto.getContent());
 
 		boardRepository.save(board);

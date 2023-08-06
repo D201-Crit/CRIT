@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
-
+/**
+ * author : 강민승
+ */
 @Getter
 @RequiredArgsConstructor
 public class FileResponseDto {

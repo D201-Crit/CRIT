@@ -1,7 +1,13 @@
 package com.ssafy.crit.auth.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.querydsl.core.Query;
+import com.querydsl.core.QueryFactory;
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.crit.auth.entity.Follow;
+import com.ssafy.crit.auth.entity.QUser;
 import com.ssafy.crit.auth.entity.enumType.Grade;
 import com.ssafy.crit.auth.repository.FollowRepository;
 import com.ssafy.crit.common.exception.BadRequestException;

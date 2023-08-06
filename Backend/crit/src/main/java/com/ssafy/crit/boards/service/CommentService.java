@@ -15,7 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * author : 강민승
+ */
 @RequiredArgsConstructor
 @Service
 public class CommentService {
@@ -67,10 +69,15 @@ public class CommentService {
 
     // 댓글 삭제하기
     @Transactional
-    public String deleteComment(Long commentId) {
+    public String deleteComment(Long commentId, User user) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(()-> {
             return new IllegalArgumentException("댓글 Id를 찾을 수 없습니다.");
         });
+
+        if(!comment.getUser().getId().equals(user.getId())){
+            throw new IllegalArgumentException("삭제 권한이 없습니다.");
+        }
+
         commentRepository.deleteById(commentId);
         return "삭제 완료";
     }

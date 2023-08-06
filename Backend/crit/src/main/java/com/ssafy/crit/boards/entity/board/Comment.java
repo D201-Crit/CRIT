@@ -11,6 +11,9 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
+/**
+ * author : 강민승
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

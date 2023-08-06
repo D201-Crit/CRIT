@@ -1,7 +1,7 @@
 package com.ssafy.crit.boards.controller;
 
 
-import com.ssafy.crit.boards.entity.board.Board;
+
 import com.ssafy.crit.boards.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +21,10 @@ import com.ssafy.crit.boards.service.FeedService;
 import com.ssafy.crit.boards.service.dto.FileResponseDto;
 import com.ssafy.crit.message.response.Response;
 
+/**
+ * author : 강민승
+ */
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -30,22 +34,14 @@ public class FeedController {
 	private final FeedService feedService;
 	private final JwtProvider jwtProvider;
 	private final UserRepository userRepository;
-	private final BoardRepository boardRepository;
-
 
 	@PostMapping(value = "/create",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
 	public Response<?> create(@RequestPart(value="fileResponseDto") FileResponseDto fileResponseDto,
 		@RequestPart(value="file") List<MultipartFile> multipartFiles,
 		HttpServletRequest httpServletRequest) throws Exception {
-
 		User user = getUser(httpServletRequest);
-
-		if(fileResponseDto.getUserName().equals(user.getId())) {
-			return new Response<>("성공","피드 생성 성공",feedService.storeFiles(fileResponseDto, multipartFiles,user));
-
-		}
-		return new Response<>("성공","피드 생성 실패","다시해보게나");
-	}
+		return new Response<>("성공","피드 생성 성공",feedService.storeFiles(fileResponseDto, multipartFiles,user));
+}
 
 	@GetMapping("/{feed_id}")
 	public Response<?> getFeed(@PathVariable("feed_id") Long id){
@@ -61,27 +57,14 @@ public class FeedController {
 	@DeleteMapping("/delete/{id}")
 	public Response<?> delete(@PathVariable("id") Long id, HttpServletRequest httpServletRequest){
 		User user = getUser(httpServletRequest);
-
-		Board board = boardRepository.findById(id).orElseThrow();
-		if(board.getUser().getId().equals(user.getId())){
-			return new Response<>("성공","피드 삭제 완료", feedService.delete(id));
-
-		}
-		return new Response<>("실패","피드 삭제 실패", null);
-
+		return new Response<>("성공","피드 삭제 완료", feedService.delete(id, user));
 	}
 
 	@PutMapping("/update/{id}")
 	public Response<?> edit(@RequestBody FileResponseDto fileResponseDto, @PathVariable("id") Long id,
 		HttpServletRequest httpServletRequest) {
 		User user = getUser(httpServletRequest);
-		Board board = boardRepository.findById(id).orElseThrow();
-
-		if (user.getId().equals(board.getUser().getId())) {
-			return new Response<>("성공", "글 수정 성공", feedService.update(id, fileResponseDto));
-		}
-
-		return new Response<>("실패", "글 수정 권한이 없습니다.", null);
+		return new Response<>("성공", "글 수정 성공", feedService.update(id, fileResponseDto, user));
 	}
 
 
