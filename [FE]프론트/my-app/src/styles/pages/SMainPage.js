@@ -158,12 +158,12 @@ export const SShortsCard = styled.div`
 `;
 
 
-//뤼튼
+
 export const SShortsContainer = styled.div`
   padding : 20px;
   display: flex;
   flex-wrap: nowrap;
-  width : 20%;
+  width : 100%;
   height : 300px;
   overflow-x: auto;  
   gap: 10px;
@@ -188,7 +188,7 @@ export const SShortItem = styled.div`
   overflow: hidden;
 
   img {
-    transform: rotate(270deg);
+
     width: 100%;
     height: 60%;
     object-fit: cover;
@@ -197,9 +197,9 @@ export const SShortItem = styled.div`
     left: 50%;
     opacity: 1;
     transition: opacity 0.3s, transform 0.3s;
-    -webkit-transform: translate(-50%, -50%) rotate(270deg);
-    -moz-transform: translate(-50%, -50%) rotate(270deg);
-    transform: translate(-50%, -50%) rotate(270deg);
+    -webkit-transform: translate(-50%, -50%) rotate(90deg);
+    -moz-transform: translate(-50%, -50%) rotate(90deg);
+    transform: translate(-50%, -50%) rotate(90deg);
   }
 
   h2, p {
@@ -241,13 +241,14 @@ export const SShortItem = styled.div`
   &:hover {
     img {
       opacity: 0;
-      transform: translate(-50%, -50%) rotate(270deg) scale(0.8);
+      transform: translate(-50%, -50%) rotate(90deg) scale(0.8);
     }
 
     h2, p {
       opacity: 1;
     }
   }
+
 `;
 
 export const SVideoWrapper = styled.div`
