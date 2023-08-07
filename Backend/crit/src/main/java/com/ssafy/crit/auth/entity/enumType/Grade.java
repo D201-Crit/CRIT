@@ -10,7 +10,8 @@ public enum Grade {
 	IntermediateLow(10, "수습 챌린저"),
 	IntermediateMiddle(300,"중견 챌린저"),
 	IntermediateHigh(500, "상급 챌린저"),
-	Challenger(1000, "신");
+	Challenger(1000, "신"),
+	Administrator(Integer.MAX_VALUE, "관리자");
 
 	private final int key;
 	private final String title;
