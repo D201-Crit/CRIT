@@ -3,6 +3,7 @@ package com.ssafy.crit.challenge.dto;
 import com.ssafy.crit.challenge.entity.Cert;
 import com.ssafy.crit.challenge.entity.Challenge;
 import com.ssafy.crit.challenge.entity.ChallengeCategory;
+import com.ssafy.crit.challenge.entity.ChallengeStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class ChallengeListResponseDto {
     private int people; // 챌린지 최대 인원
     private int curPeople; // 현재 참여중인 챌린지 인원
     private int money; // 챌린지 입장 금액
+    private ChallengeStatus challengeStatus; // 챌린지 상태
     private String startDate; // 챌린지 시작 일자
     private String endDate; // 챌린지 종료 일자
     private String startTime; // 챌린지 시작 시간
@@ -48,10 +50,11 @@ public class ChallengeListResponseDto {
         people = challenge.getPeople();
         curPeople = challenge.getChallengeUserList().size();
         money = challenge.getMoney();
+        challengeStatus = challenge.getChallengeStatus();
         startDate = challenge.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         endDate = challenge.getEndDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        startTime = challenge.getStartTime().format(DateTimeFormatter.ofPattern("kk:mm"));
-        endTime = challenge.getEndTime().format(DateTimeFormatter.ofPattern("kk:mm"));
+        startTime = challenge.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+        endTime = challenge.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm"));
         createUserId = challenge.getCreateUser().getId();
         classification = challenge.getBoard().getCategory();
         imgPath = challenge.getFilePath();

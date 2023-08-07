@@ -59,15 +59,14 @@ public class JwtFilter extends OncePerRequestFilter {
                 if(!userRepository.existsById(userId)){
                     throw new BadRequestException("CANNOT_FOUND_USER");
                 }
+                // 인증 정보 등록 및 다음 체인으로 이동
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userId, null, List.of(new SimpleGrantedAuthority("USER")));
+                authenticationToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                filterChain.doFilter(request, response);
             }
-            // 인증 정보 등록 및 다음 체인으로 이동
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userId, null, List.of(new SimpleGrantedAuthority("USER")));
-            authenticationToken.setDetails(
-                    new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            filterChain.doFilter(request, response);
-
         } catch (BadRequestException e) {
             if (e.getMessage().equalsIgnoreCase("EXPIRED_ACCESS_TOKEN")) {
                 writeErrorLogs("EXPIRED_ACCESS_TOKEN", e.getMessage(), e.getStackTrace());

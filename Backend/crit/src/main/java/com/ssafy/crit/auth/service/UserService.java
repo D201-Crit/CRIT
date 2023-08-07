@@ -186,4 +186,16 @@ public class UserService {
 
         return UserResponseDto.toUserResponseDto(user1);
     }
+    public Boolean validUserId(String userId) {
+        Optional<User> user = userRepository.findById(userId);
+        return getValid(user, userId);
+    }
+    public Boolean validNickname(String nickname) {
+        Optional<User> user = userRepository.findByNickname(nickname);
+        return getValid(user, nickname);
+    }
+    private static Boolean getValid(Optional<User> user, String userinfo) {
+        if (userinfo.toLowerCase().contains("admin")) return false;
+        return !user.isPresent();
+    }
 }

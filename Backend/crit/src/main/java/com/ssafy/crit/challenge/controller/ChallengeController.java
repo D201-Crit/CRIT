@@ -36,6 +36,13 @@ public class ChallengeController {
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
 
+    @GetMapping("/test")
+    public ResponseEntity<Response<String>> test() throws Exception {
+        challengeService.dailyChallengeCheck();
+        return new ResponseEntity<>(new Response<>("success", "Test OK", "OK"), HttpStatus.OK);
+    }
+
+
     // 챌린지 만들기
     @PostMapping(path = "/create", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Response<String>> createChallenge(@RequestPart(value = "file", required = false) MultipartFile file, @RequestPart(value = "requestDto") ChallengeCreateRequestDto requestDto,
@@ -122,7 +129,6 @@ public class ChallengeController {
 
         return user;
     }
-
 
 
 }
