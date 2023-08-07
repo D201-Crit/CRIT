@@ -23,10 +23,10 @@ public class Board extends BaseTimeEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false, length = 150)
     private String title;
 
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false, length = 150)
     private String content;
 
     private int views;
