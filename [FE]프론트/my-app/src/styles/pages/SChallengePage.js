@@ -29,9 +29,25 @@ export const SImg = styled.img`
   width: 600px;
   height: 600px;
 `;
-
+export const SDiv = styled.div`
+  .swiper {
+    width: 780px;
+    height: 300px;
+    margin: 100px auto;
+    padding: 10px;
+    border: none;
+  }
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
+    display: none;
+  }
+  .swiper-slide {
+    background-color: rgba(22, 22, 22, 22);
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px gray;
+  }
+`;
 export const SSwiper = styled(Swiper)`
-  // background-color: rgba(22, 22, 22, 0.599);
   width: 780px;
   height: 300px;
   margin: 100px auto;
@@ -49,7 +65,6 @@ export const SSwiper = styled(Swiper)`
 
 export const SSwiperSlide = styled(SwiperSlide)`
   background-color: rgba(22, 22, 22, 22);
-
   border-radius: 10px;
   box-shadow: 0px 0px 15px gray;
 `;

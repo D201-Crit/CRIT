@@ -12,6 +12,7 @@ import CreateBoard from "./CreateBoard";
 const ShowBoard = ({ boards, challenge, getBoard }) => {
   const user = useSelector((state) => state.users);
   console.log(user);
+  console.log(boards);
   return (
     <SBoardWrapper>
       <CreateBoard
@@ -29,6 +30,7 @@ const ShowBoard = ({ boards, challenge, getBoard }) => {
               ) : (
                 <LikeBoard getBoard={getBoard} boardId={board.id} />
               )}
+              <img src={board.imageUrl} alt="" />
             </div>
             {/* <UpdateBoard /> */}
           </SBoardLi>

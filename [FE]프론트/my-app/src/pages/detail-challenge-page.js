@@ -5,7 +5,6 @@ import InformationChallenge from "../component/challenge/detailChallenge/Informa
 import { api } from "../api/api";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-
 const DetailChallengePage = () => {
   const location = useLocation();
   const challenge = location.state.challenge;
@@ -21,7 +20,7 @@ const DetailChallengePage = () => {
       .then((res) => {
         // 해당 challenge의 게시글만 불러오기 위한 필터
         const filteredBoards = res.data.data.content.filter((data) =>
-          data.classification.includes(`${challenge.classification}`),
+          data.classification.includes(`${challenge.classification}`)
         );
         setBoards(filteredBoards);
         console.log(filteredBoards);

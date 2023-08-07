@@ -5,6 +5,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css/effect-cards";
+import { Swiper, SwiperSlide } from "swiper/react";
+
 // 나머지
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -12,8 +14,7 @@ import { api } from "../../api/api";
 
 // 스타일
 import {
-  SSwiper,
-  SSwiperSlide,
+  SDiv,
   STopWrapper,
   SMidWrapper,
   SBotWrapper,
@@ -92,18 +93,18 @@ const MyChallenge = () => {
     getMyChallenge();
   }, []);
   return (
-    <>
+    <SDiv>
       {sortedMyChallenges.length === 0 ? (
-        <SSwiper
+        <Swiper
           effect={"cards"}
           grabCursor={true}
           modules={[EffectCards]}
           className="mySwiper"
         >
           <SImg src="https://github.com/Jinga02/ChallengePJT/assets/110621233/8329c57e-d554-4956-803d-68508c07b007" />
-        </SSwiper>
+        </Swiper>
       ) : (
-        <SSwiper
+        <Swiper
           effect={"cards"}
           grabCursor={true}
           modules={[EffectCards]}
@@ -113,7 +114,7 @@ const MyChallenge = () => {
             const daysInProgress = getDaysInProgress(challenge.startDate);
 
             return (
-              <SSwiperSlide key={challenge.id}>
+              <SwiperSlide key={challenge.id}>
                 <STopWrapper>
                   <p id="name">{challenge.name}</p>
                   <p id="date">
@@ -145,12 +146,12 @@ const MyChallenge = () => {
                       : "참여내역"}
                   </button>{" "}
                 </SBotWrapper>
-              </SSwiperSlide>
+              </SwiperSlide>
             );
           })}
-        </SSwiper>
+        </Swiper>
       )}
-    </>
+    </SDiv>
   );
 };
 
