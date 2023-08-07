@@ -138,14 +138,10 @@ public class BoardService {
 			}
 		}
 
-		return BoardSaveResponseDto.builder()
-				.id(board.getId())
-				.title(board.getTitle())
-				.content(board.getContent())
-				.writer(user.getId())
-				.classification(classification.getCategory())
-				.imageFiles(storeFileResult)
-				.build();
+		if(multipartFiles.isEmpty()){
+			storeFileResult.add("noFiles");
+		}
+		return BoardSaveResponseDto.toSaveResponseDto(board);
 	}
 
 
@@ -183,6 +179,10 @@ public class BoardService {
 				board.getUploadFiles().add(uploadFileSave);
 				storeFileResult.add(uploadFiles);
 			}
+		}
+
+		if(multipartFiles.isEmpty()){
+			storeFileResult.add("noFiles");
 		}
 
 		board.setUpdate(boardDto.getTitle(),boardDto.getContent());

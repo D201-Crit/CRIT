@@ -59,10 +59,9 @@ public class BoardController {
 	// 게시글 작성
 	@PostMapping(value = "/write", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
 	public Response<?> write(@RequestPart BoardSaveRequestDto boardSaveRequestDto, HttpServletRequest httpServletRequest,
-							 @RequestPart(value = "file") List<MultipartFile> multipartFiles) throws IOException {
+							 @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) throws IOException {
 
 		User user = getUser(httpServletRequest);
-		log.info("userId={}", user);
 
 		return new Response<>("성공", "글 작성 성공", boardService.write(multipartFiles, boardSaveRequestDto, user));
 	}

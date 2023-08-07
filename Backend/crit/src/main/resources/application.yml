@@ -17,11 +17,9 @@ spring:
     multipart:
       max-file-size: 300MB
       max-request-size: 300MB
-<<<<<<< HEAD
 
 
-
-datasource:
+  datasource:
 #  url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S09P13D201?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
 #  username: S09P13D201
 #  password: sMTWKgddDr
@@ -30,20 +28,15 @@ datasource:
 #  driver-class-name: org.mariadb.jdbc.Driver
 
 
-  url: ENC(FN1fGG/cz8fWQk7xLomjexe7tImW5KqXhw6NS1Qz9+lskpEV3JiYX6ilrS85fPGX8+v9gKWk5akrpAHkuR1+GyBxjsIWmGYikdjsGTvNDj87UFYb/YFP31H7TVR4J93B2UNMvoQQAnRNbUMnk0lCom8am55CTUS37KgkGEUdp3QdbaSK2mmRBfpFdqZje/NyuFBrPq4FarrQMz9dD13H6A==)
-  username: ENC(cZTyh0FJelHqQiLp2Y4lBwenUlJBpF6U)
-  password: ENC(UoG6QmblfdyyheAZHohflGtuOTo7S+6s)
-  driver-class-name: org.mariadb.jdbc.Driver
-  hikari:
-=======
-  datasource:
-    url: ENC(FN1fGG/cz8fWQk7xLomjexe7tImW5KqXhw6NS1Qz9+lskpEV3JiYX6ilrS85fPGX8+v9gKWk5akrpAHkuR1+GyBxjsIWmGYikdjsGTvNDj87UFYb/YFP31H7TVR4J93B2UNMvoQQAnRNbUMnk0lCom8am55CTUS37KgkGEUdp3QdbaSK2mmRBfpFdqZje/NyuFBrPq4FarrQMz9dD13H6A==)
+
+#  url: ENC(FN1fGG/cz8fWQk7xLomjexe7tImW5KqXhw6NS1Qz9+lskpEV3JiYX6ilrS85fPGX8+v9gKWk5akrpAHkuR1+GyBxjsIWmGYikdjsGTvNDj87UFYb/YFP31H7TVR4J93B2UNMvoQQAnRNbUMnk0lCom8am55CTUS37KgkGEUdp3QdbaSK2mmRBfpFdqZje/NyuFBrPq4FarrQMz9dD13H6A==)
+    url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S09P13D201?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
     username: ENC(cZTyh0FJelHqQiLp2Y4lBwenUlJBpF6U)
     password: ENC(UoG6QmblfdyyheAZHohflGtuOTo7S+6s)
     driver-class-name: org.mariadb.jdbc.Driver
     hikari:
->>>>>>> 9dd685d9f847d3d42b97cadbc93c3b9cd2a3e9be
       maximum-pool-size:3
+
   main:
     allow-circular-references: true
 
