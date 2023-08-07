@@ -9,6 +9,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+/**
+ * author : 강민승
+ */
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
     // 타이틀 내림차순
@@ -34,7 +37,12 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query("select b from Board b where b.classification.category = :category")
     Page<Board> findAllByClassificationCategory(Pageable pageable, @Param("category") String category);
 
-    Page<Board> findByClassification (Pageable pageable, Classification classification);
-
     Page<Board> findByClassificationAndUser(Pageable pageable, Classification classification, User user);
+
+
+    Page<Board> findAllByUserAndClassification(User user, Classification classification, Pageable pageable);
+
+
+    Page<Board> findAllByUser(User user, Pageable pageable);
+
 }

@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
+/**
+ * author : 강민승
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,7 +19,7 @@ public class CommentDto {
         return new CommentDto(
                 comment.getId(),
                 comment.getContent(),
-                comment.getUser().getId()
+                comment.getUser().getNickname()
         );
     }
 }

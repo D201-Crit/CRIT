@@ -13,6 +13,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * author : 강민승
+ */
 @Getter
 @RequiredArgsConstructor
 @Entity

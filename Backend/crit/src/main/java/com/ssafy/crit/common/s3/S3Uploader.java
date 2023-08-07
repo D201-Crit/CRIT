@@ -34,7 +34,6 @@ public class S3Uploader {
     private String bucket;
 
     public String uploadFiles(MultipartFile multipartFile, String dirName) throws IOException {
-        log.info("업로드파일");
         File uploadFile = convert(multipartFile) // 파일 변환할 수 없으면 에러
                 .orElseThrow(() -> { return new IllegalArgumentException("error: MultipartFile -> File convert fail");});
         return upload(uploadFile, dirName);
@@ -43,9 +42,7 @@ public class S3Uploader {
 
     public String upload(File uploadFile, String filePath) {
         String fileName = filePath + "/" + UUID.randomUUID() + uploadFile.getName();   // S3에 저장된 파일 이름
-        log.info("업로드 메서드 들어왓음");
         String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
-        log.info("업로드 햇음");
         removeNewFile(uploadFile);
         return uploadImageUrl;
     }
@@ -59,11 +56,9 @@ public class S3Uploader {
     // 로컬에 저장된 이미지 지우기
     private void removeNewFile(File targetFile) {
         if (targetFile.delete()) {
-            log.info("삭제 완료");
             System.out.println("File delete success");
             return;
         }
-        log.info("삭제 실패");
         System.out.println("File delete fail");
     }
 
@@ -74,7 +69,6 @@ public class S3Uploader {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) { // FileOutputStream 데이터를 파일에 바이트 스트림으로 저장하기 위함
                 fos.write(file.getBytes());
             }
-            log.info("ㅇㅇ");
             return Optional.of(convertFile);
         }
         return Optional.empty();
@@ -86,7 +80,6 @@ public class S3Uploader {
         try {
             Files.delete(Path.of(file.getPath()));
         } catch (IOException e) {
-            log.info("파일이 삭제되지 않았습니다.");
             throw new RuntimeException(e);
         }
         return thumbnailURL;

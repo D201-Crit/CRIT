@@ -57,7 +57,7 @@ public class ShortsDto {
                 .thumbnailUrl(shorts.getThumbnailUrl())
                 .content(shorts.getContent())
                 .views(shorts.getViews())
-                .writer(shorts.getUser().getId())
+                .writer(shorts.getUser().getNickname())
                 .likesCount(shorts.getLikes())
                 .hashTagNames(hashTagNames)
                 .liked(liked)

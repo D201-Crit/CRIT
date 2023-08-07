@@ -11,6 +11,9 @@ import javax.persistence.*;
 
 import java.util.List;
 
+/**
+ * author : 강민승
+ */
 @Getter
 @NoArgsConstructor
 @Entity
@@ -20,8 +23,10 @@ public class Board extends BaseTimeEntity {
     @GeneratedValue
     private Long id;
 
+    @Column(nullable = false, length = 1000)
     private String title;
 
+    @Column(nullable = false, length = 1000)
     private String content;
 
     private int views;

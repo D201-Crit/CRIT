@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * author : 강민승
+ */
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor

@@ -23,8 +23,8 @@ public class MessageDto {
                 message.getId(),
                 message.getTitle(),
                 message.getContent(),
-                message.getSender().getId(),
-                message.getReceiver().getId()
+                message.getSender().getNickname(),
+                message.getReceiver().getNickname()
         );
     }
 }

@@ -27,11 +27,11 @@ public class UserResponseDto {
 	@Builder
 	public static UserResponseDto toUserResponseDto(User user) {
 		List<String> followerNames = user.getFollowers().stream()
-			.map(follow -> follow.getFollowing().getId())
+			.map(follow -> follow.getFollowing().getNickname())
 			.collect(Collectors.toList());
 
 		List<String> followingNames = user.getFollowings().stream()
-			.map(follow -> follow.getFollower().getId())
+			.map(follow -> follow.getFollower().getNickname())
 			.collect(Collectors.toList());
 
 		return new UserResponseDto(

@@ -11,6 +11,9 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
+/**
+ * author : 강민승
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,6 +24,7 @@ public class Comment {
     @GeneratedValue
     private Long id;
 
+    @Column(nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -24,12 +24,12 @@ public class MessageService {
 
 	@Transactional
 	public MessageDto write(MessageSendRequestDto MessageSendRequestDto, String senderName) {
-		User receiver = userRepository.findById(MessageSendRequestDto.getReceiverName()).get();
+		User receiver = userRepository.findById(MessageSendRequestDto.getReceiverName()).orElseThrow(() -> {
+			return new IllegalArgumentException("유저를 찾을 수 없습니다.");
+		});
 		User sender = userRepository.findById(senderName).orElseThrow(() -> {
 			return new IllegalArgumentException("유저를 찾을 수 없습니다.");
 		});
-
-		// if (sender.getFollowings().contains(receiver) && receiver.getFollowings().contains(sender)) {
 
 			Message message = Message.builder()
 				.title(MessageSendRequestDto.getTitle())
@@ -42,9 +42,6 @@ public class MessageService {
 
 			messageRepository.save(message);
 			return MessageDto.toDto(message);
-		// }
-		// return null;
-
 	}
 
 	@Transactional(readOnly = true)
@@ -108,7 +105,9 @@ public class MessageService {
 			return new IllegalArgumentException("메시지를 찾을 수 없습니다.");
 		});
 
-		if (user == message.getSender()) {
+		if(!message.getSender().getId().equals(user.getId())){
+			throw new IllegalArgumentException("삭제 권한이 없습니다.");
+		}else {
 			message.deleteBySender(); // 받은 사람에게 메시지 삭제
 			if (message.isDeleted()) {
 				// 받은사람과 보낸 사람 모두 삭제했으면, 데이터베이스에서 삭제요청
@@ -116,9 +115,7 @@ public class MessageService {
 				return "양쪽 모두 삭제";
 			}
 			return "한쪽만 삭제";
-		} else {
-			return new IllegalArgumentException("유저 정보가 일치하지 않습니다.");
+			}
 		}
 
 	}
-}

@@ -23,7 +23,7 @@ public class ShortsCommentDto {
         return ShortsCommentDto.builder()
                 .id(shortsComment.getId())
                 .content(shortsComment.getContent())
-                .writer(shortsComment.getUser().getId())
+                .writer(shortsComment.getUser().getNickname())
                 .build();
     }
 }
