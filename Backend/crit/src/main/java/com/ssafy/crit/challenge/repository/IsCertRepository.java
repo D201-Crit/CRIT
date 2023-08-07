@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface IsCertRepository extends JpaRepository<IsCert,Long> {
+public interface IsCertRepository extends JpaRepository<IsCert, Long> {
     List<IsCert> findAllByChallengeAndUser(Challenge challenge, User user);
 
-    Optional<IsCert> findByChallengeAndCertTimeBetween(Challenge challenge, LocalDateTime start, LocalDateTime end);
+    Optional<IsCert> findByChallengeAndUserAndCertTimeBetween(Challenge challenge, User user, LocalDateTime start, LocalDateTime end);
 }
