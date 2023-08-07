@@ -25,6 +25,7 @@ import com.ssafy.crit.common.s3.S3Uploader;
 
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 @Transactional
 public class BoardService {
 
@@ -144,36 +146,32 @@ public class BoardService {
 		}
 		List<UploadFile> uploadFile = uploadFileRepository.findAllByBoardsId(id);
 
+		uploadFileRepository.deleteAll(uploadFile);
+		// Clear and re-add the files to the existing collection.
 		board.getUploadFiles().clear();
-
+		
 		List<String> storeFileResult = new ArrayList<>();
 
-		for (MultipartFile multipartFile : multipartFiles) {
-			if (!multipartFile.isEmpty()) {
-
-				String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Boards");
-
-				UploadFile uploadFileSave = UploadFile.builder()
-					.board(board)
-					.userName(user.getId())
-					.storeFilePath(uploadFiles)
-					.classification(board.getClassification().getCategory())
-					.build();
-
-				uploadFileRepository.save(uploadFileSave);
-				board.getUploadFiles().add(uploadFileSave);
-				storeFileResult.add(uploadFiles);
+		if(multipartFiles != null) {
+			for (MultipartFile multipartFile : multipartFiles) {
+				if (!multipartFile.isEmpty()) {
+					String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Boards");
+					UploadFile uploadFileSave = UploadFile.builder()
+							.board(board)
+							.userName(user.getId())
+							.storeFilePath(uploadFiles)
+							.classification(board.getClassification().getCategory())
+							.build();
+					uploadFileRepository.save(uploadFileSave);
+					// directly add the new files to the existing collection
+					board.getUploadFiles().add(uploadFileSave);
+					storeFileResult.add(uploadFiles);
+				}
 			}
 		}
 
-		if(multipartFiles.isEmpty()){
-			storeFileResult.add("noFiles");
-		}
-
 		board.setUpdate(boardDto.getTitle(),boardDto.getContent());
-
 		boardRepository.save(board);
-
 		return BoardResponseDto.toDto(board);
 	}
 

@@ -43,7 +43,7 @@ public class JwtFilter extends OncePerRequestFilter {
             String userId = null;
             String provider = null;
 
-            if (request.getServletPath().startsWith("/auth") || request.getServletPath().startsWith("/login/oauth2")) {
+            if (request.getServletPath().startsWith("/auth") || request.getServletPath().startsWith("/oauth/login/oauth2")) {
                 filterChain.doFilter(request, response);
             }
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {

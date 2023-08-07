@@ -68,7 +68,7 @@ public class BoardController {
 
 	// 게시글 수정
 	@PatchMapping(value = "/update/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-	public Response<?> edit(@RequestPart BoardResponseDto boardDto, @PathVariable("id") Long id,
+	public Response<?> edit(@RequestPart(value = "boardDto") BoardResponseDto boardDto, @PathVariable("id") Long id,
 							HttpServletRequest httpServletRequest,
 							@RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) throws IOException {
 
