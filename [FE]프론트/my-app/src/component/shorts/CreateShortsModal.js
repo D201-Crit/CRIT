@@ -21,27 +21,34 @@ const CreateShortsModal = ({setShortsCreateModal}) => {
 
   const createShorts = (e) => {
     e.preventDefault();
-
+  
     const formData = new FormData();
     formData.append("file", video);
+  
+    const shortsDto = {
+      title: shorts.title,
+      content: shorts.content,
+      hashTagNames: shorts.hashTagNames,
+    };
+  
     formData.append(
-      "shortsDto",
-      new Blob([JSON.stringify(shorts)], { type: "application/json"})
-    );
+      "shortsDto", new Blob([JSON.stringify(shortsDto)], { type: "application/json" })
+      );
 
     api.post(`${API_BASE_URL}`, formData, {
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
-        "Content-Type": "multipart/form-data",
       },
     })
+    
     .then(() => {
       setShortsCreateModal(false);
     })
     .catch(() => {
-      console.log("쇼츠 작성실패");
+      console.log("쇼츠 작성 실패");
     });
   };
+  
 
   const handleShortsChange = (event) => {
     const { name, value } = event.target;

@@ -250,3 +250,65 @@ export const STertiaryButton = styled.button`
   ${defaultButtonPreset}
 `;
 
+
+// 게시글 디테일 댓글 영역
+export const SCommentContainer = styled.div`
+  width : 50%;
+  margin: 20px 0;
+  padding: 20px;
+  color : black;
+  background-color: #404040;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+`;
+
+export const SCommentList = styled.div`
+  margin-bottom: 20px;
+`;
+
+export const SCommentItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 5px;
+
+  & p {
+    margin: 0;
+  }
+`;
+
+export const SCommentAuthor = styled.span`
+  font-weight: 700;
+  margin-right: 10px;
+`;
+
+export const SCommentContent = styled.span``;
+
+export const SCommentForm = styled.form`
+  display: flex;
+  align-items: center;
+
+  & input[type="textarea"] {
+    flex: 1;
+    padding: 5px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  & input[type="submit"] {
+    background-color: #0000C5;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #3333ff;
+    }
+  }
+`;
