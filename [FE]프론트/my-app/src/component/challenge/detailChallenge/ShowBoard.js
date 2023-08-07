@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import DeleteBoard from "./DeleteBoard";
 import {
   SBoardWrapper,
-  SBoardUl,
   SBoardLi,
+  SSpan,
 } from "../../../styles/pages/SDeatilChallengePage";
 import LikeBoard from "./LikeBoard";
 import CreateBoard from "./CreateBoard";
@@ -26,13 +26,13 @@ const ShowBoard = ({ boards, challenge, getBoard }) => {
           <div>
             <p id="content">{board.content}</p>
             {user.nickname === board.writer ? (
-              <>
+              <SSpan>
                 <DeleteBoard getBoard={getBoard} boardId={board.id} />
                 <UpdateBoard
                   boardId={board.id}
                   classification={challenge.classification}
                 />
-              </>
+              </SSpan>
             ) : (
               <LikeBoard getBoard={getBoard} board={board} />
             )}

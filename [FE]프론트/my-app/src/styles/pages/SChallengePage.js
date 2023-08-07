@@ -23,16 +23,17 @@ export const SCreateChallengeButton = styled.button`
 
 // MyChallenge
 export const SImg = styled.img`
-  position: absolute;
-  bottom: -120px;
-  left: 120px;
+  // position: absolute;
+  // bottom: -120px;
+  // left: 120px;
   width: 600px;
   height: 600px;
+  margin: 100px auto;
 `;
 
 export const SSwiper = styled(Swiper)`
   // background-color: rgba(22, 22, 22, 0.599);
-  width: 780px;
+  width: 900px;
   height: 300px;
   margin: 100px auto;
   padding: 10px;
@@ -105,7 +106,7 @@ export const SBotWrapper = styled.div`
   }
   #enter {
     position: absolute;
-    left: 440px;
+    left: 550px;
     bottom: 20px;
     background-color: #0000c5;
     border: none;
@@ -119,7 +120,7 @@ export const SBotWrapper = styled.div`
   }
   #detail {
     position: absolute;
-    left: 610px;
+    left: 720px;
     bottom: 20px;
     background-color: #33ff00;
     border: none;
@@ -134,15 +135,30 @@ export const SBotWrapper = styled.div`
 `;
 //  SearchChallenge
 export const SSearchChallengeWrapper = styled.div`
-  position: absolute;
-  width: 100%;
-  top: 650px;
+  width: 1200px;
   margin: 0 auto;
   text-align: center;
 `;
+export const SInput = styled.input`
+  background-color: rgba(22, 22, 22, 0.599);
+  color: white;
+  width: 1200px;
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 18px;
+  font-weight: 500;
+  font-family: "Pretendard";
+
+  & + hr {
+    width: 1200px;
+    border: none;
+    height: 0.5px;
+    background-color: #ccc;
+  }
+`;
 export const SCategoryWrapper = styled.div`
-  width: 820px;
-  margin: 0 auto;
+  width: 1200px;
   ul {
     display: flex;
     list-style: none;
@@ -157,27 +173,9 @@ export const SCategoryWrapper = styled.div`
     }
   }
 `;
-export const SInput = styled.input`
-  background-color: rgba(22, 22, 22, 0.599);
-  color: white;
-  width: 820px;
-  border: none;
-  border-radius: 10px;
-  padding: 13px;
-  font-size: 18px;
-  font-weight: 500;
-  font-family: "Pretendard";
-
-  & + hr {
-    width: 820px;
-    border: none;
-    height: 0.5px;
-    background-color: #ccc;
-  }
-`;
 
 export const SSearchSwiper = styled(Swiper)`
-  width: 900px;
+  width: 1200px;
   margin: 30px auto 50px;
   height: 600px;
   ${"" /* padding: 10px; */}

@@ -102,12 +102,14 @@ export const SButtonWrapper = styled.div`
   text-align: center;
   #participation {
     width: 150px;
-    height: 40px;
+    height: 50px;
     font-size: 18px;
     font-weight: 700;
     border-radius: 10px;
     border: none;
     margin: 150px 150px 0 0;
+    background-color: #33ff00;
+    // color: white;
   }
   #enter {
     width: 150px;
@@ -126,19 +128,26 @@ export const SBoardWriteWrapper = styled.div`
   margin: 30px auto;
   text-align: center;
   width: 1200px;
+
   #label {
     width: 100px;
   }
 `;
 export const SBoardInput = styled.input`
-  width: 72%;
-  height: 50px;
+  width: 70%;
+  height: 70px;
   background: transparent;
   border: none;
-  border-bottom: solid 0.5px gray;
+  border-bottom: solid 3px gray;
   color: white;
-  font-size: 20px;
+  font-size: 25px;
+  margin: 50px 0 20px 0;
 `;
+// export const SBoardSubmit = styled.input`
+//   width: 100px;
+//   height: 30px;
+//   cursor: pointer;
+// `;
 export const SLabelImage = styled.label`
   img {
     width: 40px;
@@ -154,42 +163,48 @@ export const SBoardImage = styled.input`
 export const SBoardWrapper = styled.div`
   width: 1200px;
   margin: 30px auto;
-  border: 1px solid gray;
+  // border: 1px solid gray;
 `;
 
 export const SBoardLi = styled.li`
   list-style: none;
-  width: 80%;
-  margin: 30px auto;
-  background-color: green;
+  width: 100%;
+  margin: 20px auto;
+  padding: 15px 15px 0 15px;
+  // border-top: 0.5px solid gray;
+  // border-bottom: 0.5px solid gray;
+  // // background-color: green;
+  // background-color: #ffffff;
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23969696FF' stroke-width='4' stroke-dasharray='15%2c 15%2c 1' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
   #writer {
     font-size: 18px;
     color: gray;
     margin: 0;
   }
+
   div {
-    background-color: red;
+    // background-color: red;
+    width: 100%;
     display: flex;
-    #content {
-      background-color: blue;
-      width: 500px;
-      font-size: 25px;
-      color: white;
-    }
+  }
+  #content {
+    // background-color: blue;
+    width: 90%;
+    font-size: 25px;
+    color: white;
   }
 `;
-export const SBoardSubmit = styled.input`
-  width: 100px;
-  height: 30px;
-  cursor: pointer;
-`;
+
 export const SDeleteBoardButton = styled.button`
   background: transparent;
   color: gray;
   border: none;
   font-size: 20px;
   cursor: pointer;
-  // margin: 0 0 0 50px;
+`;
+export const SSpan = styled.span`
+  width: 10%;
+  display: flex;
 `;
 export const SUpdateBoardButton = styled.button`
   background: transparent;
@@ -205,4 +220,5 @@ export const SLikeBoardButton = styled.button`
   border-radius: 10px;
   color: white;
   background-color: #0000c5;
+  width: 10%;
 `;
