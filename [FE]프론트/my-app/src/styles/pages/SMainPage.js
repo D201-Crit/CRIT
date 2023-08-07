@@ -152,17 +152,6 @@ export const SShortsCard = styled.div`
   }
 `;
 
-<<<<<<< HEAD
-//뤼튼
-export const SShortsContainer = styled.div`
-  padding: 50px;
-  display: flex;
-  flex-wrap: nowrap;
-  width: 500px;
-  height: 500px;
-  overflow-x: auto;
-=======
-
 
 export const SShortsContainer = styled.div`
   padding : 20px;
@@ -171,14 +160,12 @@ export const SShortsContainer = styled.div`
   width : 100%;
   height : 300px;
   overflow-x: auto;  
->>>>>>> 3dea9de2099392accec1521373198510a1a0be84
   gap: 10px;
   -webkit-overflow-scrolling: touch;
-
   &::-webkit-scrollbar {
     display: none;
   }
-`;
+`;  
 
 // SShortItem style
 export const SShortItem = styled.div`
