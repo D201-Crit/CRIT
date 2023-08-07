@@ -50,6 +50,12 @@ public class BoardController {
 		return new Response<>("성공", "전체 게시물 리턴", boardService.getWholeBoards(pageable));
 	}
 
+	@GetMapping("/challengeWhole/{category_id}")
+	public Response<?> getChallengeBoards(@PathVariable("category_id") String category) {
+		return new Response<>("성공", "전체 챌린지 게시물 리턴",
+			boardService.getWholeChallengeBoards(category));
+	}
+
 	// 개별 게시글 조회
 	@GetMapping("/{id}")
 	public Response<?> getBoard(@PathVariable("id") Long id) {

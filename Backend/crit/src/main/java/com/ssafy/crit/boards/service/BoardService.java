@@ -151,9 +151,12 @@ public class BoardService {
 			throw new IllegalArgumentException("글 수정권한이 없습니다.");
 		}
 		List<UploadFile> uploadFile = uploadFileRepository.findAllByBoardsId(id);
+		List<UploadFile> tempFile = new ArrayList<>();
 
-		// uploadFileRepository.deleteAll(uploadFile);
-		// board.getUploadFiles().clear();
+		tempFile.addAll(uploadFile);
+
+		uploadFileRepository.deleteAll(uploadFile);
+		board.getUploadFiles().clear();
 
 		List<String> storeFileResult = new ArrayList<>();
 
@@ -172,9 +175,20 @@ public class BoardService {
 					storeFileResult.add(uploadFiles);
 				}
 			}
+			if(tempFile != null){
+				for (UploadFile file : tempFile) {
+					UploadFile uploadFileSave = UploadFile.builder()
+						.board(board)
+						.userName(user.getId())
+						.storeFilePath(file.getStoreFilePath())
+						.classification(board.getClassification().getCategory())
+						.build();
+					uploadFileRepository.save(uploadFileSave);
+					board.getUploadFiles().add(uploadFileSave);
+					storeFileResult.add(file.getStoreFilePath());
+				}
+			}
 		}
-
-
 
 		board.setUpdate(boardDto.getTitle(),boardDto.getContent());
 		boardRepository.save(board);
@@ -243,7 +257,7 @@ public class BoardService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<BoardShowSortDto> getWholeBoards(String s) {
+	public List<BoardShowSortDto> getWholeChallengeBoards(String s) {
 		List<Board> boards = boardRepository.findAllByCategory(s);
 
 		List<BoardShowSortDto> bt = new ArrayList<>();
