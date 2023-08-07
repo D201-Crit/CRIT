@@ -97,7 +97,6 @@ export const SDetailButton = styled.button`
 // 챌스 검색
 export const SSearchShortsWrapper = styled.div`
   text-align: center;
-  
 `;
 export const SInput = styled.input`
   background-color: rgba(50, 50, 50, 0.599);
@@ -122,9 +121,7 @@ export const SInput = styled.input`
   }
 `;
 
-
 export const SShortsCard = styled.div`
-  
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -135,14 +132,12 @@ export const SShortsCard = styled.div`
   overflow: hidden;
   margin: 20px;
 
-
   img {
     width: 100%;
     height: 200px;
     transform: rotate(270deg);
     object-fit: cover;
     border-radius: 8px 8px 0 0;
-    
   }
 
   h2 {
@@ -157,18 +152,17 @@ export const SShortsCard = styled.div`
   }
 `;
 
-
 //뤼튼
 export const SShortsContainer = styled.div`
-  padding : 50px;
+  padding: 50px;
   display: flex;
   flex-wrap: nowrap;
-  width : 500px;
-  height : 500px;
-  overflow-x: auto;  
+  width: 500px;
+  height: 500px;
+  overflow-x: auto;
   gap: 10px;
   -webkit-overflow-scrolling: touch;
-  
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -183,7 +177,7 @@ export const SShortItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
   justify-content: flex-start;
   overflow: hidden;
 
@@ -202,7 +196,8 @@ export const SShortItem = styled.div`
     transform: translate(-50%, -50%) rotate(270deg);
   }
 
-  h2, p {
+  h2,
+  p {
     opacity: 0;
     transition: opacity 0.3s;
   }
@@ -244,7 +239,8 @@ export const SShortItem = styled.div`
       transform: translate(-50%, -50%) rotate(270deg) scale(0.8);
     }
 
-    h2, p {
+    h2,
+    p {
       opacity: 1;
     }
   }
@@ -273,13 +269,17 @@ export const SDetailModal = styled.div`
   transform: translate(-50%, -50%);
   width: 700px;
   max-height: 700px;
-  background: linear-gradient(to bottom, rgba(69,72,77,1) 0%,rgba(0,0,0,0.66) 100%);  
+  background: linear-gradient(
+    to bottom,
+    rgba(69, 72, 77, 1) 0%,
+    rgba(0, 0, 0, 0.66) 100%
+  );
   border: 0.5px solid rgba(50, 50, 50);
   border-radius: 8px;
   padding: 32px;
   z-index: 1000;
   font-family: "Pretendard";
-  color : black;
+  color: black;
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -291,15 +291,13 @@ export const SDetailModal = styled.div`
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 20px;
   }
-  
-  
 `;
 
 export const SDetailCloseButton = styled.button`
   position: absolute;
   top: 10px;
   right: 10px;
-  color : white;
+  color: white;
   background-color: transparent;
   border: none;
   font-size: 24px;
@@ -311,16 +309,19 @@ export const SDetailCloseButton = styled.button`
 `;
 
 export const SPlayerSection = styled.div`
-
   width: 50%;
-  height : 50%;
+  height: 50%;
   display: flex;
   transform: translate(45%, -0%);
 
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to bottom, rgba(69,72,77,1) 0%,rgba(0,0,0,0.66) 100%);  
+  background: linear-gradient(
+    to bottom,
+    rgba(69, 72, 77, 1) 0%,
+    rgba(0, 0, 0, 0.66) 100%
+  );
   padding: 15px;
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -340,7 +341,7 @@ export const SInfoRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding : 5px;
+  padding: 5px;
 `;
 
 export const SCommentSection = styled.div`
@@ -362,7 +363,7 @@ export const SCommentList = styled.div`
   p {
     font-size: 15px;
     margin: 0px;
-    flex: auto; 
+    flex: auto;
   }
 
   form {
@@ -371,8 +372,8 @@ export const SCommentList = styled.div`
     gap: 8px;
   }
 
-  button{
-    margin-left : 15px;
+  button {
+    margin-left: 15px;
   }
 
   .comment-item:not(:last-child) {

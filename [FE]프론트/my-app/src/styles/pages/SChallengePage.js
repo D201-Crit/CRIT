@@ -140,6 +140,23 @@ export const SSearchChallengeWrapper = styled.div`
   margin: 0 auto;
   text-align: center;
 `;
+export const SCategoryWrapper = styled.div`
+  width: 820px;
+  margin: 0 auto;
+  ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+  }
+  a {
+    margin: 0 20px 0 0;
+    cursor: pointer;
+    color: gray;
+    &:hover {
+      color: #ff007a;
+    }
+  }
+`;
 export const SInput = styled.input`
   background-color: rgba(22, 22, 22, 0.599);
   color: white;
@@ -156,7 +173,6 @@ export const SInput = styled.input`
     border: none;
     height: 0.5px;
     background-color: #ccc;
-    margin: 30px auto;
   }
 `;
 
@@ -164,7 +180,7 @@ export const SSearchSwiper = styled(Swiper)`
   width: 900px;
   margin: 30px auto 50px;
   height: 600px;
-  padding: 10px;
+  ${"" /* padding: 10px; */}
   border: none;
   gap: 20px;
   grid-template-columns: repeat(3, 1fr);

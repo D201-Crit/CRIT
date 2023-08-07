@@ -63,6 +63,7 @@ const CreateBoard = ({ classification, getBoard }) => {
         },
       })
       .then((res) => {
+        console.log(res);
         setBoard({
           title: "",
           content: "",

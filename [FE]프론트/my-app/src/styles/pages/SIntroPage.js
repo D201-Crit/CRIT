@@ -27,7 +27,7 @@ export const SIntroPageWrapper = styled.div`
 
     p {
       font-size: 20px;
-      font-weight : 1;
+      font-weight: 1;
       text-align: left;
       margin-bottom: 40px;
     }

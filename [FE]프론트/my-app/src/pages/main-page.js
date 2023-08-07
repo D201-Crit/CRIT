@@ -7,15 +7,14 @@ import {
   SDetailButton,
 } from "../styles/pages/SMainPage";
 import SearchShorts from "../component/shorts/SearchShorts";
-import MostLikeShorts from '../component/shorts/list/MostLikeShorts';
+import MostLikeShorts from "../component/shorts/list/MostLikeShorts";
 import CreateShortsModal from "../component/shorts/CreateShortsModal";
-import RecentShorts from '../component/shorts/list/RecentShorts';
-import MostViewtShorts from '../component/shorts/list/MostViewtShorts';
+import RecentShorts from "../component/shorts/list/RecentShorts";
+import MostViewtShorts from "../component/shorts/list/MostViewtShorts";
 import { useEffect, useState } from "react";
 import { api } from "../api/api";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-// import { EffectCards } from "swiper/modules";
 import { EffectCreative } from "swiper/modules";
 
 import "swiper/css";
@@ -69,7 +68,6 @@ const MainPage = () => {
   }, []);
   console.log(myChallenges);
 
-
   // 쇼츠
   const getShorts = () => {
     api
@@ -83,13 +81,11 @@ const MainPage = () => {
         setShortsByDate(res.data.data.thumbnailsByDate);
         setShortsByView(res.data.data.thumbnailsByView);
         setShortsByLike(res.data.data.thumbnailsByLike);
-
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
 
   return (
     <>
@@ -133,11 +129,9 @@ const MainPage = () => {
       <SearchShorts />
 
       {/* 쇼츠 영역 */}
-      <RecentShorts shortsByDate={shortsByDate}/>
-      <MostLikeShorts shortsByLike={shortsByLike}/>
-      <MostViewtShorts shortsByView={shortsByView}/>
-
-    
+      <RecentShorts shortsByDate={shortsByDate} />
+      <MostLikeShorts shortsByLike={shortsByLike} />
+      <MostViewtShorts shortsByView={shortsByView} />
     </>
   );
 };

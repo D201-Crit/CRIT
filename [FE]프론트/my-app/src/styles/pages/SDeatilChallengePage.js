@@ -172,6 +172,7 @@ export const SBoardUl = styled.ul`
   }
 `;
 export const SBoardLi = styled.li`
+  background-color: red;
   div {
     display: flex;
     width: 92%;
@@ -183,6 +184,13 @@ export const SBoardSubmit = styled.input`
   cursor: pointer;
 `;
 export const SDeleteBoardButton = styled.button`
+  background: transparent;
+  color: gray;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+`;
+export const SUpdateBoardButton = styled.button`
   background: transparent;
   color: gray;
   border: none;

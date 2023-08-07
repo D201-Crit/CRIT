@@ -1,4 +1,4 @@
-import styled,{ css } from "styled-components";
+import styled, { css } from "styled-components";
 
 //Nav
 export const SNav = styled.nav`
@@ -30,7 +30,7 @@ export const SMenuWrapper = styled.div`
     }
 
     &.active {
-      color: gray;
+      color: #ff007a;
     }
   }
 `;
@@ -96,7 +96,7 @@ export const STitle = styled.h1`
 export const SButton = styled.button`
   margin-top: 20px;
   padding: 10px 15px;
-  background: #0000C5;
+  background: #0000c5;
   color: white;
   border: none;
   border-radius: 5px;
@@ -107,5 +107,3 @@ export const SButton = styled.button`
     background-color: #3333ff;
   }
 `;
-
-
