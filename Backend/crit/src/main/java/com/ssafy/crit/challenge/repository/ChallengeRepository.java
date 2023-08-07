@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
@@ -15,5 +16,8 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
     @Query("select c from Challenge c where c.startDate <= :curdate and c.endDate >= :curdate")
     List<Challenge> findAllOngoingChallenge(@Param("curdate") LocalDate curDate); // 현재 진행중 챌린지 조회
+
+    List<Challenge> findAllByEndDate(LocalDate date);
+    List<Challenge> findAllByStartDate(LocalDate date);
 
 }

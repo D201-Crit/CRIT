@@ -7,9 +7,7 @@ import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.boards.entity.Classification;
 import com.ssafy.crit.boards.repository.ClassificationRepository;
 import com.ssafy.crit.challenge.dto.ChallengeCreateRequestDto;
-import com.ssafy.crit.challenge.entity.Challenge;
-import com.ssafy.crit.challenge.entity.ChallengeCategory;
-import com.ssafy.crit.challenge.entity.ChallengeUser;
+import com.ssafy.crit.challenge.entity.*;
 import com.ssafy.crit.challenge.repository.ChallengeCategoryRepository;
 import com.ssafy.crit.challenge.repository.ChallengeRepository;
 import com.ssafy.crit.challenge.repository.ChallengeUserRepository;
@@ -19,7 +17,9 @@ import com.ssafy.crit.common.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.time.LocalDate;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 
@@ -70,7 +71,8 @@ public class ChallengeService {
                 .endDate(challengeDto.getEndDate())
                 .startTime(LocalTime.of(challengeDto.getStartTime().getHour(), challengeDto.getStartTime().getMinute(), 0))
                 .endTime(LocalTime.of(challengeDto.getEndTime().getHour(), challengeDto.getEndTime().getMinute(), 0))
-                .createUser(user);
+                .createUser(user)
+                .challengeStatus(ChallengeStatus.WAIT);
 
         if (file != null) { // 사진이 존재하는 경우
             if (!checkExtension(file)) throw new BadRequestException("잘못된 확장자입니다.");
@@ -157,6 +159,28 @@ public class ChallengeService {
     // 현재 진행중인 챌린지 불러오기
     public List<Challenge> getChallengesOngoing() throws Exception {
         return challengeRepository.findAllOngoingChallenge(LocalDate.now());
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Scheduled(cron = "0 0 0 * * *")
+    public void dailyChallengeCheck() throws Exception {  // 챌린지 완성 기한에 다다른 챌린지들 체크하고 생성하기
+        // 내일 시작인 챌린지들 다 불러오기
+        List<Challenge> beCreatedChallengeList = challengeRepository.findAllByStartDate(LocalDate.now().plusDays(1));
+        // 어제 끝난 챌린지 불러오기
+        List<Challenge> finishedChallengeList = challengeRepository.findAllByEndDate(LocalDate.now().minusDays(1));
+
+        for (Challenge challenge : beCreatedChallengeList) { // 챌린지 보고 인원수 꽉찬거 통과
+            if (challenge.getChallengeUserList().size() == challenge.getPeople()) {
+                challenge.setChallengeStatus(ChallengeStatus.PROGRESS);
+            } else { // 인원수 다 안차면 거절
+                challenge.setChallengeStatus(ChallengeStatus.REJECT);
+            }
+        }
+
+        for (Challenge challenge : finishedChallengeList) { // 끝난거 종료시키기
+            challenge.setChallengeStatus(ChallengeStatus.END);
+        }
+
     }
 
 
