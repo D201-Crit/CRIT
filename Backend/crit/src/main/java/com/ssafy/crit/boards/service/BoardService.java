@@ -61,6 +61,8 @@ public class BoardService {
 		Page<Board> boards = boardRepository.findAllByClassificationCategory(pageable, category);
 		return getBoardShowSortDtos(boards);
 	}
+
+
 	@Transactional(readOnly = true)
 	public Page<BoardShowSortDto> getWholeBoards(Pageable pageable) {
 		Page<Board> boards = boardRepository.findAll(pageable);
@@ -99,7 +101,7 @@ public class BoardService {
 			throw new BadRequestException("이모티콘 혹은 욕설이 포함된 언어로 만들 수 없습니다.");
 		}
 
-		List<String> storeFileResult = new ArrayList<>();
+
 		Board board = Board.builder()
 			.title(boardSaveRequestDto.getTitle())
 			.content(boardSaveRequestDto.getContent())
@@ -108,7 +110,10 @@ public class BoardService {
 			.build();
 
 		boardRepository.save(board);
-		if (!multipartFiles.isEmpty()) {
+
+		List<String> storeFileResult = new ArrayList<>();
+
+		if (multipartFiles != null) {
 			for (MultipartFile multipartFile : multipartFiles) {
 				String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Boards");
 
@@ -126,6 +131,7 @@ public class BoardService {
 			}
 		
 		return BoardSaveResponseDto.builder()
+			.id(board.getId())
 			.title(boardSaveRequestDto.getTitle())
 			.content(boardSaveRequestDto.getContent())
 			.writer(user.getNickname())
@@ -145,11 +151,13 @@ public class BoardService {
 			throw new IllegalArgumentException("글 수정권한이 없습니다.");
 		}
 		List<UploadFile> uploadFile = uploadFileRepository.findAllByBoardsId(id);
+		List<UploadFile> tempFile = new ArrayList<>();
+
+		tempFile.addAll(uploadFile);
 
 		uploadFileRepository.deleteAll(uploadFile);
-		// Clear and re-add the files to the existing collection.
 		board.getUploadFiles().clear();
-		
+
 		List<String> storeFileResult = new ArrayList<>();
 
 		if(multipartFiles != null) {
@@ -163,9 +171,21 @@ public class BoardService {
 							.classification(board.getClassification().getCategory())
 							.build();
 					uploadFileRepository.save(uploadFileSave);
-					// directly add the new files to the existing collection
 					board.getUploadFiles().add(uploadFileSave);
 					storeFileResult.add(uploadFiles);
+				}
+			}
+			if(tempFile != null){
+				for (UploadFile file : tempFile) {
+					UploadFile uploadFileSave = UploadFile.builder()
+						.board(board)
+						.userName(user.getId())
+						.storeFilePath(file.getStoreFilePath())
+						.classification(board.getClassification().getCategory())
+						.build();
+					uploadFileRepository.save(uploadFileSave);
+					board.getUploadFiles().add(uploadFileSave);
+					storeFileResult.add(file.getStoreFilePath());
 				}
 			}
 		}
@@ -219,11 +239,6 @@ public class BoardService {
 		return getBoardShowSortDtos(boards);
 	}
 
-//	public Page<BoardShowSortDto> findAllByUserAndClassification(@RequestParam String classification, User user, Pageable pageable){
-//		Page<Board> boards = boardRepository.findAllByUserAndClassification(pageable, user, classification);
-//		return getBoardShowSortDtos(boards);
-//	}
-
 	public Page<BoardShowSortDto> findAllByUserAndClassification(User user, String classificationString, Pageable pageable){
 
 		Classification classification = classificationRepository.findByCategory(classificationString).orElseThrow(() -> {
@@ -239,6 +254,38 @@ public class BoardService {
 	public Page<BoardShowSortDto> findAllByUser(User user, Pageable pageable){
 		Page<Board> boards = boardRepository.findAllByUser(user, pageable);
 		return getBoardShowSortDtos(boards);
+	}
+
+	@Transactional(readOnly = true)
+	public List<BoardShowSortDto> getWholeChallengeBoards(String s) {
+		List<Board> boards = boardRepository.findAllByCategory(s);
+
+		List<BoardShowSortDto> bt = new ArrayList<>();
+
+		for (Board board : boards) {
+			List<String> likedName = board.getLikes().stream()
+				.map(like -> like.getUser().getNickname())
+				.collect(Collectors.toList());
+
+			List<String> filenames = board.getUploadFiles().stream()
+				.map(UploadFile::getStoreFilePath)
+				.collect(Collectors.toList());
+
+			BoardShowSortDto build = BoardShowSortDto.builder()
+				.id(board.getId())
+				.title(board.getTitle())
+				.content(board.getContent())
+				.views(board.getViews())
+				.writer(board.getUser().getNickname())
+				.likesCount(board.getLikes().size())
+				.classification(board.getClassification().getCategory())
+				.liked(likedName)
+				.imageUrl(filenames)
+				.build();
+
+			bt.add(build);
+		}
+		return bt;
 	}
 
 

@@ -198,4 +198,8 @@ public class UserService {
         if (userinfo.toLowerCase().contains("admin")) return false;
         return !user.isPresent();
     }
+
+    public User getUserProfile(User user){
+        return userRepository.findById(user.getId()).orElseThrow();
+    }
 }
