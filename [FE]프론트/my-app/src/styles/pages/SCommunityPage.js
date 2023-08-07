@@ -1,55 +1,70 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
+import { SWrapper, STitle, SButton } from "../SCommon";
 
-// Community Page
+// 커뮤니티 페이지
 export const SCommunityWrapper = styled.div`
   max-width: 1200px;
-  height = 100%;
-  padding : 30px;
+  height: 100%;
+  padding: 30px;
   margin: 0 auto;
   overflow-x: hidden;
 `;
-
 
 export const SHr = styled.hr`
   margin: 30px 0px -40px 0px;
 `;
 
 export const SHr2 = styled.hr`
-background: white;
-opacity : 30%;
-height:1px;
-border:0;
+  background: white;
+  opacity: 30%;
+  height: 1px;
+  border: 0;
 `;
+
 export const SEmpty = styled.div`
-margin : 120px 0px 0px 0px;
-
+  margin: 120px 0px 0px 0px;
 `;
-//
+
 export const SEmpty2 = styled.div`
-  margin : 60px 0px 0px 0px;
+  margin: 60px 0px 0px 0px;
 `;
 
-//광고 배너 영역
+// 광고 배너 영역
 export const SAdArea = styled.div`
   color: #FFFFFF;
-  width = 3859px;
-  height = 500px;
-  background: #0000C5;
-  padding : 60px
+  width: 3859px;
+  background: ${({ backgroundColor }) => backgroundColor || "#0000C5"};
+  padding: 60px;
+  transition: background-color 0.3s;
+
+  p {
+    font-weight: 10;
+  }
   
+  span {
+    font-size: 20px;
+  }
+`;
+
+export const SAdWrapper = styled.div`
+  position: relative;
+  overflow: hidden;
 `;
 
 export const SADtextArea = styled.div`
-font-family: 'Pretendard';
-font-style: normal;
-font-weight: 700;
-font-size: 20px;
-line-height: 10px;
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 10px;
+  opacity: 1;
+  position: relative;
+  transition: transform 0.5s;
+
+  transform: ${({ transformValue }) => `translateX(${transformValue}%)`};
 `;
 
-
-// 여기서부터 게시판 영역
-
+// 게시판 영역
 export const CategoryContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -70,7 +85,7 @@ export const CategoryButton = styled.div`
 `;
 
 export const SBoardCard = styled.div`
-  position: relative; /* 자식 요소에 대한 쌓임 맥락을 만들기 위해 추가합니다. */
+  position: relative; 
   background-color: #dark;
   width: 400px;
   height: 470px;
@@ -125,6 +140,28 @@ export const SBoardTitle = styled.div`
 
 `;
 
+export const SBoardDetailBoardInfo = styled.p`
+  margin: 0 5px;
+  font-size: 14px;
+  display: inline;
+`;
+
+export const SLikeButton = styled.button`
+  margin-top: 5px;
+  padding: 5px 10px;
+  background: ${({ isLiked }) => (isLiked ? "#ff007a" : "#0000C5")};
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: ${({ isLiked }) => (isLiked ? "#ff005a" : "#3333ff")};
+  }
+`;
+
+
 
 export const SBoardContainer = styled.div`
   display: flex;
@@ -132,6 +169,7 @@ export const SBoardContainer = styled.div`
 `;
 
 export const SBoardArticleRow = styled.div`
+  
   display: flex;
   display: block;
   justify-content: space-between;
@@ -139,7 +177,76 @@ export const SBoardArticleRow = styled.div`
 
 export const SBoardArticleCol = styled.div`
   display: block;
-  flex: 0 0 25%; /* 한 줄에 4개의 게시글이 보이도록 설정합니다. */
-  padding: 10px; /* 각 게시글 사이의 간격을 조정합니다. */
+  flex: 0 0 33.3%;
+  padding: 10px;
+`;
+
+
+export const SBoardDetailWrapper = styled(SWrapper)``;
+
+export const SBoardDetailHr = styled(SHr)``;
+
+export const SBoardDetailEmpty = styled(SEmpty)``;
+
+export const SBoardDetailTitle = styled(STitle)``;
+
+export const SBoardDetailButton = styled(SButton)``;
+
+export const SBoardDetailViewSelect = styled.select`
+  margin-left: 20px;
+`;
+
+export const SBoardDetailRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+`;
+
+export const SBoardDetailBoard = styled.div`
+  background-color : #262626;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 5px;
+`;
+
+// 폰트 크기 조절하기
+export const SBoardDetailBoardTitle = styled.h3`
+  font-size: 25px;
+  cursor: pointer;
+  transition: color 0.3s;
+
+  &:hover {
+    color: #3333ff;
+  }
+`;
+
+const defaultButtonPreset = css`
+  margin-top: 20px;
+  padding: 10px 15px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #3333ff;
+  }
+`;
+
+export const SPrimaryButton = styled.button`
+  background: #28a745;
+  ${defaultButtonPreset}
+`;
+
+export const SSecondaryButton = styled.button`
+  background: #6c757d;
+  ${defaultButtonPreset}
+`;
+
+export const STertiaryButton = styled.button`
+  background: #ffc107;
+  ${defaultButtonPreset}
 `;
 

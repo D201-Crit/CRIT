@@ -7,9 +7,13 @@ import {
   SDetailButton,
 } from "../styles/pages/SMainPage";
 import SearchShorts from "../component/shorts/SearchShorts";
+import MostLikeShorts from '../component/shorts/list/MostLikeShorts';
+import CreateShortsModal from "../component/shorts/CreateShortsModal";
+import RecentShorts from '../component/shorts/list/RecentShorts';
+import MostViewtShorts from '../component/shorts/list/MostViewtShorts';
 import { useEffect, useState } from "react";
 import { api } from "../api/api";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 // import { EffectCards } from "swiper/modules";
 import { EffectCreative } from "swiper/modules";
@@ -20,19 +24,24 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css/effect-cards";
 import "swiper/css/effect-creative";
-import { setOnGoingChallenge } from "../slice/ChallengeSlice";
 
 const MainPage = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(true);
   const openChallenge = () => {
     setIsOpen(!isOpen);
   };
 
   const user = useSelector((state) => state.users);
-  const dispatch = useDispatch();
-  const onGoingChallenges = useSelector((state) => state.onGoingChallengeSlice);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [myChallenges, setMyChallenges] = useState([]);
+  const [shorts, setShorts] = useState([]);
+
+  // 쇼츠 데이터 최신, 조회수, 좋아요 순
+  const [shortsByDate, setShortsByDate] = useState([]);
+  const [shortsByView, setShortsByView] = useState([]);
+  const [shortsByLike, setShortsByLike] = useState([]);
+
   const getMyChallenge = () => {
     api
       .get("https://i9d201.p.ssafy.io/api/challenge/list/mine", {
@@ -42,7 +51,7 @@ const MainPage = () => {
         },
       })
       .then((res) => {
-        dispatch(setOnGoingChallenge(res.data.data));
+        setMyChallenges(res.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -56,13 +65,37 @@ const MainPage = () => {
   };
   useEffect(() => {
     getMyChallenge();
+    getShorts();
   }, []);
-  console.log(onGoingChallenges);
+  console.log(myChallenges);
+
+
+  // 쇼츠
+  const getShorts = () => {
+    api
+      .get("https://i9d201.p.ssafy.io/api/shorts/main", {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      })
+      .then((res) => {
+        // console.log("쇼츠데이터",res.data.data);
+        setShortsByDate(res.data.data.thumbnailsByDate);
+        setShortsByView(res.data.data.thumbnailsByView);
+        setShortsByLike(res.data.data.thumbnailsByLike);
+
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+
   return (
     <>
       <SEntranceButtonWrapper>
         <SEntranceButton onClick={openChallenge}>바로입장</SEntranceButton>
-        {isOpen ? null : onGoingChallenges === undefined ? null : (
+        {isOpen ? null : (
           <SEntranceSwiper
             grabCursor={true}
             effect={"creative"}
@@ -81,7 +114,7 @@ const MainPage = () => {
             // modules={[EffectCards]}
             className="mySwiper"
           >
-            {onGoingChallenges.map((challenge) => (
+            {myChallenges.map((challenge) => (
               <SEntranceSlide key={challenge.id}>
                 <img src={challenge.imgPath} alt="챌린지 이미지" />
                 <h4>{challenge.name}</h4>
@@ -90,9 +123,7 @@ const MainPage = () => {
                     ? challenge.info.slice(0, 30) + "..."
                     : challenge.info}
                 </p>
-                <SDetailButton onClick={() => detailClick(challenge)}>
-                  상세보기
-                </SDetailButton>
+                <SDetailButton onClick={detailClick}>상세보기</SDetailButton>
                 <SEntranceLiButton>입장하기</SEntranceLiButton>
               </SEntranceSlide>
             ))}
@@ -100,6 +131,13 @@ const MainPage = () => {
         )}
       </SEntranceButtonWrapper>
       <SearchShorts />
+
+      {/* 쇼츠 영역 */}
+      <RecentShorts shortsByDate={shortsByDate}/>
+      <MostLikeShorts shortsByLike={shortsByLike}/>
+      <MostViewtShorts shortsByView={shortsByView}/>
+
+    
     </>
   );
 };

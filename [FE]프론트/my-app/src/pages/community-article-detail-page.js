@@ -4,7 +4,8 @@ import { api } from './../../src/api/api.js'
 import { useSelector } from "react-redux";
 import ModifyArticleModal from '../component/community/ModifyArticleModal.js';
 
-const API_BASE_URL = 'http://localhost:8080/boards';
+const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/boards';
+// const API_BASE_URL = 'http://localhost:8080/boards';
 
 const CommunityArticleDetailPage = () => {
   const user = useSelector((state) => state.users);
@@ -180,6 +181,7 @@ const CommunityArticleDetailPage = () => {
         <input type='submit'></input>
       </form>
     
+
       {comments && (
         <div>
           {comments.map((comment) => (
@@ -189,7 +191,6 @@ const CommunityArticleDetailPage = () => {
               {isMyComment(comment) && (
                 <button onClick={() => deleteComment(comment.id)}>삭제</button>
               )}
-              
             </div>
           ))}
         </div>

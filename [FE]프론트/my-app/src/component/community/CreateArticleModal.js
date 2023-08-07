@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { api } from "../../api/api";
 
-const API_BASE_URL = "http://localhost:8080/boards";
+const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/boards';
+// const API_BASE_URL = "http://localhost:8080/boards";
 
 const CreateArticleModal = ({ classification, setModal, fetchArticles}) => {
   const user = useSelector((state) => state.users);

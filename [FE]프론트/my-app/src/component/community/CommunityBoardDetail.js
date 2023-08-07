@@ -7,49 +7,60 @@ import {
   SEmpty,
   SBoardArticleCol,
   SBoardArticleRow,
+  SBoardDetailWrapper,
+  SBoardDetailHr,
+  SBoardDetailEmpty,
+  SBoardDetailTitle,
+  SBoardDetailButton,
+  SBoardDetailViewSelect,
+  SBoardDetailRow,
+  SBoardDetailBoard,
+  SBoardDetailBoardTitle,
+  SBoardDetailBoardInfo,
+  SLikeButton,
 } from '../../styles/pages/SCommunityPage';
 import CreateArticleModal from './CreateArticleModal'
 
+const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/boards';
+// const API_BASE_URL = 'http://localhost:8080/boards';
 
-const API_BASE_URL = 'http://localhost:8080/boards';
-
-const CommunityBoardDetail = ({classification}) => {
+const CommunityBoardDetail = ({ classification }) => {
   const user = useSelector((state) => state.users);
-  
-  const [articles, setArticles] = useState(null); // 게시글 목록 State
-  const [showmodal,setModal] = useState(false);
+
+  const [
+    articles,
+    setArticles,
+  ] = useState(null);                                     // 게시글 목록 State
+  const [showmodal, setModal] = useState(false);
   const [sortMethod, setSortMethod] = useState('전체게시물');
 
-const handleSortMethodChange = (e) => {
-  setSortMethod(e.target.value);
-  sortArticles(e.target.value);
-};
-  // 초기 렌더링 시 실행
-  useEffect(() => {
+  const handleSortMethodChange = (e) => {
+    setSortMethod(e.target.value);
+    sortArticles(e.target.value);
+  };
+
+  useEffect(() => {                                        // 초기 렌더링 시 실행
     fetchArticles();
-  }, []); 
+  }, []);
 
-
-  // 현재 게시판에 해당하는 게시글 불러오기
-  const fetchArticles = async () => {
+  const fetchArticles = async () => {                      // 현재 게시판에 해당하는 게시글 불러오기
     api.get(`${API_BASE_URL}/whole/${classification}`, {
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
       },
     })
-    .then((res) => {
-      setArticles(res.data.data.content);
-      console.log(res);
-
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+      .then((res) => {
+        setArticles(res.data.data.content);
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const sortArticles = async (sort = 'whole') => {
     let url;
-  
+
     switch (sort) {
       case 'desc':
         url = `${API_BASE_URL}/desc`;
@@ -66,7 +77,7 @@ const handleSortMethodChange = (e) => {
       default:
         url = `${API_BASE_URL}/whole/${classification}`;
     }
-  
+
     api.get(url, {
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
@@ -80,107 +91,104 @@ const handleSortMethodChange = (e) => {
         console.log(error);
       });
   };
-  
-  // 좋아요 기능
-  const articleLike = async (articleid) =>{
-    api.post(`${API_BASE_URL}/likes/${articleid}`, null,{
+
+  const articleLike = async (articleid) => {              // 좋아요 기능
+    api.post(`${API_BASE_URL}/likes/${articleid}`, null, {
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
       },
     })
-    .then((res) => {
-      console.log(res);
-      fetchArticles();
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+      .then((res) => {
+        console.log(res);
+        fetchArticles();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
-  const deleteLike = async (articleid) =>{
-    api.delete(`${API_BASE_URL}/likes/${articleid}`,{
+  const deleteLike = async (articleid) => {
+    api.delete(`${API_BASE_URL}/likes/${articleid}`, {
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
       },
     })
-    .then((res) => {
-      console.log('Delete Like Response:',res);
-      return fetchArticles();
-      
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+      .then((res) => {
+        console.log('Delete Like Response:', res);
+        return fetchArticles();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-  
 
-
-  const goToArticleDetail = (id) => {
-    // 클릭하면 게시글 디테일로 넘어감
+  const goToArticleDetail = (id) => {                     // 클릭하면 게시글 디테일로 넘어감
     window.location.href = `/CommunityBoardPage/${classification}/${id}`;
   };
 
-  // 모달 열기
-  const openModal = () => {
+  const openModal = () => {                               // 모달 열기
     setModal(true);
-  }
+  };
 
   return (
-    <div>
-      {/* 게시판 제목 */}
-      <h1>{classification}</h1> 
-      <button onClick={()=>{openModal()}}>게시글작성</button>
+    <SBoardDetailWrapper>
+      <h1>{classification}</h1>
+      <SBoardDetailButton onClick={() => openModal()}>
+        게시글작성
+      </SBoardDetailButton>
 
-      {/* 게시판 정렬 */}
-      <select value={sortMethod} onChange={handleSortMethodChange}>
-      <option value="whole">전체게시물</option>
-      <option value="desc">제목순 내림차순</option>
-      <option value="asc">제목순 오름차순</option>
-      <option value="viewsdesc">조회순 내림차순</option>
-      <option value="viewsasc">조회순 오름차순</option>
-       </select>
+      <SBoardDetailViewSelect
+        value={sortMethod}
+        onChange={handleSortMethodChange}
+      >
+        <option value="whole">전체게시물</option>
+        <option value="desc">제목순 내림차순</option>
+        <option value="asc">제목순 오름차순</option>
+        <option value="viewsdesc">조회순 내림차순</option>
+        <option value="viewsasc">조회순 오름차순</option>
+      </SBoardDetailViewSelect>
 
-      {/* 게시글 작성 모달 */}
-      {showmodal && (
-          <CreateArticleModal classification={classification} setModal={setModal} fetchArticles={fetchArticles}/>)}
+      {showmodal && (                                      // 게시글 작성 모달
+        <CreateArticleModal
+          classification={classification}
+          setModal={setModal}
+          fetchArticles={fetchArticles}
+        />
+      )}
 
-      <SHr />
-      <SEmpty />
-      <SCommunityWrapper>
-      {Array.isArray(articles) ? ( 
+      <SBoardDetailHr />
+      <SBoardDetailEmpty />
+
+      {Array.isArray(articles) ? (                        // 게시글 목록
         articles.map((article) => (
-          <SBoardArticleCol key={article.id}>
-            <SBoardArticleRow>
-              <h3 onClick={() => goToArticleDetail(article.id)}>{article.title}</h3>
-              <p>작성자: {article.writer}</p>
-              <p>조회수: {article.views}</p>
-              <p>추천수: {article.likesCount}</p>
-              <p>{article.liked}</p>
-
-
-            
+          <SBoardDetailBoard key={article.id}>
+            <SBoardDetailRow>
+              <SBoardDetailBoardInfo onClick={() => goToArticleDetail(article.id)}>
+                {article.title}
+              </SBoardDetailBoardInfo>
               <div>
-              {article.liked.includes(user.id)? (
-                <button onClick={() => deleteLike(article.id)}>
-                  좋아요 취소
-                </button>
-              ) : (
-                <button onClick={() => articleLike(article.id)}>
-                  좋아요
-                </button>
-              )}
-            </div>
-
-            </SBoardArticleRow>
-          </SBoardArticleCol>
-        ))) : (
-          <p>Loading...</p>
-        )}
-      </SCommunityWrapper>
-    </div>  
+                <SBoardDetailBoardInfo>작성자: {article.writer}</SBoardDetailBoardInfo>
+                <SBoardDetailBoardInfo>조회수: {article.views}</SBoardDetailBoardInfo>
+                <SBoardDetailBoardInfo>추천수: {article.likesCount}</SBoardDetailBoardInfo>
+                <SBoardDetailBoardInfo>{article.liked}</SBoardDetailBoardInfo>
+                {article.liked.includes(user.id) ? (
+                  <SLikeButton onClick={() => deleteLike(article.id)}>
+                    좋아요 취소
+                  </SLikeButton>
+                ) : (
+                  <SLikeButton onClick={() => articleLike(article.id)}>
+                    좋아요
+                  </SLikeButton>
+                )}
+              </div>
+            </SBoardDetailRow>
+          </SBoardDetailBoard>
+        ))
+      ) : (
+        <p>Loading...</p>
+      )}
+    </SBoardDetailWrapper>
   );
-};    
+};
 
 export default CommunityBoardDetail;
-
-
