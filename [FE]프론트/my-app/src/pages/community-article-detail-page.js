@@ -3,7 +3,13 @@ import { useParams } from 'react-router-dom';
 import { api } from './../../src/api/api.js'
 import { useSelector } from "react-redux";
 import ModifyArticleModal from '../component/community/ModifyArticleModal.js';
-
+import {SCommentContainer,
+  SCommentList,
+  SCommentItem,
+  SCommentAuthor,
+  SCommentContent,
+  SCommentForm}
+  from '../styles/pages/SCommunityPage.js'
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/boards';
 // const API_BASE_URL = 'http://localhost:8080/boards';
 
@@ -175,26 +181,30 @@ const CommunityArticleDetailPage = () => {
         </div>
       )}
 
-      <div>댓글 작성하기</div>
-      <form onSubmit={writeComment}>
-        <input type='textarea' value={newComment} onChange={handleCommentChange}></input>
-        <input type='submit'></input>
-      </form>
-    
-
-      {comments && (
-        <div>
-          {comments.map((comment) => (
-            <div key={comment.id}>
-              <p>{comment.content}</p>
-              <p>작성자: {comment.writer}</p>
-              {isMyComment(comment) && (
-                <button onClick={() => deleteComment(comment.id)}>삭제</button>
-              )}
+<SCommentContainer>
+        <SCommentList>
+          {comments && (
+            <div>
+              {comments.map((comment) => (
+                <SCommentItem key={comment.id}>
+                  <div>
+                    <SCommentAuthor>{comment.writer}</SCommentAuthor>
+                    <SCommentContent>{comment.content}</SCommentContent>
+                  </div>
+                  {isMyComment(comment) && (
+                    <button onClick={() => deleteComment(comment.id)}>삭제</button>
+                  )}
+                </SCommentItem>
+              ))}
             </div>
-          ))}
-        </div>
-      )}
+          )}
+        </SCommentList>
+      
+        <SCommentForm onSubmit={writeComment}>
+          <input type="textarea" value={newComment} onChange={handleCommentChange} />
+          <input type="submit" value="Submit" />
+        </SCommentForm>
+      </SCommentContainer>
       <button onClick={()=>{backtothePage()}}>돌아가기</button>
     </div>
   );
