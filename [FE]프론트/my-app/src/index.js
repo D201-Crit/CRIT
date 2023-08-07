@@ -7,6 +7,9 @@ import store from "./store";
 import "./styles/fonts/Font.css";
 import Modal from "react-modal";
 import Token from "./api/Token";
+import "swiper/css";
+import "swiper/css/grid";
+import "swiper/css/pagination";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 Modal.setAppElement("#root"); // 또는 원하는 루트 엘리먼트 선택자를 사용
 

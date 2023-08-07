@@ -5,7 +5,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css/effect-cards";
-import { Swiper, SwiperSlide } from "swiper/react";
 
 // 나머지
 import React, { useEffect, useState } from "react";
