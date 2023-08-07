@@ -7,9 +7,9 @@ server:
       enabled: true
       force: true
 
-jasypt:
-  encryptor:
-    password: asdkljfhawekjrawmnbvsjachgjhkermn12b34j2151872tdsfzsdbfkjaukjrahm
+#jasypt:
+#  encryptor:
+#    password: asdkljfhawekjrawmnbvsjachgjhkermn12b34j2151872tdsfzsdbfkjaukjrahm
 
 
 spring:
@@ -21,19 +21,19 @@ spring:
 
 
 datasource:
-  url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S09P13D201?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
-  username: S09P13D201
-  password: sMTWKgddDr
-  hikari:
-    maximum-pool-size: 3
+#  url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S09P13D201?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+#  username: S09P13D201
+#  password: sMTWKgddDr
+#  hikari:
+#    maximum-pool-size: 3
+#  driver-class-name: org.mariadb.jdbc.Driver
+
+
+  url: ENC(FN1fGG/cz8fWQk7xLomjexe7tImW5KqXhw6NS1Qz9+lskpEV3JiYX6ilrS85fPGX8+v9gKWk5akrpAHkuR1+GyBxjsIWmGYikdjsGTvNDj87UFYb/YFP31H7TVR4J93B2UNMvoQQAnRNbUMnk0lCom8am55CTUS37KgkGEUdp3QdbaSK2mmRBfpFdqZje/NyuFBrPq4FarrQMz9dD13H6A==)
+  username: ENC(cZTyh0FJelHqQiLp2Y4lBwenUlJBpF6U)
+  password: ENC(UoG6QmblfdyyheAZHohflGtuOTo7S+6s)
   driver-class-name: org.mariadb.jdbc.Driver
-
-
-    url: ENC(FN1fGG/cz8fWQk7xLomjexe7tImW5KqXhw6NS1Qz9+lskpEV3JiYX6ilrS85fPGX8+v9gKWk5akrpAHkuR1+GyBxjsIWmGYikdjsGTvNDj87UFYb/YFP31H7TVR4J93B2UNMvoQQAnRNbUMnk0lCom8am55CTUS37KgkGEUdp3QdbaSK2mmRBfpFdqZje/NyuFBrPq4FarrQMz9dD13H6A==)
-    username: ENC(cZTyh0FJelHqQiLp2Y4lBwenUlJBpF6U)
-    password: ENC(UoG6QmblfdyyheAZHohflGtuOTo7S+6s)
-    driver-class-name: org.mariadb.jdbc.Driver
-    hikari:
+  hikari:
       maximum-pool-size:3
 
   main:

@@ -99,7 +99,7 @@ public class BoardService {
 
 
 		List<String> bannedWordList = Arrays.asList(bannedWords.getStt());
-		if(bannedWordList.stream().anyMatch(word -> boardSaveRequestDto.getTitle().contains(word))) {
+		if(bannedWordList.stream().allMatch(word -> boardSaveRequestDto.getTitle().contains(word))) {
 			throw new BadRequestException("이모티콘 혹은 욕설이 포함된 언어로 만들 수 없습니다.");
 		}
 
