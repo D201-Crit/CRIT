@@ -92,23 +92,10 @@ public class BoardService {
 				return newClassification;
 			});
 
-//		Classification classification = classificationRepository.findByCategory(boardSaveRequestDto.getClassification())
-//			.orElseThrow(() -> {
-//				return new IllegalArgumentException("일치하는 분류명이 없습니다.");
-//			});
-
-
 		List<String> bannedWordList = Arrays.asList(bannedWords.getStt());
-		if(bannedWordList.stream().allMatch(word -> boardSaveRequestDto.getTitle().contains(word))) {
+		if (bannedWordList.stream().allMatch(word -> boardSaveRequestDto.getTitle().contains(word))) {
 			throw new BadRequestException("이모티콘 혹은 욕설이 포함된 언어로 만들 수 없습니다.");
 		}
-
-		// if(boardSaveRequestDto.getTitle().contains(Arrays.stream(
-		// 	bannedWords.getStt())
-		// 	.map(String::new)
-		// 	.collect(Collectors.toList()).toString())){
-		// 	throw new BadRequestException("이모티콘 혹은 욕설이 포함된 언어로 만들 수 없습니다.");
-		// }
 
 		List<String> storeFileResult = new ArrayList<>();
 		Board board = Board.builder()
@@ -119,30 +106,32 @@ public class BoardService {
 			.build();
 
 		boardRepository.save(board);
-
-		for (MultipartFile multipartFile : multipartFiles) {
-			if (!multipartFile.isEmpty()) {
-
+		if (!multipartFiles.isEmpty()) {
+			for (MultipartFile multipartFile : multipartFiles) {
 				String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Boards");
 
-				UploadFile uploadFile = UploadFile.builder()
-					.board(board)
-					.userName(user.getId())
-					.storeFilePath(uploadFiles)
-					.classification(classification.getCategory())
-					.build();
+					UploadFile uploadFile = UploadFile.builder()
+						.board(board)
+						.userName(user.getId())
+						.storeFilePath(uploadFiles)
+						.classification(classification.getCategory())
+						.build();
 
-				uploadFileRepository.save(uploadFile);
+					uploadFileRepository.save(uploadFile);
 
-				storeFileResult.add(uploadFiles);
+					storeFileResult.add(uploadFiles);
+				}
 			}
-		}
-
-		if(multipartFiles.isEmpty()){
-			storeFileResult.add("noFiles");
-		}
-		return BoardSaveResponseDto.toSaveResponseDto(board);
+		
+		return BoardSaveResponseDto.builder()
+			.title(boardSaveRequestDto.getTitle())
+			.content(boardSaveRequestDto.getContent())
+			.writer(user.getNickname())
+			.classification(classification.getCategory())
+			.imageFiles(storeFileResult)
+			.build();
 	}
+
 
 
 	public BoardResponseDto update(Long id, BoardResponseDto boardDto, List<MultipartFile> multipartFiles, User user) throws IOException {
@@ -155,9 +144,6 @@ public class BoardService {
 		}
 		List<UploadFile> uploadFile = uploadFileRepository.findAllByBoardsId(id);
 
-		uploadFileRepository.deleteAll(uploadFile);
-
-		// Clear and re-add the files to the existing collection.
 		board.getUploadFiles().clear();
 
 		List<String> storeFileResult = new ArrayList<>();
@@ -175,7 +161,6 @@ public class BoardService {
 					.build();
 
 				uploadFileRepository.save(uploadFileSave);
-				// directly add the new files to the existing collection
 				board.getUploadFiles().add(uploadFileSave);
 				storeFileResult.add(uploadFiles);
 			}
