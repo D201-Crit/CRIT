@@ -154,26 +154,28 @@ public class BoardService {
 		log.info("5");
 		List<String> storeFileResult = new ArrayList<>();
 		log.info("6");
-		for (MultipartFile multipartFile : multipartFiles) {
-			log.info("7");
-			if (!multipartFile.isEmpty()) {
-				log.info("8");
-				String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Boards");
-				log.info("9");
-				UploadFile uploadFileSave = UploadFile.builder()
-					.board(board)
-					.userName(user.getId())
-					.storeFilePath(uploadFiles)
-					.classification(board.getClassification().getCategory())
-					.build();
-				log.info("10");
-				uploadFileRepository.save(uploadFileSave);
-				// directly add the new files to the existing collection
-				log.info("11");
-				board.getUploadFiles().add(uploadFileSave);
-				log.info("12");
-				storeFileResult.add(uploadFiles);
-				log.info("13");
+		if(multipartFiles != null) {
+			for (MultipartFile multipartFile : multipartFiles) {
+				log.info("7");
+				if (!multipartFile.isEmpty()) {
+					log.info("8");
+					String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Boards");
+					log.info("9");
+					UploadFile uploadFileSave = UploadFile.builder()
+							.board(board)
+							.userName(user.getId())
+							.storeFilePath(uploadFiles)
+							.classification(board.getClassification().getCategory())
+							.build();
+					log.info("10");
+					uploadFileRepository.save(uploadFileSave);
+					// directly add the new files to the existing collection
+					log.info("11");
+					board.getUploadFiles().add(uploadFileSave);
+					log.info("12");
+					storeFileResult.add(uploadFiles);
+					log.info("13");
+				}
 			}
 		}
 		log.info("14");
