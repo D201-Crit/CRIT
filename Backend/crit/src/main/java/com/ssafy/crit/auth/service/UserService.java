@@ -113,13 +113,14 @@ public class UserService {
     }
 
     @Transactional(propagation= Propagation.REQUIRES_NEW)
-    @Scheduled(cron = "0 0 12 * * ?")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void resetIsChecked() {
         List<User> allUsers = userRepository.findAll();
         for(User user : allUsers) {
+            System.out.println(user.getId());
             user.setIsChecked(false);
         }
-        userRepository.saveAll(allUsers);
+        userRepository.saveAllAndFlush(allUsers);
     }
 
 

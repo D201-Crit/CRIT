@@ -76,4 +76,5 @@ public class Board extends BaseTimeEntity {
     public void setFeedUpdate(String content) {
         this.content = content;
     }
+
 }

@@ -1,9 +1,7 @@
 package com.ssafy.crit.boards.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.ssafy.crit.auth.entity.User;
@@ -32,6 +30,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.processing.FilerException;
 
 /**
  * author : 강민승
@@ -83,27 +83,27 @@ public class BoardService {
 	}
 
 	public BoardSaveResponseDto write(List<MultipartFile> multipartFiles , BoardSaveRequestDto boardSaveRequestDto, User user) throws
-		IOException {
+			IOException {
 
-		/**
-		 * 테스트 시 분류명이 없어도 새롭게 만들어주는 로직
-		 */
 		Classification classification = classificationRepository.findByCategory(boardSaveRequestDto.getClassification())
-			.orElseGet(() -> {
-				Classification newClassification = new Classification();
-				newClassification.setCategory(boardSaveRequestDto.getClassification());
-				classificationRepository.save(newClassification);
-				return newClassification;
-			});
+				.orElseGet(() -> {
+					Classification newClassification = new Classification();
+					newClassification.setCategory(boardSaveRequestDto.getClassification());
+					classificationRepository.save(newClassification);
+					return newClassification;
+				});
 
-		List<String> bannedWordList = Arrays.asList(bannedWords.getStt());
-		if (bannedWordList.stream().allMatch(word -> boardSaveRequestDto.getTitle().contains(word))) {
-			throw new BadRequestException("이모티콘 혹은 욕설이 포함된 언어로 만들 수 없습니다.");
+		String title;
+
+		if (boardSaveRequestDto.getTitle() != null) {
+			title = boardSaveRequestDto.getTitle();
+		} else {
+			System.out.println("타이틀 없으므로 Title로 대체");
+			title = "Title";
 		}
 
-
 		Board board = Board.builder()
-			.title(boardSaveRequestDto.getTitle())
+			.title(title)
 			.content(boardSaveRequestDto.getContent())
 			.classification(classification)
 			.user(user)
@@ -190,7 +190,16 @@ public class BoardService {
 			}
 		}
 
-		board.setUpdate(boardDto.getTitle(),boardDto.getContent());
+		String title;
+
+		if (boardDto.getTitle() != null) {
+			title = boardDto.getTitle();
+		} else {
+			System.out.println("타이틀 없으므로 Title로 대체");
+			title = "Title";
+		}
+
+		board.setUpdate(title,boardDto.getContent());
 		boardRepository.save(board);
 		return BoardResponseDto.toDto(board);
 	}
