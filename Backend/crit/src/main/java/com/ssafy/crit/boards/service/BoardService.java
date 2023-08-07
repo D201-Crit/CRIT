@@ -135,7 +135,6 @@ public class BoardService {
 
 
 	public BoardResponseDto update(Long id, BoardResponseDto boardDto, List<MultipartFile> multipartFiles, User user) throws IOException {
-		log.info("Board Id : {}", id);
 		Board board = boardRepository.findById(id).orElseThrow(() -> {
 			return new IllegalArgumentException("Board Id를 찾을 수 없습니다!");
 		});
@@ -143,46 +142,31 @@ public class BoardService {
 		if(!board.getUser().getId().equals(user.getId())){
 			throw new IllegalArgumentException("글 수정권한이 없습니다.");
 		}
-		log.info("2");
 		List<UploadFile> uploadFile = uploadFileRepository.findAllByBoardsId(id);
-		log.info("3");
 
 		uploadFileRepository.deleteAll(uploadFile);
-		log.info("4");
 		// Clear and re-add the files to the existing collection.
 		board.getUploadFiles().clear();
-		log.info("5");
 		List<String> storeFileResult = new ArrayList<>();
-		log.info("6");
 		if(multipartFiles != null) {
 			for (MultipartFile multipartFile : multipartFiles) {
-				log.info("7");
 				if (!multipartFile.isEmpty()) {
-					log.info("8");
 					String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Boards");
-					log.info("9");
 					UploadFile uploadFileSave = UploadFile.builder()
 							.board(board)
 							.userName(user.getId())
 							.storeFilePath(uploadFiles)
 							.classification(board.getClassification().getCategory())
 							.build();
-					log.info("10");
 					uploadFileRepository.save(uploadFileSave);
 					// directly add the new files to the existing collection
-					log.info("11");
 					board.getUploadFiles().add(uploadFileSave);
-					log.info("12");
 					storeFileResult.add(uploadFiles);
-					log.info("13");
 				}
 			}
 		}
-		log.info("14");
 		board.setUpdate(boardDto.getTitle(),boardDto.getContent());
-		log.info("15");
 		boardRepository.save(board);
-		log.info("16");
 		return BoardResponseDto.toDto(board);
 	}
 
