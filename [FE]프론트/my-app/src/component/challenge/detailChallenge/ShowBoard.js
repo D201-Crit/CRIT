@@ -23,6 +23,7 @@ const ShowBoard = ({ boards, challenge, getBoard }) => {
         {boards.map((board) => (
           <SBoardLi key={board.id}>
             <p id="writer">{board.writer}</p>
+            <p>{}</p>
             <div>
               <p id="content">{board.content}</p>
               {user.nickname === board.writer ? (
