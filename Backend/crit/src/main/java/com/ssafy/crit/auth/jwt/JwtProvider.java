@@ -22,7 +22,6 @@ public class JwtProvider {
     private static final Long REFRESH_TOKEN_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30L; // 30 days
 
     public TokenDto createAccessToken(String userId, AuthProvider provider) {
-        System.out.println("====createAccessToken=====" + provider + "===========");
         HashMap<String, Object> claim = new HashMap<>();
         claim.put("userId", userId);
         claim.put("provider", provider);
