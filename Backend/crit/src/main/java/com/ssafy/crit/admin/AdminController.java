@@ -1,2 +1,4 @@
-package com.ssafy.crit.admin;public class adminController {
+package com.ssafy.crit.admin;
+
+public class AdminController {
 }

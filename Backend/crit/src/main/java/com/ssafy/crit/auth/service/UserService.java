@@ -58,6 +58,12 @@ public class UserService {
         if (userRepository.findById(signUpRequestDto.getId()).isPresent()) {
             throw new BadRequestException("이미 존재하는 아이디입니다.");
         }
+
+        if(signUpRequestDto.getNickname().toLowerCase().contains("admin") ||
+            signUpRequestDto.getId().toLowerCase().contains("admin")){
+            throw new BadRequestException("admin이 들어가지 않도록 아이디를 다시 만들어주세요.");
+        }
+
         User user = User.builder()
                 .id(signUpRequestDto.getId())
                 .email(signUpRequestDto.getEmail())
