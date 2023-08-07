@@ -1,4 +1,4 @@
-package com.ssafy.crit.common.exception;
+package com.ssafy.crit.common.error;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
