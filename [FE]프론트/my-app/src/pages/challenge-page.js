@@ -47,6 +47,7 @@ const ChallengePage = () => {
   useEffect(() => {
     getAllChallenge();
   }, []);
+  console.log(challenges);
   return (
     <>
       <SCreateChallengeWrapper>

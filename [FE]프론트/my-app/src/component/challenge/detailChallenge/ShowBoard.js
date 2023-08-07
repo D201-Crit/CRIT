@@ -11,6 +11,7 @@ import CreateBoard from "./CreateBoard";
 
 const ShowBoard = ({ boards, challenge, getBoard }) => {
   const user = useSelector((state) => state.users);
+  console.log(user);
   return (
     <SBoardWrapper>
       <CreateBoard
@@ -23,7 +24,7 @@ const ShowBoard = ({ boards, challenge, getBoard }) => {
             <p id="writer">{board.writer}</p>
             <div>
               <p id="content">{board.content}</p>
-              {user.id === board.writer ? (
+              {user.nickname === board.writer ? (
                 <DeleteBoard getBoard={getBoard} boardId={board.id} />
               ) : (
                 <LikeBoard getBoard={getBoard} boardId={board.id} />

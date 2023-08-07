@@ -15,12 +15,12 @@ import "swiper/css/pagination";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const SearchChallenge = (props) => {
-  const allChallenge = props.allChallenge;
+const SearchChallenge = ({ allChallenge }) => {
   const navigate = useNavigate();
   // 챌린지 검색
   const [title, onChangeTitle, setTitle] = useInput("");
   const [searchResult, setSearchResult] = useState([]);
+  console.log(allChallenge);
   const onSearchChallenge = () => {
     const filterChallenge = allChallenge.filter((challenge) =>
       challenge.name.includes(title)
