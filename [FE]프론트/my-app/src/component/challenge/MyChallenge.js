@@ -44,7 +44,6 @@ const MyChallenge = () => {
         console.log(err);
       });
   };
-  console.log(myChallenges);
 
   // 시작일 기준 오름차순 정렬
   const sortByStartDate = (a, b) => {
@@ -53,7 +52,6 @@ const MyChallenge = () => {
     return startDateA - startDateB;
   };
   const sortedMyChallenges = [...myChallenges].sort(sortByStartDate);
-
   // 상세보기 클릭
   const detailClick = (challenge) => {
     if (location.pathname === "/ChallengePage") {
@@ -110,7 +108,7 @@ const MyChallenge = () => {
           modules={[EffectCards]}
           className="mySwiper"
         >
-          {myChallenges.map((challenge) => {
+          {sortedMyChallenges.map((challenge) => {
             const daysInProgress = getDaysInProgress(challenge.startDate);
 
             return (

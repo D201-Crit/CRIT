@@ -135,7 +135,7 @@ export const SBoardInput = styled.input`
   height: 50px;
   background: transparent;
   border: none;
-  border-bottom: solid 0.5px white;
+  border-bottom: solid 0.5px gray;
   color: white;
   font-size: 20px;
 `;
@@ -143,6 +143,7 @@ export const SLabelImage = styled.label`
   img {
     width: 40px;
     height: 40px;
+    cursor: pointer;
   }
 `;
 export const SBoardImage = styled.input`
@@ -151,12 +152,14 @@ export const SBoardImage = styled.input`
 export const SBoardSubmit = styled.input`
   width: 100px;
   height: 30px;
+  cursor: pointer;
 `;
 export const SDeleteBoardButton = styled.button`
   background: transparent;
   color: gray;
   border: none;
   font-size: 20px;
+  cursor: pointer;
   // width: 100px;
   // height: 50px;
 `;
