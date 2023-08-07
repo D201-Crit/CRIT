@@ -137,11 +137,11 @@ const CommunityArticleDetailPage = () => {
   };
 
   const isMyComment = (comment) => {
-    return user.id === comment.writer;
+    return user.nickname === comment.writer;
   };
   
   const isMyArticle = (article) => {
-    return user.id === article.writer;
+    return user.nickname === article.writer;
   };
   
   const backtothePage = () => {
