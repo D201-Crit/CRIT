@@ -1,6 +1,7 @@
 package com.ssafy.crit.auth.jwt;
 
-import com.ssafy.crit.common.exception.BadRequestException;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,13 +52,13 @@ public class JwtFilter extends OncePerRequestFilter {
                 token = authorizationHeader.substring(7);
 
                 if (jwtProvider.isExpiration(token)) { // 만료되었는지 체크
-                    throw new BadRequestException("EXPIRED_ACCESS_TOKEN");
+                    throw new BadRequestException(ErrorCode.TOKEN_EXPIRED);
                 }
 
                 userId = (String) jwtProvider.get(token).get("userId");
                 provider = (String) jwtProvider.get(token).get("provider");
                 if(!userRepository.existsById(userId)){
-                    throw new BadRequestException("CANNOT_FOUND_USER");
+                    throw new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
                 }
                 // 인증 정보 등록 및 다음 체인으로 이동
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

@@ -1,4 +1,4 @@
-package com.ssafy.crit.common.exception;
+package com.ssafy.crit.common.error;
 
 import org.springframework.security.core.AuthenticationException;
 

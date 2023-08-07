@@ -1,8 +1,5 @@
 package com.ssafy.crit.challenge.service;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.boards.entity.Classification;
 import com.ssafy.crit.boards.repository.ClassificationRepository;
@@ -12,11 +9,11 @@ import com.ssafy.crit.challenge.repository.ChallengeCategoryRepository;
 import com.ssafy.crit.challenge.repository.ChallengeRepository;
 import com.ssafy.crit.challenge.repository.ChallengeUserRepository;
 import com.ssafy.crit.challenge.repository.IsCertRepository;
-import com.ssafy.crit.common.exception.BadRequestException;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.common.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,16 +21,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.time.LocalDate;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -75,7 +69,7 @@ public class ChallengeService {
                 .challengeStatus(ChallengeStatus.WAIT);
 
         if (file != null) { // 사진이 존재하는 경우
-            if (!checkExtension(file)) throw new BadRequestException("잘못된 확장자입니다.");
+            if (!checkExtension(file)) throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_IMAGE_TYPE);
 
             String uploadImageUrl = s3Uploader.uploadFiles(file, "challenge");
 
@@ -107,19 +101,19 @@ public class ChallengeService {
 
         } catch (Exception e) {
             log.info(e.getMessage());
-            throw new BadRequestException("챌린지 생성 실패 " + e.getMessage());
+            throw new BadRequestException(ErrorCode.NOT_VALID_CHALLENGE_CERT);
         }
 
     }
 
     public int joinChallenge(Long challengeId, User user) throws Exception {  // 챌린지 참여
         Challenge challenge = challengeRepository.findById(challengeId)
-                .orElseThrow(() -> new BadRequestException("챌린지를 찾을 수 없습니다."));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_ID));
 
         challenge.getChallengeUserList()
                 .forEach(challengeUser -> {
                     if (challengeUser.getUser().getId().equals(user.getId())) {
-                        throw new BadRequestException("중복된 참여입니다.");
+                        throw new BadRequestException(ErrorCode.ALREADY_REGISTERED_CHALLENGE);
                     }
                 });
         // 중복 참여 제거
@@ -132,7 +126,7 @@ public class ChallengeService {
             // 유저에도 추가 필요
             return 1; // 생성 성공
         } else {
-            throw new IllegalStateException("챌린지 참여 기간이 지났습니다.");
+            throw new BadRequestException(ErrorCode.NOT_VALID_CHALLENGE_DATE);
         }
 
     }

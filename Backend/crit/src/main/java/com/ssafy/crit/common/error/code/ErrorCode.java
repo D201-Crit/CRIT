@@ -1,4 +1,4 @@
-package com.example.springexceptionhandling.error;
+package com.ssafy.crit.common.error.code;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -28,6 +28,10 @@ public enum ErrorCode {
     NOT_EXISTS_USER_ID(HttpStatus.BAD_REQUEST, "U-001", "존재하지 않는 유저 아이디입니다."),
     NOT_EXISTS_USER_NICKNAME(HttpStatus.BAD_REQUEST, "U-002", "존재하지 않는 유저 닉네임입니다."),
     NOT_EXISTS_USER_EMAIL(HttpStatus.BAD_REQUEST, "U-003", "존재하지 않는 유저 이메일입니다."),
+    NOT_EXISTS_PROVIDER(HttpStatus.BAD_REQUEST, "U-004", "존재하지 않는 소셜입니다."),
+    ALREADY_REGISTERED_USER_ID(HttpStatus.BAD_REQUEST, "U-006", "이미 존재하는 유저 아이디입니다."),
+    NOT_EXISTS_USER_PASSWORD(HttpStatus.BAD_REQUEST, "U-007", "존재하지 않는 유저 비밀번호입니다."),
+    INVALID_USER_DATA(HttpStatus.BAD_REQUEST, "U-008", "잘못된 유저 정보입니다."),
 
     // 게시판
     NOT_EXISTS_BOARD_ID(HttpStatus.BAD_REQUEST, "B-001", "존재하지 않는 게시판 아이디입니다."),
@@ -64,14 +68,13 @@ public enum ErrorCode {
     UNSUPPORTED_SHORTS_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "S-006", "지원하지 않는 쇼츠 미디어 유형입니다."),
 
     // 메시지
-    NOT_EXISTS_MESSAGE_RECEIVER(HttpStatus.BAD_REQUEST, "M-001", "존재하지 않는 메시지 RECEIVER 입니다."),
-    NOT_EXISTS_MESSAGE_SENDER(HttpStatus.BAD_REQUEST, "M-002", "존재하지 않는 메시지 SENDER 입니다."),
+    NOT_EXISTS_MESSAGE_ID(HttpStatus.BAD_REQUEST, "M-001", "존재하지 않는 메시지입니다."),
+    NOT_EXISTS_MESSAGE_RECEIVER(HttpStatus.BAD_REQUEST, "M-002", "존재하지 않는 메시지 RECEIVER 입니다."),
+    NOT_EXISTS_MESSAGE_SENDER(HttpStatus.BAD_REQUEST, "M-003", "존재하지 않는 메시지 SENDER 입니다."),
+    NOT_EXISTS_MESSAGE_AUTHORIZE(HttpStatus.BAD_REQUEST, "M-004", "존재하지 않는 메시지 권한입니다."),
 
     // S3
     INVALID_FILE_CONVERT(HttpStatus.BAD_REQUEST, "S3-001", "MultipartFile -> File 변환을 실패했습니다.")
-
-
-
     ;
 
     private HttpStatus httpStatus;

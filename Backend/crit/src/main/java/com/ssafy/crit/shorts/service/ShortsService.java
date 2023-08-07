@@ -2,6 +2,8 @@ package com.ssafy.crit.shorts.service;
 
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.common.s3.S3Uploader;
 import com.ssafy.crit.shorts.dto.HashTagDto;
 import com.ssafy.crit.shorts.dto.MainThumbnailDto;
@@ -88,7 +90,7 @@ public class ShortsService {
     @Transactional
     public ShortsDto read(Long id){
         Shorts shorts = shortsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid shorts id."));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_SHORTS_ID));
         shorts.getHashTagShortsList().size(); // hashTagShortsList를 로딩합니다.
         return ShortsDto.toDto(shorts);
     }
@@ -97,7 +99,7 @@ public class ShortsService {
     @Transactional
     public ShortsDto update(Long id, ShortsDto shortsDto){
         Shorts shorts = shortsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid shorts id."));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_SHORTS_ID));
         shorts.setTitle(shortsDto.getTitle());
         shorts.setShortsUrl(shortsDto.getShortsUrl());
         shorts.setContent(shortsDto.getContent());
@@ -108,7 +110,7 @@ public class ShortsService {
     @Transactional
     public void delete(Long id){
         Shorts shorts = shortsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid shorts id."));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_SHORTS_ID));
         shortsRepository.delete(shorts);
     }
 
@@ -130,7 +132,7 @@ public class ShortsService {
     public ShortsDto get(Long id) {
         return shortsRepository.findById(id)
                 .map(ShortsDto::toDto)
-                .orElseThrow(() -> new RuntimeException("Shorts not found with id " + id));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_VALID_SHORTS_DATA));
     }
 
     public MainThumbnailDto getMainThumbnail() {

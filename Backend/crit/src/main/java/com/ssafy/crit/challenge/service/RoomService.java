@@ -4,12 +4,11 @@ import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.challenge.entity.Challenge;
 import com.ssafy.crit.challenge.repository.ChallengeRepository;
 import com.ssafy.crit.challenge.repository.ChallengeUserRepository;
-import com.ssafy.crit.common.exception.BadRequestException;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import io.openvidu.java.client.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -46,7 +45,7 @@ public class RoomService {
         log.debug("isInChallenge OK");
         Session session = openVidu.getActiveSession(sessionId); // OpenVidu 미디어 서버에서 세션이 존재하는 지 확인
         if (session == null) {
-            throw new BadRequestException("세션을 찾을 수 없습니다.");
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_SESSION);
         }
 
         ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
@@ -64,12 +63,12 @@ public class RoomService {
         
         log.debug("challenge_id : {}", challengeId);
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(
-                () -> new BadRequestException("챌린지를 찾을 수 없습니다.")
+                () -> new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_ID)
         ); // 챌린지가 존재하지 않는 경우
 
         // 유저가 챌린지에 참여 중인지 확인하기
         challengeUserRepository.findByChallengeAndUser(challenge, user).orElseThrow(
-                () -> new BadRequestException("챌린지에 참여 중이지 않습니다.")
+                () -> new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_USER)
         );
     }
 

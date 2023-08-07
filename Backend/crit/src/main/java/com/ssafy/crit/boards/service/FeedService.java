@@ -1,6 +1,8 @@
 package com.ssafy.crit.boards.service;
 
 
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -99,7 +101,7 @@ public Page<FileResponseDto> getFeeds(Pageable pageable, User user){
 			Page<Board> byClassification = boardRepository.findByClassificationAndUser(pageable, feeds.get(), user);
 			return getFileResponseDto(byClassification);
 		} else {
-			throw new RuntimeException("Classification 'Feeds' not found");
+			throw new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_FEEDS);
 		}
 	}
 	return null;
@@ -112,11 +114,11 @@ public Page<FileResponseDto> getFeeds(Pageable pageable, User user){
 
 	public String delete(Long id, User user) {
 		Board board = boardRepository.findById(id).orElseThrow(() -> {
-			return new IllegalArgumentException("Board Id를 찾을 수 없습니다!");
+			return new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_ID);
 		});
 
 		if(!board.getUser().getId().equals(user.getId())){
-			throw new IllegalArgumentException("삭제 권한이 없습니다.");
+			throw new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_AUTHORIZE);
 		}
 
 		boardRepository.deleteById(id);
@@ -126,11 +128,11 @@ public Page<FileResponseDto> getFeeds(Pageable pageable, User user){
 
 	public FileResponseDto update(Long id, FileResponseDto fileResponseDto, User user){
 		Board board = boardRepository.findById(id).orElseThrow(() -> {
-			return new IllegalArgumentException("Board Id를 찾을 수 없습니다!");
+			return new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_ID);
 		});
 
 		if(!board.getUser().getId().equals(user.getId())) {
-			throw new IllegalArgumentException("수정 권한이 없습니다.");
+			throw new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_AUTHORIZE);
 		}
 		board.setFeedUpdate(fileResponseDto.getContent());
 
@@ -143,7 +145,7 @@ public Page<FileResponseDto> getFeeds(Pageable pageable, User user){
 	private Page<FileResponseDto> getFileResponseDto(Page<Board> boards) {
 		return boards.map(board -> {
 			if (board.getUser() == null) {
-				throw new RuntimeException("User is null for board id: " + board.getId());
+				throw new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_USER);
 			}
 			return new FileResponseDto(board.getId(),
 				board.getContent(),

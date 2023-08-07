@@ -9,6 +9,8 @@ import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.boards.service.dto.BoardResponseDto;
 import com.ssafy.crit.boards.service.dto.BoardSaveRequestDto;
 import com.ssafy.crit.boards.service.dto.BoardShowSortDto;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.message.response.Response;
 import com.ssafy.crit.boards.service.BoardService;
 
@@ -146,7 +148,7 @@ public class BoardController {
 		String userId = (String)jwtProvider.get(bearer).get("userId");
 
 		User user = userRepository.findById(userId).orElseThrow(() -> {
-			return new IllegalArgumentException("유저 ID를 찾을수 없습니다.");
+			return new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
 		});
 		return user;
 	}

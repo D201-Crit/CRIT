@@ -18,6 +18,8 @@ import com.ssafy.crit.boards.repository.BoardRepository;
 import com.ssafy.crit.boards.service.dto.BoardSaveRequestDto;
 import com.ssafy.crit.boards.service.dto.BoardSaveResponseDto;
 import com.ssafy.crit.boards.service.dto.BoardShowSortDto;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.common.s3.S3Uploader;
 
 import lombok.RequiredArgsConstructor;
@@ -49,7 +51,7 @@ public class BoardService {
 	public Page<BoardShowSortDto> getBoards(Pageable pageable, String category) {
 		classificationRepository.findByCategory(category).orElseThrow(
 			() -> {
-				return new IllegalArgumentException("찾으시는 " + category + "가 없습니다.");
+				return new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_CATEGORY);
 			});
 
 		Page<Board> boards = boardRepository.findAllByClassificationCategory(pageable, category);
@@ -65,7 +67,7 @@ public class BoardService {
 	@Transactional
 	public BoardResponseDto getBoard(Long id) {
 		Board board = boardRepository.findById(id).orElseThrow(() -> {
-			return new IllegalArgumentException("Board Id를 찾을 수 없습니다.");
+			return new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_ID);
 		});
 
 		board.setViews(board.getViews() + 1);
@@ -134,11 +136,11 @@ public class BoardService {
 
 	public BoardResponseDto update(Long id, BoardResponseDto boardDto, List<MultipartFile> multipartFiles, User user) throws IOException {
 		Board board = boardRepository.findById(id).orElseThrow(() -> {
-			return new IllegalArgumentException("Board Id를 찾을 수 없습니다!");
+			return new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_ID);
 		});
 
 		if(!board.getUser().getId().equals(user.getId())){
-			throw new IllegalArgumentException("글 수정권한이 없습니다.");
+			throw new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_AUTHORIZE);
 		}
 		List<UploadFile> uploadFile = uploadFileRepository.findAllByBoardsId(id);
 
@@ -180,11 +182,11 @@ public class BoardService {
 		// 매개변수 id를 기반으로, 게시글이 존재하는지 먼저 찾음
 		// 게시글이 없으면 오류 처리
 		Board board = boardRepository.findById(id).orElseThrow(() -> {
-			return new IllegalArgumentException("Board Id를 찾을 수 없습니다!");
+			return new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_ID);
 		});
 
 		if(!board.getUser().getId().equals(user.getId())){
-			throw new IllegalArgumentException("글 삭제권한이 없습니다.");
+			throw new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_AUTHORIZE);
 		}
 		// 게시글이 있는 경우 삭제처리
 		boardRepository.deleteById(id);
@@ -227,7 +229,7 @@ public class BoardService {
 	public Page<BoardShowSortDto> findAllByUserAndClassification(User user, String classificationString, Pageable pageable){
 
 		Classification classification = classificationRepository.findByCategory(classificationString).orElseThrow(() -> {
-			return new IllegalArgumentException(classificationString + "에는 글 쓴 것이 없습니다.");
+			return new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_CATEGORY);
 		});
 
 
@@ -245,7 +247,7 @@ public class BoardService {
 	private Page<BoardShowSortDto> getBoardShowSortDtos(Page<Board> boards) {
 		return boards.map(board -> {
 			if (board.getUser() == null) {
-				throw new RuntimeException("User is null for board id: " + board.getId());
+				throw new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_USER);
 			}
 
 			List<String> likedName = board.getLikes().stream()

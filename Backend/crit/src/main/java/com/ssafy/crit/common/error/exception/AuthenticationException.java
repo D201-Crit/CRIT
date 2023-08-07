@@ -1,6 +1,6 @@
-package com.example.springexceptionhandling.error.exception;
+package com.ssafy.crit.common.error.exception;
 
-import com.example.springexceptionhandling.error.ErrorCode;
+import com.ssafy.crit.common.error.code.ErrorCode;
 import lombok.Getter;
 
 @Getter

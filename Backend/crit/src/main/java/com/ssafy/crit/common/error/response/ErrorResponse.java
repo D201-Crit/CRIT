@@ -1,12 +1,20 @@
-package com.ssafy.crit.common.exception.response;
+package com.ssafy.crit.common.error.response;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
-@AllArgsConstructor
 @Getter
+@Builder
 public class ErrorResponse {
-    private HttpStatus code;
-    private String message;
+    private String httpStatus;
+    private String errorCode;
+    private String errorMessage;
+
+    public static ErrorResponse of(String httpStatus, String errorCode, String errorMessage) {
+        return ErrorResponse.builder()
+                .httpStatus(httpStatus)
+                .errorCode(errorCode)
+                .errorMessage(errorMessage)
+                .build();
+    }
 }
