@@ -7,9 +7,9 @@ server:
       enabled: true
       force: true
 
-jasypt:
-  encryptor:
-    password: asdkljfhawekjrawmnbvsjachgjhkermn12b34j2151872tdsfzsdbfkjaukjrahm
+#jasypt:
+#  encryptor:
+#    password: asdkljfhawekjrawmnbvsjachgjhkermn12b34j2151872tdsfzsdbfkjaukjrahm
 
 
 spring:
