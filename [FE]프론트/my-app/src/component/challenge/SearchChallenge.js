@@ -71,8 +71,18 @@ const SearchChallenge = ({ allChallenge }) => {
         placeholder="검색어를 입력하세요."
       />
       <hr />
-
-      <SSearchSwiper
+      {renderChallenges.map((challenge) => {
+        return (
+          <ul>
+            <li key={challenge.id}>
+              <h2>{challenge.name}</h2>
+              <img src={challenge.imgPath} alt="챌린지 이미지" />
+              <button onClick={() => detailClick(challenge)}>상세보기</button>
+            </li>
+          </ul>
+        );
+      })}
+      {/* <SSearchSwiper
         slidesPerView={4}
         grid={{
           rows: 2,
@@ -85,14 +95,13 @@ const SearchChallenge = ({ allChallenge }) => {
         {renderChallenges.map((challenge) => {
           return (
             <SSearchSwiperSlide key={challenge.id}>
-              {/* <h2>{challenge.}</h2> */}
               <h2>{challenge.name}</h2>
               <img src={challenge.imgPath} alt="챌린지 이미지" />
               <button onClick={() => detailClick(challenge)}>상세보기</button>
             </SSearchSwiperSlide>
           );
         })}
-      </SSearchSwiper>
+      </SSearchSwiper> */}
     </SSearchChallengeWrapper>
   );
 };

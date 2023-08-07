@@ -14,7 +14,8 @@ import { api } from "../../api/api";
 
 // 스타일
 import {
-  SDiv,
+  SSwiper,
+  SSwiperSlide,
   STopWrapper,
   SMidWrapper,
   SBotWrapper,
@@ -93,18 +94,18 @@ const MyChallenge = () => {
     getMyChallenge();
   }, []);
   return (
-    <SDiv>
+    <>
       {sortedMyChallenges.length === 0 ? (
-        <Swiper
+        <SSwiper
           effect={"cards"}
           grabCursor={true}
           modules={[EffectCards]}
           className="mySwiper"
         >
           <SImg src="https://github.com/Jinga02/ChallengePJT/assets/110621233/8329c57e-d554-4956-803d-68508c07b007" />
-        </Swiper>
+        </SSwiper>
       ) : (
-        <Swiper
+        <SSwiper
           effect={"cards"}
           grabCursor={true}
           modules={[EffectCards]}
@@ -114,7 +115,7 @@ const MyChallenge = () => {
             const daysInProgress = getDaysInProgress(challenge.startDate);
 
             return (
-              <SwiperSlide key={challenge.id}>
+              <SSwiperSlide key={challenge.id}>
                 <STopWrapper>
                   <p id="name">{challenge.name}</p>
                   <p id="date">
@@ -146,12 +147,12 @@ const MyChallenge = () => {
                       : "참여내역"}
                   </button>{" "}
                 </SBotWrapper>
-              </SwiperSlide>
+              </SSwiperSlide>
             );
           })}
-        </Swiper>
+        </SSwiper>
       )}
-    </SDiv>
+    </>
   );
 };
 

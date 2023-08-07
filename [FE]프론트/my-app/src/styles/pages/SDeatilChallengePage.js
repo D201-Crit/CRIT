@@ -149,20 +149,6 @@ export const SLabelImage = styled.label`
 export const SBoardImage = styled.input`
   display: none;
 `;
-export const SBoardSubmit = styled.input`
-  width: 100px;
-  height: 30px;
-  cursor: pointer;
-`;
-export const SDeleteBoardButton = styled.button`
-  background: transparent;
-  color: gray;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  // width: 100px;
-  // height: 50px;
-`;
 
 // 디테일챌린지 게시판
 export const SBoardWrapper = styled.div`
@@ -188,5 +174,24 @@ export const SBoardUl = styled.ul`
 export const SBoardLi = styled.li`
   div {
     display: flex;
+    width: 92%;
   }
+`;
+export const SBoardSubmit = styled.input`
+  width: 100px;
+  height: 30px;
+  cursor: pointer;
+`;
+export const SDeleteBoardButton = styled.button`
+  background: transparent;
+  color: gray;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+`;
+export const SLikeBoardButton = styled.button`
+  height: 22px;
+  margin: auto 0;
+  border: none;
+  border-radius: 10px;
 `;
