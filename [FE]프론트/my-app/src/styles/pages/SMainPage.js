@@ -162,7 +162,6 @@ export const SShortsContainer = styled.div`
   overflow-x: auto;
   gap: 10px;
   -webkit-overflow-scrolling: touch;
-
   &::-webkit-scrollbar {
     display: none;
   }
