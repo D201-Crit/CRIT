@@ -160,11 +160,11 @@ export const SShortsCard = styled.div`
 
 //뤼튼
 export const SShortsContainer = styled.div`
-  padding : 50px;
+  padding : 20px;
   display: flex;
   flex-wrap: nowrap;
-  width : 500px;
-  height : 500px;
+  width : 20%;
+  height : 300px;
   overflow-x: auto;  
   gap: 10px;
   -webkit-overflow-scrolling: touch;
