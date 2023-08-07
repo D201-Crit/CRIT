@@ -52,7 +52,7 @@ const MyChallenge = () => {
     const startDateB = new Date(b.startDate);
     return startDateA - startDateB;
   };
-  console.log(myChallenges);
+  // console.log(myChallenges);
   const sortedMyChallenges = [...myChallenges].sort(sortByStartDate);
   // 상세보기 클릭
   const detailClick = (challenge) => {

@@ -1,4 +1,4 @@
-import styled, {css} from "styled-components";
+import styled, { css } from "styled-components";
 import { SWrapper, STitle, SButton } from "../SCommon";
 
 // 커뮤니티 페이지
@@ -31,7 +31,7 @@ export const SEmpty2 = styled.div`
 
 // 광고 배너 영역
 export const SAdArea = styled.div`
-  color: #FFFFFF;
+  color: #ffffff;
   width: 3859px;
   background: ${({ backgroundColor }) => backgroundColor || "#0000C5"};
   padding: 60px;
@@ -40,7 +40,7 @@ export const SAdArea = styled.div`
   p {
     font-weight: 10;
   }
-  
+
   span {
     font-size: 20px;
   }
@@ -85,7 +85,7 @@ export const CategoryButton = styled.div`
 `;
 
 export const SBoardCard = styled.div`
-  position: relative; 
+  position: relative;
   background-color: #dark;
   width: 400px;
   height: 470px;
@@ -94,41 +94,31 @@ export const SBoardCard = styled.div`
   padding: 20px;
   margin: 10px;
   box-shadow: 0px 5px 10px -5px grey;
-
-  
-
-  h1{
-
-    text-align : center;
+  h1 {
+    text-align: center;
     margin: 25px 0px 110px 0px;
   }
   .board-item {
-
     display: flex;
     justify-content: space-between;
   }
 
   .board-item p {
-    
     margin: 0; /* 모든 p 태그의 상하 여백을 없애기 위해 */
     margin-right: 10px; /* 작성자와 조회수 사이의 간격을 조정 */
   }
 
-
-  .gotodetail{
-    text-align : center;
-    font-weight : 500;
-    font-size : 20px;
-    margin-top : 38px
-
+  .gotodetail {
+    text-align: center;
+    font-weight: 500;
+    font-size: 20px;
+    margin-top: 38px;
   }
-  overflow: hidden
-
-
+  overflow: hidden;
 `;
 
 export const SBoardTitle = styled.div`
-  background: #0000C5;
+  background: #0000c5;
   position: absolute;
   width: 600px;
   height: 600px;
@@ -136,8 +126,7 @@ export const SBoardTitle = styled.div`
   top: -450px;
   left: 50%;
   transform: translateX(-50%);
-  z-index : -1;
-
+  z-index: -1;
 `;
 
 export const SBoardDetailBoardInfo = styled.p`
@@ -161,15 +150,12 @@ export const SLikeButton = styled.button`
   }
 `;
 
-
-
 export const SBoardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
 `;
 
 export const SBoardArticleRow = styled.div`
-  
   display: flex;
   display: block;
   justify-content: space-between;
@@ -180,7 +166,6 @@ export const SBoardArticleCol = styled.div`
   flex: 0 0 33.3%;
   padding: 10px;
 `;
-
 
 export const SBoardDetailWrapper = styled(SWrapper)``;
 
@@ -204,7 +189,7 @@ export const SBoardDetailRow = styled.div`
 `;
 
 export const SBoardDetailBoard = styled.div`
-  background-color : #262626;
+  background-color: #262626;
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 5px;
@@ -250,13 +235,12 @@ export const STertiaryButton = styled.button`
   ${defaultButtonPreset}
 `;
 
-
 // 게시글 디테일 댓글 영역
 export const SCommentContainer = styled.div`
-  width : 50%;
+  width: 50%;
   margin: 20px 0;
   padding: 20px;
-  color : black;
+  color: black;
   background-color: #404040;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -300,7 +284,7 @@ export const SCommentForm = styled.form`
   }
 
   & input[type="submit"] {
-    background-color: #0000C5;
+    background-color: #0000c5;
     border: none;
     color: #fff;
     padding: 5px 10px;

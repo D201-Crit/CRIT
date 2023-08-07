@@ -1,32 +1,26 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "https://i9d201.p.ssafy.io/api",
 });
 
 const getNewAccessToken = async (refreshToken) => {
-  console.log(111);
   try {
-    // 서버로 RefreshToken을 보내어 새로운 AccessToken을 받아옴
-    console.log(222);
-    console.log(refreshToken);
-    const response = await axios
-      .post("http://localhost:8080/api/auth/token", {
+    const response = await axios.post(
+      "https://i9d201.p.ssafy.io/api/token/reissue",
+      {},
+      {
         headers: {
           Authorization: `Bearer ${refreshToken}`,
         },
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      },
+    );
     const newAccessToken = response.data.token;
-    console.log(newAccessToken);
+    console.log("newAccessToken:", newAccessToken);
+
     return newAccessToken;
   } catch (error) {
-    console.error("Failed to refresh access token:", error);
+    console.error("액세스 토큰을 새로고침하는 데 실패했습니다:", error);
     throw error;
   }
 };

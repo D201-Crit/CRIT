@@ -92,8 +92,14 @@ function AppRoutes() {
         <Route path="/ChallengePage" element={<ChallengePage />} />
         <Route path="/ChallengePage/:id" element={<DetailChallengePage />} />
         <Route path="/CommunityPage" element={<CommunityPage />} />
-        <Route path="/CommunityBoardPage/:id" element={<CommunityBoardPage/>}/>
-        <Route path="/CommunityBoardPage/:classification/:articleid" element={<CommunityArticleDetailPage/>}/>
+        <Route
+          path="/CommunityBoardPage/:id"
+          element={<CommunityBoardPage />}
+        />
+        <Route
+          path="/CommunityBoardPage/:classification/:articleid"
+          element={<CommunityArticleDetailPage />}
+        />
         <Route path="/SignUpPage" element={<SignUpPage />} />
         <Route path="/LoginPage" element={<LoginPage />} />
         <Route path="/ProfilePage" element={<ProfilePage />} />
@@ -102,8 +108,6 @@ function AppRoutes() {
         <Route path="/PaySuccessPage" element={<PaySuccessPage />} />
         <Route path="/PayCanclePage" element={<PayCanclePage />} />
         <Route path="/PayConflictPage" element={<PayConflictPage />} />
-
-        
       </Routes>
     </>
   );

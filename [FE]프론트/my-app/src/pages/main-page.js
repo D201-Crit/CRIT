@@ -66,7 +66,7 @@ const MainPage = () => {
     getMyChallenge();
     getShorts();
   }, []);
-  console.log(myChallenges);
+  // console.log(myChallenges);
 
   // 쇼츠
   const getShorts = () => {

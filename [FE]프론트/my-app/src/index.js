@@ -19,8 +19,8 @@ Modal.setAppElement("#root"); // 또는 원하는 루트 엘리먼트 선택자�
 
 root.render(
   <Provider store={store}>
-    {/* <Token /> */}
+    <Token />
     <App />
-  </Provider>
+  </Provider>,
 );
 reportWebVitals();

@@ -23,11 +23,11 @@ const SearchChallenge = ({ allChallenge }) => {
   const [study, setStudy] = useState([]);
   const [book, setBook] = useState([]);
   const [stretching, setStretching] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("all"); // 선택된 카테고리 상태
+  const [selectedCategory, setSelectedCategory] = useState("전체"); // 초기값: 전체
 
   const onSearchChallenge = () => {
     const filterChallenge = allChallenge.filter((challenge) =>
-      challenge.name.includes(title)
+      challenge.name.includes(title),
     );
     if (filterChallenge.length === 0) {
       Swal.fire({
@@ -42,21 +42,23 @@ const SearchChallenge = ({ allChallenge }) => {
       });
     } else {
       setSearchResult(filterChallenge);
+      // 검색 시 카테고리 초기화
+      setSelectedCategory("전체");
     }
   };
 
   const categorizeChallenges = () => {
     const studyChallenges = allChallenge.filter(
-      (challenge) => challenge.category === "공부"
+      (challenge) => challenge.category === "공부",
     );
     const sportChallenges = allChallenge.filter(
-      (challenge) => challenge.category === "운동"
+      (challenge) => challenge.category === "운동",
     );
     const bookChallenges = allChallenge.filter(
-      (challenge) => challenge.category === "독서"
+      (challenge) => challenge.category === "독서",
     );
     const stretchingChallenges = allChallenge.filter(
-      (challenge) => challenge.category === "스트레칭"
+      (challenge) => challenge.category === "스트레칭",
     );
 
     setStudy(studyChallenges);
@@ -67,6 +69,7 @@ const SearchChallenge = ({ allChallenge }) => {
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
+    setSearchResult([]); // 카테고리를 선택하면 검색 결과 초기화
   };
 
   const handleKeyPress = (event) => {
@@ -75,15 +78,9 @@ const SearchChallenge = ({ allChallenge }) => {
     }
   };
 
-  useEffect(() => {
-    categorizeChallenges();
-  }, [allChallenge]);
-
   // 선택된 카테고리에 따라 보여줄 챌린지 데이터 선택
   let categoryChallenges = allChallenge;
-  if (selectedCategory === "전체") {
-    categoryChallenges = allChallenge;
-  } else if (selectedCategory === "운동") {
+  if (selectedCategory === "운동") {
     categoryChallenges = sport;
   } else if (selectedCategory === "스트레칭") {
     categoryChallenges = stretching;
@@ -93,6 +90,10 @@ const SearchChallenge = ({ allChallenge }) => {
     categoryChallenges = book;
   }
 
+  // 검색 결과가 있으면 검색 결과를, 없으면 카테고리 별 챌린지를 보여줍니다.
+  const displayedChallenges =
+    searchResult.length > 0 ? searchResult : categoryChallenges;
+
   // 상세보기 이동
   const detailClick = (challenge) => {
     navigate(`/ChallengePage/${challenge.id}`, {
@@ -100,6 +101,9 @@ const SearchChallenge = ({ allChallenge }) => {
     });
   };
 
+  useEffect(() => {
+    categorizeChallenges();
+  }, [allChallenge]);
   return (
     <SSearchChallengeWrapper>
       <SInput
@@ -129,7 +133,7 @@ const SearchChallenge = ({ allChallenge }) => {
         }}
         modules={[Grid, Pagination]}
       >
-        {categoryChallenges.map((challenge) => {
+        {displayedChallenges.map((challenge) => {
           return (
             <SSearchSwiperSlide key={challenge.id}>
               <h2>{challenge.name}</h2>

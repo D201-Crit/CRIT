@@ -20,28 +20,26 @@ const ShowBoard = ({ boards, challenge, getBoard }) => {
         getBoard={getBoard}
         classification={challenge.classification}
       />
-      <SBoardUl>
-        {boards.map((board) => (
-          <SBoardLi key={board.id}>
-            <p id="writer">{board.writer}</p>
-            <div>
-              <p id="content">{board.content}</p>
-              {user.nickname === board.writer ? (
-                <>
-                  <DeleteBoard getBoard={getBoard} boardId={board.id} />
-                  <UpdateBoard
-                    boardId={board.id}
-                    classification={challenge.classification}
-                  />
-                </>
-              ) : (
-                <LikeBoard getBoard={getBoard} board={board} />
-              )}
-            </div>
-            <img src={board.imageUrl} alt="" />
-          </SBoardLi>
-        ))}
-      </SBoardUl>
+      {boards.map((board) => (
+        <SBoardLi key={board.id}>
+          <p id="writer">{board.writer}</p>
+          <div>
+            <p id="content">{board.content}</p>
+            {user.nickname === board.writer ? (
+              <>
+                <DeleteBoard getBoard={getBoard} boardId={board.id} />
+                <UpdateBoard
+                  boardId={board.id}
+                  classification={challenge.classification}
+                />
+              </>
+            ) : (
+              <LikeBoard getBoard={getBoard} board={board} />
+            )}
+          </div>
+          <img src={board.imageUrl} alt="" />
+        </SBoardLi>
+      ))}
     </SBoardWrapper>
   );
 };
