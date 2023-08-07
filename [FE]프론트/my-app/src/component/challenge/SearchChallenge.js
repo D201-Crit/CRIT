@@ -71,7 +71,7 @@ const SearchChallenge = ({ allChallenge }) => {
         placeholder="검색어를 입력하세요."
       />
       <hr />
-      {renderChallenges.map((challenge) => {
+      {/* {renderChallenges.map((challenge) => {
         return (
           <ul>
             <li key={challenge.id}>
@@ -81,8 +81,8 @@ const SearchChallenge = ({ allChallenge }) => {
             </li>
           </ul>
         );
-      })}
-      {/* <SSearchSwiper
+      })} */}
+      <SSearchSwiper
         slidesPerView={4}
         grid={{
           rows: 2,
@@ -101,7 +101,7 @@ const SearchChallenge = ({ allChallenge }) => {
             </SSearchSwiperSlide>
           );
         })}
-      </SSearchSwiper> */}
+      </SSearchSwiper>
     </SSearchChallengeWrapper>
   );
 };
