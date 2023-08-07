@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * author : 강민승
+ */
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/boards/comments")
@@ -50,12 +54,8 @@ public class CommentController {
         // 추후 JWT 로그인 기능을 추가하고나서, 세션에 로그인된 유저와 댓글 작성자를 비교해서, 맞으면 삭제 진행하고
         // 틀리다면 예외처리를 해주면 된다.
         User user = getUser(httpServletRequest);
-        Comment comment = commentRepository.findById(commentId).get();
-        if(user.getId().equals(comment.getUser().getId())){
-            return new Response<>("성공", "댓글 삭제 완료", commentService.deleteComment(commentId));
-        } else {
-            return new Response<>("실패", "댓글 삭제 실패", null);
-        }
+        return new Response<>("성공", "댓글 삭제 완료", commentService.deleteComment(commentId, user));
+
     }
 
     private User getUser(HttpServletRequest httpServletRequest) {

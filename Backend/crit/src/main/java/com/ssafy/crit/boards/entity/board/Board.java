@@ -11,6 +11,9 @@ import javax.persistence.*;
 
 import java.util.List;
 
+/**
+ * author : 강민승
+ */
 @Getter
 @NoArgsConstructor
 @Entity
@@ -20,8 +23,10 @@ public class Board extends BaseTimeEntity {
     @GeneratedValue
     private Long id;
 
+    @Column(nullable = false, length = 1000)
     private String title;
 
+    @Column(nullable = false, length = 1000)
     private String content;
 
     private int views;
@@ -37,7 +42,7 @@ public class Board extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LikeTable> likes;
 
 

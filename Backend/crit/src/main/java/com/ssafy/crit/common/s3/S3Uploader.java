@@ -4,28 +4,41 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jcodec.api.FrameGrab;
+import org.jcodec.api.JCodecException;
+import org.jcodec.common.io.FileChannelWrapper;
+import org.jcodec.common.io.NIOUtils;
+import org.jcodec.common.model.Picture;
+import org.jcodec.scale.AWTUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 import java.util.UUID;
-
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class S3Uploader {
     private final AmazonS3Client amazonS3Client;
+    private static final String EXTENSION = "png";
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     public String uploadFiles(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile) // 파일 변환할 수 없으면 에러
-                .orElseThrow(() -> new IllegalArgumentException("error: MultipartFile -> File convert fail"));
+                .orElseThrow(() -> { return new IllegalArgumentException("error: MultipartFile -> File convert fail");});
         return upload(uploadFile, dirName);
     }
+
 
     public String upload(File uploadFile, String filePath) {
         String fileName = filePath + "/" + UUID.randomUUID() + uploadFile.getName();   // S3에 저장된 파일 이름
@@ -60,4 +73,57 @@ public class S3Uploader {
         }
         return Optional.empty();
     }
+
+    public String uploadThumbnail(MultipartFile videoFile, String dirName) throws IOException{
+        File file = convertMultipartFileToFile(videoFile);
+        String thumbnailURL = getThumbnailURL(dirName, file);
+        try {
+            Files.delete(Path.of(file.getPath()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return thumbnailURL;
+    }
+
+
+    // S3에 썸네일 이미지를 추출 및 저장
+    private String getThumbnailURL(String dirName, File file) {
+        String thumbnailName = dirName + "/" + UUID.randomUUID() + "Thumbnail." + EXTENSION;
+        try (FileChannelWrapper fileChannelWrapper = NIOUtils.readableChannel(file)) {
+            FrameGrab grab = FrameGrab.createFrameGrab(fileChannelWrapper);
+            Picture picture = grab.seekToSecondPrecise(1.0).getNativeFrame();
+            BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
+
+            int width = bufferedImage.getWidth();
+            int height = bufferedImage.getHeight();
+            BufferedImage outputImage = new BufferedImage(height, width, bufferedImage.getType());
+
+//           추후 썸네일 이미지 튜닝
+//            Graphics2D g2d = outputImage.createGraphics();
+//            AffineTransform at = new AffineTransform();
+//            at.translate(height, 0);
+//            at.rotate(Math.PI / 2);
+//            g2d.setTransform(at);
+//            g2d.drawImage(bufferedImage, 0, 0, null);
+//            g2d.dispose();
+            File thumbnailFile = new File("Thumbnail." + EXTENSION);
+            ImageIO.write(bufferedImage, EXTENSION, thumbnailFile);
+            amazonS3Client.putObject(new PutObjectRequest(bucket, thumbnailName, thumbnailFile).withCannedAcl(CannedAccessControlList.PublicRead));
+            removeNewFile(thumbnailFile);
+            return amazonS3Client.getUrl(bucket, thumbnailName).toString();
+        } catch (JCodecException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Convert MultipartFile to File
+    private File convertMultipartFileToFile(MultipartFile file) throws IOException {
+        File convFile = new File(file.getOriginalFilename());
+        convFile.createNewFile();
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getBytes());
+        fos.close();
+        return convFile;
+    }
+
 }

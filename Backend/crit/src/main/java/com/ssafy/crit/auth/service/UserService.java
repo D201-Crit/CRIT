@@ -1,7 +1,13 @@
 package com.ssafy.crit.auth.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.querydsl.core.Query;
+import com.querydsl.core.QueryFactory;
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.crit.auth.entity.Follow;
+import com.ssafy.crit.auth.entity.QUser;
 import com.ssafy.crit.auth.entity.enumType.Grade;
 import com.ssafy.crit.auth.repository.FollowRepository;
 import com.ssafy.crit.common.exception.BadRequestException;
@@ -112,18 +118,21 @@ public class UserService {
 
 
     @Transactional
-    public UpdateProfilePictureDto updateProfilePictureDto(MultipartFile multipartFile, String userId) throws IOException {
+    public UpdateProfilePictureDto updateProfilePicture(MultipartFile multipartFile, String userId) throws IOException {
 
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow(
+            () -> new IllegalArgumentException("아이디 " + userId + "를 찾을 수 없습니다.")
+        );
 
-        String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Profile");
+        String upload = s3Uploader.uploadFiles(multipartFile, "Profile");
 
-        user.setProfileImageUrl(uploadFiles);
 
-        userRepository.save(user);
+        user.setProfileImageUrl(upload);
+
+        // userRepository.save(user);
         /*파일 저장*/
 
-        return new UpdateProfilePictureDto(user.getProfileImageUrl());
+        return new UpdateProfilePictureDto(upload);
     }
 
     /*

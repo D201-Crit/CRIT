@@ -1,30 +1,23 @@
-package com.ssafy.crit.boards.entity.board;
+package com.ssafy.crit.shorts.entity;
 
+import com.ssafy.crit.auth.entity.BaseTimeEntity;
 import com.ssafy.crit.auth.entity.User;
-import com.ssafy.crit.boards.entity.board.Board;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-/**
- * author : 강민승
- */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-public class Comment {
-
+@Getter
+@NoArgsConstructor
+public class ShortsComment extends BaseTimeEntity {
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,7 +26,15 @@ public class Comment {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")
+    @JoinColumn(name = "shorts_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Board board;
+    private Shorts shorts;
+
+    @Builder
+    public ShortsComment(Long id, String content, User user, Shorts shorts) {
+        this.id = id;
+        this.content = content;
+        this.user = user;
+        this.shorts = shorts;
+    }
 }

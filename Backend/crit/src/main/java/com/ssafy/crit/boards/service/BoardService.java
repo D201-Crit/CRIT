@@ -3,6 +3,7 @@ package com.ssafy.crit.boards.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
@@ -10,11 +11,12 @@ import com.ssafy.crit.boards.entity.Classification;
 import com.ssafy.crit.boards.entity.feeds.UploadFile;
 import com.ssafy.crit.boards.repository.UploadFileRepository;
 import com.ssafy.crit.boards.repository.ClassificationRepository;
-import com.ssafy.crit.boards.service.dto.BoardDto;
+import com.ssafy.crit.boards.service.dto.BoardResponseDto;
 import com.ssafy.crit.boards.entity.board.Board;
 import com.ssafy.crit.boards.repository.BoardRepository;
 
 import com.ssafy.crit.boards.service.dto.BoardSaveRequestDto;
+import com.ssafy.crit.boards.service.dto.BoardSaveResponseDto;
 import com.ssafy.crit.boards.service.dto.BoardShowSortDto;
 import com.ssafy.crit.common.s3.S3Uploader;
 
@@ -27,6 +29,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * author : 강민승
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -37,6 +42,7 @@ public class BoardService {
 	private final ClassificationRepository classificationRepository;
 	private final S3Uploader s3Uploader;
 	private final UploadFileRepository uploadFileRepository;
+
 
 	//전체 게시물
 	@Transactional(readOnly = true)
@@ -57,7 +63,7 @@ public class BoardService {
 
 	//개별 게시물 조회
 	@Transactional
-	public BoardDto getBoard(Long id) {
+	public BoardResponseDto getBoard(Long id) {
 		Board board = boardRepository.findById(id).orElseThrow(() -> {
 			return new IllegalArgumentException("Board Id를 찾을 수 없습니다.");
 		});
@@ -65,21 +71,27 @@ public class BoardService {
 		board.setViews(board.getViews() + 1);
 		boardRepository.save(board);
 
-		return BoardDto.toDto(board);
+		return BoardResponseDto.toDto(board);
 	}
 
-	public BoardSaveRequestDto write(List<MultipartFile> multipartFiles , BoardSaveRequestDto boardSaveRequestDto, User user) throws
+	public BoardSaveResponseDto write(List<MultipartFile> multipartFiles , BoardSaveRequestDto boardSaveRequestDto, User user) throws
 		IOException {
 
+		/**
+		 * 테스트 시 분류명이 없어도 새롭게 만들어주는 로직
+		 */
 		Classification classification = classificationRepository.findByCategory(boardSaveRequestDto.getClassification())
 			.orElseGet(() -> {
-				// Create and save a new Classification.
 				Classification newClassification = new Classification();
-				// Ensure that you're setting the Category here.
 				newClassification.setCategory(boardSaveRequestDto.getClassification());
 				classificationRepository.save(newClassification);
 				return newClassification;
 			});
+
+//		Classification classification = classificationRepository.findByCategory(boardSaveRequestDto.getClassification())
+//			.orElseThrow(() -> {
+//				return new IllegalArgumentException("일치하는 분류명이 없습니다.");
+//			});
 
 		List<String> storeFileResult = new ArrayList<>();
 		Board board = Board.builder()
@@ -109,21 +121,25 @@ public class BoardService {
 			}
 		}
 
-		boardSaveRequestDto.setId(board.getId());
-		boardSaveRequestDto.setImageFiles(storeFileResult);
-
-
-		return boardSaveRequestDto;
+		return BoardSaveResponseDto.builder()
+				.id(board.getId())
+				.title(board.getTitle())
+				.content(board.getContent())
+				.writer(user.getId())
+				.classification(classification.getCategory())
+				.imageFiles(storeFileResult)
+				.build();
 	}
 
 
-	public BoardDto update(Long id, BoardDto boardDto, List<MultipartFile> multipartFiles) throws IOException {
+	public BoardResponseDto update(Long id, BoardResponseDto boardDto, List<MultipartFile> multipartFiles, User user) throws IOException {
 		Board board = boardRepository.findById(id).orElseThrow(() -> {
 			return new IllegalArgumentException("Board Id를 찾을 수 없습니다!");
 		});
 
-		User user = board.getUser();
-
+		if(!board.getUser().getId().equals(user.getId())){
+			throw new IllegalArgumentException("글 수정권한이 없습니다.");
+		}
 		List<UploadFile> uploadFile = uploadFileRepository.findAllByBoardsId(id);
 
 		uploadFileRepository.deleteAll(uploadFile);
@@ -132,7 +148,6 @@ public class BoardService {
 		board.getUploadFiles().clear();
 
 		List<String> storeFileResult = new ArrayList<>();
-		List<UploadFile> uploadFilePut = new ArrayList<>();
 
 		for (MultipartFile multipartFile : multipartFiles) {
 			if (!multipartFile.isEmpty()) {
@@ -157,16 +172,20 @@ public class BoardService {
 
 		boardRepository.save(board);
 
-		return BoardDto.toDto(board);
+		return BoardResponseDto.toDto(board);
 	}
 
 	// 게시글 삭제
-	public void delete(Long id) {
+	public void delete(Long id, User user) {
 		// 매개변수 id를 기반으로, 게시글이 존재하는지 먼저 찾음
 		// 게시글이 없으면 오류 처리
 		Board board = boardRepository.findById(id).orElseThrow(() -> {
 			return new IllegalArgumentException("Board Id를 찾을 수 없습니다!");
 		});
+
+		if(!board.getUser().getId().equals(user.getId())){
+			throw new IllegalArgumentException("글 삭제권한이 없습니다.");
+		}
 		// 게시글이 있는 경우 삭제처리
 		boardRepository.deleteById(id);
 	}
@@ -200,18 +219,51 @@ public class BoardService {
 		return getBoardShowSortDtos(boards);
 	}
 
+//	public Page<BoardShowSortDto> findAllByUserAndClassification(@RequestParam String classification, User user, Pageable pageable){
+//		Page<Board> boards = boardRepository.findAllByUserAndClassification(pageable, user, classification);
+//		return getBoardShowSortDtos(boards);
+//	}
+
+	public Page<BoardShowSortDto> findAllByUserAndClassification(User user, String classificationString, Pageable pageable){
+
+		Classification classification = classificationRepository.findByCategory(classificationString).orElseThrow(() -> {
+			return new IllegalArgumentException(classificationString + "에는 글 쓴 것이 없습니다.");
+		});
+
+
+		Page<Board> boards = boardRepository.findAllByUserAndClassification(user, classification, pageable);
+		return getBoardShowSortDtos(boards);
+	}
+
+
+	public Page<BoardShowSortDto> findAllByUser(User user, Pageable pageable){
+		Page<Board> boards = boardRepository.findAllByUser(user, pageable);
+		return getBoardShowSortDtos(boards);
+	}
+
+
 	private Page<BoardShowSortDto> getBoardShowSortDtos(Page<Board> boards) {
 		return boards.map(board -> {
 			if (board.getUser() == null) {
 				throw new RuntimeException("User is null for board id: " + board.getId());
 			}
+
+			List<String> likedName = board.getLikes().stream()
+				.map(like -> like.getUser().getNickname())
+				.collect(Collectors.toList());
+
+			List<String> filenames = board.getUploadFiles().stream()
+					.map(UploadFile::getStoreFilePath)
+					.collect(Collectors.toList());
+
 			return new BoardShowSortDto(board.getId(),
 					board.getTitle(),
 					board.getContent(),
 					board.getViews(),
-					board.getUser().getId(),
+					board.getUser().getNickname(),
 					board.getLikes().size(),
-				board.getClassification().getCategory());
+				board.getClassification().getCategory(),
+				likedName,filenames);
 		});
 	}
 }
