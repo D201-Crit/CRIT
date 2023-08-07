@@ -171,7 +171,7 @@ const CommunityBoardDetail = ({ classification }) => {
                 <SBoardDetailBoardInfo>조회수: {article.views}</SBoardDetailBoardInfo>
                 <SBoardDetailBoardInfo>추천수: {article.likesCount}</SBoardDetailBoardInfo>
                 <SBoardDetailBoardInfo>{article.liked}</SBoardDetailBoardInfo>
-                {article.liked.includes(user.id) ? (
+                {article.liked.includes(user.nickname) ? (
                   <SLikeButton onClick={() => deleteLike(article.id)}>
                     좋아요 취소
                   </SLikeButton>
