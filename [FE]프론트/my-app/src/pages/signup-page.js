@@ -11,7 +11,6 @@ import {
 import useInput from "../hooks/useInput";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import PopUp from "../component/PopUp";
 import Swal from "sweetalert2";
 
 const SignUp = () => {
@@ -28,15 +27,34 @@ const SignUp = () => {
       setMismatchError(e.target.value !== passwordCheck);
     },
     // 함수 기준 외부 변수만 deps[]에 작성
-    [passwordCheck]
+    [passwordCheck],
   );
-
+  const onCheckId = (userId) => {
+    axios
+      .post(`https://i9d201.p.ssafy.io/api/auth/valid/userId`, { userId })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const onCheckNickname = (nickname) => {
+    axios
+      .post(`https://i9d201.p.ssafy.io/api/auth/valid/nickname`, { nickname })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const onChangePasswordCheck = useCallback(
     (e) => {
       setPasswordCheck(e.target.value);
       setMismatchError(e.target.value !== password);
     },
-    [password]
+    [password],
   );
   const [mismatchError, setMismatchError] = useState(false);
   // 가입 실패
@@ -86,7 +104,7 @@ const SignUp = () => {
           .finally(() => {});
       }
     },
-    [email, nickname, password, passwordCheck]
+    [email, nickname, password, passwordCheck],
   );
 
   return (
@@ -101,7 +119,9 @@ const SignUp = () => {
             value={id}
             onChange={onChangeId}
           />
-          <SCheckButton>중복확인</SCheckButton>
+          <SCheckButton type="button" onClick={() => onCheckId(id)}>
+            중복확인
+          </SCheckButton>
         </span>
         <span>
           <label>이메일</label>
@@ -113,7 +133,6 @@ const SignUp = () => {
             onChange={onChangeEmail}
             placeholder="이메일형식(영문어아이디+ @이메일주소)"
           />
-          <SCheckButton>중복확인</SCheckButton>
         </span>
         <span>
           <label>비밀번호</label>
@@ -147,7 +166,9 @@ const SignUp = () => {
             onChange={onChangeNickname}
             placeholder="2자 이상 10자 이하"
           />
-          <SCheckButton>중복확인</SCheckButton>
+          <SCheckButton type="button" onClick={() => onCheckNickname(nickname)}>
+            중복확인
+          </SCheckButton>
         </span>
         {mismatchError && (
           <ErrorWrapper>비밀번호가 일치하지 않습니다.</ErrorWrapper>

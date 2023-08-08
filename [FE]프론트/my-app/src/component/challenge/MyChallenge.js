@@ -20,7 +20,7 @@ import {
   STopWrapper,
   SMidWrapper,
   SBotWrapper,
-  customModalStyles,
+  SWebRTCModal,
 } from "../../styles/pages/SChallengePage";
 import { useSelector } from "react-redux";
 import { SImg } from "./../../styles/pages/SChallengePage";
@@ -35,9 +35,11 @@ const MyChallenge = () => {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [challengeData, setChallengeData] = useState(null); // 모달에 전달할 데이터 state 추가
+  const [selectedSessionId, setSelectedSessionId] = useState(null);
 
   const openModal = (challenge) => {
     setChallengeData({ challenge, user }); // 모달에 전달할 데이터를 state에 저장
+    setSelectedSessionId(challenge.id); // 선택한 챌린지의 세션 ID 저장
     setIsOpen(true);
   };
   const closeModal = () => {
@@ -91,15 +93,38 @@ const MyChallenge = () => {
     return `${month}.${day} (${dayOfWeek})`;
   };
   // 며칠째 진행 중인지 계산하는 함수
-  const getDaysInProgress = (startDate) => {
+  // 며칠째 진행 중인지 계산하는 함수
+  const getDaysInProgress = (startDate, endDate) => {
     const today = new Date();
     const start = new Date(startDate);
-    const timeDiff = today.getTime() - start.getTime();
-    const daysInProgress = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+    const end = new Date(endDate);
 
-    return daysInProgress >= 0
-      ? `현재 ${daysInProgress + 1}일째 참여 중`
-      : `D-day ${Math.abs(daysInProgress)}일`;
+    // 연, 월, 일만 비교
+    today.setHours(0, 0, 0, 0);
+    start.setHours(0, 0, 0, 0);
+    end.setHours(0, 0, 0, 0);
+
+    if (today < start) {
+      // 아직 시작되지 않은 챌린지인 경우
+      const timeDiff = start.getTime() - today.getTime() - 1;
+      const daysToStart = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+      if (daysToStart - 1 === 0) {
+        return `D-day`;
+      }
+      if (daysToStart - 1 > 0) {
+        return `D-${daysToStart - 1}일`;
+      }
+    }
+    if (today > end) {
+      // 이미 종료된 챌린지인 경우
+      return `종료됨`;
+    }
+    if (today.getTime() === start.getTime()) {
+      // 진행 중인 챌린지인 경우
+      const timeDiff = today.getTime() - start.getTime();
+      const daysInProgress = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+      return `현재 ${daysInProgress + 1}일째 참여 중`;
+    }
   };
 
   useEffect(() => {
@@ -148,29 +173,26 @@ const MyChallenge = () => {
                 </SMidWrapper>
                 <SBotWrapper>
                   <p id="people">{challenge.userList.length}명 참여 중</p>
-                  <button id="enter" onClick={() => openModal(challenge)}>
-                    입장하기
-                  </button>
-                  <button
-                    id="detail"
-                    onClick={() => detailClick(challenge)} // 수정된 부분
-                  >
-                    {" "}
+                  {getDaysInProgress(
+                    challenge.startDate,
+                    challenge.endDate,
+                  ).includes("현재") && (
+                    <button id="enter" onClick={() => openModal(challenge)}>
+                      입장하기
+                    </button>
+                  )}
+                  <button id="detail" onClick={() => detailClick(challenge)}>
                     {location.pathname === "/ChallengePage"
                       ? "상세보기"
                       : "참여내역"}
-                  </button>{" "}
+                  </button>
                 </SBotWrapper>
               </SSwiperSlide>
             );
           })}
         </SSwiper>
       )}
-      <Modal
-        style={customModalStyles}
-        isOpen={isOpen}
-        onRequestClose={closeModal}
-      >
+      <Modal style={SWebRTCModal} isOpen={isOpen} onRequestClose={closeModal}>
         {/* 모달 내부에서 VideoRoomComponent 사용 */}
         <VideoRoomComponent challengeData={challengeData} />
       </Modal>

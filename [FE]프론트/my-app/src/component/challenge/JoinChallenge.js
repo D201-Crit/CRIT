@@ -1,10 +1,30 @@
 import { useSelector } from "react-redux";
 import { api } from "../../api/api";
 import Swal from "sweetalert2";
-import { SEnreanceButton } from "../../styles/pages/SDeatilChallengePage";
 
 const JoinChallenge = ({ challenge }) => {
   const user = useSelector((state) => state.users);
+  const checkEntrance = () => {
+    return Swal.fire({
+      position: "center",
+      title: "챌린지에 참여하시겠습니까?",
+      text: "참여한 챌린지는 나갈 수 없습니다.",
+      showCancelButton: true,
+      confirmButtonText: "확인",
+      cancelButtonText: "취소",
+      background: "#272727",
+      color: "white",
+      preConfirm: () => {
+        return entranceChallenge();
+      },
+      // width: "500px",
+      // 먼지
+      // imageUrl: 'https://unsplash.it/400/200',
+      // imageWidth: 400,
+      // imageHeight: 200,
+      // imageAlt: 'Custom image',
+    });
+  };
   const entranceChallenge = () => {
     api
       .post(
@@ -56,7 +76,7 @@ const JoinChallenge = ({ challenge }) => {
   };
 
   return (
-    <button id="enter" onClick={entranceChallenge}>
+    <button id="enter" onClick={() => checkEntrance()}>
       참여하기
     </button>
   );

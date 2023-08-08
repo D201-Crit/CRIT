@@ -10,8 +10,12 @@ const DetailChallengePage = () => {
   const challenge = location.state?.challenge;
   const user = useSelector((state) => state.users);
   const [boards, setBoards] = useState([]);
-  // const [loading, setLoading] = useState(false);
-  // const [page, setPage] = useState(1);
+  const [checkUser, setCheckUser] = useState(false);
+  const checkedUser = () => {
+    if (challenge.userList.includes(user.nickname)) {
+      setCheckUser(true);
+    }
+  };
   const getBoard = () => {
     api
       .get(
@@ -20,7 +24,7 @@ const DetailChallengePage = () => {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
           },
-        }
+        },
       )
       .then((res) => {
         console.log(res);
@@ -33,12 +37,15 @@ const DetailChallengePage = () => {
 
   useEffect(() => {
     getBoard();
+    checkedUser();
   }, []);
-
+  console.log(checkUser);
   return (
     <SDetailChallengeWrapper>
       <InformationChallenge />
-      <ShowBoard boards={boards} challenge={challenge} getBoard={getBoard} />
+      {checkUser ? (
+        <ShowBoard boards={boards} challenge={challenge} getBoard={getBoard} />
+      ) : null}
     </SDetailChallengeWrapper>
   );
 };

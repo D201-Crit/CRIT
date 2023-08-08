@@ -273,6 +273,7 @@ export const customModalStyles = {
     zIndex: "999",
   },
 };
+
 export const SCreateChallengeModalWrapper = styled.div`
   color: white;
   margin: -15px 60px 10px 50px;
@@ -683,3 +684,24 @@ export const ParticipationChallengeButton = styled.button`
   // border-radius: 10px;
   // border: none;
 `;
+
+// WebRTC
+export const SWebRTCModal = {
+  content: {
+    backgroundColor: "rgba(22, 22, 22, 1)",
+    border: "0.5px solid rgba(80, 80, 80)",
+    borderRadius: "10px",
+    boxShadow: "0px 0px 15px gray",
+    margin: "auto",
+    width: "1200px",
+    height: "750px",
+    color: "black",
+  },
+  overlay: {
+    background: "rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: "999",
+  },
+};

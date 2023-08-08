@@ -5,7 +5,6 @@ import ChatComponent from "./chat/ChatComponent";
 import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import StreamComponent from "./stream/StreamComponent";
 import "./VideoRoomComponent.css";
-
 import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
@@ -72,7 +71,7 @@ class VideoRoomComponent extends Component {
 
     this.layout.initLayoutContainer(
       document.getElementById("layout"),
-      openViduLayoutOptions
+      openViduLayoutOptions,
     );
     window.addEventListener("beforeunload", this.onbeforeunload);
     window.addEventListener("resize", this.updateLayout);
@@ -101,7 +100,7 @@ class VideoRoomComponent extends Component {
       async () => {
         this.subscribeToStreamCreated();
         await this.connectToSession();
-      }
+      },
     );
   }
 
@@ -118,7 +117,7 @@ class VideoRoomComponent extends Component {
         console.error(
           "There was an error getting the token:",
           error.code,
-          error.message
+          error.message,
         );
         if (this.props.error) {
           this.props.error({
@@ -152,7 +151,7 @@ class VideoRoomComponent extends Component {
         console.log(
           "There was an error connecting to the session:",
           error.code,
-          error.message
+          error.message,
         );
       });
   }
@@ -186,7 +185,9 @@ class VideoRoomComponent extends Component {
         });
       });
     }
-    localUser.setNickname(this.state.myUserName);
+    const { challengeData } = this.props;
+    const nickName = challengeData.user.nickname;
+    localUser.setNickname(nickName);
     localUser.setConnectionId(this.state.session.connection.connectionId);
     localUser.setScreenShareActive(false);
     localUser.setStreamManager(publisher);
@@ -202,10 +203,10 @@ class VideoRoomComponent extends Component {
         this.state.localUser.getStreamManager().on("streamPlaying", (e) => {
           this.updateLayout();
           publisher.videos[0].video.parentElement.classList.remove(
-            "custom-class"
+            "custom-class",
           );
         });
-      }
+      },
     );
   }
 
@@ -225,7 +226,7 @@ class VideoRoomComponent extends Component {
           });
         }
         this.updateLayout();
-      }
+      },
     );
   }
 
@@ -275,7 +276,7 @@ class VideoRoomComponent extends Component {
   deleteSubscriber(stream) {
     const remoteUsers = this.state.subscribers;
     const userStream = remoteUsers.filter(
-      (user) => user.getStreamManager().stream === stream
+      (user) => user.getStreamManager().stream === stream,
     )[0];
     let index = remoteUsers.indexOf(userStream, 0);
     if (index > -1) {
@@ -293,7 +294,7 @@ class VideoRoomComponent extends Component {
       subscriber.on("streamPlaying", (e) => {
         this.checkSomeoneShareScreen();
         subscriber.videos[0].video.parentElement.classList.remove(
-          "custom-class"
+          "custom-class",
         );
       });
       const newUser = new UserModel();
@@ -347,7 +348,7 @@ class VideoRoomComponent extends Component {
         {
           subscribers: remoteUsers,
         },
-        () => this.checkSomeoneShareScreen()
+        () => this.checkSomeoneShareScreen(),
       );
     });
   }
@@ -401,12 +402,13 @@ class VideoRoomComponent extends Component {
     try {
       const devices = await this.OV.getDevices();
       var videoDevices = devices.filter(
-        (device) => device.kind === "videoinput"
+        (device) => device.kind === "videoinput",
       );
 
       if (videoDevices && videoDevices.length > 1) {
         var newVideoDevice = videoDevices.filter(
-          (device) => device.deviceId !== this.state.currentVideoDevice.deviceId
+          (device) =>
+            device.deviceId !== this.state.currentVideoDevice.deviceId,
         );
 
         if (newVideoDevice.length > 0) {
@@ -422,7 +424,7 @@ class VideoRoomComponent extends Component {
 
           //newPublisher.once("accessAllowed", () => {
           await this.state.session.unpublish(
-            this.state.localUser.getStreamManager()
+            this.state.localUser.getStreamManager(),
           );
           await this.state.session.publish(newPublisher);
           this.state.localUser.setStreamManager(newPublisher);
@@ -458,7 +460,7 @@ class VideoRoomComponent extends Component {
         } else if (error && error.name === "SCREEN_CAPTURE_DENIED") {
           alert("You need to choose a window or application to share");
         }
-      }
+      },
     );
 
     publisher.once("accessAllowed", () => {
@@ -550,7 +552,7 @@ class VideoRoomComponent extends Component {
     const { challengeData } = this.props;
     console.log(challengeData);
     const mySessionId = challengeData.challenge.id;
-    const nickName = challengeData.user.nickname;
+
     const localUser = this.state.localUser;
     console.log(this.state);
     var chatDisplay = { display: this.state.chatDisplay };
@@ -623,12 +625,16 @@ class VideoRoomComponent extends Component {
   }
 
   async createSession(sessionId) {
+    // 여기서 세션 ID를 this.props.challengeData.challenge.id로 전달합니다.
     const response = await axios.post(
       APPLICATION_SERVER_URL + "api/sessions",
-      { customSessionId: sessionId },
+      {
+        customSessionId: sessionId,
+        challengeId: this.props.challengeData.challenge.id,
+      },
       {
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
     return response.data; // The sessionId
   }
@@ -639,7 +645,7 @@ class VideoRoomComponent extends Component {
       {},
       {
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
     return response.data; // The token
   }
