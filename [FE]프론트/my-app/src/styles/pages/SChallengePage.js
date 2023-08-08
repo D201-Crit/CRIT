@@ -1,5 +1,10 @@
 import styled from "styled-components";
-import { Swiper, SwiperSlide } from "swiper/react";
+//import { Swiper, SwiperSlide } from "swiper/react";
+import React, { lazy, Suspense } from "react";
+
+// SwiperWrapper와 SwiperSlide를 비동기적으로 불러오기
+const Swiper = lazy(() => import("swiper/react").then(mod => mod.Swiper));
+const SwiperSlide = lazy(() => import("swiper/react").then(mod => mod.SwiperSlide));
 
 // ChallengPage
 export const SCreateChallengeWrapper = styled.div`
