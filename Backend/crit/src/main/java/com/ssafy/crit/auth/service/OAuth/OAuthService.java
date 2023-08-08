@@ -1,7 +1,8 @@
 package com.ssafy.crit.auth.service.OAuth;
 
 
-import com.ssafy.crit.common.exception.BadRequestException;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.dto.OAuth.OAuthSignInResponse;
 import com.ssafy.crit.auth.dto.TokenDto;
@@ -32,7 +33,7 @@ public class OAuthService {
             return googleRequestService.redirect(tokenRequest);
         }
 
-        throw new BadRequestException("not supported oauth provider");
+        throw new BadRequestException(ErrorCode.NOT_EXISTS_PROVIDER);
     }
 
     public OAuthSignInResponse refreshToken(TokenRequest tokenRequest){
@@ -41,7 +42,7 @@ public class OAuthService {
         String oldRefreshToken = (String) jwtProvider.get(tokenRequest.getRefreshToken()).get("refreshToken");
 
         if(!userRepository.existsByIdAndAuthProvider(userId, AuthProvider.findByCode(provider.toLowerCase()))){
-            throw new BadRequestException("CANNOT_FOUND_USER");
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
         }
 
         TokenResponse tokenResponse = null;

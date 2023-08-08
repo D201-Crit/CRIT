@@ -6,6 +6,8 @@ import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.challenge.dto.*;
 import com.ssafy.crit.challenge.entity.IsCert;
 import com.ssafy.crit.challenge.service.CertService;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.message.response.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -69,7 +71,7 @@ public class CertController {
         String userId = (String) jwtProvider.get(bearer).get("userId");
 
         User user = userRepository.findById(userId).orElseThrow(() -> {
-            return new IllegalArgumentException("유저 ID를 찾을수 없습니다.");
+            return new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
         });
         return user;
     }

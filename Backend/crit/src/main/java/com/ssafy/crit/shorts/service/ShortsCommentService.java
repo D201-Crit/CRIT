@@ -1,6 +1,8 @@
 package com.ssafy.crit.shorts.service;
 
 import com.ssafy.crit.auth.entity.User;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.shorts.dto.ShortsCommentDto;
 import com.ssafy.crit.shorts.entity.Shorts;
 import com.ssafy.crit.shorts.entity.ShortsComment;
@@ -25,7 +27,7 @@ public class ShortsCommentService {
      */
     public ShortsCommentDto writeComment(Long shortsId, ShortsCommentDto ShortsCommentDto, User user) {
         Shorts shorts = shortsRepository.findById(shortsId)
-                .orElseThrow(() -> new IllegalArgumentException("쇼츠를 찾을 수 없습니다."));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_SHORTS_ID));
 
         ShortsComment shortsComment = ShortsComment.builder()
                 .content(ShortsCommentDto.getContent())

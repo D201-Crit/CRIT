@@ -2,6 +2,8 @@ package com.ssafy.crit.message.service;
 
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.message.dto.MessageDto;
 import com.ssafy.crit.message.dto.MessageSendRequestDto;
 import com.ssafy.crit.message.entity.Message;
@@ -25,10 +27,10 @@ public class MessageService {
 	@Transactional
 	public MessageDto write(MessageSendRequestDto MessageSendRequestDto, String senderName) {
 		User receiver = userRepository.findById(MessageSendRequestDto.getReceiverName()).orElseThrow(() -> {
-			return new IllegalArgumentException("유저를 찾을 수 없습니다.");
+			return new BadRequestException(ErrorCode.NOT_EXISTS_MESSAGE_RECEIVER);
 		});
 		User sender = userRepository.findById(senderName).orElseThrow(() -> {
-			return new IllegalArgumentException("유저를 찾을 수 없습니다.");
+			return new BadRequestException(ErrorCode.NOT_EXISTS_MESSAGE_SENDER);
 		});
 
 			Message message = Message.builder()
@@ -65,7 +67,7 @@ public class MessageService {
 	@Transactional
 	public Object deleteMessageByReceiver(Long id, User user) {
 		Message message = messageRepository.findById(id).orElseThrow(() -> {
-			return new IllegalArgumentException("메시지를 찾을 수 없습니다.");
+			return new BadRequestException(ErrorCode.NOT_EXISTS_MESSAGE_ID);
 		});
 
 		if (user == message.getReceiver()) {
@@ -77,7 +79,7 @@ public class MessageService {
 			}
 			return "한쪽만 삭제";
 		} else {
-			return new IllegalArgumentException("유저 정보가 일치하지 않습니다.");
+			return new BadRequestException(ErrorCode.INVALID_USER_DATA);
 		}
 	}
 
@@ -102,11 +104,11 @@ public class MessageService {
 	@Transactional
 	public Object deleteMessageBySender(Long id, User user) {
 		Message message = messageRepository.findById(id).orElseThrow(() -> {
-			return new IllegalArgumentException("메시지를 찾을 수 없습니다.");
+			return new BadRequestException(ErrorCode.NOT_EXISTS_MESSAGE_ID);
 		});
 
 		if(!message.getSender().getId().equals(user.getId())){
-			throw new IllegalArgumentException("삭제 권한이 없습니다.");
+			throw new BadRequestException(ErrorCode.NOT_EXISTS_MESSAGE_AUTHORIZE);
 		}else {
 			message.deleteBySender(); // 받은 사람에게 메시지 삭제
 			if (message.isDeleted()) {

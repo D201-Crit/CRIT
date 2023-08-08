@@ -1,16 +1,11 @@
 package com.ssafy.crit.auth.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.querydsl.core.Query;
-import com.querydsl.core.QueryFactory;
-import com.querydsl.core.types.EntityPath;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.crit.auth.entity.Follow;
-import com.ssafy.crit.auth.entity.QUser;
 import com.ssafy.crit.auth.entity.enumType.Grade;
 import com.ssafy.crit.auth.repository.FollowRepository;
-import com.ssafy.crit.common.exception.BadRequestException;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.dto.*;
 import com.ssafy.crit.auth.entity.User;
@@ -23,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,12 +25,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -56,7 +48,7 @@ public class UserService {
 
     public String signUp(SignUpRequestDto signUpRequestDto) throws Exception {
         if (userRepository.findById(signUpRequestDto.getId()).isPresent()) {
-            throw new BadRequestException("이미 존재하는 아이디입니다.");
+            throw new BadRequestException(ErrorCode.ALREADY_REGISTERED_USER_ID);
         }
 
         if(signUpRequestDto.getNickname().toLowerCase().contains("admin") ||
@@ -82,11 +74,11 @@ public class UserService {
     public LogInResponseDto logIn(LogInRequestDto logInRequestDto) throws Exception{
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         if (!userRepository.existsById(logInRequestDto.getId())) {
-            throw new BadRequestException("존재하지 않는 아이디입니다.");
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
         }
         User user = userRepository.findById(logInRequestDto.getId()).get();
         if (!bCryptPasswordEncoder.matches(logInRequestDto.getPassword(), user.getPassword())) {
-            throw new BadRequestException("존재하지 않는 비밀번호입니다.");
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_USER_PASSWORD);
         }
 
         if(!user.getIsChecked()){
@@ -128,7 +120,7 @@ public class UserService {
     public UpdateProfilePictureDto updateProfilePicture(MultipartFile multipartFile, String userId) throws IOException {
 
         User user = userRepository.findById(userId).orElseThrow(
-            () -> new IllegalArgumentException("아이디 " + userId + "를 찾을 수 없습니다.")
+            () -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
         );
 
         String upload = s3Uploader.uploadFiles(multipartFile, "Profile");
@@ -156,9 +148,9 @@ public class UserService {
         System.out.println("in getAccessToken " + userId + "  " + provider);
 
         if(!userRepository.existsByIdAndAuthProvider(userId, AuthProvider.findByCode(provider.toLowerCase()))){
-            throw new BadRequestException("CANNOT_FOUND_USER");
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
         } else if (jwtProvider.isExpiration(refreshToken)) {
-            throw new BadRequestException("TOKEN_EXPIRED");
+            throw new BadRequestException(ErrorCode.TOKEN_EXPIRED);
         }
 
         return jwtProvider.createAccessToken(userId, AuthProvider.findByCode(provider));
@@ -166,9 +158,9 @@ public class UserService {
 
     public UserResponseDto follow(FollowRequestDto followRequestDto) {
         User user1 = userRepository.findById(followRequestDto.getFollowerId())
-            .orElseThrow(() -> new IllegalArgumentException("User with nickname " + followRequestDto.getFollowerId() + " does not exist."));
+            .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_FOLLOWER));
         User user2 = userRepository.findById(followRequestDto.getFollowingId())
-            .orElseThrow(() -> new IllegalArgumentException("User with nickname " + followRequestDto.getFollowingId() + " does not exist."));
+            .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_FOLLOWING));
         Optional<Follow> optionalFollow = followRepository.findByFollowerAndFollowing(user1,user2);
 
         if (optionalFollow.isEmpty()) {

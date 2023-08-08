@@ -3,6 +3,8 @@ package com.ssafy.crit.boards.controller;
 
 
 import com.ssafy.crit.boards.repository.BoardRepository;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -74,7 +76,7 @@ public class FeedController {
 		String userId = (String) jwtProvider.get(bearer).get("userId");
 
 		User user = userRepository.findById(userId).orElseThrow(() -> {
-			return new IllegalArgumentException("유저 ID를 찾을수 없습니다.");
+			return new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
 		});
 		return user;
 	}

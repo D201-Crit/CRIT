@@ -3,6 +3,8 @@ package com.ssafy.crit.shorts.controller;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.repository.UserRepository;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.message.response.Response;
 import com.ssafy.crit.shorts.entity.Shorts;
 import com.ssafy.crit.shorts.repository.ShortsRepository;
@@ -26,7 +28,7 @@ public class ShortsLikeController {
 
         User user = jwtProvider.extractUser(httpServletRequest);
         Shorts shorts = shortsRepository.findById(shortsId)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 쇼츠룰 찾을 수 없습니다."));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_SHORTS_ID));
         return new Response<>("성공", "좋아요 성공 완료", shortsLikeService.like(user, shorts));
     }
 
@@ -35,7 +37,7 @@ public class ShortsLikeController {
 
         User user = jwtProvider.extractUser(httpServletRequest);
         Shorts shorts = shortsRepository.findById(shortsId)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 쇼츠 X"));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_SHORTS_ID));
         return new Response<>("성공", "좋아요 삭제 완료", shortsLikeService.unlike(user, shorts));
     }
 

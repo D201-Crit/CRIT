@@ -2,6 +2,8 @@ package com.ssafy.crit.auth.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -58,7 +60,7 @@ public class ProfileController {
 		String userId = (String) jwtProvider.get(bearer).get("userId");
 
 		User user = userRepository.findById(userId).orElseThrow(() -> {
-			return new IllegalArgumentException("유저 ID를 찾을수 없습니다.");
+			return new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
 		});
 		return user;
 	}

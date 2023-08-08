@@ -9,6 +9,8 @@ import com.ssafy.crit.boards.repository.CommentRepository;
 import com.ssafy.crit.boards.service.dto.CommentDto;
 import com.ssafy.crit.boards.service.dto.FileResponseDto;
 
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +36,7 @@ public class CommentService {
 
         // 게시판 번호로 게시글 찾기
         Board board = boardRepository.findById(boardId).orElseThrow(() -> {
-             return new IllegalArgumentException("게시판을 찾을 수 없습니다.");
+             return new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_ID);
         });
 
         comment.setUser(user);
@@ -71,11 +73,11 @@ public class CommentService {
     @Transactional
     public String deleteComment(Long commentId, User user) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(()-> {
-            return new IllegalArgumentException("댓글 Id를 찾을 수 없습니다.");
+            return new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_COMMENT);
         });
 
         if(!comment.getUser().getId().equals(user.getId())){
-            throw new IllegalArgumentException("삭제 권한이 없습니다.");
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_AUTHORIZE);
         }
 
         commentRepository.deleteById(commentId);

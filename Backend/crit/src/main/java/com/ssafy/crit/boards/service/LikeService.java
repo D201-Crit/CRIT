@@ -8,6 +8,8 @@ import com.ssafy.crit.boards.entity.board.LikeTable;
 import com.ssafy.crit.boards.repository.LikeRepository;
 import com.ssafy.crit.boards.service.dto.LikeDto;
 
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +29,7 @@ public class LikeService {
 
 	public LikeDto like(User user , Board board) {
 		userRepository.findById(user.getId()).orElseThrow(() -> {
-			return new IllegalArgumentException("아이디를 찾을 수 없습니다.");
+			return new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
 		});
 
 		if (likeRepository.findByUserAndBoard(user, board).isEmpty()) {

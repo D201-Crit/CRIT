@@ -2,6 +2,8 @@ package com.ssafy.crit.shorts.controller;
 
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.jwt.JwtProvider;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.message.response.Response;
 import com.ssafy.crit.shorts.dto.ShortsCommentDto;
 import com.ssafy.crit.shorts.entity.ShortsComment;
@@ -41,7 +43,7 @@ public class ShortsCommentController {
                                      HttpServletRequest httpServletRequest) {
         User user = jwtProvider.extractUser(httpServletRequest);
         ShortsComment shortsComment = shortsCommentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다."));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_SHORTS_COMMENT));
 
         if(user.getId().equals(shortsComment.getUser().getId())){
             return new Response<>("성공", "댓글 삭제 완료", shortsCommentService.deleteComment(commentId));

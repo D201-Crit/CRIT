@@ -10,7 +10,8 @@ import com.ssafy.crit.challenge.entity.IsCert;
 import com.ssafy.crit.challenge.repository.ChallengeRepository;
 import com.ssafy.crit.challenge.repository.ChallengeUserRepository;
 import com.ssafy.crit.challenge.repository.IsCertRepository;
-import com.ssafy.crit.common.exception.BadRequestException;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.common.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +46,7 @@ public class CertService {
     private final S3Uploader s3Uploader;
 
     public IsCert imgCertification(CertImgRequestDto requestDto, User user, MultipartFile file) throws Exception {
-        if (!checkExtension(file)) throw new BadRequestException("이미지 형식이 아닙니다.");
+        if (!checkExtension(file)) throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_IMAGE_TYPE);
 
         Challenge challenge = isChallenge(requestDto.getChallengeId(), Cert.PHOTO, user);
 
@@ -53,7 +54,7 @@ public class CertService {
         // 사진 올린 시간과 현재 시간을 비교
 
         if (Math.abs(Duration.between(LocalTime.now(), challenge.getStartTime()).getSeconds()) > 605) { // 시작 시간이랑  10분이상 차이나는 경우
-            throw new BadRequestException("잘못된 시간에 인증을 요청하였습니다.");
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_CERT_TIME);
         }
 
         // 올바르게 올린경우 사진 저장
@@ -78,7 +79,7 @@ public class CertService {
         log.info("시간: {}", certSeconds);
         if (certSeconds < 0 || certSeconds > 3000) { // 종료 이전에 인증 하였거나
             // 종료 시간에서 10분 이내에 인증한 경우가 아닌 경우
-            throw new BadRequestException("잘못된 시간에 인증을 요청 하였습니다.");
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_CERT_TIME);
         }
 
         // 이탈시간 초단위로 보내줌
@@ -111,11 +112,11 @@ public class CertService {
 
     public List<IsCert> getIsCertList(Long challengeId, User user) {
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(
-                () -> new BadRequestException("해당 챌린지를 찾을 수 없습니다."));
+                () -> new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_ID));
 
         // 유저가 챌린지 참여중인지 확인
         ChallengeUser challengeUser = challengeUserRepository.findByChallengeAndUser(challenge, user).orElseThrow(
-                () -> new BadRequestException("해당 챌린지에 참여 중이지 않습니다."));
+                () -> new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_USER));
 
         return isCertRepository.findAllByChallengeAndUser(challenge, user);
     }
@@ -158,18 +159,18 @@ public class CertService {
     // 챌린지 참여중인지 확인
     private Challenge isChallenge(Long challengeId, Cert cert, User user) {
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(
-                () -> new BadRequestException("해당 챌린지를 찾을 수 없습니다."));
+                () -> new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_ID));
 
-        if (challenge.getCert() != cert) throw new BadRequestException("인증 방식이 잘못 되었습니다.");
+        if (challenge.getCert() != cert) throw new BadRequestException(ErrorCode.NOT_VALID_CHALLENGE_CERT);
 
         // 유저가 챌린지 참여중인지 확인
         ChallengeUser challengeUser = challengeUserRepository.findByChallengeAndUser(challenge, user).orElseThrow(
-                () -> new BadRequestException("해당 챌린지에 참여 중이지 않습니다."));
+                () -> new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_USER));
 
         LocalDate now = LocalDate.now();
         // 챌린지 기간인지 확인
         if (challenge.getStartDate().isAfter(now) || challenge.getEndDate().isBefore(now)) {
-            throw new BadRequestException("해당 챌린지 기간이 아닙니다.");
+            throw new BadRequestException(ErrorCode.NOT_VALID_CHALLENGE_DATE);
         }
 
         return challenge;
@@ -180,7 +181,7 @@ public class CertService {
         LocalDateTime startDatetime = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(23, 59, 59));
         LocalDateTime endDatetime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
         return isCertRepository.findByChallengeAndUserAndCertTimeBetween(challenge, user, startDatetime, endDatetime)
-                .orElseThrow(() -> new BadRequestException("해당 챌린지의 인증을 찾을 수 없습니다."));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_CERT));
 
     }
 }
