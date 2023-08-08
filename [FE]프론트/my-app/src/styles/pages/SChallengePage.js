@@ -189,7 +189,7 @@ export const SSearchSwiper = styled(Swiper)`
   margin: 30px auto 90px;
   height: 600px;
   border: none;
-  rebuildOnUpdate: true
+  rebuildOnUpdate: true;
   ${
     "" /* gap: 20px;
   grid-template-columns: repeat(3, 1fr);
