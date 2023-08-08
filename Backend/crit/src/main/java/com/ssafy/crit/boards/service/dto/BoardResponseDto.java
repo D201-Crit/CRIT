@@ -37,7 +37,6 @@ public class BoardResponseDto {
             .map(like -> like.getUser().getNickname())
             .collect(Collectors.toList());
 
-
         BoardResponseDto boardDto = new BoardResponseDto(
                 board.getId(),
                 board.getTitle(),
