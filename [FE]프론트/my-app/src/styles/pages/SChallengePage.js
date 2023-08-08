@@ -47,6 +47,7 @@ export const SSwiper = styled(Swiper)`
     display: none;
   }
 `;
+SSwiper.displayName = "SwiperWrapper";
 
 export const SSwiperSlide = styled(SwiperSlide)`
   background-color: rgba(22, 22, 22, 22);
@@ -54,7 +55,7 @@ export const SSwiperSlide = styled(SwiperSlide)`
   border-radius: 10px;
   box-shadow: 0px 0px 15px gray;
 `;
-
+SSwiperSlide.displayName = "SwiperSlide";
 export const STopWrapper = styled.div`
   #name {
     position: absolute;
@@ -202,6 +203,7 @@ export const SSearchSwiper = styled(Swiper)`
     width: 100px;
   }
 `;
+SSearchSwiper.displayName = "SwiperWrapper";
 
 export const SSearchSwiperSlide = styled(SwiperSlide)`
   ${"" /* width: 200px; */}
@@ -247,7 +249,7 @@ export const SSearchSwiperSlide = styled(SwiperSlide)`
     font-weight: 600;
   }
 `;
-
+SSearchSwiperSlide.displayName = "SwiperSlide";
 // CreateChallengeModal
 export const customModalStyles = {
   content: {
@@ -677,19 +679,4 @@ export const ParticipationChallengeButton = styled.button`
   // font-weight: 700;
   // border-radius: 10px;
   // border: none;
-`;
-
-export const SSwiperContainer = styled.div`
-  width: 250px;
-  transition: transform 0.5s;
-`;
-export const SSwiperInner = styled.div`
-  width: 100w;
-  display: flex;
-`;
-export const SSwiperItem = styled.div`
-  width: 100%;
-  .non-scroll {
-    overflow: hidden;
-  }
 `;

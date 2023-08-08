@@ -7,6 +7,7 @@ import {
   SLabelImage,
   SBoardImage,
 } from "../../../styles/pages/SDeatilChallengePage";
+import Swal from "sweetalert2";
 const UpdateBoard = ({ boardId, classification, getBoard }) => {
   const user = useSelector((state) => state.users);
   const [image, setImage] = useState(null);
@@ -39,6 +40,7 @@ const UpdateBoard = ({ boardId, classification, getBoard }) => {
     const newContent = e.target.value;
     setBoard((prevBoard) => ({ content: newContent }));
   };
+
   const updateBoard = (e) => {
     e.preventDefault();
 
@@ -78,6 +80,29 @@ const UpdateBoard = ({ boardId, classification, getBoard }) => {
       });
   };
 
+  const onSubmitUpdate = (e) => {
+    e.preventDefault();
+    Swal.fire({
+      position: "center",
+      title: "게시글을 수정하시겠습니까?",
+      text: "수정된 게시글은 되돌릴 수 없습니다.",
+      showCancelButton: true,
+      confirmButtonText: "확인",
+      cancelButtonText: "취소",
+      background: "#272727",
+      color: "white",
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          resolve(); // 확인을 누르면 Promise를 해결합니다.
+        });
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        updateBoard(e); // 이벤트 객체를 전달합니다.
+      }
+    });
+  };
+
   const fileInputRef = useRef(null); // input 태그에 ref 추가
 
   const handleLabelClick = () => {
@@ -85,22 +110,27 @@ const UpdateBoard = ({ boardId, classification, getBoard }) => {
   };
   return (
     <SBoardWriteWrapper>
-      <SUpdateBoardButton onClick={onClickUpdate}>수정</SUpdateBoardButton>
+      {updateCheck ? (
+        <SUpdateBoardButton onClick={onClickUpdate}>취소</SUpdateBoardButton>
+      ) : (
+        <SUpdateBoardButton onClick={onClickUpdate}>수정</SUpdateBoardButton>
+      )}
+
       {updateCheck === true ? (
-        <form id="update" onSubmit={updateBoard}>
+        <form id="update" onSubmit={onSubmitUpdate}>
           <input
             id="content"
             type="textarea"
             value={board.content}
             onChange={onChangeContent}
-            placeholder="수정 할 내용 입력 후 Enter"
           />
-          <SLabelImage onClick={handleLabelClick}>
-            <img
-              src="https://github.com/Jinga02/ChallengePJT/assets/110621233/6eae105c-1d90-4136-93c3-1df5f1c74ac8"
-              alt="이미지 선택"
-            />
-          </SLabelImage>
+          <img
+            id="updateImage"
+            onClick={handleLabelClick}
+            src="https://github.com/Jinga02/ChallengePJT/assets/110621233/6eae105c-1d90-4136-93c3-1df5f1c74ac8"
+            alt="이미지 선택"
+          />
+
           <SBoardImage
             id="img"
             type="file"

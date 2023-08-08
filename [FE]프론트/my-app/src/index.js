@@ -7,6 +7,7 @@ import store from "./store";
 import "./styles/fonts/Font.css";
 import Modal from "react-modal";
 import Token from "./api/Token";
+import "./index.css";
 // import "swiper/css";
 // import "swiper/css/navigation";
 // import "swiper/css/pagination";
@@ -21,6 +22,6 @@ root.render(
   <Provider store={store}>
     <Token />
     <App />
-  </Provider>,
+  </Provider>
 );
 reportWebVitals();

@@ -1,7 +1,9 @@
 import { useSelector } from "react-redux";
 import { api } from "../../../api/api";
-import { useState } from "react";
-import { SLikeBoardButton } from "../../../styles/pages/SDeatilChallengePage";
+import {
+  SLikeBoardButton,
+  SUnLikeBoardButton,
+} from "../../../styles/pages/SDeatilChallengePage";
 
 const LikeBoard = ({ board, getBoard }) => {
   const user = useSelector((state) => state.users);
@@ -38,10 +40,10 @@ const LikeBoard = ({ board, getBoard }) => {
       {board.liked.includes(user.nickname) === false ? (
         <SLikeBoardButton onClick={onLikeBoard}> 좋아요</SLikeBoardButton>
       ) : (
-        <SLikeBoardButton onClick={onUnLikeBoard}>
+        <SUnLikeBoardButton onClick={onUnLikeBoard}>
           {" "}
           좋아요 취소
-        </SLikeBoardButton>
+        </SUnLikeBoardButton>
       )}
     </>
   );

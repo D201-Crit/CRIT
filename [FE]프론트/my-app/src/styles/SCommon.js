@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 
+export const SBody = styled.body``;
 //Nav
 export const SNav = styled.nav`
   display: flex;

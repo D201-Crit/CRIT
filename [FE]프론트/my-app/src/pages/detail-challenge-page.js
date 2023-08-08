@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 const DetailChallengePage = () => {
   const location = useLocation();
-  const challenge = location.state.challenge;
+  const challenge = location.state?.challenge;
   const user = useSelector((state) => state.users);
   const [boards, setBoards] = useState([]);
   // const [loading, setLoading] = useState(false);
