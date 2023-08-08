@@ -104,8 +104,6 @@ const SearchChallenge = ({ allChallenge }) => {
   useEffect(() => {
     categorizeChallenges();
   }, [allChallenge]);
-  
-  SSearchSwiperSlide.displayName = 'SwiperSlide';
 
   return (
     <SSearchChallengeWrapper>
