@@ -5,7 +5,7 @@ import { SCalendarwrapper } from "../../../styles/pages/SChallengePage";
 
 const ChallengeCalendar = ({ onChangeDate }) => {
   const currentDate = new Date();
-  const sevenDaysAfter = moment(currentDate).add(7, "days").toDate();
+  const sevenDaysAfter = moment(currentDate).add(0, "days").toDate();
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);

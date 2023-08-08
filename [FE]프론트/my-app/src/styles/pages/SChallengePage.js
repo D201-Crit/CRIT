@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-
 // ChallengPage
 export const SCreateChallengeWrapper = styled.div`
   width: 1200px;
@@ -50,7 +49,7 @@ export const SSwiper = styled(Swiper)`
 `;
 SSwiper.displayName = "SwiperWrapper";
 
-SSwiper.displayName = 'SwiperWrapper';
+SSwiper.displayName = "SwiperWrapper";
 
 export const SSwiperSlide = styled(SwiperSlide)`
   background-color: rgba(22, 22, 22, 22);
@@ -58,13 +57,7 @@ export const SSwiperSlide = styled(SwiperSlide)`
   border-radius: 10px;
   box-shadow: 0px 0px 15px gray;
 `;
-<<<<<<< HEAD
 SSwiperSlide.displayName = "SwiperSlide";
-=======
-
-SSwiperSlide.displayName = 'SwiperSlide';
-
->>>>>>> 4cd97eeed499b728ba6195cf7fe5f6c170cd4dbe
 export const STopWrapper = styled.div`
   #name {
     position: absolute;
@@ -214,7 +207,7 @@ export const SSearchSwiper = styled(Swiper)`
 `;
 SSearchSwiper.displayName = "SwiperWrapper";
 
-SSearchSwiper.displayName = 'SwiperWrapper';
+SSearchSwiper.displayName = "SwiperWrapper";
 
 export const SSearchSwiperSlide = styled(SwiperSlide)`
   ${"" /* width: 200px; */}

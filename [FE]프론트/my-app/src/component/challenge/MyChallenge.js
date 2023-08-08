@@ -10,6 +10,8 @@ import "swiper/css/effect-cards";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../api/api";
+import VideoRoomComponent from "../room/VideoRoomComponent";
+import Modal from "react-modal";
 
 // 스타일
 import {
@@ -18,6 +20,7 @@ import {
   STopWrapper,
   SMidWrapper,
   SBotWrapper,
+  customModalStyles,
 } from "../../styles/pages/SChallengePage";
 import { useSelector } from "react-redux";
 import { SImg } from "./../../styles/pages/SChallengePage";
@@ -30,6 +33,16 @@ const MyChallenge = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
+  const [challengeData, setChallengeData] = useState(null); // 모달에 전달할 데이터 state 추가
+
+  const openModal = (challenge) => {
+    setChallengeData({ challenge, user }); // 모달에 전달할 데이터를 state에 저장
+    setIsOpen(true);
+  };
+  const closeModal = () => {
+    setIsOpen(false);
+  };
   const getMyChallenge = () => {
     api
       .get("https://i9d201.p.ssafy.io/api/challenge/list/mine", {
@@ -85,7 +98,7 @@ const MyChallenge = () => {
     const daysInProgress = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
 
     return daysInProgress >= 0
-      ? `현재 ${daysInProgress}일째 참여 중`
+      ? `현재 ${daysInProgress + 1}일째 참여 중`
       : `D-day ${Math.abs(daysInProgress)}일`;
   };
 
@@ -135,7 +148,9 @@ const MyChallenge = () => {
                 </SMidWrapper>
                 <SBotWrapper>
                   <p id="people">{challenge.userList.length}명 참여 중</p>
-                  <button id="enter">입장하기</button>
+                  <button id="enter" onClick={() => openModal(challenge)}>
+                    입장하기
+                  </button>
                   <button
                     id="detail"
                     onClick={() => detailClick(challenge)} // 수정된 부분
@@ -151,6 +166,14 @@ const MyChallenge = () => {
           })}
         </SSwiper>
       )}
+      <Modal
+        style={customModalStyles}
+        isOpen={isOpen}
+        onRequestClose={closeModal}
+      >
+        {/* 모달 내부에서 VideoRoomComponent 사용 */}
+        <VideoRoomComponent challengeData={challengeData} />
+      </Modal>
     </>
   );
 };
