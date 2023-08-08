@@ -1,5 +1,7 @@
 package com.ssafy.crit.admin;
 
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +15,6 @@ import com.ssafy.crit.auth.entity.enumType.Grade;
 import com.ssafy.crit.auth.entity.enumType.Role;
 import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.repository.UserRepository;
-import com.ssafy.crit.common.exception.BadRequestException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,12 +52,12 @@ public class AdminService {
 	public AdminLogInResponseDto logIn(AdminLoginRequestDto adminLogInRequestDto) throws Exception{
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		if (!adminRepository.existsById(adminLogInRequestDto.getId())) {
-			throw new BadRequestException("존재하지 않는 아이디입니다.");
+			throw new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
 		}
 
 		SuperAdmin superAdmin = adminRepository.findById(adminLogInRequestDto.getId()).get();
 		if (!bCryptPasswordEncoder.matches(adminLogInRequestDto.getPassword(), superAdmin.getPassword())) {
-			throw new BadRequestException("존재하지 않는 비밀번호입니다.");
+			throw new BadRequestException(ErrorCode.NOT_EXISTS_USER_PASSWORD);
 		}
 
 		// 토큰 발급
