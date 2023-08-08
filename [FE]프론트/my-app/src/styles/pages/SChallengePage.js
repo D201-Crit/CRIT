@@ -142,23 +142,30 @@ export const SSearchChallengeWrapper = styled.div`
 export const SInput = styled.input`
   background-color: rgba(22, 22, 22, 0.599);
   color: white;
-  width: 1200px;
+  width: 1000px;
   border: none;
   border-radius: 10px;
+
   padding: 13px;
   font-size: 18px;
   font-weight: 500;
   font-family: "Pretendard";
 
   & + hr {
-    width: 1200px;
+    width: 1000px;
     border: none;
     height: 0.5px;
     background-color: #ccc;
   }
+
+  &::placeholder {
+    font-weight: 800;
+    font-size: 20px;
+  }
 `;
 export const SCategoryWrapper = styled.div`
-  width: 1200px;
+  width: 1000px;
+  margin: 0 auto 50px;
   ul {
     display: flex;
     list-style: none;
@@ -167,7 +174,10 @@ export const SCategoryWrapper = styled.div`
   a {
     margin: 0 20px 0 0;
     cursor: pointer;
+    font-size: 18px;
+    font-weight: 800;
     color: gray;
+
     &:hover {
       color: #ff007a;
     }
@@ -175,27 +185,31 @@ export const SCategoryWrapper = styled.div`
 `;
 
 export const SSearchSwiper = styled(Swiper)`
-  width: 1200px;
-  margin: 30px auto 50px;
+  width: 1100px;
+  margin: 30px auto 90px;
   height: 600px;
-  ${"" /* padding: 10px; */}
   border: none;
-  gap: 20px;
+  ${
+    "" /* gap: 20px;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr); */
+  }
   .swiper-button-next::after,
   .swiper-button-prev::after {
     display: none;
   }
+  .swiper-slide.sc-fMhgLX.ftUpPP.swiper-slide-active {
+    width: 100px;
+  }
 `;
 
 export const SSearchSwiperSlide = styled(SwiperSlide)`
-  text-align: center;
+  ${"" /* width: 200px; */}
   height: calc((100% - 20px) / 2) !important;
   transition: background-color 0.25s ease-in-out, box-shadow 0.3s ease-in-out; // Added 's' to seconds
-  // webkit-tap-highlight-color: red;
   margin: 5px;
   border-radius: 10px;
+
   &:hover {
     background-color: rgba(
       28,
@@ -208,10 +222,10 @@ export const SSearchSwiperSlide = styled(SwiperSlide)`
   img {
     position: absolute;
     top: 80px;
-    left: 30px;
+    left: 80px;
     width: 120px;
     height: 120px;
-    margin: 10px 25px 0px 25px;
+    ${"" /* margin: 10px 25px 0px 25px; */}
     border-radius: 10px;
   }
   h2 {
@@ -223,7 +237,7 @@ export const SSearchSwiperSlide = styled(SwiperSlide)`
     width: 150px;
     height: 40px;
     top: 230px;
-    left: 43px;
+    left: 65px;
     border: 0.2px solid gray;
     border-radius: 10px;
     cursor: pointer;
@@ -663,4 +677,19 @@ export const ParticipationChallengeButton = styled.button`
   // font-weight: 700;
   // border-radius: 10px;
   // border: none;
+`;
+
+export const SSwiperContainer = styled.div`
+  width: 250px;
+  transition: transform 0.5s;
+`;
+export const SSwiperInner = styled.div`
+  width: 100w;
+  display: flex;
+`;
+export const SSwiperItem = styled.div`
+  width: 100%;
+  .non-scroll {
+    overflow: hidden;
+  }
 `;

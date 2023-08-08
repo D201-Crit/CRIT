@@ -13,14 +13,15 @@ import UpdateBoard from "./UpdateBoard";
 const ShowBoard = ({ boards, challenge, getBoard }) => {
   const user = useSelector((state) => state.users);
   console.log(boards);
-  console.log(boards);
+  const reversedBoards = boards.slice().reverse();
+
   return (
     <SBoardWrapper>
       <CreateBoard
         getBoard={getBoard}
         classification={challenge.classification}
       />
-      {boards.map((board) => (
+      {reversedBoards.map((board) => (
         <SBoardLi key={board.id}>
           <p id="writer">{board.writer}</p>
           <div>
@@ -31,6 +32,7 @@ const ShowBoard = ({ boards, challenge, getBoard }) => {
                 <UpdateBoard
                   boardId={board.id}
                   classification={challenge.classification}
+                  getBoard={getBoard}
                 />
               </SSpan>
             ) : (

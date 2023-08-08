@@ -27,7 +27,7 @@ const SearchChallenge = ({ allChallenge }) => {
 
   const onSearchChallenge = () => {
     const filterChallenge = allChallenge.filter((challenge) =>
-      challenge.name.includes(title),
+      challenge.name.includes(title)
     );
     if (filterChallenge.length === 0) {
       Swal.fire({
@@ -49,16 +49,16 @@ const SearchChallenge = ({ allChallenge }) => {
 
   const categorizeChallenges = () => {
     const studyChallenges = allChallenge.filter(
-      (challenge) => challenge.category === "공부",
+      (challenge) => challenge.category === "공부"
     );
     const sportChallenges = allChallenge.filter(
-      (challenge) => challenge.category === "운동",
+      (challenge) => challenge.category === "운동"
     );
     const bookChallenges = allChallenge.filter(
-      (challenge) => challenge.category === "독서",
+      (challenge) => challenge.category === "독서"
     );
     const stretchingChallenges = allChallenge.filter(
-      (challenge) => challenge.category === "스트레칭",
+      (challenge) => challenge.category === "스트레칭"
     );
 
     setStudy(studyChallenges);
@@ -110,7 +110,7 @@ const SearchChallenge = ({ allChallenge }) => {
         value={title}
         onChange={onChangeTitle}
         onKeyDown={handleKeyPress}
-        placeholder="검색어를 입력하세요."
+        placeholder="검색어 입력 후 Enter키를 눌러주세요."
       />
       <hr />
       <SCategoryWrapper>
@@ -122,7 +122,6 @@ const SearchChallenge = ({ allChallenge }) => {
           <a onClick={() => handleCategoryClick("독서")}>독서</a>
         </ul>
       </SCategoryWrapper>
-
       <SSearchSwiper
         slidesPerView={4}
         grid={{
