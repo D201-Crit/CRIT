@@ -163,14 +163,15 @@ public class ChallengeService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Scheduled(cron = "0 0 0 * * *")
-    public void dailyChallengeCheck() throws Exception {  // 챌린지 완성 기한에 다다른 챌린지들 체크하고 생성하기
+    public void dailyChallengeCheck() throws Exception {  // 챌린지 완성 기한에 다다른 챌린지들 체크하 고 생성하기
         // 내일 시작인 챌린지들 다 불러오기
         List<Challenge> beCreatedChallengeList = challengeRepository.findAllByStartDate(LocalDate.now().plusDays(1));
         // 어제 끝난 챌린지 불러오기
         List<Challenge> finishedChallengeList = challengeRepository.findAllByEndDate(LocalDate.now().minusDays(1));
 
         for (Challenge challenge : beCreatedChallengeList) { // 챌린지 보고 인원수 꽉찬거 통과
-            if (challenge.getChallengeUserList().size() == challenge.getPeople()) {
+            if (challenge.getChallengeStatus() == ChallengeStatus.WAIT && // 대기 상태이고
+                    challenge.getChallengeUserList().size() == challenge.getPeople()) {
                 challenge.setChallengeStatus(ChallengeStatus.PROGRESS);
             } else { // 인원수 다 안차면 거절
                 challenge.setChallengeStatus(ChallengeStatus.REJECT);
@@ -178,7 +179,9 @@ public class ChallengeService {
         }
 
         for (Challenge challenge : finishedChallengeList) { // 끝난거 종료시키기
-            challenge.setChallengeStatus(ChallengeStatus.END);
+            if(challenge.getChallengeStatus() == ChallengeStatus.PROGRESS) { // 진행 중인거 종료 시키기
+                challenge.setChallengeStatus(ChallengeStatus.END);
+            }
         }
 
     }
