@@ -125,14 +125,13 @@ public class BoardService {
 						.build();
 
 					uploadFileRepository.save(uploadFile);
-
 					storeFileResult.add(uploadFiles);
 				}
 			}
 		
 		return BoardSaveResponseDto.builder()
 			.id(board.getId())
-			.title(boardSaveRequestDto.getTitle())
+			.title(title)
 			.content(boardSaveRequestDto.getContent())
 			.writer(user.getNickname())
 			.classification(classification.getCategory())
