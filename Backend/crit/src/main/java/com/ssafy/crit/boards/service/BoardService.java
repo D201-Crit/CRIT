@@ -132,7 +132,7 @@ public class BoardService {
 		
 		return BoardSaveResponseDto.builder()
 			.id(board.getId())
-			.title(boardSaveRequestDto.getTitle())
+			.title(title)
 			.content(boardSaveRequestDto.getContent())
 			.writer(user.getNickname())
 			.classification(classification.getCategory())
