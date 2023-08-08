@@ -104,6 +104,7 @@ const SearchChallenge = ({ allChallenge }) => {
   useEffect(() => {
     categorizeChallenges();
   }, [allChallenge]);
+
   return (
     <SSearchChallengeWrapper>
       <SInput
