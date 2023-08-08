@@ -50,6 +50,12 @@ public class UserService {
         if (userRepository.findById(signUpRequestDto.getId()).isPresent()) {
             throw new BadRequestException(ErrorCode.ALREADY_REGISTERED_USER_ID);
         }
+
+        if(signUpRequestDto.getNickname().toLowerCase().contains("admin") ||
+            signUpRequestDto.getId().toLowerCase().contains("admin")){
+            throw new BadRequestException("admin이 들어가지 않도록 아이디를 다시 만들어주세요.");
+        }
+
         User user = User.builder()
                 .id(signUpRequestDto.getId())
                 .email(signUpRequestDto.getEmail())
@@ -99,13 +105,14 @@ public class UserService {
     }
 
     @Transactional(propagation= Propagation.REQUIRES_NEW)
-    @Scheduled(cron = "0 0 12 * * ?")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void resetIsChecked() {
         List<User> allUsers = userRepository.findAll();
         for(User user : allUsers) {
+            System.out.println(user.getId());
             user.setIsChecked(false);
         }
-        userRepository.saveAll(allUsers);
+        userRepository.saveAllAndFlush(allUsers);
     }
 
 
@@ -183,5 +190,9 @@ public class UserService {
     private static Boolean getValid(Optional<User> user, String userinfo) {
         if (userinfo.toLowerCase().contains("admin")) return false;
         return !user.isPresent();
+    }
+
+    public User getUserProfile(User user){
+        return userRepository.findById(user.getId()).orElseThrow();
     }
 }

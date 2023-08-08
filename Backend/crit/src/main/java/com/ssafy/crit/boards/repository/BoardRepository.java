@@ -1,5 +1,7 @@
 package com.ssafy.crit.boards.repository;
 
+import java.util.List;
+
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.boards.entity.Classification;
 import com.ssafy.crit.boards.entity.board.Board;
@@ -36,6 +38,9 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     @Query("select b from Board b where b.classification.category = :category")
     Page<Board> findAllByClassificationCategory(Pageable pageable, @Param("category") String category);
+
+    @Query("select b from Board b where b.classification.category = :category")
+    List<Board> findAllByCategory(@Param("category") String category);
 
     Page<Board> findByClassificationAndUser(Pageable pageable, Classification classification, User user);
 

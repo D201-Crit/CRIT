@@ -7,6 +7,7 @@ import com.ssafy.crit.common.error.exception.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,6 +46,12 @@ public class ProfileController {
 	public Response<?> follow(@RequestBody FollowRequestDto followRequestDto, HttpServletRequest httpServletRequest) {
 		User user = getUser(httpServletRequest);
 		return new Response<>("true","follow 성공",userService.follow(followRequestDto));
+	}
+
+	@GetMapping("/myProfile")
+	public Response<?> getUserProfile(HttpServletRequest httpServletRequest){
+		User user = getUser(httpServletRequest);
+		return new Response<>("성공", "프로필 불러오기 성공", userService.getUserProfile(user));
 	}
 
 	private User getUser(HttpServletRequest httpServletRequest) {

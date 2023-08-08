@@ -52,6 +52,12 @@ public class BoardController {
 		return new Response<>("성공", "전체 게시물 리턴", boardService.getWholeBoards(pageable));
 	}
 
+	@GetMapping("/challengeWhole/{category_id}")
+	public Response<?> getChallengeBoards(@PathVariable("category_id") String category) {
+		return new Response<>("성공", "전체 챌린지 게시물 리턴",
+			boardService.getWholeChallengeBoards(category));
+	}
+
 	// 개별 게시글 조회
 	@GetMapping("/{id}")
 	public Response<?> getBoard(@PathVariable("id") Long id) {
@@ -61,17 +67,16 @@ public class BoardController {
 	// 게시글 작성
 	@PostMapping(value = "/write", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
 	public Response<?> write(@RequestPart BoardSaveRequestDto boardSaveRequestDto, HttpServletRequest httpServletRequest,
-							 @RequestPart(value = "file") List<MultipartFile> multipartFiles) throws IOException {
+							 @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) throws IOException {
 
 		User user = getUser(httpServletRequest);
-		log.info("userId={}", user);
 
 		return new Response<>("성공", "글 작성 성공", boardService.write(multipartFiles, boardSaveRequestDto, user));
 	}
 
 	// 게시글 수정
 	@PatchMapping(value = "/update/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-	public Response<?> edit(@RequestPart BoardResponseDto boardDto, @PathVariable("id") Long id,
+	public Response<?> edit(@RequestPart(value = "boardDto") BoardResponseDto boardDto, @PathVariable("id") Long id,
 							HttpServletRequest httpServletRequest,
 							@RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) throws IOException {
 
@@ -118,13 +123,6 @@ public class BoardController {
 		Page<BoardShowSortDto> boards = boardService.findByTitleContaining(part, pageable);
 		return new Response<>("성공", "포함된 단어 찾기", boards);
 	}
-
-//	@GetMapping("/myBoards")
-//	public Response<?> getMyBoards(String classification, HttpServletRequest httpServletRequest, Pageable pageable){
-//		User user = getUser(httpServletRequest);
-//		Page<BoardShowSortDto> allByUserAndClassification = boardService.findAllByUserAndClassification(classification, user, pageable);
-//		return new Response<>("성공", "분류 별 내가 쓴 게시판 찾기", allByUserAndClassification);
-//	}
 
 	@GetMapping("/classificationOfMyBoards")
 	public Response<?> getMyBoardsClassification(@RequestParam("classification") String classificationString, HttpServletRequest httpServletRequest, Pageable pageable){

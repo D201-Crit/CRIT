@@ -40,7 +40,6 @@ spring:
         format_sql: true
 
 
-
   security:
     oauth2:
       client:

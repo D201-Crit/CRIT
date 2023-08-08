@@ -93,7 +93,6 @@ public class S3Uploader {
             FrameGrab grab = FrameGrab.createFrameGrab(fileChannelWrapper);
             Picture picture = grab.seekToSecondPrecise(1.0).getNativeFrame();
             BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
-
             int width = bufferedImage.getWidth();
             int height = bufferedImage.getHeight();
             BufferedImage outputImage = new BufferedImage(height, width, bufferedImage.getType());

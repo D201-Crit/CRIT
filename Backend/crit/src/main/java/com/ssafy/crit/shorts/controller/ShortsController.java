@@ -21,7 +21,7 @@ public class ShortsController {
     private final JwtProvider jwtProvider;
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public Response<?> create(@RequestPart(value="shortsDto") ShortsDto shortsDto, @RequestPart(value="file", required = false) MultipartFile file, HttpServletRequest request) throws Exception {
+    public Response<?> create(@RequestPart(value="shortsDto") ShortsDto shortsDto, @RequestPart(value="file") MultipartFile file, HttpServletRequest request) throws Exception {
         User user = jwtProvider.extractUser(request);
         return new Response<>("성공", "쇼츠 생성 완료", shortsService.create(shortsDto, file, user));
     }
