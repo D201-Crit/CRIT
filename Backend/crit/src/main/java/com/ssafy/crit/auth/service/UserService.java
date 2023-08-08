@@ -72,6 +72,7 @@ public class UserService {
     }
 
     public LogInResponseDto logIn(LogInRequestDto logInRequestDto) throws Exception{
+        log.info("===========================================TEST===========================================");
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         if (!userRepository.existsById(logInRequestDto.getId())) {
             log.info("Test");
