@@ -67,6 +67,8 @@ dependencies {
 	//junit 5를 쓰기 위한 설정
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+
+		implementation 'commons-fileupload:commons-fileupload:1.3'
 	}
 
 }
