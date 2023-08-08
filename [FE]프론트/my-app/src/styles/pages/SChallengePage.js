@@ -189,6 +189,7 @@ export const SSearchSwiper = styled(Swiper)`
   margin: 30px auto 90px;
   height: 600px;
   border: none;
+  rebuildOnUpdate: true
   ${
     "" /* gap: 20px;
   grid-template-columns: repeat(3, 1fr);
@@ -209,7 +210,7 @@ export const SSearchSwiperSlide = styled(SwiperSlide)`
   transition: background-color 0.25s ease-in-out, box-shadow 0.3s ease-in-out; // Added 's' to seconds
   margin: 5px;
   border-radius: 10px;
-
+  rebuildOnUpdate: true;
   &:hover {
     background-color: rgba(
       28,
