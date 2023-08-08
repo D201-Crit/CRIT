@@ -32,6 +32,8 @@ public enum ErrorCode {
     ALREADY_REGISTERED_USER_ID(HttpStatus.BAD_REQUEST, "U-006", "이미 존재하는 유저 아이디입니다."),
     NOT_EXISTS_USER_PASSWORD(HttpStatus.BAD_REQUEST, "U-007", "존재하지 않는 유저 비밀번호입니다."),
     INVALID_USER_DATA(HttpStatus.BAD_REQUEST, "U-008", "잘못된 유저 정보입니다."),
+    NOT_EXISTS_FOLLOWER(HttpStatus.BAD_REQUEST, "U-009", "존재하지 않는 팔로워입니다."),
+    NOT_EXISTS_FOLLOWING(HttpStatus.BAD_REQUEST, "U-010", "존재하지 않는 팔로윙입니다."),
 
     // 게시판
     NOT_EXISTS_BOARD_ID(HttpStatus.BAD_REQUEST, "B-001", "존재하지 않는 게시판 아이디입니다."),

@@ -113,7 +113,7 @@ public class UserService {
     public UpdateProfilePictureDto updateProfilePicture(MultipartFile multipartFile, String userId) throws IOException {
 
         User user = userRepository.findById(userId).orElseThrow(
-            () -> new IllegalArgumentException("아이디 " + userId + "를 찾을 수 없습니다.")
+            () -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
         );
 
         String upload = s3Uploader.uploadFiles(multipartFile, "Profile");
@@ -141,9 +141,9 @@ public class UserService {
         System.out.println("in getAccessToken " + userId + "  " + provider);
 
         if(!userRepository.existsByIdAndAuthProvider(userId, AuthProvider.findByCode(provider.toLowerCase()))){
-            throw new BadRequestException("CANNOT_FOUND_USER");
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
         } else if (jwtProvider.isExpiration(refreshToken)) {
-            throw new BadRequestException("TOKEN_EXPIRED");
+            throw new BadRequestException(ErrorCode.TOKEN_EXPIRED);
         }
 
         return jwtProvider.createAccessToken(userId, AuthProvider.findByCode(provider));
@@ -151,9 +151,9 @@ public class UserService {
 
     public UserResponseDto follow(FollowRequestDto followRequestDto) {
         User user1 = userRepository.findById(followRequestDto.getFollowerId())
-            .orElseThrow(() -> new IllegalArgumentException("User with nickname " + followRequestDto.getFollowerId() + " does not exist."));
+            .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_FOLLOWER));
         User user2 = userRepository.findById(followRequestDto.getFollowingId())
-            .orElseThrow(() -> new IllegalArgumentException("User with nickname " + followRequestDto.getFollowingId() + " does not exist."));
+            .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_FOLLOWING));
         Optional<Follow> optionalFollow = followRepository.findByFollowerAndFollowing(user1,user2);
 
         if (optionalFollow.isEmpty()) {
