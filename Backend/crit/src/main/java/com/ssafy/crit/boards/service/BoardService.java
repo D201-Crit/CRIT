@@ -19,7 +19,6 @@ import com.ssafy.crit.boards.service.dto.BoardSaveResponseDto;
 import com.ssafy.crit.boards.service.dto.BoardShowSortDto;
 import com.ssafy.crit.common.error.code.ErrorCode;
 import com.ssafy.crit.common.error.exception.BadRequestException;
-import com.ssafy.crit.common.exception.BadRequestException;
 import com.ssafy.crit.common.global.BannedWords;
 import com.ssafy.crit.common.s3.S3Uploader;
 

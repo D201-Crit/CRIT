@@ -98,16 +98,14 @@ public class FeedService {
 	public Page<FileResponseDto> getFeeds(Pageable pageable, User user) {
 		User referenceById = userRepository.getReferenceById(user.getId());
 
-public Page<FileResponseDto> getFeeds(Pageable pageable, User user){
-	User referenceById = userRepository.getReferenceById(user.getId());
-
-	if(user.getId().equals(referenceById.getId())) {
-		Optional<Classification> feeds = classificationRepository.findByCategory("Feeds");
-		if(feeds.isPresent()) {
-			Page<Board> byClassification = boardRepository.findByClassificationAndUser(pageable, feeds.get(), user);
-			return getFileResponseDto(byClassification);
-		} else {
-			throw new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_FEEDS);
+		if (user.getId().equals(referenceById.getId())) {
+			Optional<Classification> feeds = classificationRepository.findByCategory("Feeds");
+			if (feeds.isPresent()) {
+				Page<Board> byClassification = boardRepository.findByClassificationAndUser(pageable, feeds.get(), user);
+				return getFileResponseDto(byClassification);
+			} else {
+				throw new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_FEEDS);
+			}
 		}
 		return null;
 	}

@@ -53,7 +53,7 @@ public class UserService {
 
         if(signUpRequestDto.getNickname().toLowerCase().contains("admin") ||
             signUpRequestDto.getId().toLowerCase().contains("admin")){
-            throw new BadRequestException("admin이 들어가지 않도록 아이디를 다시 만들어주세요.");
+            throw new BadRequestException(ErrorCode.INVALID_ADMIN);
         }
 
         User user = User.builder()
