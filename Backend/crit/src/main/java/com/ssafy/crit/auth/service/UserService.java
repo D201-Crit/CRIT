@@ -72,10 +72,8 @@ public class UserService {
     }
 
     public LogInResponseDto logIn(LogInRequestDto logInRequestDto) throws Exception{
-        log.info("===========================================TEST===========================================");
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         if (!userRepository.existsById(logInRequestDto.getId())) {
-            log.info("Test");
             throw new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
         }
         User user = userRepository.findById(logInRequestDto.getId()).get();
