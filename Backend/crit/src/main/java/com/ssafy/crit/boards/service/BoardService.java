@@ -125,7 +125,6 @@ public class BoardService {
 						.build();
 
 					uploadFileRepository.save(uploadFile);
-
 					storeFileResult.add(uploadFiles);
 				}
 			}
