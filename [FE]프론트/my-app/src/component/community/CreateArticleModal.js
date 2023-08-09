@@ -30,12 +30,12 @@ const CreateArticleModal = ({ classification, setModal, fetchArticles}) => {
 
   const writeArticle = (e) => {
     e.preventDefault();
-  
     const formData = new FormData();
-  
     // 이미지가 없을 경우 빈 배열을 전달하려면 다음과 같이 작성하십시오.
     if (images.length === 0) {
-      formData.append("file", new Blob([], { type: "application/json" }));
+      // return
+        formData.append("file", "");
+      // formData.append("file", new Blob([], { type: "application/json" }));
     } else {
       images.forEach((imageObj) => {
         formData.append("file", imageObj.file);
@@ -56,6 +56,8 @@ const CreateArticleModal = ({ classification, setModal, fetchArticles}) => {
       .then(() => {
         setModal(false);
         fetchArticles();
+        console.log("게시글 작성성공");
+
       })
       .catch(() => {
         console.log("게시글 작성실패");
