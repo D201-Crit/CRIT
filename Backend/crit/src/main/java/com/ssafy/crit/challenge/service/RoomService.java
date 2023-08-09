@@ -27,6 +27,7 @@ public class RoomService {
      * */
     public String initializeSession(User user, Map<String, Object> params, OpenVidu openVidu) throws Exception {
         // 세션 아이디와 유저 정보를 가지고 해당 유저가 챌린지에 해당하는지 확인
+        log.info("initializeSession !!!!");
         String customSessionId = String.valueOf(params.get("customSessionId"));
         log.info("CustomSessionId {}", customSessionId);
         isInChallenge(customSessionId, user);
