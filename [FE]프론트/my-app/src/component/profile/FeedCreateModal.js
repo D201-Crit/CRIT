@@ -1,21 +1,33 @@
 import React, { useState } from "react";
 import "./FeedCreateModal.css";
+import { api } from '../../api/api';
+import { useSelector } from "react-redux";
 
-const FeedCreateModal = ({ addPost, setIsCreateModalOpen }) => {
-  const [postContent, setPostContent] = useState("");
-  const [postImage, setPostImage] = useState(null);
+const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/feeds';
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (postContent === "") return;
-    addPost(postContent, postImage);
-    setPostContent("");
-    setPostImage(null);
+const FeedCreateModal = ({ setIsCreateModalOpen }) => {
+  const user = useSelector((state) => state.users);
+  const [feedContent, setFeedContent] = useState({
+    content: "",
+    userName: user.nickname,
+    classification: "Feeds",     
+  });
+
+  const [feedImage, setFeedImage] = useState([]);
+
+  // 이미지 첨부 처리
+  const onFeedImage = (e) => {
+    const imageList = e.target.files;
+    let imageObjList = [];
+  
+    for (let i = 0; i < imageList.length; i++) {
+      const imageUrl = URL.createObjectURL(imageList[i]);
+      imageObjList.push({ url: imageUrl, file: imageList[i] });
+    }
+  
+    setFeedImage(imageObjList);
   };
-
-  const handleFileChange = (e) => {
-    setPostImage(URL.createObjectURL(e.target.files[0]));
-  };
+  
 
   const handleOutsideClick = (e) => {
     if (e.target.className === "modal-overlay") {
@@ -23,25 +35,83 @@ const FeedCreateModal = ({ addPost, setIsCreateModalOpen }) => {
     }
   };
 
-  return (
-    <div onClick={handleOutsideClick} className="modal-overlay">
-      <div className="FeedCreateModal">
-        <form onSubmit={handleSubmit}>
+
+  const feedCreate = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+  
+    // 이미지가 없을 경우 빈 배열을 전달하려면 다음과 같이 작성하십시오.
+    if (feedImage.length === 0) {
+      formData.append("file", new Blob([], { type: "application/json" }));
+    } else {
+      feedImage.forEach((imageObj) => {
+        formData.append("file", imageObj.file);
+      });
+    }
+  
+    formData.append(
+      "fileResponseDto",
+      new Blob([JSON.stringify(feedContent)], { type: "application/json" })
+    );
+    
+    api
+      .post(`${API_BASE_URL}/create`, formData, {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then(() => {
+        setIsCreateModalOpen(false);
+        setFeedContent("");
+        setFeedImage(null);
+      })
+      .catch(() => {
+        console.log("게시글 작성실패");
+      });
+  };
+
+  const handleFeedChange = (event) => {
+    const { name, value } = event.target;
+    setFeedContent({
+      ...feedContent,
+      [name]: value,
+    });
+  };
+
+
+
+    return (
+      <div onClick={handleOutsideClick} className="modal-overlay">
+        <div className="FeedCreateModal">
+        <form onSubmit={feedCreate}>
           <input
-            type="text"
-            placeholder="글 작성..."
-            value={postContent}
-            onChange={(e) => setPostContent(e.target.value)}
-          />
-          <input type="file" accept="image/*" onChange={handleFileChange} />
-          <button type="submit">게시물 작성</button>
-          <button type="button" onClick={() => setIsCreateModalOpen(false)}>
-            취소
-          </button>
+            name="content"
+            type="textarea"
+            value={feedImage.content}
+            onChange={handleFeedChange}
+          ></input>
+          <input type="file" multiple onChange={onFeedImage} />
+          {/* 선택된 이미지 불러오기 */}
+          {feedImage.map((imageObj, index) => (
+            <img
+              key={index}
+              src={imageObj.url}
+              alt={`Image ${index + 1}`}
+              style={{ maxWidth: "100px", maxHeight: "px", margin: "5px" }}
+            />
+          ))}
+          <input type="submit" value={"작성완료"}></input>
         </form>
-      </div>
-    </div>
-  );
-};
+        </div>
+      </div>   
+    );
+  };
+
+
+
+
+  
+
 
 export default FeedCreateModal;

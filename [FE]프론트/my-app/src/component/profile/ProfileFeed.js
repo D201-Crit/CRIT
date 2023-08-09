@@ -1,55 +1,43 @@
-import React, { useState } from "react";
 import {SFeedButton,Empty, SFeedArea, SFeedBox, SPost} from "../../styles/pages/SProfilePage";
 import FeedCreateModal from "./FeedCreateModal";
 import FeedModifyModal from "./FeedModifyModal";
+import { useSelector } from "react-redux";
+import React, { useState, useEffect  } from "react";
+import { api } from '../../api/api';
+const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/feeds';
 
 const Feed = () => {
+  const user = useSelector((state) => state.users);
+  
   // 초기 게시물 상태 설정
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      imageUrl: "https://github.com/Jinga02/Review/assets/110621233/e8edd4c4-dd18-42d8-904c-4a04c6618018",
-      content: "첫 번째 게시물입니다.",
-    },
-    {
-      id: 2,
-      imageUrl: "https://github.com/Jinga02/Review/assets/110621233/e8edd4c4-dd18-42d8-904c-4a04c6618018",
-      content: "두 번째 게시입니다.",
-    },
-  ]);
-
+  const [feeds, setFeeds] = useState([]);
+  
   // 수정중인 게시물 아이디 상태 설정
-  const [editingPostId, setEditingPostId] = useState(null);
-
+  const [editingFeedId, setEditingFeedId] = useState(null);
+  
   // 작성 모달 상태 설정
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  
+  // 피드 불러오기
+  const getFeeds = () => { 
+      api.get(`${API_BASE_URL}/whole`, {
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+    .then((res) => {
+      setFeeds(res.data.data.content);
+      console.log("피드받아오냐?",res);
 
-  // 새 게시물 추가 함수
-  const addPost = (content, imageFile) => {
-    const newPost = {
-      id: Math.random().toString(36).substr(2, 9),
-      imageUrl: imageFile || "https://github.com/Jinga02/Review/assets/110621233/e8edd4c4-dd18-42d8-904c-4a04c6618018",
-      content,
-    };
-    setPosts([newPost, ...posts]);
-    setIsCreateModalOpen(false);
+    })
+    .catch((error) => {
+      console.log("피드에러받아오냐?",error)
+    })
   };
 
-  // 게시물 수정 함수
-  const updatePost = (postId, newContent, newImage) => {
-    const updatedPosts = posts.map((post) =>
-      post.id === postId
-        ? { ...post, content: newContent, imageUrl: newImage || post.imageUrl }
-        : post
-    );
-    setPosts(updatedPosts);
-  };
-
-  // 게시물 삭제 함수
-  const deletePost = (postId) => {
-    const updatedPosts = posts.filter((post) => post.id !== postId);
-    setPosts(updatedPosts);
-  };
+  useEffect(() => {
+    getFeeds();
+  }, []); 
 
   return (
     <SFeedArea>
@@ -62,30 +50,28 @@ const Feed = () => {
   
         {/* FeedCreateModal */}
         {isCreateModalOpen && (
-          <FeedCreateModal addPost={addPost} setIsCreateModalOpen={setIsCreateModalOpen} />
+          <FeedCreateModal setIsCreateModalOpen={setIsCreateModalOpen} />
         )}
   
         {/* 게시물 리스트 */}
         
         <SFeedBox>
-        {posts.map((post) => (
-          <SPost key={post.id}>
+        {feeds.map((feed) => (
+          <SPost key={feed.id}>
             {/* 일반 게시물 */}
             <img
-              src={post.imageUrl}
+              src={feed.imageUrl}
               alt="피드 이미지"
               className="post-image"
-              onClick={() => setEditingPostId(post.id)}
+              onClick={() => setEditingFeedId(feed.id)}
             />
   
-            {editingPostId === post.id && (
+            {editingFeedId === feed.id && (
               // FeedModifyModal
               <div className="modify-modal-container">
                 <FeedModifyModal
-                  post={post}
-                  updatePost={updatePost}
-                  deletePost={deletePost}
-                  setEditingPostId={setEditingPostId}
+                  feed={feed}
+                  setEditingFeedId={setEditingFeedId}
                 />
               </div>
             )}
