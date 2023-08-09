@@ -33,11 +33,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update #create update none
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
 #        show_sql: true
-        format_sql: true
+        format_sql: false
 
 
   security:
