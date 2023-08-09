@@ -48,7 +48,7 @@ public class RoomController {
 
     // 세션 방 만들기
     @PostMapping("/sessions")
-    public ResponseEntity<Response<String>> initiealizeSession(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest httpServletRequest) throws Exception {
+    public ResponseEntity<Response<String>> initializeSession(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest httpServletRequest) throws Exception {
         User user = userTokenUtil.getUser(httpServletRequest);
         String sessionId = roomService.initializeSession(user, params, openVidu);
 
