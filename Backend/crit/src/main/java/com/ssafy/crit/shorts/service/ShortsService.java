@@ -101,7 +101,6 @@ public class ShortsService {
         Shorts shorts = shortsRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_SHORTS_ID));
         shorts.setTitle(shortsDto.getTitle());
-        shorts.setShortsUrl(shortsDto.getShortsUrl());
         shorts.setContent(shortsDto.getContent());
         // Add other fields to update as necessary.
         return ShortsDto.toDto(shorts);

@@ -36,7 +36,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+                                    FilterChain filterChain) throws ServletException, IOException, BadRequestException {
 
         try {
             String authorizationHeader = request.getHeader("Authorization");
@@ -61,6 +61,7 @@ public class JwtFilter extends OncePerRequestFilter {
                     throw new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
                 }
                 // 인증 정보 등록 및 다음 체인으로 이동
+                log.info("Security filter에 access Token 저장  " + token);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userId, null, List.of(new SimpleGrantedAuthority("USER")));
                 authenticationToken.setDetails(
@@ -69,21 +70,9 @@ public class JwtFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
             }
         } catch (BadRequestException e) {
-            if (e.getMessage().equalsIgnoreCase("EXPIRED_ACCESS_TOKEN")) {
-                writeErrorLogs("EXPIRED_ACCESS_TOKEN", e.getMessage(), e.getStackTrace());
-                JSONObject jsonObject = createJsonError(String.valueOf(UNAUTHORIZED.value()), e.getMessage());
-                setJsonResponse(response, UNAUTHORIZED, jsonObject.toString());
-            } else if (e.getMessage().equalsIgnoreCase("CANNOT_FOUND_USER")) {
-                writeErrorLogs("CANNOT_FOUND_USER", e.getMessage(), e.getStackTrace());
-                JSONObject jsonObject = createJsonError(String.valueOf(UNAUTHORIZED.value()), e.getMessage());
-                setJsonResponse(response, UNAUTHORIZED, jsonObject.toString());
-            }
-        } catch (Exception e) {
-            writeErrorLogs("Exception", e.getMessage(), e.getStackTrace());
-
-            if (response.getStatus() == HttpStatus.OK.value()) {
-                response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            }
+            log.info("BadRequest");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+            throw new BadRequestException(ErrorCode.NOT_VALID_TOKEN);
         } finally {
             log.debug("**** SECURITY FILTER FINISH");
         }

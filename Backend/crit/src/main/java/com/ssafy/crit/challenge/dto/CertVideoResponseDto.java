@@ -2,7 +2,6 @@ package com.ssafy.crit.challenge.dto;
 
 import com.ssafy.crit.challenge.entity.IsCert;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +17,7 @@ public class CertVideoResponseDto {
     private String presenceTime;
     private String percentage;
 
-    public CertVideoResponseDto(IsCert isCert){
+    public CertVideoResponseDto(IsCert isCert) {
         this.challengeId = isCert.getChallenge().getId();
         this.isCertificated = isCert.isCertified();
         this.absentTime = isCert.getAbsentTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
