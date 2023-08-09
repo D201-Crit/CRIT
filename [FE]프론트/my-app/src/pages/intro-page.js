@@ -27,7 +27,7 @@ const IntroPage = () => {
       <div className="content" data-aos="fade-up" style={{"margin-top":"200px"}}>
         <img src={process.env.PUBLIC_URL + '/mz2.png'} alt="placeholder" />
         
-        <div className="text">
+        <div className="intro-text">
           <h1>누구나 볼 수 있는 성취의 순간, 크릿을 만나보세요!</h1>
           <p>
             챌린지를 즐겁게 시작하고 이끌어가는 서비스, 크릿! 다양한 도전을 경험하고,<br />
@@ -38,7 +38,7 @@ const IntroPage = () => {
 
       <div className="content empty" data-aos="fade-up" data-aos-delay="350">
         <img src={user_image} alt="placeholder" />
-        <div className="text">
+        <div className="intro-text">
           <h1>함께 성장하는 챌린지 커뮤니티</h1>
           <p>
             크릿에서는 서로를 응원하고 도전을 공유하는 실시간 소셜 기능을 갖춰 챌린지<br />
@@ -49,7 +49,7 @@ const IntroPage = () => {
 
       <div className="content empty" data-aos="fade-up" data-aos-delay="550">
         
-        <div className="text">
+        <div className="intro-text">
           <h1>영상으로 즐기는 챌린지 이야기</h1>
           <p>
             크릿에서 쇼츠 영상을 통해 참여자들의 도전 이야기를 공유하며, 도전하고 함께<br />
@@ -62,7 +62,7 @@ const IntroPage = () => {
 
       <div className="content empty" data-aos="fade-up" data-aos-delay="750">
         <img src={user_image} alt="placeholder" />
-        <div className="text">
+        <div className="intro-text">
           <h1>다양한 도전과 만남이 기다립니다!</h1>
           <p>
             크릿에서 개성 넘치는 참여자들과 다양한 챌린지에 도전하며, 새로운 경험과 만남을<br />

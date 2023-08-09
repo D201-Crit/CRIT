@@ -7,7 +7,6 @@ const BoardCard = ({ classification, boards }) => {
 
   const handleGoToDetail = () => {
     // 자세히 보기 버튼을 누를 때 해당 경로로 이동합니다.
-    // classification에 맞는 경로로 이동하도록 수정해주세요.
     // 예를 들어, /CommunityBoardPage/:classification 경로로 이동하도록 합니다.
     window.location.href = `/CommunityBoardPage/${classification}`;
   };

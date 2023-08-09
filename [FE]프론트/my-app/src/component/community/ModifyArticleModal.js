@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { api } from "../../api/api";
 
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/boards';
+// const API_BASE_URL = 'http://localhost:8080/boards';
 
 
 const ModifyArticleModal = ({ classification, setIsEditOpen, prevArticles, fetchArticles }) => {
@@ -24,9 +25,23 @@ const ModifyArticleModal = ({ classification, setIsEditOpen, prevArticles, fetch
     setImages(imageObjList);
   };
 
-  const removeImage = (index) => {
-    setImages(images.filter((_, i) => i !== index));
+  const removeImage = (fileId,e) => {
+    api
+      .post(`${API_BASE_URL}/deleteImageOne/${article.id}/${prevArticles.fileId}`,{
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setImages(images.filter((_, i) => i !== fileId));
+      })
+      .catch((err)=>{
+        console.log(err)
+      });
   };
+
 
   const writeArticle = (e) => {
     e.preventDefault();
@@ -109,7 +124,7 @@ const ModifyArticleModal = ({ classification, setIsEditOpen, prevArticles, fetch
                 fontSize: "12px",
               }}
             >
-              ×
+            
             </button>
           </div>
         ))}
@@ -118,5 +133,5 @@ const ModifyArticleModal = ({ classification, setIsEditOpen, prevArticles, fetch
     </div>
   );
 };
-
 export default ModifyArticleModal;
+

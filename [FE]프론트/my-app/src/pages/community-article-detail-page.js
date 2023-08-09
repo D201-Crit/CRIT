@@ -16,7 +16,7 @@ const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/boards';
 const CommunityArticleDetailPage = () => {
   const user = useSelector((state) => state.users);
   const { classification, articleid } = useParams();
-  const [ articles, setArticles] = useState(null); // 게시글 목록 State
+  const [articles, setArticles] = useState(null); // 게시글 목록 State
   const [comments, setComments] = useState(null); // 댓글 목록 State
   const [newComment,setNewComment] = useState('');
   const [isEditOpen, setIsEditOpen] = useState(false); // 수정 폼 표시 여부

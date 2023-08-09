@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const SIntroPageWrapper = styled.div`
+  color : white;
   padding-top: 100px;
   padding-bottom: 100px;
   display: flex;
@@ -9,6 +10,7 @@ export const SIntroPageWrapper = styled.div`
 
   .content {
     display: flex;
+    
     align-items: center;
     justify-content: center;
 
@@ -22,7 +24,7 @@ export const SIntroPageWrapper = styled.div`
     margin-bottom: 10px;
   }
 
-  .text {
+  .intro-text {
     text-align: left;
 
     p {

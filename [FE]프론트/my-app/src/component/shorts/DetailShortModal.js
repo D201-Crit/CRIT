@@ -26,6 +26,23 @@ const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
     getComments();
   }, []);
 
+  // 전체 쇼츠 정보 받아오기
+  const getShorts = () => {
+    api
+      .get("https://i9d201.p.ssafy.io/api/shorts/main", {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      })
+      .then((res) => {
+        // console.log("쇼츠데이터",res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // 단일 쇼츠 정보 받아오기
   const getShort = () => {
     api
       .get(`https://i9d201.p.ssafy.io/api/shorts/${shortId}`, {
@@ -41,6 +58,36 @@ const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
       });
   };
 
+
+  // Shorts 작성자 일치 여부 판단 함수
+  const isMyShorts = (short) => {
+    return user.nickname === short.writer;
+  };
+
+  // 쇼츠 삭제
+  const deleteShorts = async (shortId) => {
+    api.delete(`https://i9d201.p.ssafy.io/api/shorts/${shortId}`, {
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+    .then(() => {
+      console.log('쇼츠 삭제 성공');
+      setOpenDetailModal(false)
+      getShorts();
+    })
+    .catch((error) => {
+      console.log(error)
+      console.log('쇼츠 삭제 실패');
+    })
+  };
+
+  // 쇼츠 수정
+
+
+
+
+  // 댓글 정보 불러오기
   const getComments = () => {
     api
       .get(`https://i9d201.p.ssafy.io/api/shorts/comments/${shortId}`, {
@@ -109,10 +156,13 @@ const deleteComment = async (commentId) => {
     console.log('댓글 삭제 실패');
   })
 };
-
+// 댓글 작성자 일치 여부 판단 함수
 const isMyComment = (comment) => {
   return user.id === comment.writer;
 };
+
+
+
 
   return (
     <SDetailModal>
@@ -142,7 +192,11 @@ const isMyComment = (comment) => {
         </SInfoRow>
         <p>내용 : {short.content}</p>
         <p>해시태그 : {short.hashTagNames}</p>
-          {/* 댓글 영역 */}
+
+
+        <button onClick={()=>deleteShorts(shortId)}>쇼츠 삭제</button>
+
+      {/* 댓글 영역 */}
       <SCommentSection>
       <h2>댓글</h2>
       <form onSubmit={writeComment}>
