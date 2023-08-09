@@ -24,6 +24,7 @@ import com.ssafy.crit.boards.service.dto.BoardShowSortDto;
 import com.ssafy.crit.common.error.code.ErrorCode;
 import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.common.global.BannedWords;
+import com.ssafy.crit.common.global.Extention;
 import com.ssafy.crit.common.s3.S3Uploader;
 
 import lombok.RequiredArgsConstructor;
@@ -54,6 +55,8 @@ public class BoardService {
 	private final S3Uploader s3Uploader;
 	private final UploadFileRepository uploadFileRepository;
 	private final BannedWords bannedWords;
+	private final Extention fileExtentions;
+
 
 	private static ArrayList<String> deleted = new ArrayList<>();
 
@@ -119,10 +122,16 @@ public class BoardService {
 		boardRepository.save(board);
 
 		List<String> storeFileResult = new ArrayList<>();
+		List<Long> fileId = new ArrayList<>();
 
 		if (multipartFiles != null) {
 			for (MultipartFile multipartFile : multipartFiles) {
 				String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Boards");
+
+				Boolean IsTrue = ImageExtention(uploadFiles);
+				if(!IsTrue){
+					throw new BadRequestException(ErrorCode.UNSUPPORTED_BOARD_MEDIA_TYPE);
+				}
 
 				UploadFile uploadFile = UploadFile.builder()
 					.board(board)
@@ -131,8 +140,10 @@ public class BoardService {
 					.classification(classification.getCategory())
 					.build();
 
-				uploadFileRepository.save(uploadFile);
+				uploadFileRepository.saveAndFlush(uploadFile);
 				storeFileResult.add(uploadFiles);
+				fileId.add(uploadFile.getId());
+
 			}
 		}
 
@@ -145,8 +156,11 @@ public class BoardService {
 			.createTime(now())
 			.modifyTime(now())
 			.imageFiles(storeFileResult)
+			.fileId(fileId)
 			.build();
 	}
+
+
 
 	public BoardResponseDto update(Long id, BoardResponseDto boardDto, List<MultipartFile> multipartFiles,
 		User user) throws IOException {
@@ -159,7 +173,8 @@ public class BoardService {
 		}
 		List<UploadFile> uploadFile = uploadFileRepository.findAllByBoardsId(id);
 
-		List<String> filenames = uploadFile.stream()
+
+		List<String> filenames = uploadFile.stream().distinct()
 			.map(UploadFile::getStoreFilePath)
 			.collect(Collectors.toList());
 
@@ -179,12 +194,19 @@ public class BoardService {
 
 		deleted = new ArrayList<>();
 
+
 		storeFileResult.addAll(filenames);
 
 		if (multipartFiles != null) {
 			for (MultipartFile multipartFile : multipartFiles) {
 				if (!multipartFile.isEmpty()) {
 					String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Boards");
+
+					Boolean IsTrue = ImageExtention(uploadFiles);
+					if(!IsTrue){
+						throw new BadRequestException(ErrorCode.UNSUPPORTED_BOARD_MEDIA_TYPE);
+					}
+
 					UploadFile uploadFileSave = UploadFile.builder()
 						.board(board)
 						.userName(user.getId())
@@ -242,10 +264,7 @@ public class BoardService {
 		boardRepository.deleteById(id);
 	}
 
-	// public Page<BoardShowSortDto> findAllDesc(Pageable pageable) {
-	// 	Page<Board> boards = boardRepository.findAllDesc(pageable);
-	// 	return getBoardShowSortDtos(boards);
-	// }
+
 
 	public Page<BoardShowSortDto> findAllDesc(Pageable pageable) {
 		Page<Board> boards = boardRepository.findAllDesc(pageable);
@@ -267,7 +286,7 @@ public class BoardService {
 		return getBoardShowSortDtos(boards);
 	}
 
-	public Page<BoardShowSortDto> findByTitleContaining(@RequestParam String find, Pageable pageable) {
+	public Page<BoardShowSortDto> findByTitleContaining( String find, Pageable pageable) {
 		Page<Board> boards = boardRepository.findByTitleContaining(find, pageable);
 		return getBoardShowSortDtos(boards);
 	}
@@ -347,8 +366,26 @@ public class BoardService {
 				board.getLikes().size(),
 				board.getClassification().getCategory(),
 				likedName, filenames, fileId,
-				now(),
-				now());
+				board.getCreatedDate(),
+				board.getModifiedDate());
 		});
+	}
+
+	private boolean ImageExtention(String uploadFiles) {
+		String extension = getString(uploadFiles);
+
+		return fileExtentions.isImageExtension(extension);
+	}
+
+	private boolean AviExtention(String uploadFiles) {
+		String extension = getString(uploadFiles);
+
+		return fileExtentions.isAviExtension(extension);
+	}
+
+	private static String getString(String uploadFiles) {
+		String[] split = uploadFiles.split("\\.");
+		String extension = split[split.length - 1];
+		return extension;
 	}
 }

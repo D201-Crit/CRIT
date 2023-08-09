@@ -1,23 +1,14 @@
 package com.ssafy.crit.auth.controller;
 
 import com.ssafy.crit.auth.dto.*;
-import com.ssafy.crit.auth.entity.User;
-import com.ssafy.crit.auth.jwt.JwtProvider;
-import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.auth.service.UserService;
-import com.ssafy.crit.message.response.Response;
-import com.ssafy.crit.shorts.dto.ShortsDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestController
@@ -25,8 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/auth")
 public class UserController {
     private final UserService userService;
-    private final UserRepository userRepository;
-    private final JwtProvider jwtProvider;
 
     // 회원가입
     @PostMapping("/signup")

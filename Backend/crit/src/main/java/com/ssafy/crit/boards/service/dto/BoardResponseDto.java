@@ -34,15 +34,15 @@ public class BoardResponseDto {
     @Builder
     public static BoardResponseDto toDto(Board board) {
 
-        List<String> filenames = board.getUploadFiles().stream()
+        List<String> filenames = board.getUploadFiles().stream().distinct()
             .map(UploadFile::getStoreFilePath)
             .collect(Collectors.toList());
 
-        List<String> likedName = board.getLikes().stream()
+        List<String> likedName = board.getLikes().stream().distinct()
             .map(like -> like.getUser().getNickname())
             .collect(Collectors.toList());
 
-        List<Long> fileId = board.getUploadFiles().stream()
+        List<Long> fileId = board.getUploadFiles().stream().distinct()
             .map(UploadFile::getId)
             .collect(Collectors.toList());
 
