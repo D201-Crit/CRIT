@@ -1,12 +1,10 @@
 package com.ssafy.crit.boards.service.dto;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
-import java.util.stream.Collectors;
-
-import com.ssafy.crit.boards.entity.board.Board;
-import com.ssafy.crit.boards.entity.feeds.UploadFile;
-
-import lombok.*;
 /**
  * author : 강민승
  */

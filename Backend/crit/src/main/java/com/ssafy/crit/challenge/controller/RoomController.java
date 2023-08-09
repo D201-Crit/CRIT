@@ -48,10 +48,10 @@ public class RoomController {
 
     // 세션 방 만들기
     @PostMapping("/sessions")
-    public ResponseEntity<Response<String>> initiealizeSession(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest httpServletRequest) throws Exception {
+    public ResponseEntity<Response<String>> initializeSession(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest httpServletRequest) throws Exception {
         User user = userTokenUtil.getUser(httpServletRequest);
         String sessionId = roomService.initializeSession(user, params, openVidu);
-
+        log.info("세션 생성 완료!!! {}", sessionId);
         return new ResponseEntity<>(new Response<>("success", "세션 생성 성공", sessionId), HttpStatus.OK);
         // 세션 아이디 반환
     }
@@ -62,8 +62,9 @@ public class RoomController {
                                                    @RequestBody(required = false) Map<String, Object> params, HttpServletRequest httpServletRequest)
             throws Exception {
         User user = userTokenUtil.getUser(httpServletRequest);
+        log.info("룸 진입 전");
         String token = roomService.createConnection(user, openVidu, sessionId, params);
-        
+        log.info("OKOKOK, token : {}", token);
         return new ResponseEntity<>(new Response<>("success", "커넥션 맺기 성공", token), HttpStatus.OK);
         // 토큰 반환
     }
