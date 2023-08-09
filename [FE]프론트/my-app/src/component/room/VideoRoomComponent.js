@@ -14,9 +14,9 @@ var localUser = new UserModel();
 const APPLICATION_SERVER_URL = "https://i9d201.p.ssafy.io/api/room/";
 
 // Teachable machine 관련 변수
-const webcamRef = null; // webcam을 useRef로 선언
-const modelRef = null; 
-const totalTimeRef = 0;
+// const webcamRef = null; // webcam을 useRef로 선언
+// const modelRef = null; 
+// const totalTimeRef = 0;
 const URL = "https://teachablemachine.withgoogle.com/models/0ZpItWsAb/";
 const modelURL = URL + "model.json";
 const metadataURL = URL + "metadata.json";
@@ -29,6 +29,9 @@ let isUnmounted = false;
 class VideoRoomComponent extends Component {
   constructor(props) {
     super(props);
+    this.webcamRef = React.createRef(); // webcam을 Ref로 선언
+    this.modelRef = React.createRef();
+    this.totalTimeRef = React.createRef();
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
     let sessionName = this.props.sessionName
@@ -171,37 +174,37 @@ class VideoRoomComponent extends Component {
   async initTeachableMachine() {
     model = await tmImage.load(modelURL, metadataURL);
     webcam = new tmImage.Webcam(200, 200, true); // 너비, 높이, 뒤집기 여부
-    modelRef.current = model;
-    webcamRef.current = webcam; // useRef로 저장
+    this.modelRef.current = model;
+    this.webcamRef.current = webcam; // useRef로 저장
     await webcam.setup(); // 웹캠 권한 요청
     await webcam.play();
 
-    requestAnimationFrame(this.loop());
+    requestAnimationFrame(this.loop);
   }
 
-  async loop() {
+  loop = async () => {
     if (isUnmounted) return; // 언마운트 된 상태이면 loop 종료
-    if (webcamRef.current) {
-      webcamRef.current.update(); // 웹캠 프레임 업데이트
+    if (this.webcamRef.current) {
+      this.webcamRef.current.update(); // 웹캠 프레임 업데이트
       await this.predict();
       if (!isUnmounted) {
-        requestAnimationFrame(this.loop());
+        requestAnimationFrame(this.loop);
       }
     }
   }
 
   async predict() {
     // 현재 웹캠 프레임을 이미지로 가져옵니다.
-    const image = webcamRef.current.canvas;
+    const image = this.webcamRef.current.canvas;
     // 모델로 예측을 수행합니다.
-    const prediction = await modelRef.current.predict(image);
+    const prediction = await this.modelRef.current.predict(image);
     // 예측 결과를 콘솔에 출력합니다.
     for (let i = 0; i < maxPredictions; i++) {
       const classPrediction = prediction[i].className;
       const probability = prediction[i].probability.toFixed(2);
       console.log(`예측: ${classPrediction}, 확률: ${probability}`);
       if (classPrediction === 'Class 2' && parseFloat(probability) >= 0.8) {
-        totalTimeRef.current += 1; // 0.01 second
+        this.totalTimeRef.current += 1; // 0.01 second
       }
     }
   }
@@ -300,6 +303,8 @@ class VideoRoomComponent extends Component {
     if (this.props.leaveSession) {
       this.props.leaveSession();
     }
+    this.webcamRef.current.stop();
+    console.log(`누적 시간: ${this.totalTimeRef.current}ms`)
   }
   camStatusChanged() {
     localUser.setVideoActive(!localUser.isVideoActive());
