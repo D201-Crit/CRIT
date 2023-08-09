@@ -5,6 +5,7 @@ import {
   SEntranceLiButton,
   SEntranceSwiper,
   SDetailButton,
+  SShortsWrapper,
 } from "../styles/pages/SMainPage";
 import SearchShorts from "../component/shorts/SearchShorts";
 import MostLikeShorts from "../component/shorts/list/MostLikeShorts";
@@ -49,10 +50,8 @@ const MainPage = () => {
         },
       })
       .then((res) => {
-        const myOnGoindChallenge = res.data.data.filter((challenge) => {
-          return challenge.userList.includes(user.nickname);
-        });
-        setMyChallenges(myOnGoindChallenge);
+        console.log(res.data.data);
+        setMyChallenges(res.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -92,10 +91,7 @@ const MainPage = () => {
   return (
     <>
       <SEntranceButtonWrapper>
-        {myChallenges ? (
-          <SEntranceButton onClick={openChallenge}>바로입장</SEntranceButton>
-        ) : null}
-        z
+        <SEntranceButton onClick={openChallenge}>바로입장</SEntranceButton>
         {isOpen ? null : (
           <SEntranceSwiper
             grabCursor={true}
@@ -134,9 +130,11 @@ const MainPage = () => {
       <SearchShorts />
 
       {/* 쇼츠 영역 */}
+      <SShortsWrapper>
       <RecentShorts shortsByDate={shortsByDate} />
       <MostLikeShorts shortsByLike={shortsByLike} />
       <MostViewtShorts shortsByView={shortsByView} />
+      </SShortsWrapper>
     </>
   );
 };

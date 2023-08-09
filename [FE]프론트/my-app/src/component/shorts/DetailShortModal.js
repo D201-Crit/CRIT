@@ -13,6 +13,9 @@ import {
   SCommentInput, 
   SSubmitButton,
 } from "./../../styles/pages/SMainPage";
+import { SLikeButton } from "../../styles/pages/SCommunityPage";
+import { BiDotsVertical } from "react-icons/bi";
+import ModifyShortsModal from "./ModifyShortsModal";
 import ReactPlayer from "react-player"; 
 
 const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
@@ -20,7 +23,9 @@ const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
   const [short, setShort] = useState([]);
   const [comments,setComments] = useState(null);
   const [newComment,setNewComment] = useState('');
-  
+  const [showMenu, setShowMenu] = useState(false);
+  const [showModifyModal, setModifyModal] = useState(false);
+
   useEffect(() => {
     getShort();
     getComments();
@@ -57,11 +62,40 @@ const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
         console.log(err);
       });
   };
-
+ // 좋아요 기능
+  const shortsLike = async (shortId) => {             
+    api.post(`https://i9d201.p.ssafy.io/api/shorts/likes/${shortId}`, null, {
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        getShort();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+// 좋아요 취소 기능
+  const deleteLike = async (shortId) => {
+    api.delete(`https://i9d201.p.ssafy.io/api/shorts/likes/${shortId}`, {
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+      .then((res) => {
+        console.log('Delete Like Response:', res);
+        return getShort();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   // Shorts 작성자 일치 여부 판단 함수
-  const isMyShorts = (short) => {
-    return user.nickname === short.writer;
+  const isMyShorts = (writer) => {
+    return user.nickname === writer;
   };
 
   // 쇼츠 삭제
@@ -73,17 +107,14 @@ const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
     })
     .then(() => {
       console.log('쇼츠 삭제 성공');
-      setOpenDetailModal(false)
       getShorts();
+      setOpenDetailModal(false);
     })
     .catch((error) => {
       console.log(error)
       console.log('쇼츠 삭제 실패');
     })
   };
-
-  // 쇼츠 수정
-
 
 
 
@@ -158,73 +189,102 @@ const deleteComment = async (commentId) => {
 };
 // 댓글 작성자 일치 여부 판단 함수
 const isMyComment = (comment) => {
-  return user.id === comment.writer;
+  return user.nickname === comment.writer;
 };
 
 
 
 
-  return (
-    <SDetailModal>
-      <SPlayerSection>
-        {/* 비디오 영역 */}
-        <ReactPlayer
-          url={short.shortsUrl}
-          controls={true}
-          width="100%"
-          height="100%"
-          style={{ borderRadius: '4px' }}
-          playing={true}
-        />
-      </SPlayerSection>
-      
-      {/* 쇼츠 정보 */}
-      <SInfoSection>
-        <SDetailCloseButton onClick={() => setOpenDetailModal(false)}>
-          &times;
-        </SDetailCloseButton>
-        <h2>{short.title}</h2>
-        <SInfoRow>
-          <p>작성자 : {short.writer}</p>
-          <p>조회수 : {short.views}</p>
-          <p>좋아요: {short.likesCount}</p>
-          <p>좋아요 한 사람 : {short.liked}</p>
-        </SInfoRow>
-        <p>내용 : {short.content}</p>
-        <p>해시태그 : {short.hashTagNames}</p>
 
-
-        <button onClick={()=>deleteShorts(shortId)}>쇼츠 삭제</button>
-
-      {/* 댓글 영역 */}
-      <SCommentSection>
-      <h2>댓글</h2>
-      <form onSubmit={writeComment}>
-          <SCommentInput type='text' value={newComment} onChange={handleCommentChange} />
-          <SSubmitButton type='submit' value="댓글 작성" />
-        </form>
-
-      {comments && (
-          <SCommentList>
-          {comments.map((comment) => (
-            <div key={comment.id} className="comment-item" style={{ display: 'flex', alignItems: 'center' }}>
-              <p>{comment.content}</p>
-              <div>
-                
-                <p>작성자: {comment.writer} 
-                {isMyComment(comment) && (
-                  <button onClick={() => deleteComment(comment.id)}>삭제</button>
-                )}</p>
-              </div>
-            </div>
-          ))}
-        </SCommentList>
-        
-      )}
-      </SCommentSection>
-      </SInfoSection> 
-    </SDetailModal>
-  );
+return (
+  <div>
+    {showModifyModal ? (
+      <ModifyShortsModal getShort={getShort} setModifyModal={setModifyModal} prevshotrs={short} shortId={shortId} />
+    ) : (
+      <SDetailModal>
+        <SPlayerSection>
+          {/* 비디오 영역 */}
+          <ReactPlayer
+            url={short.shortsUrl}
+            controls={true}
+            width="100%"
+            height="100%"
+            style={{ borderRadius: "4px" }}
+            playing={true}
+          />
+        </SPlayerSection>
+        {/* 쇼츠 정보 */}
+        <SInfoSection>
+          <SDetailCloseButton onClick={() => setOpenDetailModal(false)}>
+            &times;
+          </SDetailCloseButton>
+          <h2>{short.title}</h2>
+          {/* 케밥 메뉴 아이콘 */}
+          {isMyShorts(short.writer) && (
+            <>
+              <BiDotsVertical
+                className="material-icons"
+                onClick={() => setShowMenu(!showMenu)}
+                style={{ fontSize: "24px", cursor: "pointer" }}
+              />
+              {showMenu && (
+                <div>
+                  {/* 쇼츠수정 */}
+                  <button onClick={() => { setModifyModal(true); }}>수정</button>
+                  {/* 쇼츠삭제 */}
+                  <button onClick={() => deleteShorts(shortId)}>삭제</button>
+                </div>
+              )}
+            </>
+          )}
+          <SInfoRow>
+            <p>작성자 : {short.writer}</p>
+            <p>조회수 : {short.views}</p>
+            <p>좋아요: {short.likesCount}</p>
+            <p>좋아요 한 사람 : {short.liked}</p>
+          </SInfoRow>
+          <p>내용 : {short.content}</p>
+          <p>해시태그 : {short.hashTagNames}</p>
+          
+          {short.id && (
+            short.liked.includes(user.nickname) ? (
+              <SLikeButton onClick={() => deleteLike(short.id)}>
+                좋아요 취소
+              </SLikeButton>
+            ) : (
+              <SLikeButton onClick={() => shortsLike(short.id)}>
+                좋아요
+              </SLikeButton>
+            )
+          )}
+        </SInfoSection>
+        {/* 댓글 영역 */}
+        <SCommentSection>
+          <h2>댓글</h2>
+          <form onSubmit={writeComment}>
+            <SCommentInput type='text' value={newComment} onChange={handleCommentChange} />
+            <SSubmitButton type='submit' value="댓글 작성" />
+          </form>
+          {comments && (
+            <SCommentList>
+              {comments.map((comment) => (
+                <div key={comment.id} className="comment-item" style={{ display: 'flex', alignItems: 'center' }}>
+                  <p>{comment.content}</p>
+                  <div>
+                    <p>작성자: {comment.writer}</p>
+                    {isMyComment(comment) && (
+                      <button onClick={() => deleteComment(comment.id)}>삭제</button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </SCommentList>
+          )}
+        </SCommentSection>
+      </SDetailModal>
+    )}
+  </div>
+);
 };
 
 export default DetailShortModal;

@@ -1,5 +1,14 @@
-import { styled } from "styled-components";
+import { styled, keyframes} from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
+const fadeIn = keyframes`
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+`;
+export const SShortsWrapper = styled.div`
+  width: 1200px;
+  justify-content: flex-end;
+  margin: 30px auto -40px auto;
+`;
 
 export const SEntranceButtonWrapper = styled.div`
   width: 100%;
@@ -383,6 +392,52 @@ export const SCommentList = styled.div`
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     padding-bottom: 10px;
     margin-bottom: 10px;
+  }
+`;
+
+export const SModifyModal = styled.div`
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: linear-gradient(
+    to bottom,
+    rgba(69, 72, 77, 1) 0%,
+    rgba(0, 0, 0, 0.66) 100%
+  );
+  border: 0.5px solid rgba(50, 50, 50);
+  border-radius: 8px;
+  padding: 32px;
+  font-family: "Pretendard";
+  color: black;
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 20px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+  }
+  position: fixed;
+  z-index: 1010;
+  /* 애니메이션 코드 추가 */
+  animation: ${fadeIn} 0.3s ease-in;
+  
+  &:before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 10%;
+    height: 10%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+    /* 애니메이션 코드 추가 */
+    animation: ${fadeIn} 0.3s ease-in;
   }
 `;
 
