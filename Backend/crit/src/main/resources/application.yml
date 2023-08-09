@@ -96,9 +96,9 @@ logging:
   level:
     org:
       hibernate:
-        type:
-          descriptor:
-            sql: debug
+        # type:
+        #   descriptor:
+        #     sql: debug
     com:
       amazonaws:
         util:
