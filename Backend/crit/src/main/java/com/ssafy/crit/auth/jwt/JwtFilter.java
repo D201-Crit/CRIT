@@ -71,22 +71,23 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         } catch (BadRequestException e) {
             log.info("BadRequest");
-            if (e.getMessage().equalsIgnoreCase("EXPIRED_ACCESS_TOKEN")) {
-                writeErrorLogs("EXPIRED_ACCESS_TOKEN", e.getMessage(), e.getStackTrace());
-                JSONObject jsonObject = createJsonError(String.valueOf(UNAUTHORIZED.value()), e.getMessage());
-                setJsonResponse(response, UNAUTHORIZED, jsonObject.toString());
-            } else if (e.getMessage().equalsIgnoreCase("CANNOT_FOUND_USER")) {
-                writeErrorLogs("CANNOT_FOUND_USER", e.getMessage(), e.getStackTrace());
-                JSONObject jsonObject = createJsonError(String.valueOf(UNAUTHORIZED.value()), e.getMessage());
-                setJsonResponse(response, UNAUTHORIZED, jsonObject.toString());
-            }
-        } catch (Exception e) {
-            log.info("BadRequest");
-            writeErrorLogs("Exception", e.getMessage(), e.getStackTrace());
-
-            if (response.getStatus() == HttpStatus.OK.value()) {
-                response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            }
+//            if (e.getMessage().equalsIgnoreCase("EXPIRED_ACCESS_TOKEN")) {
+//                writeErrorLogs("EXPIRED_ACCESS_TOKEN", e.getMessage(), e.getStackTrace());
+//                JSONObject jsonObject = createJsonError(String.valueOf(UNAUTHORIZED.value()), e.getMessage());
+//                setJsonResponse(response, UNAUTHORIZED, jsonObject.toString());
+//            } else if (e.getMessage().equalsIgnoreCase("CANNOT_FOUND_USER")) {
+//                writeErrorLogs("CANNOT_FOUND_USER", e.getMessage(), e.getStackTrace());
+//                JSONObject jsonObject = createJsonError(String.valueOf(UNAUTHORIZED.value()), e.getMessage());
+//                setJsonResponse(response, UNAUTHORIZED, jsonObject.toString());
+//            }
+//        } catch (Exception e) {
+//            log.info("BadRequest");
+//            writeErrorLogs("Exception", e.getMessage(), e.getStackTrace());
+//
+//            if (response.getStatus() == HttpStatus.OK.value()) {
+//                response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+//            }
+            throw new BadRequestException(ErrorCode.NOT_VALID_TOKEN);
         } finally {
             log.debug("**** SECURITY FILTER FINISH");
         }
