@@ -20,8 +20,9 @@ class VideoRoomComponent extends Component {
     let sessionName = this.props.sessionName
       ? this.props.sessionName
       : "SessionA";
-    let userName = this.props.users.nickname
-      ? this.props.users.nickname
+    console.log(sessionName);
+    let userName = this.props.user
+      ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
     this.remotes = [];
     this.localUserAccessAllowed = false;
@@ -552,7 +553,7 @@ class VideoRoomComponent extends Component {
     const localUser = this.state.localUser;
     console.log(this.state);
     var chatDisplay = { display: this.state.chatDisplay };
-    console.log(localUser);
+
     return (
       <div className="container" id="container">
         <ToolbarComponent
@@ -632,7 +633,7 @@ class VideoRoomComponent extends Component {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${this.props.users.accessToken}`,
+          Authorization: `Bearer ${this.props.user.accessToken}`,
         },
       }
     );
@@ -647,7 +648,7 @@ class VideoRoomComponent extends Component {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${this.props.users.accessToken}`,
+          Authorization: `Bearer ${this.props.user.accessToken}`,
         },
       }
     );
