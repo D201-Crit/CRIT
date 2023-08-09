@@ -51,7 +51,7 @@ public class RoomController {
     public ResponseEntity<Response<String>> initializeSession(@RequestBody(required = false) Map<String, Object> params, HttpServletRequest httpServletRequest) throws Exception {
         User user = userTokenUtil.getUser(httpServletRequest);
         String sessionId = roomService.initializeSession(user, params, openVidu);
-
+        log.info("세션 생성 완료!!!");
         return new ResponseEntity<>(new Response<>("success", "세션 생성 성공", sessionId), HttpStatus.OK);
         // 세션 아이디 반환
     }
