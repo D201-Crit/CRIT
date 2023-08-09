@@ -61,6 +61,7 @@ public class JwtFilter extends OncePerRequestFilter {
                     throw new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
                 }
                 // 인증 정보 등록 및 다음 체인으로 이동
+                log.info("Security filter에 access Token 저장  " + token);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userId, null, List.of(new SimpleGrantedAuthority("USER")));
                 authenticationToken.setDetails(
@@ -69,6 +70,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
             }
         } catch (BadRequestException e) {
+            log.info("BadRequest");
             if (e.getMessage().equalsIgnoreCase("EXPIRED_ACCESS_TOKEN")) {
                 writeErrorLogs("EXPIRED_ACCESS_TOKEN", e.getMessage(), e.getStackTrace());
                 JSONObject jsonObject = createJsonError(String.valueOf(UNAUTHORIZED.value()), e.getMessage());
@@ -79,6 +81,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 setJsonResponse(response, UNAUTHORIZED, jsonObject.toString());
             }
         } catch (Exception e) {
+            log.info("BadRequest");
             writeErrorLogs("Exception", e.getMessage(), e.getStackTrace());
 
             if (response.getStatus() == HttpStatus.OK.value()) {
