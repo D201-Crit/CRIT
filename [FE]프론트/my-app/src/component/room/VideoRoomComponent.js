@@ -622,6 +622,7 @@ class VideoRoomComponent extends Component {
 
   async createSession(sessionId) {
     // 여기서 세션 ID를 this.props.challengeData.challenge.id로 전달합니다.
+    console.log("test");
     const response = await axios.post(
       APPLICATION_SERVER_URL + "sessions",
       {
@@ -629,25 +630,28 @@ class VideoRoomComponent extends Component {
         // challengeId: this.props.challengeData.challenge.id,
       },
       {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.props.user.accessToken}`,
+        },
       }
     );
-    return response.data; // The sessionId
+
+    return response.data.data; // The sessionId
   }
 
   async createToken(sessionId) {
     const response = await axios.post(
-      APPLICATION_SERVER_URL +
-        "sessions/" +
-        "session_" +
-        this.props.challengeData.challenge.id +
-        "/connections",
+      APPLICATION_SERVER_URL + "sessions/" + sessionId + "/connections",
       {},
       {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.props.user.accessToken}`,
+        },
       }
     );
-    return response.data; // The token
+    return response.data.data; // The token
   }
 }
 export default VideoRoomComponent;

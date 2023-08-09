@@ -22,41 +22,37 @@ export const SLogoWrapper = styled.div`
   ul {
     list-style: none;
     display: flex;
-    
   }
   a {
-    width : 100%;
+    width: 100%;
     margin-right: 1200px;
-    height : auto;
+    height: auto;
     text-decoration: none;
     display: inline-block;
-
 
     color: white;
     &:hover {
       color: #ff007a;
     }
-
-`
-
+  }
+`;
 
 // Menu
 export const SMenuWrapper = styled.div`
   height: 100%;
   margin: 0 auto;
   overflow-x: hidden;
- 
+
   ul {
     list-style: none;
     display: flex;
   }
   li {
-    margin: 0px 50px; 
+    margin: 0px 50px;
     width: 100px;
     color: white;
   }
 
-  
   a {
     text-decoration: none;
     display: inline-block;
@@ -68,24 +64,21 @@ export const SMenuWrapper = styled.div`
     &.active {
       color: #ff007a;
     }
-
   }
 `;
 
 // User
 export const SUserWrapper = styled.div`
   position: relative;
-  width: 10%;
+  width: 120px;
   font-size: 17px;
   cursor: pointer;
 
   ul {
-    width: 300px;
     list-style: none;
     position: absolute;
     top: -15px;
     margin: 15px;
-
   }
   li {
     margin: 15px;
@@ -149,4 +142,3 @@ export const SButton = styled.button`
     background-color: #3333ff;
   }
 `;
-

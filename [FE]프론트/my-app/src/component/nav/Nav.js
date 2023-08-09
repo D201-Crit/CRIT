@@ -1,11 +1,16 @@
 import React, { useState } from "react";
-import { SNav, SMenuWrapper, SUserWrapper, SLogoWrapper } from "../../styles/SCommon";
+import {
+  SNav,
+  SMenuWrapper,
+  SUserWrapper,
+  SLogoWrapper,
+} from "../../styles/SCommon";
 import { FaRegUserCircle } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { BiEnvelope } from "react-icons/bi";
 import LogOut from "../user/LogOut";
 import { useSelector } from "react-redux";
-import MessageBox from '../message/MessageBox';
+import MessageBox from "../message/MessageBox";
 
 const Nav = () => {
   const user = useSelector((state) => state.users); // useSelector를 통해 userSlice의 상태를 가져옴
@@ -14,15 +19,17 @@ const Nav = () => {
 
   const MessageInfo = ({ massageView }) => (
     <div style={{ position: "fixed" }}>
-      {massageView && <MessageBox setMassageView={setMassageView}/>}
+      {massageView && <MessageBox setMassageView={setMassageView} />}
     </div>
   );
-  
+
   const UserInfo = ({ view }) => (
     <div style={{ position: "absolute", top: "50px", left: "40px" }}>
       {view && (
         <>
-          <NavLink to="/ProfilePage"><h3>내 정보</h3></NavLink>
+          <NavLink to="/ProfilePage">
+            <h3>내 정보</h3>
+          </NavLink>
           <LogOut />
         </>
       )}
@@ -31,8 +38,8 @@ const Nav = () => {
 
   return (
     <SNav>
-        {user && user.accessToken ? (
-          <SMenuWrapper>
+      {user && user.accessToken ? (
+        <SMenuWrapper>
           <ul>
             <li>
               <NavLink to="/IntroPage">CRIT</NavLink>
@@ -47,9 +54,9 @@ const Nav = () => {
               <NavLink to="/CommunityPage">커뮤니티</NavLink>
             </li>
           </ul>
-          </SMenuWrapper>
-        ) : (
-          <SLogoWrapper>
+        </SMenuWrapper>
+      ) : (
+        <SLogoWrapper>
           <ul>
             <li>
               <NavLink to="/IntroPage">CRIT</NavLink>
@@ -58,14 +65,22 @@ const Nav = () => {
               <NavLink to="/LoginPage">로그인</NavLink>
             </li>
           </ul>
-          </SLogoWrapper>
-        )}
-            <SUserWrapper>
+        </SLogoWrapper>
+      )}
+      <SUserWrapper>
         {/* 메시지 파트 */}
         {user && user.accessToken ? (
           <ul onClick={() => setMassageView(!massageView)}>
             <li>
-              <BiEnvelope size={35} style={{ cursor: "pointer", position: "absolute", top: "-15px",  left: "-30px" }} />{" "}
+              <BiEnvelope
+                size={35}
+                style={{
+                  cursor: "pointer",
+                  position: "absolute",
+                  top: "-15px",
+                  left: "-30px",
+                }}
+              />{" "}
             </li>
           </ul>
         ) : (
@@ -77,7 +92,14 @@ const Nav = () => {
         {user && user.accessToken ? (
           <ul onClick={() => setView(!view)}>
             <li>
-              <FaRegUserCircle size={35} style={{ cursor: "pointer", position: "absolute", top: "-15px"}} />{" "}
+              <FaRegUserCircle
+                size={35}
+                style={{
+                  cursor: "pointer",
+                  position: "absolute",
+                  top: "-15px",
+                }}
+              />{" "}
             </li>
           </ul>
         ) : (

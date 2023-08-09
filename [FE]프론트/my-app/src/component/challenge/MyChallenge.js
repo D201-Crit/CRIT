@@ -77,12 +77,6 @@ const MyChallenge = () => {
       });
     }
   };
-  // 입장하기 클릭
-  const EntranceClick = (challenge) => {
-    navigate(`/ChallengePage/${challenge.id}`, {
-      state: { challenge },
-    });
-  };
 
   // 날짜 형식
   const formatDate = (dateString) => {
@@ -119,14 +113,13 @@ const MyChallenge = () => {
       // 이미 종료된 챌린지인 경우
       return `종료됨`;
     }
-    if (today.getTime() === start.getTime()) {
+    if (today.getTime() >= start.getTime()) {
       // 진행 중인 챌린지인 경우
       const timeDiff = today.getTime() - start.getTime();
       const daysInProgress = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
       return `현재 ${daysInProgress + 1}일째 참여 중`;
     }
   };
-
   useEffect(() => {
     getMyChallenge();
   }, []);
@@ -194,7 +187,7 @@ const MyChallenge = () => {
       )}
       <Modal style={SWebRTCModal} isOpen={isOpen} onRequestClose={closeModal}>
         {/* 모달 내부에서 VideoRoomComponent 사용 */}
-        <VideoRoomComponent challengeData={challengeData} />
+        <VideoRoomComponent user={user} challengeData={challengeData} />
       </Modal>
     </>
   );

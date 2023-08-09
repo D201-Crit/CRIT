@@ -49,8 +49,10 @@ const MainPage = () => {
         },
       })
       .then((res) => {
-        console.log(res.data.data);
-        setMyChallenges(res.data.data);
+        const myOnGoindChallenge = res.data.data.filter((challenge) => {
+          return challenge.userList.includes(user.nickname);
+        });
+        setMyChallenges(myOnGoindChallenge);
       })
       .catch((err) => {
         console.log(err);
@@ -90,7 +92,10 @@ const MainPage = () => {
   return (
     <>
       <SEntranceButtonWrapper>
-        <SEntranceButton onClick={openChallenge}>바로입장</SEntranceButton>
+        {myChallenges ? (
+          <SEntranceButton onClick={openChallenge}>바로입장</SEntranceButton>
+        ) : null}
+        z
         {isOpen ? null : (
           <SEntranceSwiper
             grabCursor={true}

@@ -45,38 +45,37 @@ export const SImgWrapper = styled.div`
   }
 `;
 export const SInfoWrapper = styled.div`
-  // background-color: red;
   width: 60%;
   height: 500px;
   padding: 0 0 0 50px;
   #CATEGORY {
     position: absolute;
-    top: 125px;
+    top: 150px;
     font-size: 25px;
   }
   #category {
     position: absolute;
-    top: 165px;
+    top: 190px;
     font-size: 20px;
   }
   #CERT {
     position: absolute;
-    top: 210px;
+    top: 235px;
     font-size: 25px;
   }
   #cert {
     position: absolute;
-    top: 250px;
+    top: 275px;
     font-size: 20px;
   }
   #INFO {
     position: absolute;
-    top: 295px;
+    top: 320px;
     font-size: 25px;
   }
   #info {
     position: absolute;
-    top: 335px;
+    top: 360px;
     font-size: 20px;
     width: 700px;
     height: 190px;
@@ -85,13 +84,13 @@ export const SInfoWrapper = styled.div`
   }
   #USERLIST {
     position: absolute;
-    top: 140px;
+    top: 165px;
     font-size: 25px;
     margin: 0 0 0 400px;
   }
   #userList {
     position: absolute;
-    top: 180px;
+    top: 205px;
     font-size: 20px;
     margin: 0 0 0 400px;
   }
@@ -99,13 +98,15 @@ export const SInfoWrapper = styled.div`
 export const SButtonWrapper = styled.div`
   text-align: center;
   #participation {
+    position: absolute;
+    bottom: 420px;
+    right: 190px;
     width: 150px;
     height: 50px;
     font-size: 18px;
     font-weight: 700;
     border-radius: 10px;
     border: none;
-    margin: 150px 150px 0 0;
     background-color: #33ff00;
     cursor: pointer;
   }
@@ -117,6 +118,22 @@ export const SButtonWrapper = styled.div`
     border-radius: 10px;
     border: none;
     margin: 150px 150px 0 0;
+    cursor: pointer;
+  }
+  #detailEnter {
+    position: absolute;
+    bottom: 420px;
+    right: 360px;
+    color: white;
+    width: 150px;
+    height: 50px;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 10px;
+    border: none;
+    background-color: #0000c5;
+
+    cursor: pointer;
   }
 `;
 

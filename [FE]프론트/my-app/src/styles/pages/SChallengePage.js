@@ -251,6 +251,7 @@ export const SSearchSwiperSlide = styled(SwiperSlide)`
   }
 `;
 SSearchSwiperSlide.displayName = "SwiperSlide";
+
 // CreateChallengeModal
 export const customModalStyles = {
   content: {
@@ -260,7 +261,7 @@ export const customModalStyles = {
     boxShadow: "0px 0px 15px gray",
     margin: "auto",
     width: "1000px",
-    height: "750px",
+    height: "725px",
     color: "black",
   },
   overlay: {
@@ -268,7 +269,7 @@ export const customModalStyles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    zIndex: "999",
+    zIndex: "1001",
   },
 };
 

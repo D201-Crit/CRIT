@@ -24,10 +24,9 @@ const DetailChallengePage = () => {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
           },
-        },
+        }
       )
       .then((res) => {
-        console.log(res);
         setBoards(res.data.data);
       })
       .catch((err) => {
@@ -39,7 +38,6 @@ const DetailChallengePage = () => {
     getBoard();
     checkedUser();
   }, []);
-  console.log(checkUser);
   return (
     <SDetailChallengeWrapper>
       <InformationChallenge />

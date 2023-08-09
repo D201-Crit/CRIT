@@ -9,9 +9,7 @@ const LogOut = () => {
   const nav = useNavigate();
 
   const logOut = () => {
-    console.log(user);
     api
-      // .post("http://localhost:8080/auth/logout", {
       .post("https://i9d201.p.ssafy.io/api/auth/logout", {
         accessToken: user.accessToken,
         refreshToken: user.refreshToken,

@@ -34,7 +34,7 @@ const JoinChallenge = ({ challenge }) => {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
           },
-        },
+        }
       )
       .then((res) => {
         Swal.fire({
