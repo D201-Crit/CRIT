@@ -62,8 +62,9 @@ public class RoomController {
                                                    @RequestBody(required = false) Map<String, Object> params, HttpServletRequest httpServletRequest)
             throws Exception {
         User user = userTokenUtil.getUser(httpServletRequest);
+        log.info("룸 진입 전");
         String token = roomService.createConnection(user, openVidu, sessionId, params);
-        
+        log.info("OKOKOK, token : {}", token);
         return new ResponseEntity<>(new Response<>("success", "커넥션 맺기 성공", token), HttpStatus.OK);
         // 토큰 반환
     }

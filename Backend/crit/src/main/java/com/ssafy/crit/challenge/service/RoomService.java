@@ -42,16 +42,21 @@ public class RoomService {
     public String createConnection(User user, OpenVidu openVidu, String sessionId, Map<String, Object> params)
             throws Exception{
         // 세션 아이디와 유저 정보를 가지고 해당 유저가 챌린지에 해당하는지 확인
-        log.debug("isInChallenge Not OK");
+        log.info("isInChallenge Not OK");
         isInChallenge(sessionId, user);
-        log.debug("isInChallenge OK");
+        log.info("isInChallenge OK");
         Session session = openVidu.getActiveSession(sessionId); // OpenVidu 미디어 서버에서 세션이 존재하는 지 확인
+        log.info("session is OK");
         if (session == null) {
+            log.info("Session is Not OK");
             throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_SESSION);
         }
 
+
         ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
+        log.info("properties is OK : {}", properties);
         Connection connection = session.createConnection(properties); // connection 만들기
+        log.info("Connection Token : {}", connection.getToken());
         return connection.getToken(); // 토큰 반환
     }
 
