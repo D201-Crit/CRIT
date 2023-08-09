@@ -18,17 +18,26 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.io.IOUtils;
+
 
 @Service
 @Slf4j
@@ -40,6 +49,7 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final FollowRepository followRepository;
     private final S3Uploader s3Uploader;
+    private final ResourceLoader resourceLoader;
 
     private final AmazonS3Client amazonS3Client;
     @Value("${cloud.aws.s3.bucket}")
@@ -56,14 +66,18 @@ public class UserService {
             throw new BadRequestException(ErrorCode.INVALID_ADMIN);
         }
 
+        String upload = s3Uploader.uploadFiles(loadResource(), "Profile");
+
+
         User user = User.builder()
                 .id(signUpRequestDto.getId())
                 .email(signUpRequestDto.getEmail())
                 .password(signUpRequestDto.getPassword())
                 .nickname(signUpRequestDto.getNickname())
                 .role(Role.USER)
-            .grade(Grade.Beginner)
-            .exp(0)
+                .grade(Grade.Beginner)
+                .profileImageUrl(upload)
+                .exp(0)
                 .authProvider(AuthProvider.EMPTY)
                 .build();
 
@@ -194,5 +208,33 @@ public class UserService {
 
     public User getUserProfile(User user){
         return userRepository.findById(user.getId()).orElseThrow();
+    }
+
+    public MultipartFile loadResource() throws IOException {
+        Resource resource = resourceLoader.getResource("classpath:basic-profile-picture/user-basic-profile.png");
+
+        File file = resource.getFile();
+
+        return convertFileToMultipartFile(file);
+
+    }
+
+    private MultipartFile convertFileToMultipartFile(File file) throws IOException {
+
+        FileItem fileItem = new DiskFileItem(
+                "file",
+                Files.probeContentType(file.toPath()),
+                false,
+                file.getName(),
+                (int) file.length(),
+                file.getParentFile());
+
+        InputStream inputStream = new FileInputStream(file);
+        OutputStream outputStream = fileItem.getOutputStream();
+        IOUtils.copy(inputStream, outputStream);
+
+        MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
+
+        return multipartFile;
     }
 }

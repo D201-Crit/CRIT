@@ -9,8 +9,6 @@ import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.boards.service.dto.BoardResponseDto;
 import com.ssafy.crit.boards.service.dto.BoardSaveRequestDto;
 import com.ssafy.crit.boards.service.dto.BoardShowSortDto;
-import com.ssafy.crit.common.error.code.ErrorCode;
-import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.message.response.Response;
 import com.ssafy.crit.boards.service.BoardService;
 
@@ -55,7 +53,7 @@ public class BoardController {
 	@GetMapping("/challengeWhole/{category_id}")
 	public Response<?> getChallengeBoards(@PathVariable("category_id") String category) {
 		return new Response<>("성공", "전체 챌린지 게시물 리턴",
-			boardService.getWholeChallengeBoards(category));
+				boardService.getWholeChallengeBoards(category));
 	}
 
 	// 개별 게시글 조회
@@ -94,12 +92,30 @@ public class BoardController {
 
 	}
 
-	@GetMapping("/desc")
-	public Response<?> getBoardsInDescOrder(Pageable pageable) {
-		Page<BoardShowSortDto> allDesc = boardService.findAllDesc(pageable);
-		return new Response<>("성공", "타이틀 내림차순", allDesc);
+	@PostMapping("/deleteImageOne/{boardId}/{fileId}")
+	public Response<?> imageDelete(@PathVariable("boardId") Long id, @PathVariable("fileId") Long fileId, HttpServletRequest httpServletRequest){
+		User user = getUser(httpServletRequest);
+		return new Response<>("성공", "삭제 성공", boardService.imageDelete(id, fileId));
+
 	}
 
+	@PostMapping("/clearListMapping")
+	public Response<?> clearMapping(){
+		boardService.clearList();
+		return new Response<>("성공", "리스트clear", null);	}
+
+	// 조건 쿼리 파람으로
+	// @GetMapping("/desc")
+	// public Response<?> getBoardsInDescOrder(Pageable pageable) {
+	// 	Page<BoardShowSortDto> allDesc = boardService.findAllDesc(pageable);
+	// 	return new Response<>("성공", "타이틀 내림차순", allDesc);
+	// }
+
+	@GetMapping("/desc")
+	public Response<?> getBoardsInDescOrder(Pageable pageable) {
+		log.info("시작점@22222222222222222222222");
+		return new Response<>("성공", "타이틀 내림차순", boardService.findAllDesc(pageable));
+	}
 	@GetMapping("/asc")
 	public Response<?> getBoardsInAscOrder(Pageable pageable) {
 		Page<BoardShowSortDto> boards = boardService.findAllAsc(pageable);
@@ -146,7 +162,7 @@ public class BoardController {
 		String userId = (String)jwtProvider.get(bearer).get("userId");
 
 		User user = userRepository.findById(userId).orElseThrow(() -> {
-			return new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
+			return new IllegalArgumentException("유저 ID를 찾을수 없습니다.");
 		});
 		return user;
 	}

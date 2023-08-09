@@ -2,15 +2,13 @@ package com.ssafy.crit.boards.service.dto;
 
 import com.ssafy.crit.boards.entity.board.Board;
 import com.ssafy.crit.boards.entity.feeds.UploadFile;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Value;
 /**
  * author : 강민승
  */
