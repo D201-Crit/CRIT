@@ -187,8 +187,8 @@ const MyChallenge = () => {
       )}
       <Modal style={SWebRTCModal} isOpen={isOpen} onRequestClose={closeModal}>
         {/* 모달 내부에서 VideoRoomComponent 사용 */}
-        {/* <VideoRoomComponent user={user} challengeData={challengeData} /> */}
-        <VideoRoomComponent />
+        <VideoRoomComponent users={user} challengeData={challengeData} />
+        {/* <VideoRoomComponent /> */}
       </Modal>
     </>
   );
