@@ -97,8 +97,6 @@ export const SInfoWrapper = styled.div`
   }
 `;
 export const SButtonWrapper = styled.div`
-  // width: 20%;
-  // background-color: green;
   text-align: center;
   #participation {
     width: 150px;
@@ -109,7 +107,7 @@ export const SButtonWrapper = styled.div`
     border: none;
     margin: 150px 150px 0 0;
     background-color: #33ff00;
-    // color: white;
+    cursor: pointer;
   }
   #enter {
     width: 150px;

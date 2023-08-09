@@ -175,8 +175,8 @@ const MyChallenge = () => {
                   <p id="people">{challenge.userList.length}명 참여 중</p>
                   {getDaysInProgress(
                     challenge.startDate,
-                    challenge.endDate,
-                  ).includes("현재") && (
+                    challenge.endDate
+                  )?.includes("현재") && (
                     <button id="enter" onClick={() => openModal(challenge)}>
                       입장하기
                     </button>

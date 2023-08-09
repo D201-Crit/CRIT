@@ -49,8 +49,6 @@ export const SSwiper = styled(Swiper)`
 `;
 SSwiper.displayName = "SwiperWrapper";
 
-SSwiper.displayName = "SwiperWrapper";
-
 export const SSwiperSlide = styled(SwiperSlide)`
   background-color: rgba(22, 22, 22, 22);
 

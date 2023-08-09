@@ -27,11 +27,13 @@ const SignUp = () => {
       setMismatchError(e.target.value !== passwordCheck);
     },
     // 함수 기준 외부 변수만 deps[]에 작성
-    [passwordCheck],
+    [passwordCheck]
   );
   const onCheckId = (userId) => {
     axios
-      .post(`https://i9d201.p.ssafy.io/api/auth/valid/userId`, { userId })
+      .post(`https://i9d201.p.ssafy.io/api/auth/valid/userId?userId=${userId}`)
+      // .post(`https://i9d201.p.ssafy.io/api/auth/valid/userId/${userId}`)
+      // .post(`https://i9d201.p.ssafy.io/api/auth/valid/userId`, { userId })
       .then((res) => {
         console.log(res);
       })
@@ -41,7 +43,9 @@ const SignUp = () => {
   };
   const onCheckNickname = (nickname) => {
     axios
-      .post(`https://i9d201.p.ssafy.io/api/auth/valid/nickname`, { nickname })
+      .post(
+        `https://i9d201.p.ssafy.io/api/auth/valid/nickname?nickname=${nickname}`
+      )
       .then((res) => {
         console.log(res);
       })
@@ -54,7 +58,7 @@ const SignUp = () => {
       setPasswordCheck(e.target.value);
       setMismatchError(e.target.value !== password);
     },
-    [password],
+    [password]
   );
   const [mismatchError, setMismatchError] = useState(false);
   // 가입 실패
@@ -104,7 +108,7 @@ const SignUp = () => {
           .finally(() => {});
       }
     },
-    [email, nickname, password, passwordCheck],
+    [email, nickname, password, passwordCheck]
   );
 
   return (
