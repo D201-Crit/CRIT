@@ -61,8 +61,8 @@ public class UserService {
             throw new BadRequestException(ErrorCode.ALREADY_REGISTERED_USER_ID);
         }
 
-        if(signUpRequestDto.getNickname().toLowerCase().contains("admin") ||
-            signUpRequestDto.getId().toLowerCase().contains("admin")){
+        if (signUpRequestDto.getNickname().toLowerCase().contains("admin") ||
+                signUpRequestDto.getId().toLowerCase().contains("admin")) {
             throw new BadRequestException(ErrorCode.INVALID_ADMIN);
         }
 
@@ -79,13 +79,14 @@ public class UserService {
                 .profileImageUrl(upload)
                 .exp(0)
                 .authProvider(AuthProvider.EMPTY)
+                .cashPoint(0)
                 .build();
 
         user.passwordEncode(bCryptPasswordEncoder);
         return userRepository.save(user).getId();
     }
 
-    public LogInResponseDto logIn(LogInRequestDto logInRequestDto) throws Exception{
+    public LogInResponseDto logIn(LogInRequestDto logInRequestDto) throws Exception {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         if (!userRepository.existsById(logInRequestDto.getId())) {
             throw new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
@@ -95,7 +96,7 @@ public class UserService {
             throw new BadRequestException(ErrorCode.NOT_EXISTS_USER_PASSWORD);
         }
 
-        if(!user.getIsChecked()){
+        if (!user.getIsChecked()) {
             user.loginExp(user.getExp(), false);
             user.setGrade(user.getExp());
         }
@@ -107,22 +108,23 @@ public class UserService {
         user.updateRefreshToken(refreshTokenDto.getToken(), refreshTokenDto.getTokenExpirationTime());
 
         return LogInResponseDto.builder()
-            .id(user.getId())
-            .nickname(user.getNickname())
-            .email(user.getEmail())
-            .accessToken(accessTokenDto.getToken())
-            .refreshToken(refreshTokenDto.getToken())
-            .refreshTokenExpirationTime(refreshTokenDto.getTokenExpirationTime())
-            .exp(user.getExp())
-            .grade(user.getGrade())
-            .build();
+                .id(user.getId())
+                .nickname(user.getNickname())
+                .email(user.getEmail())
+                .accessToken(accessTokenDto.getToken())
+                .refreshToken(refreshTokenDto.getToken())
+                .refreshTokenExpirationTime(refreshTokenDto.getTokenExpirationTime())
+                .exp(user.getExp())
+                .grade(user.getGrade())
+                .cashPoint(user.getCashPoint())
+                .build();
     }
 
-    @Transactional(propagation= Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Scheduled(cron = "0 0 0 * * ?")
     public void resetIsChecked() {
         List<User> allUsers = userRepository.findAll();
-        for(User user : allUsers) {
+        for (User user : allUsers) {
             System.out.println(user.getId());
             user.setIsChecked(false);
         }
@@ -134,7 +136,7 @@ public class UserService {
     public UpdateProfilePictureDto updateProfilePicture(MultipartFile multipartFile, String userId) throws IOException {
 
         User user = userRepository.findById(userId).orElseThrow(
-            () -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
+                () -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID)
         );
 
         String upload = s3Uploader.uploadFiles(multipartFile, "Profile");
@@ -149,19 +151,20 @@ public class UserService {
     }
 
     /*
-    ** 로그아웃 -> DB에 저장된 리프레쉬 토큰 최신화
+     ** 로그아웃 -> DB에 저장된 리프레쉬 토큰 최신화
      */
     public void logOut(LogOutRequestDto logOutRequestDto) {
         User user = userRepository.findByRefreshToken(logOutRequestDto.getRefreshToken()).get();
         user.expireRefreshToken(new Date());
     }
+
     @Transactional(readOnly = true)
     public TokenDto getAccessToken(String refreshToken) {
         String userId = (String) jwtProvider.get(refreshToken).get("userId");
         String provider = (String) jwtProvider.get(refreshToken).get("provider");
         System.out.println("in getAccessToken " + userId + "  " + provider);
 
-        if(!userRepository.existsByIdAndAuthProvider(userId, AuthProvider.findByCode(provider.toLowerCase()))){
+        if (!userRepository.existsByIdAndAuthProvider(userId, AuthProvider.findByCode(provider.toLowerCase()))) {
             throw new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
         } else if (jwtProvider.isExpiration(refreshToken)) {
             throw new BadRequestException(ErrorCode.TOKEN_EXPIRED);
@@ -172,15 +175,15 @@ public class UserService {
 
     public UserResponseDto follow(FollowRequestDto followRequestDto) {
         User user1 = userRepository.findById(followRequestDto.getFollowerId())
-            .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_FOLLOWER));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_FOLLOWER));
         User user2 = userRepository.findById(followRequestDto.getFollowingId())
-            .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_FOLLOWING));
-        Optional<Follow> optionalFollow = followRepository.findByFollowerAndFollowing(user1,user2);
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_FOLLOWING));
+        Optional<Follow> optionalFollow = followRepository.findByFollowerAndFollowing(user1, user2);
 
         if (optionalFollow.isEmpty()) {
             Follow followFunc = Follow.builder()
-                .follower(user1)
-                .following(user2).build();
+                    .follower(user1)
+                    .following(user2).build();
             followRepository.save(followFunc);
             user1.addMemberTofollower(followFunc);
             user2.addMemberTofollowing(followFunc);
@@ -188,26 +191,29 @@ public class UserService {
             Follow follow = optionalFollow.get();
             user1.removeMemberTofollower(follow);
             user2.removeMemberTofollowing(follow);
-            followRepository.deleteByFollowerAndFollowing(user1,user2);
+            followRepository.deleteByFollowerAndFollowing(user1, user2);
         }
 
         return UserResponseDto.toUserResponseDto(user1);
     }
+
     public Boolean validUserId(String userId) {
         Optional<User> user = userRepository.findById(userId);
         return getValid(user, userId);
     }
+
     public Boolean validNickname(String nickname) {
         Optional<User> user = userRepository.findByNickname(nickname);
         return getValid(user, nickname);
     }
+
     private static Boolean getValid(Optional<User> user, String userinfo) {
         if (userinfo.toLowerCase().contains("admin")) return false;
         return !user.isPresent();
     }
 
-    public User getUserProfile(User user){
-        return userRepository.findById(user.getId()).orElseThrow();
+    public UserResponseDto getUserProfile(User user) {
+        return UserResponseDto.toUserResponseDto(userRepository.findById(user.getId()).orElseThrow());
     }
 
     public MultipartFile loadResource() throws IOException {

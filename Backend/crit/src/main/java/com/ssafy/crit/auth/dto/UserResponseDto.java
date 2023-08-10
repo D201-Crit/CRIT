@@ -15,30 +15,36 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserResponseDto {
-	private String id;
+    private String id;
 
-	private String nickname;
+    private String nickname;
 
-	private List<String> followers = new ArrayList<>();
+    private List<String> followers = new ArrayList<>();
 
-	private List<String> followings = new ArrayList<>();
+    private List<String> followings = new ArrayList<>();
+    private int exp;
+    private String grade;
+    private int cashPoint;
 
 
-	@Builder
-	public static UserResponseDto toUserResponseDto(User user) {
-		List<String> followerNames = user.getFollowers().stream()
-			.map(follow -> follow.getFollowing().getNickname())
-			.collect(Collectors.toList());
+    @Builder
+    public static UserResponseDto toUserResponseDto(User user) {
+        List<String> followerNames = user.getFollowers().stream()
+                .map(follow -> follow.getFollowing().getNickname())
+                .collect(Collectors.toList());
 
-		List<String> followingNames = user.getFollowings().stream()
-			.map(follow -> follow.getFollower().getNickname())
-			.collect(Collectors.toList());
+        List<String> followingNames = user.getFollowings().stream()
+                .map(follow -> follow.getFollower().getNickname())
+                .collect(Collectors.toList());
 
-		return new UserResponseDto(
-			user.getId(),
-			user.getNickname(),
-			followerNames,
-			followingNames
-		);
-	}
+        return new UserResponseDto(
+                user.getId(),
+                user.getNickname(),
+                followerNames,
+                followingNames,
+                user.getExp(),
+                user.getGrade().getTitle(),
+                user.getCashPoint()
+        );
+    }
 }

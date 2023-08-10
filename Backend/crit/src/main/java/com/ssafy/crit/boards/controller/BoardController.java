@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,12 +37,44 @@ public class BoardController {
 	private final UserRepository userRepository;
 	private final JwtProvider jwtProvider;
 
-
-	// 카테고리별 전체 게시글 조회
 	@GetMapping("/whole/{category_id}")
-	public Response<Page<BoardShowSortDto>> getBoards(Pageable pageable, @PathVariable("category_id") String category) {
-		return new Response <> ("성공", "전체 게시물 리턴", boardService.getBoards(pageable, category));
+	public Response<?> getBoards(Pageable pageable,
+								 @PathVariable("category_id") String category,
+								 @RequestParam(required = false) String sortted,
+								 @RequestParam(required = false) String part) {
+
+		Page<BoardShowSortDto> boards;
+
+		if (part != null) {
+			boards = boardService.findByTitleContaining(part, pageable);
+			return new Response<>("성공", "포함된 단어 찾기", boards);
+		}
+
+		if ("title-desc".equals(sortted)) {
+			boards = boardService.findAllDesc(pageable);
+			return new Response<>("성공", "타이틀 내림차순", boards);
+		}
+
+		if ("title-asc".equals(sortted)) {
+			boards = boardService.findAllAsc(pageable);
+			return new Response<>("성공", "타이틀 오름차순", boards);
+		}
+
+		if ("views-desc".equals(sortted)) {
+			boards = boardService.orderByViewsDesc(pageable);
+			return new Response<>("성공", "조회순 내림차순", boards);
+		}
+
+		if ("views-asc".equals(sortted)) {
+			boards = boardService.orderByViewsAsc(pageable);
+			return new Response<>("성공", "조회순 오름차순", boards);
+		}
+
+		boards = boardService.getBoards(pageable, category);
+		return new Response<>("성공", "카테고리별 전체 게시물 리턴", boards);
 	}
+
+
 
 
 	//전체 게시물 조회
@@ -107,39 +138,6 @@ public class BoardController {
 		boardService.clearList();
 		return new Response<>("성공", "리스트clear", null);	}
 
-	// 조건 쿼리 파람으로
-	//내림차순 정렬
-	@GetMapping("/desc")
-	public Response<?> getBoardsInDescOrder(Pageable pageable) {
-		Page<BoardShowSortDto> allDesc = boardService.findAllDesc(pageable);
-		return new Response<>("성공", "타이틀 내림차순", allDesc);
-	}
-
-	//오름차순 정렬
-	@GetMapping("/asc")
-	public Response<?> getBoardsInAscOrder(Pageable pageable) {
-		Page<BoardShowSortDto> boards = boardService.findAllAsc(pageable);
-		return new Response<>("성공", "타이틀 오름차순", boards);
-	}
-
-	@GetMapping("/viewsdesc")
-	public Response<?> getBoardsViewsDesc(Pageable pageable) {
-		Page<BoardShowSortDto> boards = boardService.orderByViewsDesc(pageable);
-		return new Response<>("성공", "조회순 내림차순", boards);
-	}
-
-	@GetMapping("/viewsasc")
-	public Response<?> getBoardsViewsAsc(Pageable pageable) {
-		Page<BoardShowSortDto> boards = boardService.orderByViewsAsc(pageable);
-		return new Response<>("성공", "조회순 내림차순", boards);
-	}
-
-
-	@GetMapping("/containing")
-	public Response<?> getFindByContaining(@RequestParam("part") String part, Pageable pageable) {
-		Page<BoardShowSortDto> boards = boardService.findByTitleContaining(part, pageable);
-		return new Response<>("성공", "포함된 단어 찾기", boards);
-	}
 
 	@GetMapping("/classificationOfMyBoards")
 	public Response<?> getMyBoardsClassification(@RequestParam("classification") String classificationString, HttpServletRequest httpServletRequest, Pageable pageable){
