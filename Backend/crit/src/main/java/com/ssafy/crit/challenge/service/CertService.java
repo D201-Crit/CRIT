@@ -53,9 +53,9 @@ public class CertService {
         // 이미지 정보 확인 -> 챌린지 시작 시간이랑 사진 시간이랑 비교 -> (X)
         // 사진 올린 시간과 현재 시간을 비교
 
-        if (Math.abs(Duration.between(LocalTime.now(), challenge.getStartTime()).getSeconds()) > 605) { // 시작 시간이랑  10분이상 차이나는 경우
-            throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_CERT_TIME);
-        }
+//        if (Math.abs(Duration.between(LocalTime.now(), challenge.getStartTime()).getSeconds()) > 605) { // 시작 시간이랑  10분이상 차이나는 경우
+//            throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_CERT_TIME);
+//        }
 
         // 올바르게 올린경우 사진 저장
         String uploadImgPath = s3Uploader.uploadFiles(file, "cert/img");
@@ -77,10 +77,10 @@ public class CertService {
         /** Challenge EndTime 10분 이내 인지 체크*/
         long certSeconds = Duration.between(challenge.getEndTime(), LocalTime.now()).getSeconds(); // 인증 종료 시간과 현재 시간의 차
         log.info("시간: {}", certSeconds);
-        if (certSeconds < 0 || certSeconds > 3000) { // 종료 이전에 인증 하였거나
-            // 종료 시간에서 10분 이내에 인증한 경우가 아닌 경우
-            throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_CERT_TIME);
-        }
+//        if (certSeconds < 0 || certSeconds > 3000) { // 종료 이전에 인증 하였거나
+//            // 종료 시간에서 10분 이내에 인증한 경우가 아닌 경우
+//            throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_CERT_TIME);
+//        }
 
         // 이탈시간 초단위로 보내줌
         int outTime = requestDto.getOutTime();
