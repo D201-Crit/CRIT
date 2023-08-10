@@ -153,8 +153,17 @@ public class User extends BaseTimeEntity {
         followings.remove(follow);
     }
 
-    public void getKakaoPayToCashPoint(int point) {
+    public void addCashPoint(int point) {
         this.cashPoint += point;
+    }
+
+    public boolean useCashPoint(int point){
+        if(this.cashPoint < point){ // 포인트가 모자란 경우
+            return false;
+        }
+
+        this.cashPoint -= point;
+        return true;
     }
 
 
