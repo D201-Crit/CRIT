@@ -4,6 +4,7 @@ import static java.time.LocalDateTime.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -153,8 +154,8 @@ public class BoardService {
                 .content(boardSaveRequestDto.getContent())
                 .writer(user.getNickname())
                 .classification(classification.getCategory())
-                .createTime(now())
-                .modifyTime(now())
+                .createTime(now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")))
+                .modifyTime(now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")))
                 .imageFiles(storeFileResult)
                 .fileId(fileId)
                 .build();
@@ -331,8 +332,8 @@ public class BoardService {
                     .classification(board.getClassification().getCategory())
                     .liked(likedName)
                     .imageUrl(filenames)
-                    .createTime(board.getCreatedDate())
-                    .modifyTime(board.getModifiedDate())
+                    .createTime(board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")))
+                    .modifyTime(board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")))
                     .build();
 
             bt.add(build);
@@ -366,8 +367,8 @@ public class BoardService {
                     board.getLikes().size(),
                     board.getClassification().getCategory(),
                     likedName, filenames, fileId,
-                    board.getCreatedDate(),
-                    board.getModifiedDate());
+                    board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")),
+                    board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")));
         });
     }
 

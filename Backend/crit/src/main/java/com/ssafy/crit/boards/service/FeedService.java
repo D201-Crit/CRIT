@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -71,7 +72,7 @@ public class FeedService {
 			.classification(classification)
 			.build();
 
-		boardRepository.save(board);
+		boardRepository.saveAndFlush(board);
 
 		for (MultipartFile multipartFile : multipartFiles) {
 			if (!multipartFile.isEmpty()) {
@@ -92,6 +93,9 @@ public class FeedService {
 
 		fileResponseDto.setId(board.getId());
 		fileResponseDto.setImageFiles(storeFileResult);
+		fileResponseDto.setCreateTime(board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")));
+		fileResponseDto.setModifyTime(board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")));
+
 		return fileResponseDto;
 	}
 
@@ -154,7 +158,9 @@ public class FeedService {
 				board.getClassification().getCategory(),
 				board.getUser().getId(),
 				board.getUploadFiles().stream()
-					.map(UploadFile::getStoreFilePath).collect(Collectors.toList()));
+					.map(UploadFile::getStoreFilePath).collect(Collectors.toList()),
+					board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")),
+					board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")));
 		});
 	}
 }

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,14 +22,13 @@ public class BoardSaveResponseDto {
     private String content;
     private String writer;
     private String classification;
-    private LocalDateTime createTime;
-    private LocalDateTime modifyTime;
+    private String createTime;
+    private String modifyTime;
     private List<String> imageFiles;
     private List<Long>  fileId;
 
     @Builder
-    public BoardSaveResponseDto(Long id, String title, String content, String writer, String classification,
-        LocalDateTime createTime, LocalDateTime modifyTime, List<String> imageFiles, List<Long> fileId) {
+    public BoardSaveResponseDto(Long id, String title, String content, String writer, String classification, String createTime, String modifyTime, List<String> imageFiles, List<Long> fileId) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -58,8 +58,8 @@ public class BoardSaveResponseDto {
                 board.getContent(),
                 board.getClassification().getCategory(),
                 board.getUser().getNickname(),
-                board.getCreatedDate(),
-                board.getModifiedDate(),
+                board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")),
+                board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")),
                 filenames,
                 fileId);
     }
