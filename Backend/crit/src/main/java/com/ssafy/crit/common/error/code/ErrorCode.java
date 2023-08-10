@@ -47,6 +47,8 @@ public enum ErrorCode {
     INVALID_SHORTS_BOARD_DATA_TYPE(HttpStatus.BAD_REQUEST, "B-008", "잘못된 게시판 데이터 타입입니다."),
     ALREADY_REGISTERED_BOARD_DATA(HttpStatus.BAD_REQUEST, "B-009", "이미 존재하는 게시판 데이터입니다."),
     UNSUPPORTED_BOARD_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "B-0010", "지원하지 않는 게시판 미디어 유형입니다."),
+    NOT_VALID_BOARD_TITLE(HttpStatus.BAD_REQUEST, "B-011", "이모티콘 혹은 욕설을 금지합니다."),
+
     // 챌린지
     NOT_EXISTS_CHALLENGE_ID(HttpStatus.BAD_REQUEST, "C-001", "존재하지 않는 챌린지 아이디입니다."),
     NOT_EXISTS_CHALLENGE_IMAGE_TYPE(HttpStatus.BAD_REQUEST, "C-002", "존재하지 않는 챌린지 이미지 확장자입니다."),

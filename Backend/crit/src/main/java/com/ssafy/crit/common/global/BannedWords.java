@@ -4,10 +4,12 @@ import org.springframework.stereotype.Component;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 @Component
 public class BannedWords {
-	String[] stt = {" 　", "⠀", "", "⠀", "ㅤ", "---", "▪️", "▪", "◾", "――", "- -", "― ―", "^^ 7", "^ ^ 7",
+	private String[] stt = {" 　", "⠀", "", "⠀", "ㅤ", "---", "▪️", "▪", "◾", "――", "- -", "― ―", "^^ 7", "^ ^ 7",
 			"^^7", "^7", ";;", "^노^", "￣", "⊥", "─ ─", "━ ━", "──", "━━", "┴", "้", "̆̈", "1빠", "==", "2빠",
 			"D쥐고", "D지고", "jonna", "jot같", "mi쳤", "tlqkf", "&stype=9", "wlfkf", "갈틱폰", "gartic", "같은 새끼",
 			"같은새끼", "개 새끼", "개같아", "개같은", "개같을", "개같게", "개나 소나", "개나대", "개나소나", "개넷", "개년", "개념빠가",
@@ -57,5 +59,10 @@ public class BannedWords {
 			"line.me", "ask.fm", "adinc.co.kr", "vonvon", "&feature=share", "superfeed", "lumieyes", "theqoo", "dmitory",
 			"_enliple", "apt_review", "showcat", "쇼캣", ".pls", "stype=3", "$('", "bitly", "poomang.com", "comment_memo",
 			"vote.php", "onmouse", "onkeyup", "newsnack", "onkeydown", "", "", "〈"};
+
+	public boolean isBannedWords(String ext) {
+		return Arrays.asList(stt).contains(ext.toLowerCase());
+	}
+
 
 }

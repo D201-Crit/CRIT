@@ -135,6 +135,7 @@ public class BoardController {
 	}
 
 
+	@GetMapping("/containing")
 	public Response<?> getFindByContaining(@RequestParam("part") String part, Pageable pageable) {
 		Page<BoardShowSortDto> boards = boardService.findByTitleContaining(part, pageable);
 		return new Response<>("성공", "포함된 단어 찾기", boards);
