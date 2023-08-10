@@ -1,5 +1,6 @@
 package com.ssafy.crit.challenge.repository;
 
+import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.challenge.entity.Challenge;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,8 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     List<Challenge> findAllByEndDate(LocalDate date);
     List<Challenge> findAllByStartDate(LocalDate date);
 
+    @Query("select c from Challenge c join ChallengeUser cu on c = cu.challenge where c.startDate <= :endDate and c.endDate >= :startDate " +
+            "and cu.user = :user")
+    List<Challenge> findAllScheduledChallenge(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
+                                              @Param("user") User user);
 }

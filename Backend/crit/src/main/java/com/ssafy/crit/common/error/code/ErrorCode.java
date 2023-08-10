@@ -60,6 +60,7 @@ public enum ErrorCode {
     INVALID_SHORTS_CHALLENGE_DATA_TYPE(HttpStatus.BAD_REQUEST, "C-010", "잘못된 챌린지 데이터 타입입니다."),
     ALREADY_REGISTERED_CHALLENGE_DATA(HttpStatus.BAD_REQUEST, "C-011", "이미 존재하는 챌린지 데이터입니다."),
     UNSUPPORTED_CHALLENGE_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "C-012", "지원하지 않는 챌린지 미디어 유형입니다."),
+    OVERLAPPED_CHALLENGE_REQUEST(HttpStatus.BAD_REQUEST, "C-013", "기존에 참여중인 챌린지와 중복되는 스케줄입니다."),
 
     // 쇼츠
     NOT_EXISTS_SHORTS_ID(HttpStatus.BAD_REQUEST, "S-001", "존재하지 않는 쇼츠 아이디입니다."),
@@ -76,7 +77,8 @@ public enum ErrorCode {
     NOT_EXISTS_MESSAGE_AUTHORIZE(HttpStatus.BAD_REQUEST, "M-004", "존재하지 않는 메시지 권한입니다."),
 
     // S3
-    INVALID_FILE_CONVERT(HttpStatus.BAD_REQUEST, "S3-001", "MultipartFile -> File 변환을 실패했습니다.")
+    INVALID_FILE_CONVERT(HttpStatus.BAD_REQUEST, "S3-001", "MultipartFile -> File 변환을 실패했습니다."),
+    FAIL_DELETE_FILE(HttpStatus.BAD_REQUEST, "S3-002", "S3에 업로드 된 파일을 지울 때 오류가 발생하였습니다.")
     ;
 
     private HttpStatus httpStatus;

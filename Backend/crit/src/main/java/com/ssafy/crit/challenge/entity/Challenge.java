@@ -79,6 +79,9 @@ public class Challenge {
         this.board = classification;
     }
 
+    public void setImg(String imgUrl) {
+        this.filePath= imgUrl;
+    }
     public void setChallengeStatus(ChallengeStatus challengeStatus) {
         this.challengeStatus = challengeStatus;
     }
