@@ -93,7 +93,7 @@ public class PayService {
                 KakaoApproveResponse.class);
 
         // 포인트 충전
-        user.getKakaoPayToCashPoint(approveResponse.getAmount().getTotal());
+        user.addCashPoint(approveResponse.getAmount().getTotal());
         return approveResponse;
     }
 

@@ -5,6 +5,9 @@ import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.challenge.dto.ChallengeCreateRequestDto;
 import com.ssafy.crit.challenge.dto.ChallengeListResponseDto;
+import com.ssafy.crit.challenge.entity.Challenge;
+import com.ssafy.crit.challenge.entity.ChallengeUser;
+import com.ssafy.crit.challenge.repository.ChallengeRepository;
 import com.ssafy.crit.challenge.service.ChallengeService;
 import com.ssafy.crit.common.error.code.ErrorCode;
 import com.ssafy.crit.common.error.exception.BadRequestException;
@@ -19,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /***
@@ -36,9 +40,22 @@ public class ChallengeController {
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
 
-    @GetMapping("/test")
-    public ResponseEntity<Response<String>> test() throws Exception {
-//        s3Uploader.deleteFiles("challenge/e8bc6337-9691-4ab9-9911-d0dabe0143f2e111e497-5ede-411b-9394-7d35d1d8ed8e_minsu.jpg");
+    private final ChallengeRepository challengeRepository; // Test용
+
+    @GetMapping("/test/{challengeId}")
+    public ResponseEntity<Response<String>> test(@PathVariable("challengeId") Long challengeId) throws Exception {
+        Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(
+                () -> new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_ID));
+
+        ChallengeService.refundMoney(challenge);
+        for(ChallengeUser challengeUser :challenge.getChallengeUserList()){
+            log.info("Refunded");
+            log.info("user Nickname : {},  user Money : {}", challengeUser.getUser().getNickname(), challengeUser.getUser().getCashPoint());
+            challengeUser.getUser().useCashPoint(challenge.getMoney());
+            log.info("Reusing");
+            log.info("user Nickname : {},  user Money : {}", challengeUser.getUser().getNickname(), challengeUser.getUser().getCashPoint());
+        }
+
 
         return new ResponseEntity<>(new Response<>("success", "Test OK", "OK"), HttpStatus.OK);
     }

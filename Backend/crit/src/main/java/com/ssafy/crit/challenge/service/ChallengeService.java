@@ -120,6 +120,10 @@ public class ChallengeService {
         if (LocalDate.now().isBefore(challenge.getStartDate())) { // 챌린지가 시작하기 이전인 경우
 //            log.info("현재 시간 : {}", LocalDate.now());
             /** 챌린지 참여 로직 */
+            if(!user.useCashPoint(challenge.getMoney())){
+                throw new BadRequestException(ErrorCode.INSUFFICIENT_POINT);
+            }
+
             ChallengeUser challengeUser = ChallengeUser.createChallengeUser(challenge, user);
             challenge.addChallengeUser(challengeUser);
             // 유저에도 추가 필요
@@ -180,6 +184,7 @@ public class ChallengeService {
                 challenge.setChallengeStatus(ChallengeStatus.PROGRESS);
             } else { // 인원수 다 안차면 거절
                 challenge.setChallengeStatus(ChallengeStatus.REJECT);
+                refundMoney(challenge);
             }
         }
 
@@ -189,6 +194,14 @@ public class ChallengeService {
             }
         }
 
+    }
+
+    public static void refundMoney(Challenge challenge) {
+        int money = challenge.getMoney();
+        challenge.getChallengeUserList().forEach(challengeUser -> {
+                    User user = challengeUser.getUser();
+                    user.addCashPoint(money);
+                });
     }
 
 
