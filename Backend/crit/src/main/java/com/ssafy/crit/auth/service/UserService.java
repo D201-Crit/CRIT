@@ -174,20 +174,33 @@ public class UserService {
     }
 
     public UserResponseDto follow(FollowRequestDto followRequestDto) {
+        // user1 이 현재 로그인 한 유저
         User user1 = userRepository.findById(followRequestDto.getFollowerId())
                 .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_FOLLOWER));
+
+        // user 2는 내가 팔로잉 할 유저
         User user2 = userRepository.findById(followRequestDto.getFollowingId())
                 .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_FOLLOWING));
+
+        // user 1과 user 2가 모두 있다면
         Optional<Follow> optionalFollow = followRepository.findByFollowerAndFollowing(user1, user2);
 
+        // 팔로우 안되어 있으면 팔로우, 팔로우 돼있으면 팔로우 취소
         if (optionalFollow.isEmpty()) {
-            Follow followFunc = Follow.builder()
+            Follow follow = Follow.builder()
                     .follower(user1)
-                    .following(user2).build();
-            followRepository.save(followFunc);
-            user1.addMemberTofollower(followFunc);
-            user2.addMemberTofollowing(followFunc);
-        } else {
+                    .following(user2)
+                    .build();
+
+            // followRepository에 저장
+            followRepository.save(follow);
+
+            // user 1에 팔로잉 목록에 추가, user 2에 팔로워 목록 추가
+            user1.addMemberTofollowing(follow);
+            user2.addMemberTofollower(follow);
+        }
+        else {
+            // user 1 팔로잉 목록에서 제거, user 2 팔로우 목록에서 제거
             Follow follow = optionalFollow.get();
             user1.removeMemberTofollower(follow);
             user2.removeMemberTofollowing(follow);

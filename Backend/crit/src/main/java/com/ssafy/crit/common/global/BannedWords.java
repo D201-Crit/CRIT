@@ -58,7 +58,7 @@ public class BannedWords {
 			"ㅡㅡ", "ส", "ค็", "้", "็", "zoomin.cur", "eventHostId", "open.", "onchat", "ajax_comment", "stub-extra", "-stub",
 			"line.me", "ask.fm", "adinc.co.kr", "vonvon", "&feature=share", "superfeed", "lumieyes", "theqoo", "dmitory",
 			"_enliple", "apt_review", "showcat", "쇼캣", ".pls", "stype=3", "$('", "bitly", "poomang.com", "comment_memo",
-			"vote.php", "onmouse", "onkeyup", "newsnack", "onkeydown", "", "", "〈"};
+			"vote.php", "onmouse", "onkeyup", "newsnack", "onkeydown", "", "", "〈", "시바라"};
 
 	public boolean isBannedWords(String ext) {
 		return Arrays.asList(stt).contains(ext.toLowerCase());
