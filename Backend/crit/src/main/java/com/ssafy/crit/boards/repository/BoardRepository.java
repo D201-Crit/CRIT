@@ -16,25 +16,17 @@ import org.springframework.data.repository.query.Param;
  */
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    // 타이틀 내림차순
-    @Query("SELECT b from Board b order by b.title DESC ")
-    Page<Board> findAllDesc(Pageable pageable);
-
-    // 타이틀 오름차순
-    @Query("SELECT b from Board b order by b.title ASC ")
-    Page<Board> findAllAsc(Pageable pageable);
-
     // 조회순 내림차순
-    @Query("SELECT p FROM Board p order by p.views DESC")
-    Page<Board> orderByViewsDesc(Pageable pageable);
+    @Query("SELECT p FROM Board p where p.classification.category = :category order by p.views DESC")
+    Page<Board> orderByViewsDesc(Pageable pageable, @Param("category")String category);
 
     // 조회순 오름차순
-    @Query("SELECT p FROM Board p order by p.views ASC ")
-    Page<Board> orderByViewsAsc(Pageable pageable);
+    @Query("SELECT p FROM Board p where p.classification.category = :category order by p.views ASC ")
+    Page<Board> orderByViewsAsc(Pageable pageable, @Param("category")String category);
 
     // 찾기 메서드
-    @Query("SELECT b FROM Board b WHERE b.title LIKE %:ti%")
-    Page<Board> findByTitleContaining(@Param("ti") String ti, Pageable pageable);
+    @Query("SELECT b FROM Board b WHERE b.title LIKE %:ti% and b.classification.category = :category ")
+    Page<Board> findByTitleContaining(@Param("ti") String ti, @Param("category")String category, Pageable pageable);
 
     @Query("select b from Board b where b.classification.category = :category")
     Page<Board> findAllByClassificationCategory(Pageable pageable, @Param("category") String category);

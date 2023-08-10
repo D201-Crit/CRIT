@@ -46,27 +46,17 @@ public class BoardController {
 		Page<BoardShowSortDto> boards;
 
 		if (part != null) {
-			boards = boardService.findByTitleContaining(part, pageable);
+			boards = boardService.findByTitleContaining(part,category, pageable);
 			return new Response<>("성공", "포함된 단어 찾기", boards);
 		}
 
-		if ("title-desc".equals(sortted)) {
-			boards = boardService.findAllDesc(pageable);
-			return new Response<>("성공", "타이틀 내림차순", boards);
-		}
-
-		if ("title-asc".equals(sortted)) {
-			boards = boardService.findAllAsc(pageable);
-			return new Response<>("성공", "타이틀 오름차순", boards);
-		}
-
 		if ("views-desc".equals(sortted)) {
-			boards = boardService.orderByViewsDesc(pageable);
+			boards = boardService.orderByViewsDesc(pageable,category);
 			return new Response<>("성공", "조회순 내림차순", boards);
 		}
 
 		if ("views-asc".equals(sortted)) {
-			boards = boardService.orderByViewsAsc(pageable);
+			boards = boardService.orderByViewsAsc(pageable,category);
 			return new Response<>("성공", "조회순 오름차순", boards);
 		}
 
