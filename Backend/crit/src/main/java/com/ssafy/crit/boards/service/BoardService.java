@@ -274,29 +274,18 @@ public class BoardService {
         boardRepository.deleteById(id);
     }
 
-
-    public Page<BoardShowSortDto> findAllDesc(Pageable pageable) {
-        Page<Board> boards = boardRepository.findAllDesc(pageable);
+    public Page<BoardShowSortDto> orderByViewsDesc(Pageable pageable, String category) {
+        Page<Board> boards = boardRepository.orderByViewsDesc(pageable, category);
         return getBoardShowSortDtos(boards);
     }
 
-    public Page<BoardShowSortDto> findAllAsc(Pageable pageable) {
-        Page<Board> boards = boardRepository.findAllAsc(pageable);
+    public Page<BoardShowSortDto> orderByViewsAsc(Pageable pageable, String category) {
+        Page<Board> boards = boardRepository.orderByViewsAsc(pageable, category);
         return getBoardShowSortDtos(boards);
     }
 
-    public Page<BoardShowSortDto> orderByViewsDesc(Pageable pageable) {
-        Page<Board> boards = boardRepository.orderByViewsDesc(pageable);
-        return getBoardShowSortDtos(boards);
-    }
-
-    public Page<BoardShowSortDto> orderByViewsAsc(Pageable pageable) {
-        Page<Board> boards = boardRepository.orderByViewsAsc(pageable);
-        return getBoardShowSortDtos(boards);
-    }
-
-    public Page<BoardShowSortDto> findByTitleContaining(String find, Pageable pageable) {
-        Page<Board> boards = boardRepository.findByTitleContaining(find, pageable);
+    public Page<BoardShowSortDto> findByTitleContaining(String find, String category, Pageable pageable) {
+        Page<Board> boards = boardRepository.findByTitleContaining(find,category, pageable);
         return getBoardShowSortDtos(boards);
     }
 
