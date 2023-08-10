@@ -10,6 +10,7 @@ import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 import * as tmImage from "@teachablemachine/image";
+import { api } from "../api/api";
 
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL = "https://i9d201.p.ssafy.io/api/room/";
@@ -287,7 +288,7 @@ class VideoRoomComponent extends Component {
 
   leaveSession() {
     const mySession = this.state.session;
-    this.props.closeModal(); // closeModal 함수 호출
+    // this.props.closeModal(); // closeModal 함수 호출
     if (mySession) {
       mySession.disconnect();
       this.webcamRef.current.stop();
@@ -307,7 +308,22 @@ class VideoRoomComponent extends Component {
     }
     console.log("Teachable Machine 종료");
     this.isUnmounted = true;
+
+    const challengeId = this.props.challengeData.challenge.id;
+    const outTime = 0 + this.totalTimeRef.current;
     console.log(`이탈 시간: ${this.totalTimeRef.current}ms`);
+    console.log(challengeId, outTime);
+    api
+      .post("https://i9d201.p.ssafy.io/api/cert/video", {
+        challengeId,
+        outTime,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   handleLeaveSession() {

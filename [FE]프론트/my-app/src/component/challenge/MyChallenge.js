@@ -38,7 +38,7 @@ const MyChallenge = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [challengeData, setChallengeData] = useState(null); // 모달에 전달할 데이터 state 추가
   const [selectedSessionId, setSelectedSessionId] = useState(null);
-
+  console.log(myChallenges);
   const openModal = (challenge) => {
     setChallengeData({ challenge, user }); // 모달에 전달할 데이터를 state에 저장
     setSelectedSessionId(challenge.id); // 선택한 챌린지의 세션 ID 저장
@@ -205,7 +205,7 @@ const MyChallenge = () => {
           })}
         </SSwiper>
       )}
-      <Modal style={SWebRTCModal} isOpen={isOpen} onRequestClose={closeModal}>
+      <Modal style={SWebRTCModal} isOpen={isOpen}>
         {/* 모달 내부에서 VideoRoomComponent 사용 */}
         <VideoRoomComponent
           closeModal={closeModal}
