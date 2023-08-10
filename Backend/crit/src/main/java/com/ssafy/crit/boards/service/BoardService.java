@@ -113,6 +113,10 @@ public class BoardService {
             title = "Title";
         }
 
+        if(bannedWords.isBannedWords(title)){
+            throw new BadRequestException(ErrorCode.NOT_VALID_BOARD_TITLE);
+        }
+
         Board board = Board.builder()
                 .title(title)
                 .content(boardSaveRequestDto.getContent())
@@ -167,6 +171,7 @@ public class BoardService {
         Board board = boardRepository.findById(id).orElseThrow(() -> {
             return new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_ID);
         });
+
 
         if (!board.getUser().getId().equals(user.getId())) {
             throw new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_AUTHORIZE);
@@ -230,6 +235,11 @@ public class BoardService {
         }
 
         board.setUpdate(title, boardDto.getContent());
+
+        if(bannedWords.isBannedWords(board.getTitle())){
+            throw new BadRequestException(ErrorCode.NOT_VALID_BOARD_TITLE);
+        }
+
         boardRepository.save(board);
         return BoardResponseDto.toDto(board);
     }
