@@ -9,13 +9,31 @@ import "./VideoRoomComponent.css";
 import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
+import * as tmImage from '@teachablemachine/image';
 
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL = "https://i9d201.p.ssafy.io/api/room/";
 
+// Teachable machine 관련 변수
+// const webcamRef = null; // webcam을 useRef로 선언
+// const modelRef = null; 
+// const totalTimeRef = 0;
+const URL = "https://teachablemachine.withgoogle.com/models/0ZpItWsAb/";
+const modelURL = URL + "model.json";
+const metadataURL = URL + "metadata.json";
+
+let model;
+let webcam;
+const maxPredictions = 2; // 모델이 가지고 있는 클래스의 수에 따라 변경하세요
+// let isUnmounted = false;
+
 class VideoRoomComponent extends Component {
   constructor(props) {
     super(props);
+    this.webcamRef = React.createRef(); // webcam을 Ref로 선언
+    this.modelRef = React.createRef();
+    this.totalTimeRef = React.createRef();
+    this.isUnmounted = false;
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
     let sessionName = this.props.sessionName
@@ -135,6 +153,7 @@ class VideoRoomComponent extends Component {
       .connect(token, { clientData: this.state.myUserName })
       .then(() => {
         this.connectWebCam();
+        this.initTeachableMachine();
       })
       .catch((error) => {
         if (this.props.error) {
@@ -153,6 +172,45 @@ class VideoRoomComponent extends Component {
         );
       });
   }
+  //-----------------------teachable machine----------------------------//
+  async initTeachableMachine() {
+    model = await tmImage.load(modelURL, metadataURL);
+    webcam = new tmImage.Webcam(200, 200, true); // 너비, 높이, 뒤집기 여부
+    this.modelRef.current = model;
+    this.webcamRef.current = webcam; // useRef로 저장
+    await webcam.setup(); // 웹캠 권한 요청
+    await webcam.play();
+
+    requestAnimationFrame(this.loop);
+  }
+
+  loop = async () => {
+    if (this.isUnmounted) return; // 언마운트 된 상태이면 loop 종료
+    if (this.webcamRef.current) {
+      this.webcamRef.current.update(); // 웹캠 프레임 업데이트
+      await this.predict();
+      if (!this.isUnmounted) {
+        requestAnimationFrame(this.loop);
+      }
+    }
+  }
+
+  async predict() {
+    // 현재 웹캠 프레임을 이미지로 가져옵니다.
+    const image = this.webcamRef.current.canvas;
+    // 모델로 예측을 수행합니다.
+    const prediction = await this.modelRef.current.predict(image);
+    // 예측 결과를 콘솔에 출력합니다.
+    for (let i = 0; i < maxPredictions; i++) {
+      const classPrediction = prediction[i].className;
+      const probability = prediction[i].probability.toFixed(2);
+      console.log(`예측: ${classPrediction}, 확률: ${probability}`);
+      if (classPrediction === 'Class 2' && parseFloat(probability) >= 0.8) {
+        this.totalTimeRef.current += 1; // 0.01 second
+      }
+    }
+  }
+  //-----------------------teachable machine----------------------------//
 
   async connectWebCam() {
     await this.OV.getUserMedia({
@@ -203,7 +261,7 @@ class VideoRoomComponent extends Component {
           );
         });
       }
-    );
+    );    
   }
 
   updateSubscribers() {
@@ -231,6 +289,7 @@ class VideoRoomComponent extends Component {
 
     if (mySession) {
       mySession.disconnect();
+      this.webcamRef.current.stop();
     }
 
     // Empty all properties...
@@ -245,7 +304,16 @@ class VideoRoomComponent extends Component {
     if (this.props.leaveSession) {
       this.props.leaveSession();
     }
+    console.log('Teachable Machine 종료')
+    this.isUnmounted = true;
+    console.log(`이탈 시간: ${this.totalTimeRef.current}ms`)
   }
+
+  handleLeaveSession() {
+    this.isUnmounted = true;
+    this.leaveSession(); // 컴포넌트가 언마운트될 때 세션 종료
+  }
+
   camStatusChanged() {
     localUser.setVideoActive(!localUser.isVideoActive());
     localUser.getStreamManager().publishVideo(localUser.isVideoActive());
