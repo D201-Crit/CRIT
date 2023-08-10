@@ -65,10 +65,12 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "following")
     private List<Follow> followings = new ArrayList<>();
 
+    private int cashPoint;
+
     @Builder
     public User(String id, String nickname, String password, String email, String profileImageUrl,
         Role role, AuthProvider authProvider, String refreshToken, Date tokenExpirationTime, String tid, int exp,
-        Grade grade, Boolean isChecked, List<Follow> followers, List<Follow> followings) {
+        Grade grade, Boolean isChecked, List<Follow> followers, List<Follow> followings, int cashPoint ) {
         this.id = id;
         this.nickname = nickname;
         this.password = password;
@@ -84,6 +86,7 @@ public class User extends BaseTimeEntity {
         this.isChecked = false;
         this.followers = followers;
         this.followings = followings;
+        this.cashPoint = cashPoint;
     }
 
     /*
