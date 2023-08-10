@@ -18,8 +18,13 @@ public class UserController {
     private final UserService userService;
 
     // 회원가입
+//    @PostMapping("/signup")
+//    public ResponseEntity<String> signUp(@RequestPart("signUpRequestDto") SignUpRequestDto signUpRequestDto) throws Exception {
+//        return ResponseEntity.ok(userService.signUp(signUpRequestDto));
+//    }
+
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestPart("signUpRequestDto") SignUpRequestDto signUpRequestDto) throws Exception {
+    public ResponseEntity<String> signUp(@RequestBody SignUpRequestDto signUpRequestDto) throws Exception {
         return ResponseEntity.ok(userService.signUp(signUpRequestDto));
     }
 
