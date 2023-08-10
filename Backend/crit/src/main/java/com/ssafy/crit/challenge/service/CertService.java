@@ -124,10 +124,11 @@ public class CertService {
 
     // 날마다 챌린지 인증을 넣기
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 40 * * * *")
     public void dailyInsertionIsCert() throws Exception {
         log.info("Working Scheduling");
         List<Challenge> allOngoingChallenge = challengeRepository.findAllOngoingChallenge(LocalDate.now());
+        log.info("진행중 : ㅇㅇ");
         List<IsCert> insertedIsCert = new ArrayList<>();
         for (Challenge challenge : allOngoingChallenge) {
             log.info("challengeId : {}", challenge.getId());
