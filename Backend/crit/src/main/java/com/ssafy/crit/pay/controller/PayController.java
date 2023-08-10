@@ -22,7 +22,7 @@ public class PayController {
     private final JwtProvider jwtProvider;
 
     @GetMapping("/pay")
-    public ResponseEntity<KakaoReadyResponse> getPay(HttpServletRequest request, String amount) {
+    public ResponseEntity<KakaoReadyResponse> getPay(HttpServletRequest request, @RequestParam("amount") String amount) {
         // 추후 챌린지 정보에서 금액을 받아와서 로직 작성
         String token = request.getHeader("Authorization").substring(7);
         String userId = (String)jwtProvider.get(token).get("userId");
