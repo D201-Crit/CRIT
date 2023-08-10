@@ -5,14 +5,12 @@ import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.repository.UserRepository;
 import com.ssafy.crit.challenge.dto.ChallengeCreateRequestDto;
 import com.ssafy.crit.challenge.dto.ChallengeListResponseDto;
-import com.ssafy.crit.challenge.entity.Challenge;
 import com.ssafy.crit.challenge.service.ChallengeService;
 import com.ssafy.crit.common.error.code.ErrorCode;
 import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.message.response.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +38,8 @@ public class ChallengeController {
 
     @GetMapping("/test")
     public ResponseEntity<Response<String>> test() throws Exception {
-        challengeService.dailyChallengeCheck();
+//        s3Uploader.deleteFiles("challenge/e8bc6337-9691-4ab9-9911-d0dabe0143f2e111e497-5ede-411b-9394-7d35d1d8ed8e_minsu.jpg");
+
         return new ResponseEntity<>(new Response<>("success", "Test OK", "OK"), HttpStatus.OK);
     }
 

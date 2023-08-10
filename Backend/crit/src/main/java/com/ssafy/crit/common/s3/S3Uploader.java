@@ -1,8 +1,11 @@
 package com.ssafy.crit.common.s3;
 
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jcodec.api.FrameGrab;
@@ -39,6 +42,17 @@ public class S3Uploader {
         return upload(uploadFile, dirName);
     }
 
+    // S3서버에 올라간 파일을 지우기
+    public boolean deleteFiles(String fileName) throws IOException{
+        try{
+            amazonS3Client.deleteObject(bucket, fileName);
+            log.info("삭제완료!!");
+        } catch (SdkClientException e) {
+            log.info("e : {}", e);
+            throw new BadRequestException(ErrorCode.FAIL_DELETE_FILE);
+        }
+        return true;
+    }
 
     public String upload(File uploadFile, String filePath) {
         String fileName = filePath + "/" + UUID.randomUUID() + "."+ uploadFile.getName();   // S3에 저장된 파일 이름

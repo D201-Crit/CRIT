@@ -54,7 +54,7 @@ public class ChallengeService {
 
         // 파일 저장 후
         ChallengeCategory category = getCategory(challengeDto);
-        Challenge.ChallengeBuilder challengeBuilder = Challenge.builder()
+        Challenge challenge = Challenge.builder()
                 .name(challengeDto.getTitle())
                 .info(challengeDto.getIntroduce())
                 .challengeCategory(category)
@@ -66,20 +66,17 @@ public class ChallengeService {
                 .startTime(LocalTime.of(challengeDto.getStartTime().getHour(), challengeDto.getStartTime().getMinute(), 0))
                 .endTime(LocalTime.of(challengeDto.getEndTime().getHour(), challengeDto.getEndTime().getMinute(), 0))
                 .createUser(user)
-                .challengeStatus(ChallengeStatus.WAIT);
+                .challengeStatus(ChallengeStatus.WAIT)
+                .build();
+
+        checkSchedule(user, challenge); // 스케줄 겹치는지 확인
 
         if (file != null) { // 사진이 존재하는 경우
             if (!checkExtension(file)) throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_IMAGE_TYPE);
 
             String uploadImageUrl = s3Uploader.uploadFiles(file, "challenge");
-
-
-            challengeBuilder
-                    .filePath(uploadImageUrl);
+            challenge.setImg(uploadImageUrl);
         }
-
-        Challenge challenge = challengeBuilder.build();
-
 
         try {
             Challenge result = challengeRepository.saveAndFlush(challenge);
@@ -91,7 +88,6 @@ public class ChallengeService {
             Classification challengeBoard = classificationRepository.saveAndFlush(classification);
 
             result.addBoard(challengeBoard);
-
 
             ChallengeUser challengeUser = ChallengeUser.createChallengeUser(result, user); // 생성자도 챌린지 참가
             challengeUserRepository.save(challengeUser);
@@ -106,7 +102,7 @@ public class ChallengeService {
 
     }
 
-    public int joinChallenge(Long challengeId, User user) throws Exception {  // 챌린지 참여
+    public Challenge joinChallenge(Long challengeId, User user) throws Exception {  // 챌린지 참여
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_ID));
 
@@ -118,17 +114,32 @@ public class ChallengeService {
                 });
         // 중복 참여 제거
 
+        // 챌린지 스케줄 중복 여부 체크
+        checkSchedule(user, challenge); // 중복된 경우 발생 시 예외 처리
+
         if (LocalDate.now().isBefore(challenge.getStartDate())) { // 챌린지가 시작하기 이전인 경우
-            log.info("현재 시간 : {}", LocalDate.now());
+//            log.info("현재 시간 : {}", LocalDate.now());
             /** 챌린지 참여 로직 */
             ChallengeUser challengeUser = ChallengeUser.createChallengeUser(challenge, user);
             challenge.addChallengeUser(challengeUser);
             // 유저에도 추가 필요
-            return 1; // 생성 성공
+            return challenge; // 생성 성공
         } else {
             throw new BadRequestException(ErrorCode.NOT_VALID_CHALLENGE_DATE);
         }
 
+    }
+
+    private void checkSchedule(User user, Challenge challenge) {
+        List<Challenge> overlappedChallengeList = challengeRepository.findAllScheduledChallenge(challenge.getStartDate(),
+                challenge.getEndDate(), user); // 시간 제외 일정이 겹치는 챌린지들
+
+        for(Challenge c : overlappedChallengeList){
+            if(c.getStartTime().isBefore(challenge.getEndTime()) && c.getEndTime().isAfter(challenge.getStartTime())){
+                // 겹치는 경우
+                throw new BadRequestException(ErrorCode.OVERLAPPED_CHALLENGE_REQUEST);
+            }
+        }
     }
 
     public List<Challenge> getMyChallengeAll(User user) throws Exception {
