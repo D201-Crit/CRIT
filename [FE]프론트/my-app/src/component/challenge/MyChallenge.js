@@ -21,11 +21,13 @@ import {
   SMidWrapper,
   SBotWrapper,
   SWebRTCModal,
+  SSwalContent,
 } from "../../styles/pages/SChallengePage";
 import { useSelector } from "react-redux";
 import { SImg } from "./../../styles/pages/SChallengePage";
 import { useDispatch } from "react-redux";
 import { setMyChallenge } from "../../slice/ChallengeSlice";
+import Swal from "sweetalert2";
 
 const MyChallenge = () => {
   const user = useSelector((state) => state.users);
@@ -41,6 +43,23 @@ const MyChallenge = () => {
     setChallengeData({ challenge, user }); // 모달에 전달할 데이터를 state에 저장
     setSelectedSessionId(challenge.id); // 선택한 챌린지의 세션 ID 저장
     setIsOpen(true);
+    return Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "챌린지 입장 중!",
+      text: "CRIT",
+      showConfirmButton: false,
+      timer: 2000,
+      background: "#272727",
+      color: "white",
+      width: "500px",
+
+      // 먼지
+      // imageUrl: 'https://unsplash.it/400/200',
+      // imageWidth: 400,
+      // imageHeight: 200,
+      // imageAlt: 'Custom image',
+    });
   };
   const closeModal = () => {
     setIsOpen(false);
@@ -54,6 +73,7 @@ const MyChallenge = () => {
         },
       })
       .then((res) => {
+        console.log(res);
         dispatch(setMyChallenge(res.data.data));
       })
       .catch((err) => {
@@ -168,7 +188,7 @@ const MyChallenge = () => {
                   <p id="people">{challenge.userList.length}명 참여 중</p>
                   {getDaysInProgress(
                     challenge.startDate,
-                    challenge.endDate
+                    challenge.endDate,
                   )?.includes("현재") && (
                     <button id="enter" onClick={() => openModal(challenge)}>
                       입장하기
@@ -187,7 +207,10 @@ const MyChallenge = () => {
       )}
       <Modal style={SWebRTCModal} isOpen={isOpen} onRequestClose={closeModal}>
         {/* 모달 내부에서 VideoRoomComponent 사용 */}
-        <VideoRoomComponent users={user} challengeData={challengeData} />
+        <VideoRoomComponent
+          closeModal={closeModal}
+          challengeData={challengeData}
+        />
         {/* <VideoRoomComponent /> */}
       </Modal>
     </>

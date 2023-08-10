@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Swal from "sweetalert2";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // ChallengPage
@@ -704,3 +705,5 @@ export const SWebRTCModal = {
     zIndex: "999",
   },
 };
+
+// Swal

@@ -60,6 +60,12 @@ const InformationChallenge = () => {
       return `현재 ${daysInProgress + 1}일째 참여 중`;
     }
   };
+
+  // 참여하기 startDate 2일전까지만 보이게
+
+  const twoDaysBefore = new Date(challenge.startDate);
+  twoDaysBefore.setDate(twoDaysBefore.getDate() - 2);
+
   return (
     <SInformationWrapper>
       <SImgWrapper>
@@ -87,7 +93,7 @@ const InformationChallenge = () => {
           <>
             {getDaysInProgress(
               challenge.startDate,
-              challenge.endDate
+              challenge.endDate,
             )?.includes("현재") && (
               <>
                 <button id="detailEnter" onClick={() => openModal(challenge)}>
@@ -98,7 +104,11 @@ const InformationChallenge = () => {
             )}
           </>
         ) : (
-          <JoinChallenge challenge={challenge} />
+          <>
+            {twoDaysBefore >= new Date() && (
+              <JoinChallenge challenge={challenge} />
+            )}
+          </>
         )}
       </SButtonWrapper>
     </SInformationWrapper>

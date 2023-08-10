@@ -91,6 +91,7 @@ export const SInfoWrapper = styled.div`
   #userList {
     position: absolute;
     top: 205px;
+    width: 200px;
     font-size: 20px;
     margin: 0 0 0 400px;
   }
@@ -266,6 +267,7 @@ export const SLikeBoardButton = styled.button`
   border-radius: 5px;
   color: white;
   font-size: 15px;
+  cursor: pointer;
 `;
 export const SUnLikeBoardButton = styled.button`
   ${"" /* position: absolute; */}
@@ -278,4 +280,5 @@ export const SUnLikeBoardButton = styled.button`
   border-radius: 5px;
   color: white;
   font-size: 15px;
+  cursor: pointer;
 `;

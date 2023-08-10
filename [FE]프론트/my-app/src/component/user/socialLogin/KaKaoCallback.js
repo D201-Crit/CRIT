@@ -45,7 +45,6 @@ const KakaoCallback = () => {
           // imageHeight: 200,
           // imageAlt: 'Custom image',
         });
-
         nav("/MainPage");
       })
       .catch((err) => {

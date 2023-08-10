@@ -45,14 +45,10 @@ const CreateBoard = ({ classification, getBoard }) => {
   const writeBoard = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append(
-      "file",
-      image ||
-        formData.append("file", new Blob([], { type: "application/json" }))
-    );
+    formData.append("file", image || formData.append("file", ""));
     formData.append(
       "boardSaveRequestDto",
-      new Blob([JSON.stringify(board)], { type: "application/json" })
+      new Blob([JSON.stringify(board)], { type: "application/json" }),
     );
 
     api
