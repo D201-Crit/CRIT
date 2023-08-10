@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,8 +25,8 @@ public class BoardResponseDto {
     private int views;
     private String writer;
     private String classification;
-    private LocalDateTime createTime;
-    private LocalDateTime modifyTime;
+    private String createTime;
+    private String modifyTime;
     private List<String> liked;
     private List<Long> fileId;
     private List<String> imageFiles;
@@ -53,8 +54,8 @@ public class BoardResponseDto {
                 board.getViews(),
                 board.getUser().getNickname(),
                 board.getClassification().getCategory(),
-                board.getCreatedDate(),
-                board.getModifiedDate(),
+                board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")),
+                board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")),
                 likedName,
                 fileId,
                 filenames);

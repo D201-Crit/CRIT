@@ -31,16 +31,18 @@ public class CommentService {
     // 댓글 작성하기
     @Transactional
     public CommentDto writeComment(Long boardId, CommentDto commentDto, User user) {
-        Comment comment = new Comment();
-        comment.setContent(commentDto.getContent());
 
         // 게시판 번호로 게시글 찾기
         Board board = boardRepository.findById(boardId).orElseThrow(() -> {
              return new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_ID);
         });
 
-        comment.setUser(user);
-        comment.setBoard(board);
+        Comment comment = Comment.builder()
+                .content(commentDto.getContent())
+                .user(user)
+                .board(board)
+                .build();
+
         commentRepository.save(comment);
 
         return CommentDto.toDto(comment);
@@ -57,17 +59,6 @@ public class CommentService {
         comments.forEach(s -> commentDtos.add(CommentDto.toDto(s)));
         return commentDtos;
     }
-
-    // public CommentDto update(Long boardId, Long commnetId, CommentDto commentDto){
-    //     Comment comments = commentRepository.findById(boardId).orElseThrow();
-    //
-    //     comments.setContent(commentDto.getContent());
-    //
-    //     commentRepository.save(comments);
-    //
-    //     return CommentDto.toDto(comments);
-    // }
-
 
     // 댓글 삭제하기
     @Transactional

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 /**
  * author : 강민승
@@ -23,13 +24,13 @@ public class BoardShowSortDto {
     private List<String> liked;
     private List<String> imageUrl;
     private List<Long> fileId;
-    private LocalDateTime createTime;
-    private LocalDateTime modifyTime;
+    private String createTime;
+    private String modifyTime;
 
     @Builder
     public BoardShowSortDto(Long id, String title, String content, int views, String writer, int likesCount,
-        String classification, List<String> liked, List<String> imageUrl, List<Long> fileId, LocalDateTime createTime,
-        LocalDateTime modifyTime) {
+        String classification, List<String> liked, List<String> imageUrl, List<Long> fileId, String createTime,
+                            String modifyTime) {
         this.id = id;
         this.title = title;
         this.content = content;

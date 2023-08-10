@@ -5,14 +5,17 @@ import com.ssafy.crit.boards.entity.feeds.UploadFile;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 /**
  * author : 강민승
  */
-@Getter
+@Getter @Setter
 @RequiredArgsConstructor
 public class FileResponseDto {
 
@@ -21,17 +24,22 @@ public class FileResponseDto {
 	private String classification;
 	private String userName;
 	private List<String> imageFiles;
+	private String createTime;
+	private String modifyTime;
+
 
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;
 
-
-	public FileResponseDto(Long id, String content, String classification, String userName, List<String> imageFiles) {
+	@Builder
+	public FileResponseDto(Long id, String content, String classification, String userName, List<String> imageFiles, String createTime, String modifyTime) {
 		this.id = id;
 		this.content = content;
 		this.classification = classification;
 		this.userName = userName;
 		this.imageFiles = imageFiles;
+		this.createTime = createTime;
+		this.modifyTime = modifyTime;
 	}
 
 	@Builder
@@ -45,7 +53,9 @@ public class FileResponseDto {
 			board.getContent(),
 				board.getClassification().getCategory(),
 			board.getUser().getNickname(),
-			filenames
+			filenames,
+				board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")),
+				board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss"))
 		);
 	}
 
