@@ -25,7 +25,7 @@ const metadataURL = URL + "metadata.json";
 let model;
 let webcam;
 const maxPredictions = 2; // 모델이 가지고 있는 클래스의 수에 따라 변경하세요
-let isUnmounted = false;
+// let isUnmounted = false;
 
 class VideoRoomComponent extends Component {
   constructor(props) {
@@ -33,6 +33,7 @@ class VideoRoomComponent extends Component {
     this.webcamRef = React.createRef(); // webcam을 Ref로 선언
     this.modelRef = React.createRef();
     this.totalTimeRef = React.createRef();
+    this.isUnmounted = false;
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
     let sessionName = this.props.sessionName
@@ -184,11 +185,11 @@ class VideoRoomComponent extends Component {
   }
 
   loop = async () => {
-    if (isUnmounted) return; // 언마운트 된 상태이면 loop 종료
+    if (this.isUnmounted) return; // 언마운트 된 상태이면 loop 종료
     if (this.webcamRef.current) {
       this.webcamRef.current.update(); // 웹캠 프레임 업데이트
       await this.predict();
-      if (!isUnmounted) {
+      if (!this.isUnmounted) {
         requestAnimationFrame(this.loop);
       }
     }
@@ -288,6 +289,7 @@ class VideoRoomComponent extends Component {
 
     if (mySession) {
       mySession.disconnect();
+      this.webcamRef.current.stop();
     }
 
     // Empty all properties...
@@ -302,9 +304,16 @@ class VideoRoomComponent extends Component {
     if (this.props.leaveSession) {
       this.props.leaveSession();
     }
-    this.webcamRef.current.stop();
-    console.log(`누적 시간: ${this.totalTimeRef.current}ms`)
+    console.log('Teachable Machine 종료')
+    this.isUnmounted = true;
+    console.log(`이탈 시간: ${this.totalTimeRef.current}ms`)
   }
+
+  handleLeaveSession() {
+    this.isUnmounted = true;
+    this.leaveSession(); // 컴포넌트가 언마운트될 때 세션 종료
+  }
+
   camStatusChanged() {
     localUser.setVideoActive(!localUser.isVideoActive());
     localUser.getStreamManager().publishVideo(localUser.isVideoActive());
