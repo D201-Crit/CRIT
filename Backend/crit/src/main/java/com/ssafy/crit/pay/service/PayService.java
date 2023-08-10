@@ -2,6 +2,8 @@ package com.ssafy.crit.pay.service;
 
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.pay.dto.KakaoApproveResponse;
 import com.ssafy.crit.pay.dto.KakaoCancelResponse;
 import com.ssafy.crit.pay.dto.KakaoReadyResponse;
@@ -57,7 +59,7 @@ public class PayService {
                 KakaoReadyResponse.class);
         // tid 저장
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("아이디가 존재 X"));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
         user.updateTid(kakaoReady.getTid());
         return kakaoReady;
     }
@@ -65,10 +67,11 @@ public class PayService {
     /**
     * 결제 승인
      */
+    @Transactional
     public KakaoApproveResponse ApproveResponse(String userId, String pgToken) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("아이디가 존재 X"));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
         // 카카오 요청
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
@@ -89,6 +92,8 @@ public class PayService {
                 requestEntity,
                 KakaoApproveResponse.class);
 
+        // 포인트 충전
+        user.getKakaoPayToCashPoint(approveResponse.getAmount().getTotal());
         return approveResponse;
     }
 
@@ -98,7 +103,7 @@ public class PayService {
     public KakaoCancelResponse kakaoCancel(String userId, String amount) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("아이디가 존재 X"));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
         // 카카오페이 요청
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();

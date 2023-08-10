@@ -7,6 +7,7 @@ import com.ssafy.crit.auth.entity.enumType.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
@@ -65,6 +66,7 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "following")
     private List<Follow> followings = new ArrayList<>();
 
+    @ColumnDefault("0")
     private int cashPoint;
 
     @Builder
@@ -150,5 +152,10 @@ public class User extends BaseTimeEntity {
     public void removeMemberTofollowing(Follow follow) {
         followings.remove(follow);
     }
+
+    public void getKakaoPayToCashPoint(int point) {
+        this.cashPoint += point;
+    }
+
 
 }
