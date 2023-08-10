@@ -153,6 +153,10 @@ export const SLikeButton = styled.button`
 export const SBoardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  top: 50%;
+  left: 50%;
+  justify-content: space-between;
+
 `;
 
 export const SBoardArticleRow = styled.div`

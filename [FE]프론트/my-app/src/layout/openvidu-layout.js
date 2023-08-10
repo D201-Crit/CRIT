@@ -1,16 +1,18 @@
+import $ from "jquery";
+
 class OpenViduLayout {
   layoutContainer;
   opts;
 
-  constructor() {
-    // Constructor, if needed
-  }
-
   fixAspectRatio(elem, width) {
     const sub = elem.querySelector(".OT_root");
     if (sub) {
+      // If this is the parent of a subscriber or publisher then we need
+      // to force the mutation observer on the publisher or subscriber to
+      // trigger to get it to fix it's layout
       const oldWidth = sub.style.width;
       sub.style.width = width + "px";
+      // sub.style.height = height + 'px';
       sub.style.width = oldWidth || "";
     }
   }
@@ -25,50 +27,23 @@ class OpenViduLayout {
 
     this.fixAspectRatio(elem, width);
 
-    if (animate) {
-      this.animateElement(elem, targetPosition, animate);
+    if (animate && $) {
+      $(elem).stop();
+      $(elem).animate(
+        targetPosition,
+        animate.duration || 200,
+        animate.easing || "swing",
+        () => {
+          this.fixAspectRatio(elem, width);
+          if (animate.complete) {
+            animate.complete.call(this);
+          }
+        }
+      );
     } else {
-      this.setElementPosition(elem, targetPosition);
+      $(elem).css(targetPosition);
     }
-
     this.fixAspectRatio(elem, width);
-  }
-
-  animateElement(elem, targetPosition, animate) {
-    const animationDuration = animate.duration || 200;
-    const easingFunction = animate.easing || "swing";
-
-    if (typeof elem.style === "object") {
-      elem.style.transition = `all ${animationDuration}ms ${easingFunction}`;
-      for (const prop in targetPosition) {
-        if (Object.prototype.hasOwnProperty.call(targetPosition, prop)) {
-          elem.style[prop] = targetPosition[prop];
-        }
-      }
-
-      if (animate.complete) {
-        elem.addEventListener("transitionend", animate.complete);
-      }
-
-      setTimeout(() => {
-        elem.style.transition = "";
-        elem.removeEventListener("transitionend", animate.complete);
-      }, animationDuration);
-    } else {
-      for (const prop in targetPosition) {
-        if (Object.prototype.hasOwnProperty.call(targetPosition, prop)) {
-          elem.style[prop] = targetPosition[prop];
-        }
-      }
-    }
-  }
-
-  setElementPosition(elem, position) {
-    for (const prop in position) {
-      if (Object.prototype.hasOwnProperty.call(position, prop)) {
-        elem.style[prop] = position[prop];
-      }
-    }
   }
 
   getVideoRatio(elem) {
@@ -85,21 +60,22 @@ class OpenViduLayout {
   }
 
   getCSSNumber(elem, prop) {
-    const cssStr = window.getComputedStyle(elem).getPropertyValue(prop);
+    const cssStr = $(elem).css(prop);
     return cssStr ? parseInt(cssStr, 10) : 0;
   }
 
+  // Really cheap UUID function
   cheapUUID() {
     return (Math.random() * 100000000).toFixed(0);
   }
 
   getHeight(elem) {
-    const heightStr = window.getComputedStyle(elem).height;
+    const heightStr = $(elem).css("height");
     return heightStr ? parseInt(heightStr, 10) : 0;
   }
 
   getWidth(elem) {
-    const widthStr = window.getComputedStyle(elem).width;
+    const widthStr = $(elem).css("width");
     return widthStr ? parseInt(widthStr, 10) : 0;
   }
 
@@ -313,9 +289,11 @@ class OpenViduLayout {
     if (this.layoutContainer.style.display === "none") {
       return;
     }
-
-    const id = this.layoutContainer.id || "OT_" + this.cheapUUID();
-    this.layoutContainer.id = id;
+    let id = this.layoutContainer.id;
+    if (!id) {
+      id = "OT_" + this.cheapUUID();
+      this.layoutContainer.id = id;
+    }
 
     const HEIGHT =
       this.getHeight(this.layoutContainer) -
@@ -346,18 +324,85 @@ class OpenViduLayout {
       this.filterDisplayNone
     );
 
-    if (bigOnes.length > 0 && smallOnes.length === 0) {
-      this.arrange(
-        bigOnes,
-        WIDTH,
-        HEIGHT,
-        0,
-        0,
-        this.opts.bigFixedRatio,
-        this.opts.bigMinRatio,
-        this.opts.bigMaxRatio,
-        this.opts.animate
-      );
+    if (bigOnes.length > 0 && smallOnes.length > 0) {
+      let bigWidth, bigHeight;
+
+      if (availableRatio > this.getVideoRatio(bigOnes[0])) {
+        // We are tall, going to take up the whole width and arrange small
+        // guys at the bottom
+        bigWidth = WIDTH;
+        bigHeight = Math.floor(HEIGHT * this.opts.bigPercentage);
+        offsetTop = bigHeight;
+        bigOffsetTop = HEIGHT - offsetTop;
+      } else {
+        // We are wide, going to take up the whole height and arrange the small
+        // guys on the right
+        bigHeight = HEIGHT;
+        bigWidth = Math.floor(WIDTH * this.opts.bigPercentage);
+        offsetLeft = bigWidth;
+        bigOffsetLeft = WIDTH - offsetLeft;
+      }
+      if (this.opts.bigFirst) {
+        this.arrange(
+          bigOnes,
+          bigWidth,
+          bigHeight,
+          0,
+          0,
+          this.opts.bigFixedRatio,
+          this.opts.bigMinRatio,
+          this.opts.bigMaxRatio,
+          this.opts.animate
+        );
+        this.arrange(
+          smallOnes,
+          WIDTH - offsetLeft,
+          HEIGHT - offsetTop,
+          offsetLeft,
+          offsetTop,
+          this.opts.fixedRatio,
+          this.opts.minRatio,
+          this.opts.maxRatio,
+          this.opts.animate
+        );
+      } else {
+        this.arrange(
+          smallOnes,
+          WIDTH - offsetLeft,
+          HEIGHT - offsetTop,
+          0,
+          0,
+          this.opts.fixedRatio,
+          this.opts.minRatio,
+          this.opts.maxRatio,
+          this.opts.animate
+        );
+        this.arrange(
+          bigOnes,
+          bigWidth,
+          bigHeight,
+          bigOffsetLeft,
+          bigOffsetTop,
+          this.opts.bigFixedRatio,
+          this.opts.bigMinRatio,
+          this.opts.bigMaxRatio,
+          this.opts.animate
+        );
+      }
+    } else if (bigOnes.length > 0 && smallOnes.length === 0) {
+      this
+        // We only have one bigOne just center it
+        .arrange(
+          bigOnes,
+          WIDTH,
+          HEIGHT,
+          0,
+          0,
+          this.opts.bigFixedRatio,
+          this.opts.bigMinRatio,
+          this.opts.bigMaxRatio,
+          this.opts.animate
+        );
     } else {
       this.arrange(
         smallOnes,
@@ -387,16 +432,11 @@ class OpenViduLayout {
       bigFirst: opts.bigFirst != null ? opts.bigFirst : true,
     };
     this.layoutContainer =
-      typeof container === "string"
-        ? document.querySelector(container)
-        : container;
-
-    window.addEventListener("resize", () => this.updateLayout());
+      typeof container === "string" ? $(container) : container;
   }
 
   setLayoutOptions(options) {
     this.opts = options;
   }
 }
-
 export default OpenViduLayout;

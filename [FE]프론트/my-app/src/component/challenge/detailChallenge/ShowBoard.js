@@ -13,7 +13,7 @@ import UpdateBoard from "./UpdateBoard";
 const ShowBoard = ({ boards, challenge, getBoard }) => {
   const user = useSelector((state) => state.users);
   const reversedBoards = boards?.slice().reverse();
-
+  console.log(reversedBoards);
   return (
     <SBoardWrapper>
       <CreateBoard

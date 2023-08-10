@@ -5,8 +5,9 @@ import ChatComponent from "./chat/ChatComponent";
 import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import StreamComponent from "./stream/StreamComponent";
 import "./VideoRoomComponent.css";
-import OpenViduLayout from "../../layout/openvidu-layout";
-import UserModel from "../../models/user-model";
+
+import OpenViduLayout from "../layout/openvidu-layout";
+import UserModel from "../models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 import * as tmImage from '@teachablemachine/image';
 
@@ -37,8 +38,8 @@ class VideoRoomComponent extends Component {
     let sessionName = this.props.sessionName
       ? this.props.sessionName
       : "SessionA";
-    let userName = this.props.users.nickname
-      ? this.props.users.nickname
+    let userName = this.props.user
+      ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
     this.remotes = [];
     this.localUserAccessAllowed = false;
@@ -239,9 +240,7 @@ class VideoRoomComponent extends Component {
         });
       });
     }
-    const { challengeData } = this.props;
-    const nickName = challengeData.user.nickname;
-    localUser.setNickname(nickName);
+    localUser.setNickname(this.state.myUserName);
     localUser.setConnectionId(this.state.session.connection.connectionId);
     localUser.setScreenShareActive(false);
     localUser.setStreamManager(publisher);
@@ -604,14 +603,10 @@ class VideoRoomComponent extends Component {
   }
 
   render() {
-    const { challengeData } = this.props;
-    console.log(challengeData);
-    const mySessionId = challengeData.challenge.id;
-
+    const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
-    console.log(this.state);
     var chatDisplay = { display: this.state.chatDisplay };
-    console.log(localUser);
+
     return (
       <div className="container" id="container">
         <ToolbarComponent

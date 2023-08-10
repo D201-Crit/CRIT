@@ -10,8 +10,8 @@ import "swiper/css/effect-cards";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../api/api";
-import VideoRoomComponent from "../room/VideoRoomComponent";
 import Modal from "react-modal";
+import VideoRoomComponent from "../VideoRoomComponent";
 
 // 스타일
 import {
@@ -188,6 +188,7 @@ const MyChallenge = () => {
       <Modal style={SWebRTCModal} isOpen={isOpen} onRequestClose={closeModal}>
         {/* 모달 내부에서 VideoRoomComponent 사용 */}
         <VideoRoomComponent users={user} challengeData={challengeData} />
+        {/* <VideoRoomComponent /> */}
       </Modal>
     </>
   );
