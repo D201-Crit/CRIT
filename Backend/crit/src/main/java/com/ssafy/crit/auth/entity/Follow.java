@@ -17,13 +17,15 @@ import javax.persistence.*;
 
 public class Follow {
 
+    // pk 값
     @Id
     @GeneratedValue
     @Column(name = "follow_id")
     private Long id;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    // 양방향 맵핑
+    @JsonIgnore // 무한 참조를 방지
+    @ManyToOne(fetch = FetchType.LAZY) // 성능 최적화를 위함.
     @JoinColumn(name = "follower_id")
     private User follower;
 

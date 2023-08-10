@@ -44,7 +44,10 @@ public class ProfileController {
 
 	@PostMapping("/follow")
 	public Response<?> follow(@RequestBody FollowRequestDto followRequestDto, HttpServletRequest httpServletRequest) {
+		//Jwt 헤더에서 user 정보 가져오기
 		User user = getUser(httpServletRequest);
+
+		//Response로 한번 감싸서 return
 		return new Response<>("true","follow 성공",userService.follow(followRequestDto));
 	}
 

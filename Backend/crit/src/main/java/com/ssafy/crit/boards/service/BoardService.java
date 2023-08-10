@@ -92,9 +92,8 @@ public class BoardService {
         return BoardResponseDto.toDto(board);
     }
 
-    public BoardSaveResponseDto write(List<MultipartFile> multipartFiles, BoardSaveRequestDto boardSaveRequestDto,
-                                      User user) throws
-            IOException {
+    public BoardSaveResponseDto write(List<MultipartFile> multipartFiles, BoardSaveRequestDto boardSaveRequestDto, User user)
+            throws IOException {
 
         Classification classification = classificationRepository.findByCategory(boardSaveRequestDto.getClassification())
                 .orElseGet(() -> {
@@ -104,12 +103,13 @@ public class BoardService {
                     return newClassification;
                 });
 
+        // 제목 작성이 없어도 임의의 제목을 넣어주기 위함.
         String title;
 
         if (boardSaveRequestDto.getTitle() != null) {
             title = boardSaveRequestDto.getTitle();
         } else {
-            System.out.println("타이틀 없으므로 Title로 대체");
+        // System.out.println("타이틀 없으므로 Title로 대체");
             title = "Title";
         }
 
@@ -126,9 +126,11 @@ public class BoardService {
 
         boardRepository.save(board);
 
+        // 다중 파일 보내기 위해 List 인스턴스 생성
         List<String> storeFileResult = new ArrayList<>();
         List<Long> fileId = new ArrayList<>();
 
+        // Request 요청에 들어오는 값 중 multipartfile이 있다면
         if (multipartFiles != null) {
             for (MultipartFile multipartFile : multipartFiles) {
                 String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Boards");
@@ -158,6 +160,7 @@ public class BoardService {
                 .content(boardSaveRequestDto.getContent())
                 .writer(user.getNickname())
                 .classification(classification.getCategory())
+                // date 가독성을 위해
                 .createTime(now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")))
                 .modifyTime(now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")))
                 .imageFiles(storeFileResult)
