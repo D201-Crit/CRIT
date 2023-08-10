@@ -71,6 +71,11 @@ public class ChallengeService {
 
         checkSchedule(user, challenge); // 스케줄 겹치는지 확인
 
+        // 돈 확인
+        if(!user.useCashPoint(challenge.getMoney())){
+            throw new BadRequestException(ErrorCode.INSUFFICIENT_POINT);
+        }
+
         if (file != null) { // 사진이 존재하는 경우
             if (!checkExtension(file)) throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_IMAGE_TYPE);
 
