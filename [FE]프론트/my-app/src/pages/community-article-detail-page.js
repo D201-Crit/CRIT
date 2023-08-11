@@ -21,6 +21,7 @@ const CommunityArticleDetailPage = () => {
   const [newComment,setNewComment] = useState('');
   const [isEditOpen, setIsEditOpen] = useState(false); // 수정 폼 표시 여부
 
+
   useEffect(() => {
     // fetchBoard와 fetchComments를 순차적으로 실행하기 위해 async 함수를 사용
     const fetchData = async () => {

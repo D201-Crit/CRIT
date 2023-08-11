@@ -47,7 +47,7 @@ const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
       });
   };
 
-  // 단일 쇼츠 정보 받아오기
+ // 단일 쇼츠 정보 받아오기
   const getShort = () => {
     api
       .get(`https://i9d201.p.ssafy.io/api/shorts/${shortId}`, {
@@ -62,6 +62,7 @@ const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
         console.log(err);
       });
   };
+
  // 좋아요 기능
   const shortsLike = async (shortId) => {             
     api.post(`https://i9d201.p.ssafy.io/api/shorts/likes/${shortId}`, null, {
@@ -77,6 +78,7 @@ const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
         console.log(error);
       });
   };
+
 // 좋아요 취소 기능
   const deleteLike = async (shortId) => {
     api.delete(`https://i9d201.p.ssafy.io/api/shorts/likes/${shortId}`, {
@@ -191,9 +193,6 @@ const deleteComment = async (commentId) => {
 const isMyComment = (comment) => {
   return user.nickname === comment.writer;
 };
-
-
-
 
 
 return (
