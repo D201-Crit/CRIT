@@ -69,8 +69,8 @@ public class S3Uploader {
     private String putS3(File uploadFile, String fileName) {
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
         log.info("upload putS3");
-        //return amazonS3Client.getUrl(bucket, fileName).toString(); // S3 업로드된 주소 반환
-        return "https://" + cloudFrontUrl + fileName; // S3 업로드된 주소 반환
+        return amazonS3Client.getUrl(bucket, fileName).toString(); // S3 업로드된 주소 반환
+        //return "https://" + cloudFrontUrl + "/" + fileName; // S3 업로드된 주소 반환
         /**
         * return을 할때 crit service s3 주소기 때문에 fileName만 반환진행 -> 반환한 후에는 CloundFront URI 붙여서 DB에 저장
          */
@@ -132,8 +132,8 @@ public class S3Uploader {
             ImageIO.write(bufferedImage, EXTENSION, thumbnailFile);
             amazonS3Client.putObject(new PutObjectRequest(bucket, thumbnailName, thumbnailFile).withCannedAcl(CannedAccessControlList.PublicRead));
             removeNewFile(thumbnailFile);
-            //return amazonS3Client.getUrl(bucket, thumbnailName).toString();
-            return "https://" + cloudFrontUrl + fileName; // S3 업로드된 주소 반환
+            return amazonS3Client.getUrl(bucket, thumbnailName).toString();
+            //return "https://" + cloudFrontUrl + "/" + fileName; // S3 업로드된 주소 반환
             /**
              * return을 할때 crit service s3 주소기 때문에 fileName만 반환진행 -> 반환한 후에는 CloundFront URI 붙여서 DB에 저장
              */
