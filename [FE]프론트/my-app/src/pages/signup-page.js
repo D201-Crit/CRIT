@@ -147,6 +147,7 @@ const SignUp = () => {
           color: "white",
         });
       }
+
       if (!mismatchError && checkId && checkNickname && nickname) {
         console.log("서버로 회원가입하기");
         // 요청 전 초기화
@@ -173,7 +174,6 @@ const SignUp = () => {
           })
           .catch((error) => {
             console.log(error);
-            setSignUpError(error.response.data);
           });
       }
     },

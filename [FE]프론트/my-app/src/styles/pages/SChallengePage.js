@@ -125,6 +125,20 @@ export const SBotWrapper = styled.div`
     color: white;
     cursor: pointer;
   }
+  #photo {
+    position: absolute;
+    left: 550px;
+    bottom: 20px;
+    background-color: #0000c5;
+    border: none;
+    border-radius: 10px;
+    width: 150px;
+    height: 50px;
+    font-weight: bold;
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+  }
   #detail {
     position: absolute;
     left: 720px;
@@ -712,4 +726,56 @@ export const SWebRTCModal = {
 };
 
 // 사진인증 모달
-export const SPhotochallengeWrapper = styled.div``;
+export const SPhotochallengeWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  #title {
+    position: absolute;
+    left: 470px;
+    font-size: 40px;
+    margin: 15px 0 0 0;
+    color: white;
+  }
+  #form {
+    position: absolute;
+    top: 60px;
+    left: 450px;
+  }
+  #fileLabel {
+    position: absolute;
+    left: -100px;
+    cursor: pointer;
+  }
+  #file {
+    display: none;
+  }
+  #submit {
+    position: absolute;
+    right: -140px;
+    bottom: -639px;
+    width: 200px;
+    height: 60px;
+    font-size: 30px;
+    font-weight: 900;
+
+    border: none;
+    border-radius: 10px;
+    background-color: #0000c5;
+    color: white;
+    cursor: pointer;
+  }
+  #close {
+    position: absolute;
+    left: 650px;
+    width: 200px;
+    height: 60px;
+    font-size: 30px;
+    font-weight: 900;
+    bottom: 50px;
+    border: none;
+    border-radius: 10px;
+    background-color: #33ff00;
+    cursor: pointer;
+  }
+`;

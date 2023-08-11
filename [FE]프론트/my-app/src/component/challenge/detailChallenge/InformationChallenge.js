@@ -11,22 +11,85 @@ import ParticipationChallenge from "../ParticipationChallenge";
 import Modal from "react-modal";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 const InformationChallenge = () => {
   const location = useLocation();
   const challenge = location.state.challenge;
   const user = useSelector((state) => state.users);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [isPhotoOpen, setIsPhotoOpen] = useState(false);
 
   const [challengeData, setChallengeData] = useState(null); // 모달에 전달할 데이터 state 추가
   const [selectedSessionId, setSelectedSessionId] = useState(null);
-  const openModal = (challenge) => {
+  const checkEnterTime = () => {
+    return Swal.fire({
+      position: "center",
+      icon: "error",
+      title: "챌린지 시간이 아닙니다!.",
+      text: "CRIT",
+      showConfirmButton: false,
+      timer: 1500,
+      background: "#272727",
+      color: "white",
+      width: "500px",
+
+      // 먼지
+      // imageUrl: 'https://unsplash.it/400/200',
+      // imageWidth: 400,
+      // imageHeight: 200,
+      // imageAlt: 'Custom image',
+    });
+  };
+  const openVideoModal = (challenge) => {
     setChallengeData({ challenge, user }); // 모달에 전달할 데이터를 state에 저장
     setSelectedSessionId(challenge.id); // 선택한 챌린지의 세션 ID 저장
-    setIsOpen(true);
+    setIsVideoOpen(true);
+    return Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "챌린지 입장 중!",
+      text: "CRIT",
+      showConfirmButton: false,
+      timer: 2000,
+      background: "#272727",
+      color: "white",
+      width: "500px",
+
+      // 먼지
+      // imageUrl: 'https://unsplash.it/400/200',
+      // imageWidth: 400,
+      // imageHeight: 200,
+      // imageAlt: 'Custom image',
+    });
   };
-  const closeModal = () => {
-    setIsOpen(false);
+  const openPhotoModal = (challenge) => {
+    setChallengeData({ challenge, user }); // 모달에 전달할 데이터를 state에 저장
+    setSelectedSessionId(challenge.id); // 선택한 챌린지의 세션 ID 저장
+    setIsPhotoOpen(true);
+    return Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "챌린지 입장 중!",
+      text: "CRIT",
+      showConfirmButton: false,
+      timer: 1500,
+      background: "#272727",
+      color: "white",
+      width: "500px",
+
+      // 먼지
+      // imageUrl: 'https://unsplash.it/400/200',
+      // imageWidth: 400,
+      // imageHeight: 200,
+      // imageAlt: 'Custom image',
+    });
+  };
+  const closeVideoModal = () => {
+    setIsVideoOpen(false);
+  };
+  const closePhotoModal = () => {
+    setIsPhotoOpen(false);
   };
   const getDaysInProgress = (startDate, endDate) => {
     const today = new Date();
@@ -94,12 +157,40 @@ const InformationChallenge = () => {
             {getDaysInProgress(
               challenge.startDate,
               challenge.endDate,
-            )?.includes("현재") && (
+            )?.includes("현재") ? (
               <>
-                <button id="detailEnter" onClick={() => openModal(challenge)}>
-                  입장하기
-                </button>
-                <ParticipationChallenge />
+                {challenge.cert === "실시간" ? (
+                  <button id="detailEnter" onClick={() => checkEnterTime()}>
+                    입장하기
+                  </button>
+                ) : (
+                  <button id="detailEnter" onClick={() => checkEnterTime()}>
+                    사진인증
+                  </button>
+                )}
+              </>
+            ) : (
+              <>
+                {new Date(challenge.startTime) <= new Date() &&
+                  new Date() <= new Date(challenge.endTime) && (
+                    <>
+                      {challenge.cert === "실시간" ? (
+                        <button
+                          id="detailEnter"
+                          onClick={() => openVideoModal(challenge)}
+                        >
+                          입장하기
+                        </button>
+                      ) : (
+                        <button
+                          id="detailEnter"
+                          onClick={() => openPhotoModal(challenge)}
+                        >
+                          사진인증
+                        </button>
+                      )}
+                    </>
+                  )}
               </>
             )}
           </>

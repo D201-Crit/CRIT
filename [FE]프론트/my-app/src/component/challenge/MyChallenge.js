@@ -239,23 +239,42 @@ const MyChallenge = () => {
                   {getDaysInProgress(
                     challenge.startDate,
                     challenge.endDate,
-                  )?.includes("현재") ? (
-                    <button
-                      id="enter"
-                      onClick={() => openVideoModal(challenge)}
-                    >
-                      입장하기
-                    </button>
+                  )?.includes("") ? (
+                    <>
+                      {challenge.cert === "실시간" ? (
+                        <button id="enter" onClick={() => checkEnterTime()}>
+                          입장하기
+                        </button>
+                      ) : (
+                        <button
+                          id="photo"
+                          onClick={() => openPhotoModal(challenge)}
+                        >
+                          사진인증
+                        </button>
+                      )}
+                    </>
                   ) : (
                     <>
                       {new Date(challenge.startTime) <= new Date() &&
                         new Date() <= new Date(challenge.endTime) && (
-                          <button
-                            id="enter"
-                            onClick={() => openVideoModal(challenge)}
-                          >
-                            입장하기
-                          </button>
+                          <>
+                            {challenge.cert === "실시간" ? (
+                              <button
+                                id="enter"
+                                onClick={() => openVideoModal(challenge)}
+                              >
+                                입장하기
+                              </button>
+                            ) : (
+                              <button
+                                id="photo"
+                                onClick={() => openPhotoModal(challenge)}
+                              >
+                                사진인증
+                              </button>
+                            )}
+                          </>
                         )}
                     </>
                   )}
@@ -265,10 +284,6 @@ const MyChallenge = () => {
                       : "참여내역"}
                   </button>
                 </SBotWrapper>
-                <button
-                  style={{ width: "100px", height: "100px" }}
-                  onClick={() => openPhotoModal(challenge)}
-                ></button>
               </SSwiperSlide>
             );
           })}
