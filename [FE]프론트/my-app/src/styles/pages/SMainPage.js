@@ -7,7 +7,10 @@ const fadeIn = keyframes`
 export const SShortsWrapper = styled.div`
   width: 1200px;
   justify-content: flex-end;
-  margin: 30px auto -40px auto;
+  // margin: 30px auto -40px auto;
+  margin: auto;
+  margin-top : -50px;
+
 `;
 
 export const SEntranceButtonWrapper = styled.div`
@@ -168,10 +171,11 @@ export const SShortsCard = styled.div`
 `;
 
 export const SShortsContainer = styled.div`
-  padding: 20px;
+  
+  padding: 10px;
   display: flex;
   flex-wrap: nowrap;
-  width: 100%;
+  width: 600px;
   height: 300px;
   overflow-x: auto;
   gap: 10px;
@@ -212,10 +216,13 @@ export const SShortItem = styled.div`
   p {
     opacity: 0;
     transition: opacity 0.3s;
+    margin-top : -30px;
+
   }
 
   h2 {
-    font-size: 18px;
+    margin-top : 30px;
+    font-size: 25px;
     font-weight: bold;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -466,7 +473,7 @@ export const SSubmitButton = styled.input`
 export const SResultList = styled.ul`
   list-style-type: none;
   padding: 0;
-  margin-top: 20px;
+  margin-top: 10px;
 `;
 
 export const SResultItem = styled.li`

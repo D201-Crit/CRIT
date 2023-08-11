@@ -45,7 +45,7 @@ const MostLikeShorts = ({ shortsByLike }) => {
                 }
               />
               <h2>{short.title}</h2>
-              <p>{short.content}</p>
+              <p>♥ &nbsp; {short.likesCount}</p>
 
               
             </SShortItem>

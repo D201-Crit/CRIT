@@ -147,6 +147,7 @@ const MainPage = () => {
           </SEntranceSwiper>
         )}
       </SEntranceButtonWrapper>
+      
       <SearchShorts />
 
       {/* 쇼츠 영역 */}

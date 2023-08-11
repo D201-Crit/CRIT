@@ -83,8 +83,6 @@ const SearchShorts = () => {
       </SShortsContainer>
       {/* </SResultItem> */}
       </SResultList>
-
-
         {searchResults &&
         searchResults.map((result) =>
           openDetailModal[result.id] ? (
