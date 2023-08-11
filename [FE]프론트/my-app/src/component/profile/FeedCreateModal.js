@@ -65,7 +65,11 @@ const FeedCreateModal = ({ setIsCreateModalOpen }, {getFeeds}) => {
         },
       })
       .then(() => {
+        console.log("게시글 작성성공");
+
         getFeeds();
+        console.log("겟피드");
+
         setIsCreateModalOpen(false);
         setFeedContent("");
         setFeedImage(null);
