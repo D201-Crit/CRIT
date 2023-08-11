@@ -64,7 +64,10 @@ public class S3Uploader {
     // S3로 업로드
     private String putS3(File uploadFile, String fileName) {
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
-        return amazonS3Client.getUrl(bucket, fileName).toString();
+        return amazonS3Client.getUrl(bucket, fileName).toString(); // S3 업로드된 주소 반환
+        /**
+        * return을 할때 crit service s3 주소기 때문에 fileName만 반환진행 -> 반환한 후에는 CloundFront URI 붙여서 DB에 저장
+         */
     }
 
     // 로컬에 저장된 이미지 지우기
@@ -124,6 +127,9 @@ public class S3Uploader {
             amazonS3Client.putObject(new PutObjectRequest(bucket, thumbnailName, thumbnailFile).withCannedAcl(CannedAccessControlList.PublicRead));
             removeNewFile(thumbnailFile);
             return amazonS3Client.getUrl(bucket, thumbnailName).toString();
+            /**
+             * return을 할때 crit service s3 주소기 때문에 fileName만 반환진행 -> 반환한 후에는 CloundFront URI 붙여서 DB에 저장
+             */
         } catch (JCodecException | IOException e) {
             throw new RuntimeException(e);
         }
