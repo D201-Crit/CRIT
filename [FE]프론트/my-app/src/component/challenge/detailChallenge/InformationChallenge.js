@@ -158,41 +158,27 @@ const InformationChallenge = () => {
               challenge.startDate,
               challenge.endDate,
             )?.includes("현재") ? (
-              <>
-                {challenge.cert === "실시간" ? (
-                  <button id="detailEnter" onClick={() => checkEnterTime()}>
+              new Date(challenge.startTime) <= new Date() &&
+              new Date() <= new Date(challenge.endTime) ? (
+                challenge.cert === "실시간" ? (
+                  <button id="enter" onClick={() => openVideoModal(challenge)}>
                     입장하기
                   </button>
                 ) : (
-                  <button id="detailEnter" onClick={() => checkEnterTime()}>
+                  <button id="photo" onClick={() => openPhotoModal(challenge)}>
                     사진인증
                   </button>
-                )}
-              </>
-            ) : (
-              <>
-                {new Date(challenge.startTime) <= new Date() &&
-                  new Date() <= new Date(challenge.endTime) && (
-                    <>
-                      {challenge.cert === "실시간" ? (
-                        <button
-                          id="detailEnter"
-                          onClick={() => openVideoModal(challenge)}
-                        >
-                          입장하기
-                        </button>
-                      ) : (
-                        <button
-                          id="detailEnter"
-                          onClick={() => openPhotoModal(challenge)}
-                        >
-                          사진인증
-                        </button>
-                      )}
-                    </>
-                  )}
-              </>
-            )}
+                )
+              ) : challenge.cert === "실시간" ? (
+                <button id="join" onClick={() => checkEnterTime()}>
+                  입장하기
+                </button>
+              ) : (
+                <button id="join" onClick={() => checkEnterTime()}>
+                  사진인증
+                </button>
+              )
+            ) : null}
           </>
         ) : (
           <>

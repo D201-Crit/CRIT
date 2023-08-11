@@ -24,17 +24,37 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css/effect-cards";
 import "swiper/css/effect-creative";
+import Swal from "sweetalert2";
 
 const MainPage = () => {
   const [isOpen, setIsOpen] = useState(true);
   const openChallenge = () => {
-    setIsOpen(!isOpen);
+    if (onGoingChallenges.length === 0) {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "진행중인 챌린지가 없습니다.",
+        text: "CRIT",
+        showConfirmButton: false,
+        timer: 1500,
+        background: "#272727",
+        color: "white",
+        // width: "500px",
+        // 먼지
+        // imageUrl: 'https://unsplash.it/400/200',
+        // imageWidth: 400,
+        // imageHeight: 200,
+        // imageAlt: 'Custom image',
+      });
+    } else {
+      setIsOpen(!isOpen);
+    }
   };
 
   const user = useSelector((state) => state.users);
   const location = useLocation();
   const navigate = useNavigate();
-  const [myChallenges, setMyChallenges] = useState([]);
+  const [onGoingChallenges, setOnGoingChallenges] = useState([]);
   const [shorts, setShorts] = useState([]);
 
   // 쇼츠 데이터 최신, 조회수, 좋아요 순
@@ -51,7 +71,7 @@ const MainPage = () => {
       })
       .then((res) => {
         console.log(res.data.data);
-        setMyChallenges(res.data.data);
+        setOnGoingChallenges(res.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -111,7 +131,7 @@ const MainPage = () => {
             // modules={[EffectCards]}
             className="mySwiper"
           >
-            {myChallenges.map((challenge) => (
+            {onGoingChallenges.map((challenge) => (
               <SEntranceSlide key={challenge.id}>
                 <img src={challenge.imgPath} alt="챌린지 이미지" />
                 <h4>{challenge.name}</h4>
@@ -131,9 +151,9 @@ const MainPage = () => {
 
       {/* 쇼츠 영역 */}
       <SShortsWrapper>
-      <RecentShorts shortsByDate={shortsByDate} />
-      <MostLikeShorts shortsByLike={shortsByLike} />
-      <MostViewShorts shortsByView={shortsByView} />
+        <RecentShorts shortsByDate={shortsByDate} />
+        <MostLikeShorts shortsByLike={shortsByLike} />
+        <MostViewShorts shortsByView={shortsByView} />
       </SShortsWrapper>
     </>
   );

@@ -13,7 +13,7 @@ const DetailChallengePage = () => {
   console.log(boards);
   const date = new Date();
   const today = date.toLocaleDateString();
-  console.log(today);
+
   const [checkUser, setCheckUser] = useState(false);
   const checkedUser = () => {
     if (challenge.userList.includes(user.nickname)) {

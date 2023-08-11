@@ -114,14 +114,18 @@ const MyChallenge = () => {
   const getMyChallenge = () => {
     api
       .get("https://i9d201.p.ssafy.io/api/challenge/list/mine", {
-        // .get("http://localhost:8080/challenge/list/mine", {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
         },
       })
       .then((res) => {
-        console.log(res);
-        dispatch(setMyChallenge(res.data.data));
+        const filteredChallenges = res.data.data.filter((challenge) => {
+          const endDate = new Date(challenge.endDate);
+          const today = new Date();
+          return endDate >= today; // endDate가 오늘 이후인 경우에만 반환
+        });
+        console.log(filteredChallenges);
+        dispatch(setMyChallenge(filteredChallenges));
       })
       .catch((err) => {
         console.log(err);
@@ -134,7 +138,6 @@ const MyChallenge = () => {
     const startDateB = new Date(b.startDate);
     return startDateA - startDateB;
   };
-  // console.log(myChallenges);
   const sortedMyChallenges = [...myChallenges].sort(sortByStartDate);
   // 상세보기 클릭
   const detailClick = (challenge) => {
@@ -239,10 +242,14 @@ const MyChallenge = () => {
                   {getDaysInProgress(
                     challenge.startDate,
                     challenge.endDate,
-                  )?.includes("") ? (
-                    <>
-                      {challenge.cert === "실시간" ? (
-                        <button id="enter" onClick={() => checkEnterTime()}>
+                  )?.includes("현재") ? (
+                    new Date(challenge.startTime) <= new Date() &&
+                    new Date() <= new Date(challenge.endTime) ? (
+                      challenge.cert === "실시간" ? (
+                        <button
+                          id="enter"
+                          onClick={() => openVideoModal(challenge)}
+                        >
                           입장하기
                         </button>
                       ) : (
@@ -252,32 +259,18 @@ const MyChallenge = () => {
                         >
                           사진인증
                         </button>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      {new Date(challenge.startTime) <= new Date() &&
-                        new Date() <= new Date(challenge.endTime) && (
-                          <>
-                            {challenge.cert === "실시간" ? (
-                              <button
-                                id="enter"
-                                onClick={() => openVideoModal(challenge)}
-                              >
-                                입장하기
-                              </button>
-                            ) : (
-                              <button
-                                id="photo"
-                                onClick={() => openPhotoModal(challenge)}
-                              >
-                                사진인증
-                              </button>
-                            )}
-                          </>
-                        )}
-                    </>
-                  )}
+                      )
+                    ) : challenge.cert === "실시간" ? (
+                      <button id="enter" onClick={() => checkEnterTime()}>
+                        입장하기
+                      </button>
+                    ) : (
+                      <button id="photo" onClick={() => checkEnterTime()}>
+                        사진인증
+                      </button>
+                    )
+                  ) : null}
+
                   <button id="detail" onClick={() => detailClick(challenge)}>
                     {location.pathname === "/ChallengePage"
                       ? "상세보기"
