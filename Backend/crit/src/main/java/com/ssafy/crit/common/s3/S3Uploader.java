@@ -58,7 +58,9 @@ public class S3Uploader {
 
     public String upload(File uploadFile, String filePath) {
         String fileName = filePath + "/" + UUID.randomUUID() + "."+ uploadFile.getName();   // S3에 저장된 파일 이름
+        log.info("upload");
         String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
+        log.info("upload URL : {}", uploadImageUrl);
         removeNewFile(uploadFile);
         return uploadImageUrl;
     }
@@ -66,6 +68,7 @@ public class S3Uploader {
     // S3로 업로드
     private String putS3(File uploadFile, String fileName) {
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
+        log.info("upload putS3");
         //return amazonS3Client.getUrl(bucket, fileName).toString(); // S3 업로드된 주소 반환
         return "https://" + cloudFrontUrl + fileName; // S3 업로드된 주소 반환
         /**
