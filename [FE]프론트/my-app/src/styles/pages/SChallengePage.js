@@ -70,10 +70,15 @@ export const STopWrapper = styled.div`
     font-size: 22px;
     right: 20px;
   }
-
-  #dday {
+  #time {
     position: absolute;
     top: 40px;
+    font-size: 20px;
+    left: 650px;
+  }
+  #dday {
+    position: absolute;
+    top: 70px;
     font-size: 20px;
     right: 20px;
   }
@@ -706,4 +711,5 @@ export const SWebRTCModal = {
   },
 };
 
-// Swal
+// 사진인증 모달
+export const SPhotochallengeWrapper = styled.div``;

@@ -28,6 +28,7 @@ import { SImg } from "./../../styles/pages/SChallengePage";
 import { useDispatch } from "react-redux";
 import { setMyChallenge } from "../../slice/ChallengeSlice";
 import Swal from "sweetalert2";
+import PhotoChallengeModal from "./PhotoChallengeModal";
 
 const MyChallenge = () => {
   const user = useSelector((state) => state.users);
@@ -35,14 +36,35 @@ const MyChallenge = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [isPhotoOpen, setIsPhotoOpen] = useState(false);
   const [challengeData, setChallengeData] = useState(null); // 모달에 전달할 데이터 state 추가
   const [selectedSessionId, setSelectedSessionId] = useState(null);
   console.log(myChallenges);
-  const openModal = (challenge) => {
+
+  const checkEnterTime = () => {
+    return Swal.fire({
+      position: "center",
+      icon: "error",
+      title: "챌린지 시간이 아닙니다!.",
+      text: "CRIT",
+      showConfirmButton: false,
+      timer: 1500,
+      background: "#272727",
+      color: "white",
+      width: "500px",
+
+      // 먼지
+      // imageUrl: 'https://unsplash.it/400/200',
+      // imageWidth: 400,
+      // imageHeight: 200,
+      // imageAlt: 'Custom image',
+    });
+  };
+  const openVideoModal = (challenge) => {
     setChallengeData({ challenge, user }); // 모달에 전달할 데이터를 state에 저장
     setSelectedSessionId(challenge.id); // 선택한 챌린지의 세션 ID 저장
-    setIsOpen(true);
+    setIsVideoOpen(true);
     return Swal.fire({
       position: "center",
       icon: "success",
@@ -61,8 +83,33 @@ const MyChallenge = () => {
       // imageAlt: 'Custom image',
     });
   };
-  const closeModal = () => {
-    setIsOpen(false);
+  const openPhotoModal = (challenge) => {
+    setChallengeData({ challenge, user }); // 모달에 전달할 데이터를 state에 저장
+    setSelectedSessionId(challenge.id); // 선택한 챌린지의 세션 ID 저장
+    setIsPhotoOpen(true);
+    return Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "챌린지 입장 중!",
+      text: "CRIT",
+      showConfirmButton: false,
+      timer: 1500,
+      background: "#272727",
+      color: "white",
+      width: "500px",
+
+      // 먼지
+      // imageUrl: 'https://unsplash.it/400/200',
+      // imageWidth: 400,
+      // imageHeight: 200,
+      // imageAlt: 'Custom image',
+    });
+  };
+  const closeVideoModal = () => {
+    setIsVideoOpen(false);
+  };
+  const closePhotoModal = () => {
+    setIsPhotoOpen(false);
   };
   const getMyChallenge = () => {
     api
@@ -172,6 +219,9 @@ const MyChallenge = () => {
                     {formatDate(challenge.startDate)} ~{" "}
                     {formatDate(challenge.endDate)}
                   </p>
+                  <p id="time">
+                    챌린지 시간 : {challenge.startTime} ~ {challenge.endTime}
+                  </p>
                   <p id="dday">{daysInProgress}</p>
                 </STopWrapper>
                 <SMidWrapper>
@@ -189,10 +239,25 @@ const MyChallenge = () => {
                   {getDaysInProgress(
                     challenge.startDate,
                     challenge.endDate,
-                  )?.includes("현재") && (
-                    <button id="enter" onClick={() => openModal(challenge)}>
+                  )?.includes("현재") ? (
+                    <button
+                      id="enter"
+                      onClick={() => openVideoModal(challenge)}
+                    >
                       입장하기
                     </button>
+                  ) : (
+                    <>
+                      {new Date(challenge.startTime) <= new Date() &&
+                        new Date() <= new Date(challenge.endTime) && (
+                          <button
+                            id="enter"
+                            onClick={() => openVideoModal(challenge)}
+                          >
+                            입장하기
+                          </button>
+                        )}
+                    </>
                   )}
                   <button id="detail" onClick={() => detailClick(challenge)}>
                     {location.pathname === "/ChallengePage"
@@ -200,18 +265,28 @@ const MyChallenge = () => {
                       : "참여내역"}
                   </button>
                 </SBotWrapper>
+                <button
+                  style={{ width: "100px", height: "100px" }}
+                  onClick={() => openPhotoModal(challenge)}
+                ></button>
               </SSwiperSlide>
             );
           })}
         </SSwiper>
       )}
-      <Modal style={SWebRTCModal} isOpen={isOpen}>
+      <Modal style={SWebRTCModal} isOpen={isVideoOpen}>
         {/* 모달 내부에서 VideoRoomComponent 사용 */}
         <VideoRoomComponent
-          closeModal={closeModal}
+          closeVideoModal={closeVideoModal}
           challengeData={challengeData}
         />
         {/* <VideoRoomComponent /> */}
+      </Modal>
+      <Modal style={SWebRTCModal} isOpen={isPhotoOpen}>
+        <PhotoChallengeModal
+          challengeData={challengeData}
+          closePhotoModal={closePhotoModal}
+        ></PhotoChallengeModal>
       </Modal>
     </>
   );

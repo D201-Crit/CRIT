@@ -22,7 +22,6 @@ import ChallengeImage from "./createChallenge/ChallengeImage";
 
 const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
   const user = useSelector((state) => state.users);
-  console.log(user);
   const [requestDto, setRequestDto] = useState({
     title: "",
     introduce: "",
@@ -87,7 +86,7 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
     Swal.fire({
       position: "center",
       title: "챌린지를 생성하시겠습니까?",
-      text: "생성된 챌린지는 취소할 수 없습니다.",
+      text: "생성된 챌린지는 취소하실 수 없습니다.",
       showCancelButton: true,
       confirmButtonText: "확인",
       cancelButtonText: "취소",
@@ -162,7 +161,7 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
     formData.append("file", image); // 이미지 파일 첨부
     formData.append(
       "requestDto",
-      new Blob([JSON.stringify(requestDto)], { type: "application/json" })
+      new Blob([JSON.stringify(requestDto)], { type: "application/json" }),
     ); // requestDto를 JSON 형식으로 추가
 
     api
@@ -204,9 +203,9 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
           timer: 1500,
           background: "#272727",
           color: "white",
-          preConfirm: () => {
-            return createChallenge();
-          },
+          // preConfirm: () => {
+          //   return createChallenge();
+          // },
           // width: "500px",
           // 먼지
           // imageUrl: 'https://unsplash.it/400/200',

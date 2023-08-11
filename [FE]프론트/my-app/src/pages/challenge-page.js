@@ -47,7 +47,6 @@ const ChallengePage = () => {
   useEffect(() => {
     getAllChallenge();
   }, []);
-  console.log(challenges);
   return (
     <>
       <SCreateChallengeWrapper>
@@ -58,11 +57,7 @@ const ChallengePage = () => {
       <MyChallenge />
       <SearchChallenge allChallenge={challenges} />
       {/*  모달  */}
-      <Modal
-        style={customModalStyles}
-        isOpen={isOpen}
-        onRequestClose={closeModal}
-      >
+      <Modal style={customModalStyles} isOpen={isOpen}>
         <CreateChallengeModal
           closeModal={closeModal}
           getAllChallenge={getAllChallenge}

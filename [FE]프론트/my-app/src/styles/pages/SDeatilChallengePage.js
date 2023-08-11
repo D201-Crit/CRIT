@@ -97,11 +97,11 @@ export const SInfoWrapper = styled.div`
   }
 `;
 export const SButtonWrapper = styled.div`
-  text-align: center;
+  position: relative;
+  top: 440px;
   #participation {
     position: absolute;
-    bottom: 420px;
-    right: 190px;
+    right: 40px;
     width: 150px;
     height: 50px;
     font-size: 18px;
@@ -123,8 +123,7 @@ export const SButtonWrapper = styled.div`
   }
   #detailEnter {
     position: absolute;
-    bottom: 420px;
-    right: 360px;
+    right: 220px;
     color: white;
     width: 150px;
     height: 50px;
@@ -133,7 +132,6 @@ export const SButtonWrapper = styled.div`
     border-radius: 10px;
     border: none;
     background-color: #0000c5;
-
     cursor: pointer;
   }
 `;
