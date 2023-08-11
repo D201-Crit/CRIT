@@ -86,7 +86,7 @@ const Nav = () => {
         ) : (
           <div></div>
         )}
-        <MessageInfo massageView={massageView} />
+        <MessageInfo massageView={massageView} setMassageView={setMassageView}/>
 
         {/* 내정보 파트 */}
         {user && user.accessToken ? (

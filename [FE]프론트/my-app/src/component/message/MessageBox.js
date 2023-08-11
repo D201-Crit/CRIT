@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { api } from "../../api/api";
 import ReceivedMessage from './ReceivedMessage';
 import SendMessage from './SendMessage';
 import SentMessage from './SentMessage';
 import { FiInbox, FiSend, FiMail } from 'react-icons/fi';
 import { SMessageWrapper, SMessageBox, } from '../../styles/pages/SMessage';
+import { ModalOverlay } from '../../styles/SCommon';
 
-const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/messages';
-
-const MessageBox = (setMassageView) => {
+const MessageBox = ({massageView,setMassageView}) => {
   const user = useSelector((state) => state.users);
   const [selectFunction, SetselectFunction] = useState(1);
 
@@ -25,8 +23,14 @@ const MessageBox = (setMassageView) => {
         return null;
     }
   };
+  const handleOutsideClick = (e) => {
+    if (e.target.getAttribute('data-cy') === "modal-overlay") {
+      setMassageView(false);
+    }
+  };
 
   return (
+    <ModalOverlay onClick={handleOutsideClick} data-cy="modal-overlay">
     <SMessageWrapper>
       <div>
         <h3>메시지함</h3>
@@ -49,6 +53,8 @@ const MessageBox = (setMassageView) => {
         </SMessageBox>
       </div>
     </SMessageWrapper>
+    </ModalOverlay>
+
   );
 };
 

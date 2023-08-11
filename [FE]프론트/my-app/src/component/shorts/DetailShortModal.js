@@ -13,6 +13,8 @@ import {
   SCommentInput, 
   SSubmitButton,
 } from "./../../styles/pages/SMainPage";
+
+import { ModalOverlay } from '../../styles/SCommon';
 import { SLikeButton } from "../../styles/pages/SCommunityPage";
 import { BiDotsVertical } from "react-icons/bi";
 import ModifyShortsModal from "./ModifyShortsModal";
@@ -204,8 +206,15 @@ const isMyComment = (comment) => {
   return user.nickname === comment.writer;
 };
 
+// 모달 영역 밖 클릭시 모달 닫기
+const handleOutsideClick = (e) => {
+  if (e.target.getAttribute('data-cy') === "modal-overlay") {
+    setOpenDetailModal(null);
+  }
+};
 
 return (
+  <ModalOverlay onClick={handleOutsideClick} data-cy="modal-overlay">
   <div>
     {showModifyModal ? (
       <ModifyShortsModal getShort={getShort} setModifyModal={setModifyModal} prevshotrs={short} shortId={shortId} />
@@ -297,6 +306,7 @@ return (
       </SDetailModal>
     )}
   </div>
+  </ModalOverlay>
 );
 };
 

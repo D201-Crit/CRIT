@@ -1,6 +1,6 @@
 import {SFeedButton,Empty, SFeedArea, SFeedBox, SPost} from "../../styles/pages/SProfilePage";
 import FeedCreateModal from "./FeedCreateModal";
-import FeedModifyModal from "./FeedModifyModal";
+import FeedDetailModal from "./FeedDetailModal";
 import { useSelector } from "react-redux";
 import React, { useState, useEffect  } from "react";
 import { api } from '../../api/api';
@@ -11,13 +11,14 @@ const Feed = () => {
   
   // 초기 게시물 상태 설정
   const [feeds, setFeeds] = useState([]);
-  
-  // 수정중인 게시물 아이디 상태 설정
-  const [editingFeedId, setEditingFeedId] = useState(null);
+
   
   // 작성 모달 상태 설정
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   
+  // 작성 모달 상태 설정
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+
   // 피드 불러오기
   const getFeeds = () => { 
       api.get(`${API_BASE_URL}/whole`, {
@@ -63,21 +64,19 @@ const Feed = () => {
               src={feed.imageFiles}
               alt="피드 이미지"
               className="post-image"
-              onClick={() => setEditingFeedId(feed.id)}
+              onClick={() => setIsDetailModalOpen(true)}
             />
   
-            {editingFeedId === feed.id && (
-              // FeedModifyModal
-              <div className="modify-modal-container">
-                <FeedModifyModal
-                  feed={feed}
-                  setEditingFeedId={setEditingFeedId}
-                />
-              </div>
-            )}
+            
           </SPost>
         ))}
         </SFeedBox>
+
+         {/* FeedDetailModal */}
+          {isDetailModalOpen && (
+          <FeedDetailModal setIsDetailModalOpen={setIsDetailModalOpen} getFeeds={getFeeds} />
+        )}
+  
       </div>
     </SFeedArea>
   );
