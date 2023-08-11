@@ -28,9 +28,6 @@ public class FileResponseDto {
 	private String modifyTime;
 
 
-	@Value("${cloud.aws.s3.bucket}")
-	private String bucket;
-
 	@Builder
 	public FileResponseDto(Long id, String content, String classification, String userName, List<String> imageFiles, String createTime, String modifyTime) {
 		this.id = id;

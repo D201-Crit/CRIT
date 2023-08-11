@@ -60,6 +60,17 @@ public class BoardController {
 			return new Response<>("성공", "조회순 오름차순", boards);
 		}
 
+		if ("likes-desc".equals(sortted)) {
+			boards = boardService.orderByLikesDesc(pageable,category);
+			return new Response<>("성공", "조회순 내림차순", boards);
+		}
+
+		if ("likes-asc".equals(sortted)) {
+			boards = boardService.orderByLikesAsc(pageable,category);
+			return new Response<>("성공", "조회순 오름차순", boards);
+		}
+
+
 		boards = boardService.getBoards(pageable, category);
 		return new Response<>("성공", "카테고리별 전체 게시물 리턴", boards);
 	}
@@ -119,7 +130,7 @@ public class BoardController {
 	@PostMapping("/deleteImageOne/{boardId}/{fileId}")
 	public Response<?> imageDelete(@PathVariable("boardId") Long id, @PathVariable("fileId") Long fileId, HttpServletRequest httpServletRequest){
 		User user = getUser(httpServletRequest);
-		return new Response<>("성공", "삭제 성공", boardService.imageDelete(id, fileId));
+		return new Response<>("성공", "이미지 삭제 링크 추가 성공", boardService.imageDelete(id, fileId));
 
 	}
 

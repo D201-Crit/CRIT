@@ -287,6 +287,16 @@ public class BoardService {
         return getBoardShowSortDtos(boards);
     }
 
+    public Page<BoardShowSortDto> orderByLikesDesc(Pageable pageable, String category) {
+        Page<Board> boards = boardRepository.orderByLikesDesc(pageable, category);
+        return getBoardShowSortDtos(boards);
+    }
+
+    public Page<BoardShowSortDto> orderByLikesAsc(Pageable pageable, String category) {
+        Page<Board> boards = boardRepository.orderByLikesAsc(pageable, category);
+        return getBoardShowSortDtos(boards);
+    }
+
     public Page<BoardShowSortDto> findByTitleContaining(String find, String category, Pageable pageable) {
         Page<Board> boards = boardRepository.findByTitleContaining(find,category, pageable);
         return getBoardShowSortDtos(boards);
