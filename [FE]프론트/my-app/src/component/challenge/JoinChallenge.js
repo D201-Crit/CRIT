@@ -57,27 +57,29 @@ const JoinChallenge = ({ challenge }) => {
       })
       .catch((err) => {
         console.log(err);
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "이미 참여중인 챌린지입니다!",
-          text: "CRIT",
-          showConfirmButton: false,
-          timer: 1500,
-          background: "#272727",
-          color: "white",
-          // width: "500px",
-          // 먼지
-          // imageUrl: 'https://unsplash.it/400/200',
-          // imageWidth: 400,
-          // imageHeight: 200,
-          // imageAlt: 'Custom image',
-        });
+        if (err.response.data.errorMessage === "포인트가 부족합니다.") {
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: err.response.data.errorMessage,
+            text: "CRIT",
+            showConfirmButton: false,
+            timer: 1500,
+            background: "#272727",
+            color: "white",
+            // width: "500px",
+            // 먼지
+            // imageUrl: 'https://unsplash.it/400/200',
+            // imageWidth: 400,
+            // imageHeight: 200,
+            // imageAlt: 'Custom image',
+          });
+        }
       });
   };
 
   return (
-    <button id="enter" onClick={() => checkEntrance()}>
+    <button id="join" onClick={() => checkEntrance()}>
       참여하기
     </button>
   );

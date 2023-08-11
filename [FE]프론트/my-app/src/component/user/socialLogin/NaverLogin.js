@@ -3,7 +3,7 @@ import { SNaverLoginButton } from "../../../styles/pages/SLoginPage";
 
 const NaverLogin = () => {
   const CLIENT_ID = "L61z2MvnsWFQfYi7kRi2";
-  const REDIRECT_URI = "http://localhost:3000/login/oauth2/code/naver";
+  const REDIRECT_URI = "https://i9d201.p.ssafy.io/api/login/oauth2/code/naver";
   const STATE = "false";
   const naverUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${CLIENT_ID}&state=${STATE}&redirect_uri=${REDIRECT_URI}`;
   return (

@@ -24,12 +24,11 @@ export const SCreateChallengeButton = styled.button`
 
 // MyChallenge
 export const SImg = styled.img`
-  // position: absolute;
-  // bottom: -120px;
-  // left: 120px;
+  position: absolute;
+  bottom: -120px;
+  left: 120px;
   width: 600px;
   height: 600px;
-  margin: 100px auto;
 `;
 
 export const SSwiper = styled(Swiper)`
