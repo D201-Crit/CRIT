@@ -24,10 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 
 import java.time.LocalTime;
-import java.util.Arrays;
+import java.util.*;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -195,6 +193,8 @@ public class ChallengeService {
 
         for (Challenge challenge : finishedChallengeList) { // 끝난거 종료시키기
             if(challenge.getChallengeStatus() == ChallengeStatus.PROGRESS) { // 진행 중인거 종료 시키기
+                settleChallenge(challenge); // 챌린지 정산 로직
+
                 challenge.setChallengeStatus(ChallengeStatus.END);
             }
         }
@@ -231,6 +231,60 @@ public class ChallengeService {
         String[] fileExtension = {"jpeg", "jpg", "png", "JPG", "JPEG", "PNG"}; // 체크할 확장자
         String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
         return Arrays.stream(fileExtension).anyMatch(extension::equals);
+    }
+
+    public void settleChallenge(Challenge challenge){
+        log.info("========={} 챌린지 정산 시작=========", challenge.getName());
+        List<User> successList = new ArrayList<>(); // 챌린지를 100퍼센트 참여한 사람들의 리스트 (자기돈 + 실패한 사람들의 돈의 sum 1/n)
+        List<User> passList = new ArrayList<>(); // 챌린지를 85퍼센트 이상 참여한 사람들의 리스트 (자기 돈만 가져감)
+        List<User> failList = new ArrayList<>(); // 챌린지를 85퍼센트 미만 참여한 사람들의 리스트 (돈 못받음)
+
+        List<IsCert> isCerts = challenge.getIsCerts(); // 챌린지의 인증 목록 불러오기
+        // 유저별로 인증 목록 분리
+        Map<User, List<IsCert>> userIsCertList = isCerts.stream().collect(Collectors.groupingBy(isCert -> isCert.getUser()));
+
+        for(User user : userIsCertList.keySet()){ // 유저별로 퍼센트 구분
+            log.info("User : {}", user.getId());
+            List<IsCert> isCertList = userIsCertList.get(user);
+        
+            int certifiedDays = (int) isCertList.stream().filter(isCert -> isCert.isCertified()).count();
+            log.info("{}가 인증한 일수 : {}",user.getId(), certifiedDays);
+            int totalDays = isCertList.size();
+            log.info("챌린지 총 일수 : {}", totalDays);
+            double percent = (double) certifiedDays / (double) totalDays * 100.0;
+            log.info("참여한 퍼센트 : {}", percent);
+            if(percent == 100.){ // 성공한 유저
+                log.info("{} 유저 {} 챌린지 성공!!", user.getId(), challenge.getName());
+                successList.add(user);
+            } else if(percent >= 85.){ // 패스한 유저
+                log.info("{} 유저 {} 챌린지 패스", user.getId(), challenge.getName());
+                passList.add(user);
+            } else{ // 실패한 유저
+                log.info("{} 유저 {} 챌린지 실패", user.getId(), challenge.getName());
+                failList.add(user);
+            }
+
+            log.info("==========================");
+        }
+
+        int settledMoney = challenge.getMoney() * failList.size(); // 정산할 돈
+        log.info("총 정산할 금액 : {}", settledMoney);
+
+        log.info("=======챌린지를 패스한 인원들 정산=======");
+        for(User user : passList){
+            log.info("유저 {}의 정산 금액: {} ", user.getId(), challenge.getMoney());
+            user.addCashPoint(challenge.getMoney());
+        }
+
+        log.info("=======챌린지를 성공한 인원들 정산=======");
+        for(User user : successList){
+            int finallyAddedMoney = settledMoney / successList.size() + challenge.getMoney();
+            log.info("유저 {}의 정산 금액: {} ", user.getId(), finallyAddedMoney);
+            user.addCashPoint(finallyAddedMoney);
+        }
+
+        log.info("========={} 챌린지 정산 종료=========", challenge.getName());
+
     }
 
 }

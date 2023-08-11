@@ -188,7 +188,7 @@ public class CertService {
 
         return challenge;
     }
-
+    
     // 오늘 챌린지 리스트들
     private IsCert todayChallengeIsCert(Challenge challenge, User user) {
         LocalDateTime startDatetime = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(23, 59, 59));

@@ -47,16 +47,7 @@ public class ChallengeController {
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(
                 () -> new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_ID));
 
-        ChallengeService.refundMoney(challenge);
-        for(ChallengeUser challengeUser :challenge.getChallengeUserList()){
-            log.info("Refunded");
-            log.info("user Nickname : {},  user Money : {}", challengeUser.getUser().getNickname(), challengeUser.getUser().getCashPoint());
-            challengeUser.getUser().useCashPoint(challenge.getMoney());
-            log.info("Reusing");
-            log.info("user Nickname : {},  user Money : {}", challengeUser.getUser().getNickname(), challengeUser.getUser().getCashPoint());
-        }
-
-
+        challengeService.settleChallenge(challenge);
         return new ResponseEntity<>(new Response<>("success", "Test OK", "OK"), HttpStatus.OK);
     }
 
