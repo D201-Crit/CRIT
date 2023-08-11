@@ -120,3 +120,5 @@ cloud:
       auto: false
     stack:
       auto: false
+    cloudfront:
+      url: d3byqpylj7jy1e.cloudfront.net/

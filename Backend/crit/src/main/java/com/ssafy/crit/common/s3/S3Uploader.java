@@ -35,6 +35,8 @@ public class S3Uploader {
     private static final String EXTENSION = "png";
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
+    @Value("${cloud.aws.cloudfront.url")
+    private String cloudFrontUrl;
 
     public String uploadFiles(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile) // 파일 변환할 수 없으면 에러
@@ -64,7 +66,8 @@ public class S3Uploader {
     // S3로 업로드
     private String putS3(File uploadFile, String fileName) {
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
-        return amazonS3Client.getUrl(bucket, fileName).toString(); // S3 업로드된 주소 반환
+        //return amazonS3Client.getUrl(bucket, fileName).toString(); // S3 업로드된 주소 반환
+        return "https://" + cloudFrontUrl + fileName; // S3 업로드된 주소 반환
         /**
         * return을 할때 crit service s3 주소기 때문에 fileName만 반환진행 -> 반환한 후에는 CloundFront URI 붙여서 DB에 저장
          */
@@ -126,7 +129,8 @@ public class S3Uploader {
             ImageIO.write(bufferedImage, EXTENSION, thumbnailFile);
             amazonS3Client.putObject(new PutObjectRequest(bucket, thumbnailName, thumbnailFile).withCannedAcl(CannedAccessControlList.PublicRead));
             removeNewFile(thumbnailFile);
-            return amazonS3Client.getUrl(bucket, thumbnailName).toString();
+            //return amazonS3Client.getUrl(bucket, thumbnailName).toString();
+            return "https://" + cloudFrontUrl + fileName; // S3 업로드된 주소 반환
             /**
              * return을 할때 crit service s3 주소기 때문에 fileName만 반환진행 -> 반환한 후에는 CloundFront URI 붙여서 DB에 저장
              */
