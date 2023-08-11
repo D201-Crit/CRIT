@@ -7,23 +7,18 @@ import lombok.NoArgsConstructor;
 
 import java.time.format.DateTimeFormatter;
 
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CertVideoResponseDto {
+public class CertImgResponseDto {
     private Long challengeId;
     private boolean isCertificated;
-    private String absentTime;
-    private String presenceTime;
-    private String percentage;
     private boolean isFinished;
 
-    public CertVideoResponseDto(IsCert isCert) {
+    public CertImgResponseDto(IsCert isCert) {
         this.challengeId = isCert.getChallenge().getId();
         this.isCertificated = isCert.isCertified();
-        this.absentTime = isCert.getAbsentTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-        this.presenceTime = isCert.getPresenceTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-        this.percentage = String.valueOf(isCert.getPercentage());
         this.isFinished = isCert.isFinished();
     }
 }

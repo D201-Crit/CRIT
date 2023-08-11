@@ -64,6 +64,12 @@ public class CertService {
         isCert.certification(true); // 인증 완료로 설정
         isCert.setCertTimeNow(); // 인증 시간을 현재로 지정
 
+        if (challenge.getEndDate().isEqual(LocalDate.now())) { // 인증이 마지막 날이라면
+            isCert.setIsFinished(true);
+        } else {
+            isCert.setIsFinished(false);
+        }
+
         isCertRepository.save(isCert);
 
         return isCert;
@@ -101,6 +107,13 @@ public class CertService {
         isCert.setPercentage(String.valueOf(presencePercentage));
         isCert.setCertTimeNow();
 
+        if (challenge.getEndDate().isEqual(LocalDate.now())) { // 인증이 마지막 날이라면
+            isCert.setIsFinished(true);
+        } else {
+            isCert.setIsFinished(false);
+        }
+
+
         if (presencePercentage >= 85.) { // 85퍼센트 이상이면 인증
             isCert.certification(true);
         }
@@ -128,7 +141,6 @@ public class CertService {
     public void dailyInsertionIsCert() throws Exception {
         log.info("일일 챌린지 인증 내역 넣기");
         List<Challenge> allOngoingChallenge = challengeRepository.findAllOngoingChallenge(LocalDate.now());
-//        log.info("진행중 : ㅇㅇ");
         List<IsCert> insertedIsCert = new ArrayList<>();
         for (Challenge challenge : allOngoingChallenge) {
             log.info("challengeId : {}", challenge.getId());
