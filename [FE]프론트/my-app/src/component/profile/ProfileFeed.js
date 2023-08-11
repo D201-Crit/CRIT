@@ -50,7 +50,7 @@ const Feed = () => {
   
         {/* FeedCreateModal */}
         {isCreateModalOpen && (
-          <FeedCreateModal setIsCreateModalOpen={setIsCreateModalOpen} />
+          <FeedCreateModal setIsCreateModalOpen={setIsCreateModalOpen} getFeeds={getFeeds} />
         )}
   
         {/* 게시물 리스트 */}
@@ -60,7 +60,7 @@ const Feed = () => {
           <SPost key={feed.id}>
             {/* 일반 게시물 */}
             <img
-              src={feed.imageUrl}
+              src={feed.imageFiles}
               alt="피드 이미지"
               className="post-image"
               onClick={() => setEditingFeedId(feed.id)}

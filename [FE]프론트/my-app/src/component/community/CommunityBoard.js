@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
+import { api } from "../../api/api";
 import BoardCard from './BoardCard.js'
 import { 
   SHr, 
@@ -21,29 +21,26 @@ const CommunityBoard = () => {
   }, []);
 
   const fetchBoards = async () => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/whole`, {
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
+    api.get(`${API_BASE_URL}/whole/`, {
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+      .then((res) => {
+        const fetchedBoards = res.data.data.content.filter(article => article.title !== "").sort((a, b) => new Date(b.id) - new Date(a.id));
+        const fetchedTopics = Array.from(new Set(fetchedBoards.map((board) => board.classification)));
+        if (Array.isArray(fetchedBoards)) {
+          setBoards(fetchedBoards);
+          setTopic(fetchedTopics);
+        } else {
+          setBoards([]);
+          setTopic(fetchedTopics);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log('전체 게시글 조회 실패');
       });
-      const fetchedBoards = response.data.data.content;
-      console.log(fetchedBoards);
-      
-      const fetchedTopics = Array.from(new Set(fetchedBoards.map((board) => board.classification)));
-      console.log(fetchedTopics);
-
-      if (Array.isArray(fetchedBoards)) {
-        setBoards(fetchedBoards);
-        setTopic(fetchedTopics);
-      } else {
-        setBoards([]);
-        setTopic(fetchedTopics);
-      }
-    } catch (error) {
-      console.error(error);
-      console.log('전체 게시글 조회 실패');
-    }
   };
 
   return (

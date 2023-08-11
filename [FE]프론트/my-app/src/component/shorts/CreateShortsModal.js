@@ -21,7 +21,8 @@ const CreateShortsModal = ({setShortsCreateModal}) => {
 
   const createShorts = (e) => {
     e.preventDefault();
-  
+    if (shorts.content.trim() === "" || shorts.title.trim() === "") {
+      alert("제목과 내용을 모두 작성해주세요.");}
     const formData = new FormData();
     formData.append("file", video);
   

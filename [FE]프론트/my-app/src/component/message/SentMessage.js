@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { api } from "../../api/api";
-
-
+import { RiDeleteBin5Fill } from 'react-icons/ri';
+import { SDeleteIcon } from '../../styles/pages/SMessage';
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/messages';
 const SentMessage = (setMassageView) => {
   const user = useSelector((state) => state.users);
@@ -22,13 +22,30 @@ const SentMessage = (setMassageView) => {
       })
       .then((res) => {
         console.log(res);
-        setSentMessage(res.data.data)
+        setSentMessage(res.data.data.sort((a, b) => new Date(b.id) - new Date(a.id)))
       })
       .catch((err)=>{
         console.log(err)
       });
   };
-  
+  // 보낸 메시지 삭제
+  const deleteSentMessage = (messageId) => {
+    api
+      .delete(`${API_BASE_URL}/sent/${messageId}`,{
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`
+        },
+      })
+      .then((res) => {
+        getSentMessage();
+        console.log("삭제성공",res);
+      })
+      .catch((err)=>{
+        console.log("삭제실패",err)
+      });
+  };
+
+
   return (
     <div>
       <h3>보낸 메시지</h3>
@@ -43,11 +60,16 @@ const SentMessage = (setMassageView) => {
           .map((message) => (
             <div key={message.id}>
               <div>
+              <div>
+
                 제목 :{message.title}
                 <br />
                 받는사람 : {message.receiverName}
                 <br />
                 내용 :{message.content}
+                <SDeleteIcon onClick={()=>{deleteSentMessage(message.id)}}><RiDeleteBin5Fill/></SDeleteIcon>
+                </div>
+
                 <hr />
               </div>
             </div>

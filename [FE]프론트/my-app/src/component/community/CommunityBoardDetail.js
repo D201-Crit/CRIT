@@ -2,15 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { api } from "../../api/api";
 import {
-  SHr,
-  SCommunityWrapper,
-  SEmpty,
-  SBoardArticleCol,
-  SBoardArticleRow,
+  
   SBoardDetailWrapper,
   SBoardDetailHr,
   SBoardDetailEmpty,
-  SBoardDetailTitle,
   SBoardDetailButton,
   SBoardDetailViewSelect,
   SBoardDetailRow,
@@ -26,71 +21,111 @@ const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/boards';
 
 const CommunityBoardDetail = ({ classification }) => {
   const user = useSelector((state) => state.users);
-
-  const [
-    articles,
-    setArticles,
-  ] = useState(null);                                     // 게시글 목록 State
+  const [page, setPage] = useState(0);
+  const [articles, setArticles] = useState({ content: [], totalPages: 0 });
   const [showmodal, setModal] = useState(false);
   const [sortMethod, setSortMethod] = useState('전체게시물');
 
-  const handleSortMethodChange = (e) => {
+  const handleSortMethodChange = (e,) => {
     setSortMethod(e.target.value);
-    sortArticles(e.target.value);
+    sortArticles(e.target.value, page);
   };
+  
 
-  useEffect(() => {                                        // 초기 렌더링 시 실행
-    fetchArticles();
-  }, []);
+  useEffect(() => {
+    fetchArticles(page);
+  }, [page]);
 
-  const fetchArticles = async () => {                      // 현재 게시판에 해당하는 게시글 불러오기
-    api.get(`${API_BASE_URL}/whole/${classification}`, {
+
+  const fetchArticles = async (pageNo = 0) => {
+    api.get(`${API_BASE_URL}/whole/${classification}?page=${pageNo}`, {
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
       },
     })
       .then((res) => {
-        setArticles(res.data.data.content);
+        setArticles({
+          content: res.data.data.content.filter(article => article.title !== "")
+            .sort((a, b) => new Date(b.id) - new Date(a.id)),
+          totalPages: res.data.data.totalPages,
+        });
         console.log(res);
       })
       .catch((error) => {
         console.log(error);
       });
   };
-
-  const sortArticles = async (sort = 'whole') => {
+  
+  const sortArticles = async (sort = 'whole', pageNo = 0) => {
     let url;
-
+    console.log(classification)
     switch (sort) {
       case 'desc':
-        url = `${API_BASE_URL}/desc`;
+        url = `${API_BASE_URL}/desc?page=${pageNo}`;
         break;
       case 'asc':
-        url = `${API_BASE_URL}/asc`;
+        url = `${API_BASE_URL}/asc?page=${pageNo}`;
         break;
+      // api 요청 주소 다시 알아내기
       case 'viewsdesc':
-        url = `${API_BASE_URL}/viewsdesc`;
+        url = `${API_BASE_URL}/boards/whole/${classification}/views-desc?page=${pageNo}`;
         break;
       case 'viewsasc':
-        url = `${API_BASE_URL}/viewsasc`;
+        url = `${API_BASE_URL}/boards/whole/${classification}/views-asc?page=${pageNo}`;
         break;
       default:
-        url = `${API_BASE_URL}/whole/${classification}`;
+        url = `${API_BASE_URL}/whole/${classification}?page=${pageNo}`;
     }
-
     api.get(url, {
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
       },
     })
       .then((res) => {
-        setArticles(res.data.data.content);
+        setArticles({
+          content: res.data.data.content.filter(article => article.title !== "").sort((a, b) => new Date(b.id) - new Date(a.id)),
+          totalPages: res.data.data.totalPages
+        });
         console.log(res);
       })
       .catch((error) => {
         console.log(error);
       });
   };
+  
+
+  // 페이지네이션
+  const handlePageButtonClick = (newPage) => {
+    setPage(newPage);
+    sortArticles(sortMethod, newPage);
+  };
+  
+  //페이지 변경 버튼
+  const PageButton = ({ pageNumber, onClick }) => {
+    return (
+      <button onClick={() => onClick(pageNumber)}>
+        {pageNumber + 1}
+      </button>
+    );
+  };
+
+  const Pagination = ({ totalPages, onPageClick }) => {
+    // totalPages는 서버로부터 받은 총 페이지 수
+    const pageButtons = [];
+    for (let i = 0; i < totalPages; i++) {
+      pageButtons.push(
+        <PageButton key={i} pageNumber={i} onClick={onPageClick} />
+      );
+    }
+  
+    return (
+      <div>
+        {pageButtons}
+      </div>
+    );
+  };
+  
+
 
   const articleLike = async (articleid) => {              // 좋아요 기능
     api.post(`${API_BASE_URL}/likes/${articleid}`, null, {
@@ -136,7 +171,7 @@ const CommunityBoardDetail = ({ classification }) => {
       <SBoardDetailButton onClick={() => openModal()}>
         게시글작성
       </SBoardDetailButton>
-
+      <Pagination totalPages={articles.totalPages} onPageClick={handlePageButtonClick} />
       <SBoardDetailViewSelect
         value={sortMethod}
         onChange={handleSortMethodChange}
@@ -159,8 +194,8 @@ const CommunityBoardDetail = ({ classification }) => {
       <SBoardDetailHr />
       <SBoardDetailEmpty />
 
-      {Array.isArray(articles) ? (                        // 게시글 목록
-        articles.map((article) => (
+      {Array.isArray(articles.content) ? (                        // 게시글 목록
+        articles.content.map((article) => (
           <SBoardDetailBoard key={article.id}>
             <SBoardDetailRow>
               <SBoardDetailBoardInfo onClick={() => goToArticleDetail(article.id)}>
@@ -184,6 +219,7 @@ const CommunityBoardDetail = ({ classification }) => {
             </SBoardDetailRow>
           </SBoardDetailBoard>
         ))
+        
       ) : (
         <p>Loading...</p>
       )}

@@ -7,7 +7,11 @@ const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/boards';
 
 
 const ModifyArticleModal = ({ classification, setIsEditOpen, prevArticles, fetchArticles }) => {
-  const initialImages = prevArticles.imageFiles.map((image) => ({ url: image, file: null }));
+  const initialImages = prevArticles.imageFiles.map((image, index) => ({
+    url: image,
+    file: null,
+    fileId: prevArticles.fileId[index]
+  }));
   const user = useSelector((state) => state.users);
   const [images, setImages] = useState(initialImages);
   const [article, setArticle] = useState(prevArticles);
@@ -25,27 +29,32 @@ const ModifyArticleModal = ({ classification, setIsEditOpen, prevArticles, fetch
     setImages(imageObjList);
   };
 
-  const removeImage = (fileId,e) => {
+  const removeImage = (fileId, e) => {
+    console.log("파일아이디 테스트", fileId);
     api
-      .post(`${API_BASE_URL}/deleteImageOne/${article.id}/${prevArticles.fileId}`,{
+      .post(`${API_BASE_URL}/deleteImageOne/${article.id}/${fileId}`, {
         headers: {
-          Authorization: `Bearer ${user.accessToken}`,
+          Authorization: `Bearer ${user .accessToken}`,
           "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
         console.log(res);
-        setImages(images.filter((_, i) => i !== fileId));
+        console.log(fileId);
+        setImages(images.filter((image) => image.fileId !== fileId));
       })
       .catch((err)=>{
-        console.log(err)
+        console.log(err);
       });
   };
-
+  
 
   const writeArticle = (e) => {
     e.preventDefault();
-  
+    if (article.title.trim() === "" || article.content.trim() === "") {
+      alert("제목과 내용을 모두 작성해주세요.");
+      return;
+      }
     const formData = new FormData();
 
     images.forEach((imageObj) => {
@@ -109,7 +118,7 @@ const ModifyArticleModal = ({ classification, setIsEditOpen, prevArticles, fetch
             />
             <button
               type="button"
-              onClick={() => removeImage(index)}
+              onClick={() => removeImage(imageObj.fileId)}
               style={{
                 position: "absolute",
                 top: 0,

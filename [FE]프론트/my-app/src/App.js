@@ -105,7 +105,7 @@ function AppRoutes() {
         <Route path="/ProfilePage" element={<ProfilePage />} />
         <Route path="/MyPage" element={<MyPage />} />
         <Route path="/PayPage" element={<PayPage />} />
-        <Route path="/PaySuccessPage" element={<PaySuccessPage />} />
+        <Route path="/payment/success" element={<PaySuccessPage />} />
         <Route path="/PayCanclePage" element={<PayCanclePage />} />
         <Route path="/PayConflictPage" element={<PayConflictPage />} />
       </Routes>

@@ -30,6 +30,11 @@ const CreateArticleModal = ({ classification, setModal, fetchArticles}) => {
 
   const writeArticle = (e) => {
     e.preventDefault();
+    // 제목 및 내용의 유효성 검사
+    if (article.title.trim() === "" || article.content.trim() === "") {
+    alert("제목과 내용을 모두 작성해주세요.");
+    return;
+    }
     const formData = new FormData();
     // 이미지가 없을 경우 빈 배열을 전달하려면 다음과 같이 작성하십시오.
     if (images.length === 0) {
