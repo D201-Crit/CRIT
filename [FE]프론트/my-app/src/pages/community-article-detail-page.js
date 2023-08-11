@@ -156,32 +156,42 @@ const CommunityArticleDetailPage = () => {
 
   return (
     <div>
-      {articles && (
-        <div>
-          <h1>{articles.title}</h1>
-          <h3>{articles.content}</h3>
-          <h3>{articles.liked}</h3>
-          <img
-              src={articles.imageFiles}
-              alt={``}
-              style={{ maxWidth: "100px", maxHeight: "px", margin: "5px" }}
-              ></img>
-
+      {
+        articles && (
           <div>
-          {isMyArticle(articles) && (
-          <div>
-          <button onClick={()=>deleteArticle(articles.id)}>게시글 삭제</button>
-          <button onClick={()=>setIsEditOpen(true)}>게시글 수정</button>
-          </div>
-          )}
-          </div>
-          {isEditOpen && (
-          <ModifyArticleModal classification={classification} setIsEditOpen={setIsEditOpen} prevArticles = {articles}
-          fetchArticles={fetchArticles}/>)}
-        </div>
-      )}
+            <h1>{articles.title}</h1>
+            <h3>{articles.content}</h3>
+            <h3>{articles.liked}</h3>
+            {articles.imageFiles.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`Article image ${index}`}
+                style={{ maxWidth: "100px", maxHeight: "px", margin: "5px" }}
+              />
+            ))}
 
-<SCommentContainer>
+            <div>
+              {isMyArticle(articles) && (
+                <div>
+                  <button onClick={() => deleteArticle(articles.id)}>게시글 삭제</button>
+                  <button onClick={() => setIsEditOpen(true)}>게시글 수정</button>
+                </div>
+              )}
+            </div>
+            {isEditOpen && (
+              <ModifyArticleModal
+                classification={classification}
+                setIsEditOpen={setIsEditOpen}
+                prevArticles={articles}
+                fetchArticles={fetchArticles}
+              />
+            )}
+          </div>
+        )}
+      <h2>댓글</h2>
+      <hr/>
+      <SCommentContainer>
         <SCommentList>
           {comments && (
             <div>

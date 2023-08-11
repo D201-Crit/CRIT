@@ -3,7 +3,7 @@ import React from 'react';
 import { SBoardCard, SBoardTitle, SHr2 } from '../../styles/pages/SCommunityPage';
 
 const BoardCard = ({ classification, boards }) => {
-  const maxBoardArticle = 6;
+  const maxBoardArticle = 3;
 
   const handleGoToDetail = () => {
     // 자세히 보기 버튼을 누를 때 해당 경로로 이동합니다.

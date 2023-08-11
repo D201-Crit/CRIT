@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/feeds';
 
-const FeedCreateModal = ({ setIsCreateModalOpen }) => {
+const FeedCreateModal = ({ setIsCreateModalOpen }, {getFeeds}) => {
   const user = useSelector((state) => state.users);
   const [feedContent, setFeedContent] = useState({
     content: "",
@@ -38,6 +38,9 @@ const FeedCreateModal = ({ setIsCreateModalOpen }) => {
 
   const feedCreate = (e) => {
     e.preventDefault();
+
+    if (feedContent.content.trim() === "" || feedImage.length === 0) {
+      alert("제목과 내용을 모두 작성해주세요.");}
     const formData = new FormData();
   
     // 이미지가 없을 경우 빈 배열을 전달하려면 다음과 같이 작성하십시오.
@@ -62,9 +65,11 @@ const FeedCreateModal = ({ setIsCreateModalOpen }) => {
         },
       })
       .then(() => {
+        getFeeds();
         setIsCreateModalOpen(false);
         setFeedContent("");
         setFeedImage(null);
+        
       })
       .catch(() => {
         console.log("게시글 작성실패");
@@ -107,11 +112,6 @@ const FeedCreateModal = ({ setIsCreateModalOpen }) => {
       </div>   
     );
   };
-
-
-
-
-  
 
 
 export default FeedCreateModal;

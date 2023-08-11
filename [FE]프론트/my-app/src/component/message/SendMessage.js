@@ -54,7 +54,7 @@ const handleReceiverNameChange = (event) => {
       setMessageToSend({
         title: "",
         content: "",
-        // receiverName: ""
+        receiverName: ""
       }); // 상태를 초기 상태로 설정
       console.log(res)
       console.log('메시지 보내기 성공!');

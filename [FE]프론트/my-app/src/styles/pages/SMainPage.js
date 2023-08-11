@@ -462,3 +462,22 @@ export const SSubmitButton = styled.input`
   cursor: pointer;
   font-family: "Pretendard";
 `;
+
+export const SResultList = styled.ul`
+  list-style-type: none;
+  padding: 0;
+  margin-top: 20px;
+`;
+
+export const SResultItem = styled.li`
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #f1f1f1;
+  }
+`;

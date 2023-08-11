@@ -11,7 +11,7 @@ import SearchShorts from "../component/shorts/SearchShorts";
 import MostLikeShorts from "../component/shorts/list/MostLikeShorts";
 import CreateShortsModal from "../component/shorts/CreateShortsModal";
 import RecentShorts from "../component/shorts/list/RecentShorts";
-import MostViewtShorts from "../component/shorts/list/MostViewtShorts";
+import MostViewShorts from "../component/shorts/list/MostViewShorts";
 import { useEffect, useState } from "react";
 import { api } from "../api/api";
 import { useSelector } from "react-redux";
@@ -133,7 +133,7 @@ const MainPage = () => {
       <SShortsWrapper>
       <RecentShorts shortsByDate={shortsByDate} />
       <MostLikeShorts shortsByLike={shortsByLike} />
-      <MostViewtShorts shortsByView={shortsByView} />
+      <MostViewShorts shortsByView={shortsByView} />
       </SShortsWrapper>
     </>
   );
