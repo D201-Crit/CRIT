@@ -26,10 +26,10 @@ public class MessageService {
 
 	@Transactional
 	public MessageDto write(MessageSendRequestDto MessageSendRequestDto, String senderName) {
-		User receiver = userRepository.findById(MessageSendRequestDto.getReceiverName()).orElseThrow(() -> {
+		User receiver = userRepository.findByNickname(MessageSendRequestDto.getReceiverName()).orElseThrow(() -> {
 			return new BadRequestException(ErrorCode.NOT_EXISTS_MESSAGE_RECEIVER);
 		});
-		User sender = userRepository.findById(senderName).orElseThrow(() -> {
+		User sender = userRepository.findByNickname(senderName).orElseThrow(() -> {
 			return new BadRequestException(ErrorCode.NOT_EXISTS_MESSAGE_SENDER);
 		});
 
@@ -43,7 +43,7 @@ public class MessageService {
 				.build();
 
 			messageRepository.save(message);
-			return MessageDto.toDto(message);
+			return MessageDto.toDto(message, sender);
 	}
 
 	@Transactional(readOnly = true)
@@ -57,7 +57,7 @@ public class MessageService {
 		for (Message message : messages) {
 			// message 에서 받은 편지함에서 삭제하지 않았으면 보낼 때 추가해서 보내줌
 			if (!message.isDeletedByReceiver()) {
-				messageDtos.add(MessageDto.toDto(message));
+				messageDtos.add(MessageDto.toDto(message, user));
 			}
 		}
 		return messageDtos;
@@ -94,7 +94,7 @@ public class MessageService {
 		for (Message message : messages) {
 			// message 에서 받은 편지함에서 삭제하지 않았으면 보낼 때 추가해서 보내줌
 			if (!message.isDeletedBySender()) {
-				messageDtos.add(MessageDto.toDto(message));
+				messageDtos.add(MessageDto.toDto(message,user));
 			}
 		}
 		return messageDtos;

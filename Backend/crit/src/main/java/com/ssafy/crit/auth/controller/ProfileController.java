@@ -1,13 +1,18 @@
 package com.ssafy.crit.auth.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 
+import com.ssafy.crit.auth.dto.UserResponseDto;
 import com.ssafy.crit.common.error.code.ErrorCode;
 import com.ssafy.crit.common.error.exception.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,6 +61,26 @@ public class ProfileController {
 		User user = getUser(httpServletRequest);
 		return new Response<>("성공", "프로필 불러오기 성공", userService.getUserProfile(user));
 	}
+
+	@GetMapping("/user/profile/{nick_name}")
+	public Response<?> getUserDetailProfile(@PathVariable("nick_name") String name){
+		return new Response<>("성공", "남의 프로필 조회 성공", userService.getUserDetailProfile(name));
+	}
+
+	// @GetMapping("/whole/user")
+	// public Response<?> getWholeUserInMyFollowing(HttpServletRequest httpServletRequest){
+	// 	User user = getUser(httpServletRequest);
+	//
+	// 	return new Response<>("성공", "팔로잉한 모든 유저 조회 성공", userService.getWholeUserInMyFollowing(user.getNickname()));
+	// }
+	@GetMapping("/whole/user")
+	public Response<?> getWholeUserInMyFollowing(HttpServletRequest httpServletRequest){
+		User user = getUser(httpServletRequest);
+		List<UserResponseDto> users = userService.getWholeUserInMyFollowing(user.getNickname());
+		return new Response<>("성공", "팔로잉한 모든 유저 조회 성공", users);
+	}
+
+
 
 	private User getUser(HttpServletRequest httpServletRequest) {
 		String header = httpServletRequest.getHeader("Authorization");

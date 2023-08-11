@@ -30,9 +30,11 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
@@ -171,11 +173,11 @@ public class UserService {
 
 	public UserResponseDto follow(FollowRequestDto followRequestDto) {
 		// user1 이 현재 로그인 한 유저
-		User user1 = userRepository.findById(followRequestDto.getFollowerId())
+		User user1 = userRepository.findByNickname(followRequestDto.getFollowerId())
 			.orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_FOLLOWER));
 
 		// user 2는 내가 팔로잉 할 유저
-		User user2 = userRepository.findById(followRequestDto.getFollowingId())
+		User user2 = userRepository.findByNickname(followRequestDto.getFollowingId())
 			.orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_FOLLOWING));
 
 		// user 1과 user 2가 모두 있다면
@@ -222,8 +224,41 @@ public class UserService {
 	}
 
 	public UserResponseDto getUserProfile(User user) {
-		return UserResponseDto.toUserResponseDto(userRepository.findById(user.getId()).orElseThrow());
+		return UserResponseDto.toUserResponseDto(userRepository.findByNickname(user.getNickname()).orElseThrow());
 	}
+
+	public UserResponseDto getUserDetailProfile(String user){
+		User user1 = userRepository.findByNickname(user).orElseThrow(() -> {
+			return new IllegalArgumentException(String.valueOf(ErrorCode.NOT_EXISTS_USER_ID));
+		});
+
+		return UserResponseDto.toUserResponseDto(user1);
+	}
+
+	// public List<UserResponseDto> getWholeUserInMyFollowing(String user){
+	// 	User user1 = userRepository.findByNickname(user).orElseThrow();
+	// 	List<Follow> byMyFollowings = followRepository.findByMyFollowings(user1);
+	//
+	// 	List<UserResponseDto> urd = new ArrayList<>();
+	//
+	// 	for (Follow byMyFollowing : byMyFollowings) {
+	// 		Optional<User> byNickname = userRepository.findByNickname(byMyFollowing.getFollower().getNickname());
+	// 		urd.add(UserResponseDto.toUserResponseDto(byNickname.get()));
+	// 	}
+	// 	return urd;
+	// }
+
+	public List<UserResponseDto> getWholeUserInMyFollowing(String userNickname){
+		User user = userRepository.findByNickname(userNickname)
+			.orElseThrow(() -> new IllegalArgumentException("User not found with nickname: " + userNickname));
+
+		List<Follow> myFollowings = followRepository.findByMyFollowings(user);
+
+		return myFollowings.stream()
+			.map(following -> UserResponseDto.toUserResponseDto(following.getFollowing()))
+			.collect(Collectors.toList());
+	}
+
 
 	public MultipartFile loadResource() throws IOException {
 		Resource resource = resourceLoader.getResource("classpath:basic-profile-picture/user-basic-profile.png");
