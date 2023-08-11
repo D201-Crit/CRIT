@@ -27,6 +27,7 @@ const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
   const [showModifyModal, setModifyModal] = useState(false);
 
   useEffect(() => {
+    console.log("유저",user)
     getShort();
     getComments();
   }, []);
@@ -97,26 +98,35 @@ const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
 
   // Shorts 작성자 일치 여부 판단 함수
   const isMyShorts = (writer) => {
+    console.log("user.nickname:", user.nickname);
+    console.log("writer:", writer);
     return user.nickname === writer;
   };
+  
 
   // 쇼츠 삭제
   const deleteShorts = async (shortId) => {
-    api.delete(`https://i9d201.p.ssafy.io/api/shorts/${shortId}`, {
-      headers: {
-        Authorization: `Bearer ${user.accessToken}`,
-      },
-    })
-    .then(() => {
-      console.log('쇼츠 삭제 성공');
-      getShorts();
-      setOpenDetailModal(false);
-    })
-    .catch((error) => {
-      console.log(error)
-      console.log('쇼츠 삭제 실패');
-    })
+    if (short.liked && short.liked.includes(user.id)) {
+      await deleteLike(shortId);
+    }
+  
+    api
+      .delete(`https://i9d201.p.ssafy.io/api/shorts/${shortId}`, {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      })
+      .then(() => {
+        console.log("쇼츠 삭제 성공");
+        setOpenDetailModal(false);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("쇼츠 삭제 실패");
+      });
   };
+  
 
 
 
@@ -218,6 +228,7 @@ return (
             &times;
           </SDetailCloseButton>
           <h2>{short.title}</h2>
+
           {/* 케밥 메뉴 아이콘 */}
           {isMyShorts(short.writer) && (
             <>
@@ -231,22 +242,24 @@ return (
                   {/* 쇼츠수정 */}
                   <button onClick={() => { setModifyModal(true); }}>수정</button>
                   {/* 쇼츠삭제 */}
-                  <button onClick={() => deleteShorts(shortId)}>삭제</button>
+                  <button onClick={() => {deleteShorts(shortId)}}>삭제</button>
                 </div>
               )}
             </>
           )}
+
           <SInfoRow>
             <p>작성자 : {short.writer}</p>
             <p>조회수 : {short.views}</p>
             <p>좋아요: {short.likesCount}</p>
-            <p>좋아요 한 사람 : {short.liked}</p>
+            {/* <p> 좋아요 한 사람 : {short.liked}</p> 주석처리 이유 : 지금 liked엔 닉네임이 아니라 아이디가 담기고 있다. 백 수정 필요*/} 
           </SInfoRow>
           <p>내용 : {short.content}</p>
           <p>해시태그 : {short.hashTagNames}</p>
           
           {short.id && (
-            short.liked.includes(user.nickname) ? (
+            short.liked && // 해당 부분을 추가합니다.
+            short.liked.includes(user.id) ? (
               <SLikeButton onClick={() => deleteLike(short.id)}>
                 좋아요 취소
               </SLikeButton>
@@ -256,6 +269,7 @@ return (
               </SLikeButton>
             )
           )}
+
         </SInfoSection>
         {/* 댓글 영역 */}
         <SCommentSection>

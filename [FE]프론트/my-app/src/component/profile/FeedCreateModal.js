@@ -5,12 +5,12 @@ import { useSelector } from "react-redux";
 
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/feeds';
 
-const FeedCreateModal = ({ setIsCreateModalOpen }, {getFeeds}) => {
+const FeedCreateModal = ({ setIsCreateModalOpen, getFeeds }) => {
   const user = useSelector((state) => state.users);
   const [feedContent, setFeedContent] = useState({
     content: "",
-    userName: user.nickname,
     classification: "Feeds",     
+    userName: user.nickname,
   });
 
   const [feedImage, setFeedImage] = useState([]);
@@ -34,7 +34,7 @@ const FeedCreateModal = ({ setIsCreateModalOpen }, {getFeeds}) => {
       setIsCreateModalOpen(false);
     }
   };
-
+  
 
   const feedCreate = (e) => {
     e.preventDefault();
@@ -43,14 +43,14 @@ const FeedCreateModal = ({ setIsCreateModalOpen }, {getFeeds}) => {
       alert("제목과 내용을 모두 작성해주세요.");}
     const formData = new FormData();
   
-    // 이미지가 없을 경우 빈 배열을 전달하려면 다음과 같이 작성하십시오.
-    if (feedImage.length === 0) {
-      formData.append("file", new Blob([], { type: "application/json" }));
-    } else {
+    // // 이미지가 없을 경우 빈 배열을 전달하려면 다음과 같이 작성하십시오.
+    // if (feedImage.length === 0) {
+    //   formData.append("file", new Blob([], { type: "application/json" }));
+    // } else {
       feedImage.forEach((imageObj) => {
         formData.append("file", imageObj.file);
       });
-    }
+    
   
     formData.append(
       "fileResponseDto",

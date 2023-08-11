@@ -15,6 +15,8 @@ import {
   SLikeButton,
 } from '../../styles/pages/SCommunityPage';
 import CreateArticleModal from './CreateArticleModal'
+import Paging from './Paging';
+
 
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/boards';
 // const API_BASE_URL = 'http://localhost:8080/boards';
@@ -94,38 +96,43 @@ const CommunityBoardDetail = ({ classification }) => {
   };
   
 
-  // 페이지네이션
-  const handlePageButtonClick = (newPage) => {
-    setPage(newPage);
-    sortArticles(sortMethod, newPage);
-  };
+  // // 페이지네이션
+  // const handlePageButtonClick = (newPage) => {
+  //   setPage(newPage);
+  //   sortArticles(sortMethod, newPage);
+  // };
   
-  //페이지 변경 버튼
-  const PageButton = ({ pageNumber, onClick }) => {
-    return (
-      <button onClick={() => onClick(pageNumber)}>
-        {pageNumber + 1}
-      </button>
-    );
+  // //페이지 변경 버튼
+  // const PageButton = ({ pageNumber, onClick }) => {
+  //   return (
+  //     <button onClick={() => onClick(pageNumber)}>
+  //       {pageNumber + 1}
+  //     </button>
+  //   );
+  // };
+
+  // const Pagination = ({ totalPages, onPageClick }) => {
+  //   // totalPages는 서버로부터 받은 총 페이지 수
+  //   const pageButtons = [];
+  //   for (let i = 0; i < totalPages; i++) {
+  //     pageButtons.push(
+  //       <PageButton key={i} pageNumber={i} onClick={onPageClick} />
+  //     );
+  //   }
+  
+  //   return (
+  //     <div>
+  //       {pageButtons}
+  //     </div>
+  //   );
+  // };
+  
+  const handlePageChange = (newPage) => {
+    setPage(newPage - 1);
+    sortArticles(sortMethod, newPage - 1);
   };
 
-  const Pagination = ({ totalPages, onPageClick }) => {
-    // totalPages는 서버로부터 받은 총 페이지 수
-    const pageButtons = [];
-    for (let i = 0; i < totalPages; i++) {
-      pageButtons.push(
-        <PageButton key={i} pageNumber={i} onClick={onPageClick} />
-      );
-    }
   
-    return (
-      <div>
-        {pageButtons}
-      </div>
-    );
-  };
-  
-
 
   const articleLike = async (articleid) => {              // 좋아요 기능
     api.post(`${API_BASE_URL}/likes/${articleid}`, null, {
@@ -171,7 +178,7 @@ const CommunityBoardDetail = ({ classification }) => {
       <SBoardDetailButton onClick={() => openModal()}>
         게시글작성
       </SBoardDetailButton>
-      <Pagination totalPages={articles.totalPages} onPageClick={handlePageButtonClick} />
+      {/* <Pagination totalPages={articles.totalPages} onPageClick={handlePageButtonClick} /> */}
       <SBoardDetailViewSelect
         value={sortMethod}
         onChange={handleSortMethodChange}
@@ -216,13 +223,24 @@ const CommunityBoardDetail = ({ classification }) => {
                   </SLikeButton>
                 )}
               </div>
+              
             </SBoardDetailRow>
+            
           </SBoardDetailBoard>
+
+      
+          
         ))
         
       ) : (
         <p>Loading...</p>
       )}
+
+    <Paging
+      activePage={page + 1}
+      totalItemsCount={articles.totalPages * 10}
+      onChange={handlePageChange}
+      />
     </SBoardDetailWrapper>
   );
 };
