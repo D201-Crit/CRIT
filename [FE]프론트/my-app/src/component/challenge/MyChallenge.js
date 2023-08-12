@@ -265,7 +265,11 @@ const MyChallenge = () => {
                         입장하기
                       </button>
                     ) : (
-                      <button id="photo" onClick={() => checkEnterTime()}>
+                      <button
+                        id="photo"
+                        // onClick={() => checkEnterTime()}
+                        onClick={() => openPhotoModal(challenge)}
+                      >
                         사진인증
                       </button>
                     )

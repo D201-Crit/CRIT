@@ -6,12 +6,15 @@ import {
   SInfoWrapper,
   SButtonWrapper,
 } from "../../../styles/pages/SDeatilChallengePage";
+import PhotoChallengeModal from "../PhotoChallengeModal";
+
 import ParticipationChallenge from "../ParticipationChallenge";
 
 import Modal from "react-modal";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { SWebRTCModal } from "../../../styles/pages/SChallengePage";
 
 const InformationChallenge = () => {
   const location = useLocation();
@@ -174,7 +177,8 @@ const InformationChallenge = () => {
                   입장하기
                 </button>
               ) : (
-                <button id="join" onClick={() => checkEnterTime()}>
+                // <button id="join" onClick={() => checkEnterTime()}>
+                <button id="photo" onClick={() => openPhotoModal(challenge)}>
                   사진인증
                 </button>
               )
@@ -188,6 +192,12 @@ const InformationChallenge = () => {
           </>
         )}
       </SButtonWrapper>
+      <Modal style={SWebRTCModal} isOpen={isPhotoOpen}>
+        <PhotoChallengeModal
+          challengeData={challengeData}
+          closePhotoModal={closePhotoModal}
+        ></PhotoChallengeModal>
+      </Modal>
     </SInformationWrapper>
   );
 };

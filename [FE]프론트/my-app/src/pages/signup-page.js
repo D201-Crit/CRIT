@@ -147,8 +147,38 @@ const SignUp = () => {
           color: "white",
         });
       }
-
-      if (!mismatchError && checkId && checkNickname && nickname) {
+      if (password.length > 20 || password.length < 8) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "비밀번호는 \n8자이상 20이하여야 합니다.",
+          text: "CRIT",
+          showConfirmButton: false,
+          timer: 1500,
+          background: "#272727",
+          color: "white",
+        });
+      }
+      if (email === "") {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "이메일을 입력해주세요.",
+          text: "CRIT",
+          showConfirmButton: false,
+          timer: 1500,
+          background: "#272727",
+          color: "white",
+        });
+      }
+      if (
+        !mismatchError &&
+        checkId &&
+        checkNickname &&
+        nickname &&
+        email &&
+        password
+      ) {
         console.log("서버로 회원가입하기");
         // 요청 전 초기화
         // 요청을 여러번 할때 초기값이 이상할 수 있으니

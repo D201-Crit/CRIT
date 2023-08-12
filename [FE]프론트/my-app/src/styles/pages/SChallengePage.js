@@ -749,6 +749,13 @@ export const SPhotochallengeWrapper = styled.div`
   #file {
     display: none;
   }
+  #image {
+    position: absolute;
+    top: 30px;
+    left: -40px;
+    width: 600px;
+    height: 500px;
+  }
   #submit {
     position: absolute;
     right: -140px;

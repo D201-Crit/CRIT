@@ -5,9 +5,16 @@ import Swal from "sweetalert2";
 
 const PhotoChallengeModal = ({ challengeData, closePhotoModal }) => {
   const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null); // 사진 미리보기를 위한 상태 추가
+
   const onChangeImage = (e) => {
     const file = e.target.files[0];
     setImage(file);
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImagePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
   console.log(challengeData);
   const checkCreate = (e) => {
@@ -32,8 +39,55 @@ const PhotoChallengeModal = ({ challengeData, closePhotoModal }) => {
       // imageAlt: 'Custom image',
     });
   };
+  const getCertList = () => {
+    api
+      .get(
+        `https://i9d201.p.ssafy.io/api/cert/list/${challengeData.challenge.id}`,
+      )
+      .then((res) => {
+        const certList = res.data.data;
+        if (certList.length > 0) {
+          // certList 배열이 비어있지 않을 때
+          const mostRecentCert = certList.reduce((prev, current) => {
+            // 각 요소의 createdAt 값을 비교하여 가장 최근에 업데이트된 데이터를 찾음
+            return new Date(current.createdAt) > new Date(prev.createdAt)
+              ? current
+              : prev;
+          });
+          console.log(mostRecentCert);
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            // title: "챌린지 인증 완료!",
+            html: `
+            <div>
+            <h1>${mostRecentCert.userId}님</h1>
+            <h1>챌린지 성공!</h1>
+              <h1>${mostRecentCert.certTime}</h1>
+                          
+            </div>
+          `,
+            showConfirmButton: false,
+            // timer: 1500,
+            background: "#272727",
+            color: "white",
+            // width: "500px",
+            // 먼지
+            // imageUrl: 'https://unsplash.it/400/200',
+            // imageWidth: 400,
+            // imageHeight: 200,
+            // imageAlt: 'Custom image',
+          });
+        } else {
+          console.log("인증 데이터가 없습니다.");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
   const submitPhoto = () => {
     const formData = new FormData();
+    console.log(image);
     formData.append("file", image); // 이미지 파일 첨부
     formData.append(
       "requestDto",
@@ -50,22 +104,9 @@ const PhotoChallengeModal = ({ challengeData, closePhotoModal }) => {
       })
       .then((res) => {
         console.log(res);
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "챌린지 인증 완료!",
-          text: "CRIT",
-          showConfirmButton: false,
-          timer: 1500,
-          background: "#272727",
-          color: "white",
-          // width: "500px",
-          // 먼지
-          // imageUrl: 'https://unsplash.it/400/200',
-          // imageWidth: 400,
-          // imageHeight: 200,
-          // imageAlt: 'Custom image',
-        });
+        getCertList();
+        setImage(null); // 이미지 상태 초기화
+        // closePhotoModal();
       })
       .catch((err) => {
         console.log(err);
@@ -79,6 +120,7 @@ const PhotoChallengeModal = ({ challengeData, closePhotoModal }) => {
           background: "#272727",
           color: "white",
         });
+        setImage(null); // 이미지 상태 초기화
       });
   };
   const fileInputRef = useRef(null); // input 태그에 ref 추가
@@ -92,10 +134,15 @@ const PhotoChallengeModal = ({ challengeData, closePhotoModal }) => {
       <h1 id="title">챌린지 사진 인증</h1>
       <form id="form" onSubmit={checkCreate}>
         <label id="fileLabel" onClick={handleLabelClick}>
-          <img
-            src="https://github.com/Jinga02/ChallengePJT/assets/110621233/6eae105c-1d90-4136-93c3-1df5f1c74ac8"
-            alt="이미지 선택"
-          />
+          {imagePreview ? (
+            <img id="image" src={imagePreview} alt="이미지 선택" />
+          ) : (
+            <img
+              id="image"
+              src="https://github.com/Jinga02/ChallengePJT/assets/110621233/6eae105c-1d90-4136-93c3-1df5f1c74ac8"
+              alt="이미지 선택"
+            />
+          )}
         </label>
         <input
           id="file"

@@ -148,6 +148,19 @@ export const SButtonWrapper = styled.div`
     background-color: #ff007a;
     cursor: pointer;
   }
+  #photo {
+    position: absolute;
+    right: 60px;
+    color: white;
+    width: 150px;
+    height: 50px;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 10px;
+    border: none;
+    background-color: #ff007a;
+    cursor: pointer;
+  }
 `;
 
 // 디테일챌린지 글 작성
