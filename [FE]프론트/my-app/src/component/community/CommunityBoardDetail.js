@@ -14,6 +14,7 @@ import {
   SBoardDetailBoardInfo,
   SLikeButton,
 } from '../../styles/pages/SCommunityPage';
+
 import CreateArticleModal from './CreateArticleModal'
 import Paging from './Paging';
 
@@ -134,35 +135,6 @@ const CommunityBoardDetail = ({ classification }) => {
 
   
 
-  const articleLike = async (articleid) => {              // 좋아요 기능
-    api.post(`${API_BASE_URL}/likes/${articleid}`, null, {
-      headers: {
-        Authorization: `Bearer ${user.accessToken}`,
-      },
-    })
-      .then((res) => {
-        console.log(res);
-        fetchArticles();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const deleteLike = async (articleid) => {
-    api.delete(`${API_BASE_URL}/likes/${articleid}`, {
-      headers: {
-        Authorization: `Bearer ${user.accessToken}`,
-      },
-    })
-      .then((res) => {
-        console.log('Delete Like Response:', res);
-        return fetchArticles();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   const goToArticleDetail = (id) => {                     // 클릭하면 게시글 디테일로 넘어감
     window.location.href = `/CommunityBoardPage/${classification}/${id}`;
@@ -172,7 +144,10 @@ const CommunityBoardDetail = ({ classification }) => {
     setModal(true);
   };
 
+
+
   return (
+    
     <SBoardDetailWrapper>
       <h1>{classification}</h1>
       <SBoardDetailButton onClick={() => openModal()}>
@@ -212,22 +187,14 @@ const CommunityBoardDetail = ({ classification }) => {
                 <SBoardDetailBoardInfo>작성자: {article.writer}</SBoardDetailBoardInfo>
                 <SBoardDetailBoardInfo>조회수: {article.views}</SBoardDetailBoardInfo>
                 <SBoardDetailBoardInfo>추천수: {article.likesCount}</SBoardDetailBoardInfo>
-                <SBoardDetailBoardInfo>{article.liked}</SBoardDetailBoardInfo>
-                {article.liked.includes(user.nickname) ? (
-                  <SLikeButton onClick={() => deleteLike(article.id)}>
-                    좋아요 취소
-                  </SLikeButton>
-                ) : (
-                  <SLikeButton onClick={() => articleLike(article.id)}>
-                    좋아요
-                  </SLikeButton>
-                )}
+                {/* <SBoardDetailBoardInfo>{article.liked}</SBoardDetailBoardInfo> */}
+                
               </div>
               
             </SBoardDetailRow>
             
           </SBoardDetailBoard>
-
+      
       
           
         ))
@@ -242,6 +209,7 @@ const CommunityBoardDetail = ({ classification }) => {
       onChange={handlePageChange}
       />
     </SBoardDetailWrapper>
+    
   );
 };
 

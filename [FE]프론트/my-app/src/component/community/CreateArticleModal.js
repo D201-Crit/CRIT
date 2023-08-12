@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { api } from "../../api/api";
-
+import { ModalOverlay } from '../../styles/SCommon';
+import { SCreateModal,SAriticleForm, SImageContainer, SFileInput, SPreviewImage, SFileInputLabel  } from '../../styles/pages/SCommunityPage';
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/boards';
 // const API_BASE_URL = "http://localhost:8080/boards";
 
@@ -76,36 +77,56 @@ const CreateArticleModal = ({ classification, setModal, fetchArticles}) => {
       [name]: value,
     });
   };
-
+  const handleOutsideClick = (e) => {
+    if (e.target.getAttribute('data-cy') === "modal-overlay") {
+      setModal(false);
+    }
+  };
   return (
+    <ModalOverlay onClick={handleOutsideClick} data-cy="modal-overlay">
+    <SCreateModal>
+    <h1>게시글 작성</h1>
+    <hr></hr>
     <div>
-      <form onSubmit={writeArticle}>
+      <SAriticleForm onSubmit={writeArticle}>
         <input
           name="title"
+          placeholder="제목을 입력하세요."
           type="text"
           value={article.title}
           onChange={handleArticleChange}
         ></input>
-        <input
-          name="content"
-          type="textarea"
-          value={article.content}
-          onChange={handleArticleChange}
-        ></input>
-        <input type="file" multiple onChange={onArticleImage} />
+        <textarea
+            name="content"
+            value={article.content}
+            onChange={handleArticleChange}
+          ></textarea>
         {/* 선택된 이미지 불러오기 */}
+        <SFileInputLabel htmlFor="fileInput">
+          이미지 첨부
+        <SFileInput id="fileInput" type="file" multiple onChange={onArticleImage} />
+        </SFileInputLabel>
+        <div>
+        <SImageContainer>
+
         {images.map((imageObj, index) => (
-          <img
+          <SPreviewImage
             key={index}
             src={imageObj.url}
             alt={`Image ${index + 1}`}
             style={{ maxWidth: "100px", maxHeight: "px", margin: "5px" }}
           />
         ))}
+        </SImageContainer>
+
+        </div>
+
 
         <input type="submit" value={"작성완료"}></input>
-      </form>
+      </SAriticleForm>
     </div>
+    </SCreateModal>
+    </ModalOverlay>
   );
 };
 

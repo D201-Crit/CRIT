@@ -156,3 +156,20 @@ export const ModalOverlay = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   z-index : 1200;
 `;
+
+export const SBtnAnimation = styled.div`
+  color: linear-gradient(90deg, red, blue);
+  :hover {
+  animation: gradient-animation 1s infinite linear alternate; 
+  @keyframes gradient-animation {
+    0% {
+      color: linear-gradient(90deg, red, blue);
+    }
+    100% {
+      color: linear-gradient(90deg, yellow, green);
+    }
+}
+
+`
+
+

@@ -27,7 +27,7 @@ const CommunityBoard = () => {
       },
     })
       .then((res) => {
-        const fetchedBoards = res.data.data.content.filter(article => article.title !== "").sort((a, b) => new Date(b.id) - new Date(a.id));
+        const fetchedBoards = res.data.data.content.filter(article => ["자유게시판", "자랑게시판", "운동게시판", "반려동물 게시판"].includes(article.classification)).sort((a, b) => new Date(b.id) - new Date(a.id));
         const fetchedTopics = Array.from(new Set(fetchedBoards.map((board) => board.classification)));
         if (Array.isArray(fetchedBoards)) {
           setBoards(fetchedBoards);

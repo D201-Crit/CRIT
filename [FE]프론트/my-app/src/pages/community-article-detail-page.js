@@ -8,7 +8,8 @@ import {SCommentContainer,
   SCommentItem,
   SCommentAuthor,
   SCommentContent,
-  SCommentForm}
+  SCommentForm,
+  SLikeButton}
   from '../styles/pages/SCommunityPage.js'
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/boards';
 // const API_BASE_URL = 'http://localhost:8080/boards';
@@ -143,6 +144,36 @@ const CommunityArticleDetailPage = () => {
     })
   };
 
+  const articleLike = async (articleid) => {              // 좋아요 기능
+    api.post(`${API_BASE_URL}/likes/${articleid}`, null, {
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        fetchArticles();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const deleteLike = async (articleid) => {
+    api.delete(`${API_BASE_URL}/likes/${articleid}`, {
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+      .then((res) => {
+        console.log('Delete Like Response:', res);
+        return fetchArticles();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const isMyComment = (comment) => {
     return user.nickname === comment.writer;
   };
@@ -154,6 +185,8 @@ const CommunityArticleDetailPage = () => {
   const backtothePage = () => {
     window.location.href = `/CommunityBoardPage/${classification}`;
   }
+
+  
 
   return (
     <div>
@@ -171,6 +204,15 @@ const CommunityArticleDetailPage = () => {
                 style={{ maxWidth: "100px", maxHeight: "px", margin: "5px" }}
               />
             ))}
+            {articles.liked.includes(user.nickname) ? (
+                  <SLikeButton onClick={() => deleteLike(articles.id)}>
+                    좋아요 취소
+                  </SLikeButton>
+                ) : (
+                  <SLikeButton onClick={() => articleLike(articles.id)}>
+                    좋아요
+                  </SLikeButton>
+                )}
 
             <div>
               {isMyArticle(articles) && (

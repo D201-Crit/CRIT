@@ -4,6 +4,7 @@ import {
   SMenuWrapper,
   SUserWrapper,
   SLogoWrapper,
+  SBtnAnimation,
 } from "../../styles/SCommon";
 import { FaRegUserCircle } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
@@ -70,6 +71,7 @@ const Nav = () => {
       <SUserWrapper>
         {/* 메시지 파트 */}
         {user && user.accessToken ? (
+          <SBtnAnimation>
           <ul onClick={() => setMassageView(!massageView)}>
             <li>
               <BiEnvelope
@@ -83,6 +85,7 @@ const Nav = () => {
               />{" "}
             </li>
           </ul>
+          </SBtnAnimation>
         ) : (
           <div></div>
         )}

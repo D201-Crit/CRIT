@@ -12,12 +12,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #0000c5;
+  background: linear-gradient(180deg, rgba(0, 0, 92, 0) 25%, #0009EC 50%, rgba(0, 0, 92, 0) 75%);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  /* background-color: #555; */
+  background: linear-gradient(180deg, rgba(0, 0, 92, 0) 25%, #f0188b 50%, rgba(0, 0, 92, 0) 75%);
 }
 
 ::-webkit-scrollbar-track {
