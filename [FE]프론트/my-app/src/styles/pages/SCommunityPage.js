@@ -301,7 +301,7 @@ export const SAriticleForm = styled.form`
     background: white;
     padding: 20px;
     height : 25px;
-    width : 860px;
+    width : 865px;
     border: 0;
     margin-right: 10px;
   }

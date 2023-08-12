@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { api } from "../../api/api";
+import Loading from '../Loading';
 import {
   
   SBoardDetailWrapper,
@@ -23,6 +24,7 @@ const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/boards';
 // const API_BASE_URL = 'http://localhost:8080/boards';
 
 const CommunityBoardDetail = ({ classification }) => {
+  const [loading, setLoading] = useState(true);
   const user = useSelector((state) => state.users);
   const [page, setPage] = useState(0);
   const [articles, setArticles] = useState({ content: [], totalPages: 0 });
@@ -41,6 +43,7 @@ const CommunityBoardDetail = ({ classification }) => {
 
 
   const fetchArticles = async (pageNo = 0) => {
+    setLoading(false); 
     api.get(`${API_BASE_URL}/whole/${classification}?page=${pageNo}`, {
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
@@ -147,7 +150,9 @@ const CommunityBoardDetail = ({ classification }) => {
 
 
   return (
-    
+    <div>
+    {loading ? <Loading /> : null}
+
     <SBoardDetailWrapper>
       <h1>{classification}</h1>
       <SBoardDetailButton onClick={() => openModal()}>
@@ -209,7 +214,7 @@ const CommunityBoardDetail = ({ classification }) => {
       onChange={handlePageChange}
       />
     </SBoardDetailWrapper>
-    
+    </div>
   );
 };
 

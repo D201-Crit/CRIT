@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { api } from "../../api/api";
-
+import Loading from '../Loading';
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/shorts';
 // const API_SHORTS_CREATE_URL = "http://localhost:8080/shorts";
 
 const CreateShortsModal = ({setShortsCreateModal}) => {
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.users);
   const [shorts, setShorts] = useState({
     title: "",
@@ -20,6 +21,7 @@ const CreateShortsModal = ({setShortsCreateModal}) => {
   };
 
   const createShorts = (e) => {
+    setLoading(true) 
     e.preventDefault();
     if (shorts.content.trim() === "" || shorts.title.trim() === "") {
       alert("제목과 내용을 모두 작성해주세요.");}
@@ -35,14 +37,15 @@ const CreateShortsModal = ({setShortsCreateModal}) => {
     formData.append(
       "shortsDto", new Blob([JSON.stringify(shortsDto)], { type: "application/json" })
       );
-
+    
     api.post(`${API_BASE_URL}`, formData, {
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
       },
+      
     })
-    
     .then(() => {
+      setLoading(false);
       setShortsCreateModal(false);
     })
     .catch(() => {
@@ -69,6 +72,7 @@ const CreateShortsModal = ({setShortsCreateModal}) => {
 
   return (
     <div>
+      {loading ? <Loading /> : null}
       <h1>쇼츠 만들기</h1>
       <form onSubmit={createShorts}>
         <input

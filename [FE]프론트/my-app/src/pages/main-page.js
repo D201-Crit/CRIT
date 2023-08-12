@@ -1,3 +1,4 @@
+import Loading from '../component/Loading';
 import {
   SEntranceButton,
   SEntranceButtonWrapper,
@@ -27,6 +28,7 @@ import "swiper/css/effect-creative";
 import Swal from "sweetalert2";
 
 const MainPage = () => {
+  const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(true);
   const openChallenge = () => {
     if (onGoingChallenges.length === 0) {
@@ -63,6 +65,7 @@ const MainPage = () => {
   const [shortsByLike, setShortsByLike] = useState([]);
 
   const getMyChallenge = () => {
+    setLoading(true); 
     api
       .get("https://i9d201.p.ssafy.io/api/challenge/list/ongoing", {
         headers: {
@@ -70,6 +73,7 @@ const MainPage = () => {
         },
       })
       .then((res) => {
+        setLoading(false); 
         console.log(res.data.data);
         setOnGoingChallenges(res.data.data);
       })
@@ -111,6 +115,8 @@ const MainPage = () => {
   return (
     <>
       <SEntranceButtonWrapper>
+      {loading ? <Loading /> : null}
+
         <SEntranceButton onClick={openChallenge}>바로입장</SEntranceButton>
         {isOpen ? null : (
           <SEntranceSwiper
