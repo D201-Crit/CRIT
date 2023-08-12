@@ -5,6 +5,8 @@ import InformationChallenge from "../component/challenge/detailChallenge/Informa
 import { api } from "../api/api";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import Loading from "../component/Loading";
+
 const DetailChallengePage = () => {
   const location = useLocation();
   const challenge = location.state?.challenge;
@@ -13,6 +15,7 @@ const DetailChallengePage = () => {
   console.log(boards);
   const date = new Date();
   const today = date.toLocaleDateString();
+  const [loading, setLoading] = useState(true);
 
   const [checkUser, setCheckUser] = useState(false);
   const checkedUser = () => {
@@ -31,6 +34,8 @@ const DetailChallengePage = () => {
         },
       )
       .then((res) => {
+        setLoading(false);
+
         setBoards(res.data.data);
       })
       .catch((err) => {
@@ -44,6 +49,8 @@ const DetailChallengePage = () => {
   }, []);
   return (
     <SDetailChallengeWrapper>
+      {loading ? <Loading /> : null}
+
       <InformationChallenge />
       {checkUser ? (
         <ShowBoard boards={boards} challenge={challenge} getBoard={getBoard} />

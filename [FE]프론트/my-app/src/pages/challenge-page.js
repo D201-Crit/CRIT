@@ -4,6 +4,7 @@ import {
   SCreateChallengeButton,
   customModalStyles,
 } from "../styles/pages/SChallengePage";
+import Loading from "../component/Loading";
 
 // 나머지
 import React, { useEffect, useState } from "react";
@@ -16,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setChallenge } from "../slice/ChallengeSlice";
 
 const ChallengePage = () => {
+  const [loading, setLoading] = useState(true);
   const user = useSelector((state) => state.users);
   const challenges = useSelector((state) => state.challenges);
   const dispatch = useDispatch();
@@ -38,6 +40,7 @@ const ChallengePage = () => {
       })
       .then((res) => {
         dispatch(setChallenge(res.data.data));
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -48,6 +51,7 @@ const ChallengePage = () => {
   }, []);
   return (
     <>
+      {loading ? <Loading /> : null}
       <SCreateChallengeWrapper>
         <SCreateChallengeButton onClick={openModal}>
           챌린지 만들기
