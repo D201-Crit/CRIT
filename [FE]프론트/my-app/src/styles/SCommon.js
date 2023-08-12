@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
 //Nav
 export const SNav = styled.nav`

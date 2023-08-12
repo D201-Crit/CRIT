@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 import {
   SADtextArea,
   SAdArea,
@@ -58,6 +58,15 @@ const AdvertisingBoard = () => {
   };
 
   const currentAd = ads[currentAdIndex];
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      handleNextAd();
+    }, 5000); // 5초 후에 다음 광고로 넘어가기
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [currentAdIndex]);
 
   return (
     <div>
