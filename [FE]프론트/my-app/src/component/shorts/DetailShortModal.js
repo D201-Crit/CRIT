@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { api } from '../../api/api';
 import { useSelector } from "react-redux";
+import Loading from '../Loading';
+
 import {
   SDetailModal,
   SDetailCloseButton,
@@ -21,6 +23,7 @@ import ModifyShortsModal from "./ModifyShortsModal";
 import ReactPlayer from "react-player"; 
 
 const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
+  const [loading, setLoading] = useState(true);
   const user = useSelector((state) => state.users);
   const [short, setShort] = useState([]);
   const [comments,setComments] = useState(null);
@@ -36,6 +39,7 @@ const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
 
   // 전체 쇼츠 정보 받아오기
   const getShorts = () => {
+    setLoading(true);
     api
       .get("https://i9d201.p.ssafy.io/api/shorts/main", {
         headers: {
@@ -43,6 +47,7 @@ const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
         },
       })
       .then((res) => {
+        setLoading(false);
         // console.log("쇼츠데이터",res.data.data);
       })
       .catch((err) => {
@@ -52,6 +57,7 @@ const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
 
  // 단일 쇼츠 정보 받아오기
   const getShort = () => {
+    setLoading(true);
     api
       .get(`https://i9d201.p.ssafy.io/api/shorts/${shortId}`, {
         headers: {
@@ -59,7 +65,9 @@ const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
         },
       })
       .then((res) => {
+        setLoading(false);
         setShort(res.data.data);
+
       })
       .catch((err) => {
         console.log(err);
@@ -216,6 +224,7 @@ const handleOutsideClick = (e) => {
 return (
   <ModalOverlay onClick={handleOutsideClick} data-cy="modal-overlay">
   <div>
+    {loading ? <Loading /> : null}
     {showModifyModal ? (
       <ModifyShortsModal getShort={getShort} setModifyModal={setModifyModal} prevshotrs={short} shortId={shortId} />
     ) : (

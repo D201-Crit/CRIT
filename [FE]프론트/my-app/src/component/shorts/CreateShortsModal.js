@@ -1,12 +1,14 @@
+import { ModalOverlay } from '../../styles/SCommon';
+import { SCreateModal,SAriticleForm } from '../../styles/pages/SCommunityPage';
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { api } from "../../api/api";
-import Loading from '../Loading';
+import ShortsLoading from '../ShortsLoading';
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/shorts';
-// const API_SHORTS_CREATE_URL = "http://localhost:8080/shorts";
 
 const CreateShortsModal = ({setShortsCreateModal}) => {
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const user = useSelector((state) => state.users);
   const [shorts, setShorts] = useState({
     title: "",
@@ -21,10 +23,14 @@ const CreateShortsModal = ({setShortsCreateModal}) => {
   };
 
   const createShorts = (e) => {
-    setLoading(true) 
     e.preventDefault();
-    if (shorts.content.trim() === "" || shorts.title.trim() === "") {
-      alert("제목과 내용을 모두 작성해주세요.");}
+    // 수정된 조건문
+    if (shorts.content.trim() === "" || shorts.title.trim() === "" || video === null) {
+      alert("제목과 내용, 비디오를 모두 작성해주세요.");
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
     const formData = new FormData();
     formData.append("file", video);
   
@@ -42,7 +48,13 @@ const CreateShortsModal = ({setShortsCreateModal}) => {
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
       },
-      
+
+    onUploadProgress: (progressEvent) => {
+      // 진행 상황 계산 및 상태 업데이트
+      const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+      setProgress(percentCompleted);
+    },
+
     })
     .then(() => {
       setLoading(false);
@@ -70,11 +82,19 @@ const CreateShortsModal = ({setShortsCreateModal}) => {
     }
   };
 
+  const handleOutsideClick = (e) => {
+    if (e.target.getAttribute('data-cy') === "modal-overlay") {
+      setShortsCreateModal(false);
+    }
+  };
+
   return (
     <div>
-      {loading ? <Loading /> : null}
+      {loading ? <ShortsLoading progress={progress} /> : null}
+      <ModalOverlay onClick={handleOutsideClick} data-cy="modal-overlay">
+      <SCreateModal>
       <h1>쇼츠 만들기</h1>
-      <form onSubmit={createShorts}>
+      <SAriticleForm onSubmit={createShorts}>
         <input
           name="title"
           type="text"
@@ -82,13 +102,12 @@ const CreateShortsModal = ({setShortsCreateModal}) => {
           onChange={handleShortsChange}
           placeholder="쇼츠 제목"
         ></input>
-        <input
+        <textarea
           name="content"
-          type="textarea"
           value={shorts.content}
           onChange={handleShortsChange}
           placeholder="쇼츠 내용"
-        ></input>
+        ></textarea>
         <input
           name="hashTagNames"
           type="text"
@@ -97,7 +116,9 @@ const CreateShortsModal = ({setShortsCreateModal}) => {
         ></input>
         <input type="file" onChange={onVideoChange} />
         <input type="submit" value="작성완료"></input>
-      </form>
+      </SAriticleForm> 
+        </SCreateModal>
+      </ModalOverlay>
     </div>
   );
 };

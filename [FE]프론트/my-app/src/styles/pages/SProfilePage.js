@@ -81,15 +81,21 @@ export const SProfileImg = styled.div`
 `;
 
 export const SFeedButton = styled.span`
-  width: 130px;
+  text-align: center;
+  width: 90px;
+  height : 20px;
   padding : 15px;
-  height : 50px;
-  font-size: 20px;
+  font-size: 18px;
   color : white;
   background: linear-gradient(180deg, #060DB3 0%, #FF1EB2 100%);
   border-radius: 30px;
-  `
 
+  &:hover {
+    background: linear-gradient(180deg, #060DB3 0%, #0000c5 30%, #FF1EB2 100%);
+  }
+
+  `
+  
 export const SFeedArea = styled.div`
   width: 100%;
   height: auto;

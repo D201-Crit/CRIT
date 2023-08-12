@@ -279,12 +279,12 @@ export const SCreateModal = styled.div`
   width : 900px;
   height : 1000px;
   max-height : 700px;
-
+  
   padding : 30px;
-  background: linear-gradient(180deg, #2B2B2B 0%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(180deg, #2B2B2B 0%, rgba(0, 0, 0, 100) 100%);
   border: none;
   border-radius: 10px;
-  box-shadow: 0px 0px 0px 1px white;  
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `
 export const SAriticleForm = styled.form`
   position: absolute;
@@ -297,13 +297,15 @@ export const SAriticleForm = styled.form`
   & input[type="text"] {
     flex: 1;
     margin-top : 10px;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     background: white;
     padding: 20px;
     height : 25px;
     width : 865px;
     border: 0;
     margin-right: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
   }
 
   & textarea {
@@ -317,6 +319,8 @@ export const SAriticleForm = styled.form`
     font-size: 1.2rem;
     resize: none;
     vertical-align: top; // 추가: 콘텐츠 상단에 텍스트 커서 위치 지정
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
   }
 
   & input[type="submit"] {
