@@ -332,16 +332,17 @@ export const SAriticleForm = styled.form`
   `
   export const SImageContainer = styled.div`
   display: flex;
-  width : 800px;
+  width : 755px;
   height: 100px;
   flex-direction: row;
   align-items: center;
   background: linear-gradient(180deg, #2B2B2B 0%, rgba(0, 0, 0, 0) 100%);
+  margin-left: 150px;
   margin-top: 15px;
   margin-bottom: 15px;
 `;
 export const SFileInputLabel = styled.label`
-  margin-top : 20px;
+  margin-top: 15px;
   position: absolute;
   background: linear-gradient(180deg, #060DB3 0%, #FF1EB2 100%);
   font-size : 18px;
