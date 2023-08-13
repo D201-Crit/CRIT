@@ -364,8 +364,13 @@ export const SInfoRow = styled.div`
 export const SCommentSection = styled.div`
   display: flex;
   flex-direction: column;
+  
   gap: 16px;
   margin-top: 24px;
+
+  h2{
+    color : white;
+  }
 `;
 
 export const SCommentList = styled.div`

@@ -1,9 +1,9 @@
 // BoardCard 컴포넌트
 import React from 'react';
-import { SBoardCard, SBoardTitle, SHr2 } from '../../styles/pages/SCommunityPage';
+import { SBoardCard, SBoardTitle, SHr2, SPrimaryButton } from '../../styles/pages/SCommunityPage';
 
 const BoardCard = ({ classification, boards }) => {
-  const maxBoardArticle = 3;
+  const maxBoardArticle = 6;
 
   const handleGoToDetail = () => {
     // 자세히 보기 버튼을 누를 때 해당 경로로 이동합니다.
@@ -12,7 +12,7 @@ const BoardCard = ({ classification, boards }) => {
   };
 
   return (
-    <SBoardCard>
+    <SBoardCard onClick={handleGoToDetail}>
       <h1>{classification}</h1>
       <SBoardTitle />
       {boards
@@ -28,8 +28,7 @@ const BoardCard = ({ classification, boards }) => {
             <SHr2 />
           </div>
         ))}
-        {/* 자세히 보기 버튼을 누르면 handleGoToDetail 함수가 호출됩니다. */}
-        <p className="gotodetail" onClick={handleGoToDetail}>자세히 보기</p>
+        <SPrimaryButton className="gotodetail" onClick={handleGoToDetail}>게시판 입장</SPrimaryButton>
     </SBoardCard>
   );
 };

@@ -1,5 +1,56 @@
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { SWrapper, STitle, SButton } from "../SCommon";
+import likeimg from './../likeimg.png'
+
+// 애니메이션
+const glowEffect = keyframes`
+  0% {
+    box-shadow: 0 0 2px rgba(255,255,255,10%)
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(255,255,255,10%), 0 0 20px rgba(255,255,255,30%);
+  }
+  100% {
+    box-shadow: 0 0 2px rgba(255,255,255,10%);
+  }
+`;
+
+const floatEffect = keyframes`
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+`;
+
+const glowEffect2 = keyframes`
+  0% {
+    box-shadow: 0 0 2px rgba(255,255,255,10%)
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(255,255,255,10%), 0 0 20px rgba(255,255,255,30%);
+  }
+  100% {
+    box-shadow: 0 0 2px rgba(255,255,255,10%);
+  }
+`;
+
+const floatEffect2 = keyframes`
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+`;
+
 
 // 커뮤니티 페이지
 export const SCommunityWrapper = styled.div`
@@ -85,6 +136,7 @@ export const CategoryButton = styled.div`
 `;
 
 export const SBoardCard = styled.div`
+  cursor : pointer;
   position: relative;
   background-color: #dark;
   width: 400px;
@@ -94,6 +146,12 @@ export const SBoardCard = styled.div`
   padding: 20px;
   margin: 10px;
   box-shadow: 0px 5px 10px -5px grey;
+
+  &:hover {
+    animation: ${glowEffect} 0.5s infinite alternate,
+              ${floatEffect} 1s ease-in-out infinite;
+  }
+
   h1 {
     text-align: center;
     margin: 25px 0px 110px 0px;
@@ -109,10 +167,11 @@ export const SBoardCard = styled.div`
   }
 
   .gotodetail {
+    display: flex;
+    top : 80%;
     text-align: center;
     font-weight: 500;
     font-size: 20px;
-    margin-top: 38px;
   }
   overflow: hidden;
 `;
@@ -121,7 +180,6 @@ export const SBoardCard = styled.div`
 export const SHeaderWrapper = styled.div`
   display: flex;
   align-items: center;
-  padding: 10px;
   background: linear-gradient(180deg, #2B2B2B 0%, rgba(0, 0, 0, 0) 100%);
   font-weight: bold;
 `;
@@ -147,15 +205,17 @@ export const SBoardTitle = styled.div`
 `;
 
 export const SBoardDetailBoardInfo = styled.p`
-
   margin: 0 5px;
   font-size: 14px;
+  padding: 10px;
   display: inline;
   font-weight :150;
+
   &:nth-child(1) {
     flex: 8;
     text-align: left;
     overflow: hidden;
+    cursor : pointer;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
@@ -244,6 +304,22 @@ export const SBoardDetailViewSelect = styled.select`
   margin-left: 20px;
 `;
 
+export const SBoardArticleDeleteButton = styled.div`
+  position: absolute;
+  cursor : pointer;
+  top: 55px;
+  right: 0px;
+  width: 15px;
+  padding: 2px;
+  justify-content: center;
+  font-weight : 1500;
+  font-size : 20px;
+  background: linear-gradient(to right top, #A4001D, #FF0000);
+  color: transparent;
+  -webkit-background-clip: text;
+` 
+
+
 export const SBoardDetailRow = styled.div`
   display: flex;
   justify-content: space-between;
@@ -281,18 +357,41 @@ const defaultButtonPreset = css`
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #3333ff;
+    box-shadow: 0px 0px 20px 0.1px rgba(255,255,255,10%);
+    background: #1E1AE2;
+
   }
 `;
 
 export const SPrimaryButton = styled.button`
-  background: #28a745;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0000c5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   ${defaultButtonPreset}
 `;
 
 export const SSecondaryButton = styled.button`
-  background: #6c757d;
-  ${defaultButtonPreset}
+
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff007a;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  padding: 10px 15px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    box-shadow: 0px 0px 20px 0.1px rgba(255,255,255,10%);
+    background: #ff007a;;
+
+  }
 `;
 
 export const STertiaryButton = styled.button`
@@ -302,13 +401,51 @@ export const STertiaryButton = styled.button`
 
 // 게시글 디테일 댓글 영역
 export const SCommentContainer = styled.div`
-  width: 50%;
+  width: 95%;
   margin: 20px 0;
   padding: 20px;
-  color: black;
-  background-color: #404040;
+  color: white;
+  background-color: #181818;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+`;
+
+export const SCommentContent = styled.span``;
+
+export const SCommentForm = styled.form`
+  display: flex;
+  align-items: center;
+  color : white;
+  & input[type="textarea"] {
+    flex: 1;
+    padding: 5px;
+    font-size: 15px;
+    background: #101010;
+    color : white;
+
+    &:hover {
+      box-shadow: 0px 0px 20px 0.1px rgba(255,255,255,10%);
+      background: rgba(255,255,255,10%)
+  
+    }
+    margin-right: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+  }
+
+  & input[type="submit"] {
+    background-color: #0000c5;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover {
+      box-shadow: 0px 0px 20px 0.1px rgba(255,255,255,10%);
+      background: #1E1AE2;
+    }
+
+  }
 `;
 
 export const SCommentList = styled.div`
@@ -321,18 +458,59 @@ export const SCommentItem = styled.div`
   align-items: center;
   margin-bottom: 10px;
   padding: 10px;
-  background-color: #ffffff;
+  // background: #050505;
   border-radius: 5px;
-
   & p {
     margin: 0;
   }
+`;
+export const SCommentWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: 90%;
 `;
 
 export const SCommentAuthor = styled.span`
   font-weight: 700;
   margin-right: 10px;
 `;
+
+export const SCommentDate = styled.span`
+  margin-left: auto;
+  font-weight: 100;
+`;
+export const SCommentDelete = styled.button`
+  margin-left: auto;
+  padding: 5px 10px;
+  background: #ff5e5e; // 기존 푸른색 대신에 빨간색 계열로 변경하여 삭제 버튼임을 강조
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px; // 글자 크기를 줄여서 버튼의 크기도 작게 조정
+  white-space: nowrap;
+
+  &:hover {
+    background-color: #ff3c3c; // 호버 상태일 때의 배경색 변경
+  }
+`;
+
+export const SImprovedCommentItem = styled(SCommentItem)`
+  //flex-wrap: nowrap; // 내부 요소들이 2줄로 나눠지지 않게 하는 설정 추가
+  padding: 12px; // 안쪽 여백 조절
+`;
+
+export const SImprovedCommentAuthor = styled(SCommentAuthor)`
+  font-weight: 1000;
+  color: #1c5aea; // 글쓴이의 색상 변경
+`;
+
+export const SImprovedCommentContent = styled(SCommentContent)`
+  font-weight: normal;
+  max-width: 80%; // 댓글 내용의 길이를 제한하여 삭제 버튼과 겹치지 않게 함
+  word-break: break-word; // 긴 댓글 내용이 레이아웃을 넘어가지 않게 설정
+`;
+
 
 export const SCreateModal = styled.div`
   font-family: "Pretendard";
@@ -401,7 +579,7 @@ export const SAriticleForm = styled.form`
   height: 100px;
   flex-direction: row;
   align-items: center;
-  background: linear-gradient(180deg, #2B2B2B 0%, rgba(0, 0, 0, 0) 100%);
+  background: dark;;
   margin-left: 150px;
   margin-top: 15px;
   margin-bottom: 15px;
@@ -437,31 +615,129 @@ export const SPreviewImage = styled.img`
     border-radius :5px ;
 `;
 
-export const SCommentContent = styled.span``;
-
-export const SCommentForm = styled.form`
+// 커뮤니티 디테일 스타일
+export const SCommunityDetailWrapper = styled(SCommunityWrapper)`
   display: flex;
+  flex-direction: column;
   align-items: center;
+  padding: 30px;
 
-  & input[type="textarea"] {
-    flex: 1;
-    padding: 5px;
-    margin-right: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-
-  & input[type="submit"] {
-    background-color: #0000c5;
-    border: none;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #3333ff;
-    }
+  img {
+    align-items: center;
+    padding: 20px;
   }
 `;
 
+export const SArticleTitle = styled.h1`
+  width: 1000px;
+  background-color: #0000C5;
+  padding: 10px 20px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
+export const SArticleContent = styled.div`
+  width: 100%;
+  padding: 20px;
+  font-size: 16px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #e0e0e0;
+`;
+
+export const SLikeImgButton = styled.button`
+  display: flex;
+  margin-left : 450px;
+  justify-content: center;
+  margin-top: 25px;
+  padding: 15px 10px;
+  background-image: url(${likeimg});
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-color: transparent;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 120px; // 이미지 크기에 맞게 조정해주세요.
+  height: 120px; // 이미지 크기에 맞게 조정해주세요.
+  &:hover {
+    animation: ${glowEffect2} 0.3s infinite alternate,
+              ${floatEffect2} 0.7s ease-in-out infinite;
+  }
+`;
+
+export const SLikesCount = styled.span`
+  display: flex;
+  position: absolute;
+  font-size: 16px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+export const SButtonWrapper = styled.div`
+    margin-left : 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+`;
+
+export const SPrimaryButton2 = styled.button`
+  transform: translateX(-50%);
+  background: #0000c5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  padding: 10px 15px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    box-shadow: 0px 0px 20px 0.1px rgba(255,255,255,15%);
+    background: #0000c5;
+
+  }
+  `
+export const SSecondaryButton2 = styled.button`
+  transform: translateX(-50%);
+  background: #ff007a;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  padding: 10px 15px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    box-shadow: 0px 0px 20px 0.1px rgba(255,255,255,15%);
+    background: #ff007a;;
+
+  }
+`;
+
+export const SBackButton = styled.button`
+    margin-top: 30px;
+    padding: 10px;
+    background-color: #0000C5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover {
+      box-shadow: 0px 0px 20px 0.1px rgba(255,255,255,15%);
+      background: #0000c5;
+`;
