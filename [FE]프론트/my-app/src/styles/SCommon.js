@@ -144,7 +144,6 @@ export const SButton = styled.button`
   }
 `;
 
-
 export const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -155,7 +154,7 @@ export const ModalOverlay = styled.div`
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index : 1200;
+  z-index: 1200;
 `;
 
 export const SBtnAnimation = styled.div`
@@ -170,8 +169,7 @@ export const SBtnAnimation = styled.div`
       color: linear-gradient(90deg, yellow, green);
     }
 }
-`
-
+`;
 
 export const SLoadingBackground = styled.div`
   position: fixed;
@@ -188,7 +186,6 @@ export const SLoadingBackground = styled.div`
 `;
 
 export const SLoadingText = styled.div`
-  font: 1rem 'Noto Sans KR';
+  font: 1rem "Noto Sans KR";
   text-align: center;
 `;
-

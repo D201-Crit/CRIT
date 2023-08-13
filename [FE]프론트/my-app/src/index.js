@@ -22,6 +22,6 @@ root.render(
   <Provider store={store}>
     <Token />
     <App />
-  </Provider>
+  </Provider>,
 );
 reportWebVitals();

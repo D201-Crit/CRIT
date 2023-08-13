@@ -157,7 +157,6 @@ const MyChallenge = () => {
     return `${month}.${day} (${dayOfWeek})`;
   };
   // 며칠째 진행 중인지 계산하는 함수
-  // 며칠째 진행 중인지 계산하는 함수
   const getDaysInProgress = (startDate, endDate) => {
     const today = new Date();
     const start = new Date(startDate);
@@ -261,7 +260,12 @@ const MyChallenge = () => {
                         </button>
                       )
                     ) : challenge.cert === "실시간" ? (
-                      <button id="enter" onClick={() => checkEnterTime()}>
+                      <button
+                        id="enter"
+                        onClick={() => openVideoModal(challenge)}
+
+                        // onClick={() => checkEnterTime()}
+                      >
                         입장하기
                       </button>
                     ) : (

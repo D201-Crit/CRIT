@@ -24,7 +24,7 @@ const LogOut = () => {
           timer: 1500,
           background: "#272727",
           color: "white",
-          // width: "500px",
+          width: "500px",
           // 먼지
           // imageUrl: 'https://unsplash.it/400/200',
           // imageWidth: 400,
@@ -39,7 +39,7 @@ const LogOut = () => {
         console.log(err);
       });
   };
-  return <h3 onClick={logOut}>로그아웃</h3>;
+  return <h3 onClick={() => logOut()}>로그아웃</h3>;
 };
 
 export default LogOut;

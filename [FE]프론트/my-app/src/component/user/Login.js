@@ -30,13 +30,14 @@ const Login = () => {
         })
         .then((res) => {
           console.log(res);
+          console.log(res.data.cashPoint);
           dispatch(
             setUser({
               id: res.data.id,
               nickname: res.data.nickname,
               accessToken: res.data.accessToken,
               refreshToken: res.data.refreshToken,
-              cashPoing: res.data.cashPoint,
+              // cashPoint: res.data.cashPoint,
             }),
           );
           persistor.flush(); // 상태를 영구적으로 저장

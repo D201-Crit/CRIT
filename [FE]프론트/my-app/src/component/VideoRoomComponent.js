@@ -322,9 +322,31 @@ class VideoRoomComponent extends Component {
       .then((res) => {
         const cert = res.data.data;
         console.log(cert);
-        // if(cert.finished === false ? ():())
+        Swal.fire({
+          position: "center",
+          icon: cert.percentage >= 80 ? "success" : "error",
+          html: `
+            <div>
+            <h1>이탈시간 : ${cert.absentTime}</h1>
+            <h1>인증시간 : ${cert.presenceTime}</h1>
+            <h1>인증 성공도 : ${Math.floor(cert.percentage)}%</h1>
+            <h1>${this.props.challengeData.user.nickname}님</h1>
+            <h1>${cert.percentage >= 80 ? "챌린지 성공!" : "챌린지 실패"}</h1>
+            </div>
+          `,
+          showConfirmButton: false,
+          timer: 5000,
+          background: "#272727",
+          color: "white",
+          // width: "500px",
+          // 먼지
+          // imageUrl: 'https://unsplash.it/400/200',
+          // imageWidth: 400,
+          // imageHeight: 200,
+          // imageAlt: 'Custom image',
+        });
 
-        // this.props.closeVideoModal();
+        this.props.closeVideoModal();
       })
       .catch((err) => {
         console.log(err);

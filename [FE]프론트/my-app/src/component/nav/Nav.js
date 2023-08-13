@@ -17,7 +17,7 @@ const Nav = () => {
   const user = useSelector((state) => state.users); // useSelector를 통해 userSlice의 상태를 가져옴
   const [view, setView] = useState(false);
   const [massageView, setMassageView] = useState(false);
-
+  console.log(user);
   const MessageInfo = ({ massageView }) => (
     <div style={{ position: "fixed" }}>
       {massageView && <MessageBox setMassageView={setMassageView} />}
@@ -72,24 +72,27 @@ const Nav = () => {
         {/* 메시지 파트 */}
         {user && user.accessToken ? (
           <SBtnAnimation>
-          <ul onClick={() => setMassageView(!massageView)}>
-            <li>
-              <BiEnvelope
-                size={35}
-                style={{
-                  cursor: "pointer",
-                  position: "absolute",
-                  top: "-15px",
-                  left: "-30px",
-                }}
-              />{" "}
-            </li>
-          </ul>
+            <ul onClick={() => setMassageView(!massageView)}>
+              <li>
+                <BiEnvelope
+                  size={35}
+                  style={{
+                    cursor: "pointer",
+                    position: "absolute",
+                    top: "-15px",
+                    left: "-30px",
+                  }}
+                />{" "}
+              </li>
+            </ul>
           </SBtnAnimation>
         ) : (
           <div></div>
         )}
-        <MessageInfo massageView={massageView} setMassageView={setMassageView}/>
+        <MessageInfo
+          massageView={massageView}
+          setMassageView={setMassageView}
+        />
 
         {/* 내정보 파트 */}
         {user && user.accessToken ? (

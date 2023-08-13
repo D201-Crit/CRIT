@@ -45,41 +45,31 @@ const PhotoChallengeModal = ({ challengeData, closePhotoModal }) => {
         `https://i9d201.p.ssafy.io/api/cert/list/${challengeData.challenge.id}`,
       )
       .then((res) => {
-        const certList = res.data.data;
-        if (certList.length > 0) {
-          // certList 배열이 비어있지 않을 때
-          const mostRecentCert = certList.reduce((prev, current) => {
-            // 각 요소의 createdAt 값을 비교하여 가장 최근에 업데이트된 데이터를 찾음
-            return new Date(current.createdAt) > new Date(prev.createdAt)
-              ? current
-              : prev;
-          }, {});
-          console.log(mostRecentCert);
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            html: `
+        const certList = res.data.data[res.data.data.length - 1]; // 마지막 요소 선택
+        console.log(certList);
+
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          html: `
             <div>
-            <h1>${mostRecentCert.certTime}</h1>
-            <h1>${mostRecentCert.userId}님</h1>
+            <h1>${certList.certTime}</h1>
+            <h1>${certList.userId}님</h1>
             <h1>챌린지 성공!</h1>                               
             </div>
           `,
-            showConfirmButton: false,
-            // timer: 1500,
-            background: "#272727",
-            color: "white",
-            // width: "500px",
-            // 먼지
-            // imageUrl: 'https://unsplash.it/400/200',
-            // imageWidth: 400,
-            // imageHeight: 200,
-            // imageAlt: 'Custom image',
-          });
-          closePhotoModal();
-        } else {
-          console.log("인증 데이터가 없습니다.");
-        }
+          showConfirmButton: false,
+          // timer: 1500,
+          background: "#272727",
+          color: "white",
+          // width: "500px",
+          // 먼지
+          // imageUrl: 'https://unsplash.it/400/200',
+          // imageWidth: 400,
+          // imageHeight: 200,
+          // imageAlt: 'Custom image',
+        });
+        closePhotoModal();
       })
       .catch((err) => console.log(err));
   };
