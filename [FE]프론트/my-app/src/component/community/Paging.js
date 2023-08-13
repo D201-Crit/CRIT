@@ -1,23 +1,24 @@
-import React, { useState } from "react";
-import Pagination from "react-js-pagination";
+import React from 'react';
+import Pagination from 'react-js-pagination';
+import styles from './Paging.module.css';
 
-const Paging = () => {
-  const [page, setPage] = useState(1);
-
-  const handlePageChange = (page) => {
-    setPage(page);
-  };
-
+const Paging = ({activePage, totalItemsCount, onChange}) => {
   return (
-    <Pagination
-      activePage={page} // 현재 페이지
-      itemsCountPerPage={10} // 한 페이지랑 보여줄 아이템 갯수
-      totalItemsCount={450} // 총 아이템 갯수
-      pageRangeDisplayed={5} // paginator의 페이지 범위
-      prevPageText={"‹"} // "이전"을 나타낼 텍스트
-      nextPageText={"›"} // "다음"을 나타낼 텍스트
-      onChange={handlePageChange} // 페이지 변경을 핸들링하는 함수
-    />
+    <div className={styles.paginationContainer}>
+      <Pagination
+        itemClass={'page-item'}
+        linkClass={'page-link'}
+        activeLinkClass={styles.active}
+        activePage={activePage}
+        itemsCountPerPage={10} // 한 페이지에 보여줄 아이템의 개수입니다. 이에 맞게 조정해 주세요.
+        totalItemsCount={totalItemsCount}
+        pageRangeDisplayed={5}
+        prevPageText={"‹"}
+        nextPageText={"›"}
+        innerClass={styles.pagination}
+        onChange={onChange}
+      />
+    </div>
   );
 };
 

@@ -2,220 +2,190 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { api } from "../../api/api";
 import Loading from '../Loading';
-import {
-  
-  SBoardDetailWrapper,
-  SBoardDetailHr,
-  SBoardDetailEmpty,
-  SBoardDetailButton,
-  SBoardDetailViewSelect,
-  SBoardDetailRow,
-  SBoardDetailBoard,
-  SBoardDetailBoardTitle,
-  SBoardDetailBoardInfo,
-  SLikeButton,
-} from '../../styles/pages/SCommunityPage';
 
-import CreateArticleModal from './CreateArticleModal'
+import {
+    SBoardDetailWrapper,
+    SBoardDetailHr,
+    SBoardDetailEmpty,
+    SBoardDetailButton,
+    SBoardDetailViewSelect,
+    SBoardDetailBoard,
+    SBoardDetailBoardInfo,
+    SHeaderWrapper,
+    SHeaderWrapper2,
+
+    SEmpty2,
+} from '../../styles/pages/SCommunityPage';
+import CreateArticleModal from './CreateArticleModal';
 import Paging from './Paging';
 
-
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/boards';
-// const API_BASE_URL = 'http://localhost:8080/boards';
 
 const CommunityBoardDetail = ({ classification }) => {
-  const [loading, setLoading] = useState(true);
-  const user = useSelector((state) => state.users);
-  const [page, setPage] = useState(0);
-  const [articles, setArticles] = useState({ content: [], totalPages: 0 });
-  const [showmodal, setModal] = useState(false);
-  const [sortMethod, setSortMethod] = useState('전체게시물');
+    const [loading, setLoading] = useState(false);
+    const user = useSelector((state) => state.users);
+    const [page, setPage] = useState(0);
+    const [articles, setArticles] = useState({ content: [], totalPages: 0 });
+    const [showmodal, setModal] = useState(false);
+    const [sortMethod, setSortMethod] = useState('전체게시물');
 
-  const handleSortMethodChange = (e,) => {
-    setSortMethod(e.target.value);
-    sortArticles(e.target.value, page);
-  };
-  
+    const handleSortMethodChange = (e) => {
+        setSortMethod(e.target.value);
+        sortArticles(e.target.value, page);
+    };
 
-  useEffect(() => {
-    fetchArticles(page);
-  }, [page]);
-
-
-  const fetchArticles = async (pageNo = 0) => {
-    setLoading(false); 
-    api.get(`${API_BASE_URL}/whole/${classification}?page=${pageNo}`, {
-      headers: {
-        Authorization: `Bearer ${user.accessToken}`,
-      },
-    })
-      .then((res) => {
-        setArticles({
-          content: res.data.data.content.filter(article => article.title !== "")
-            .sort((a, b) => new Date(b.id) - new Date(a.id)),
-          totalPages: res.data.data.totalPages,
-        });
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  
-  const sortArticles = async (sort = 'whole', pageNo = 0) => {
-    let url;
-    console.log(classification)
-    switch (sort) {
-      case 'desc':
-        url = `${API_BASE_URL}/desc?page=${pageNo}`;
-        break;
-      case 'asc':
-        url = `${API_BASE_URL}/asc?page=${pageNo}`;
-        break;
-      // api 요청 주소 다시 알아내기
-      case 'viewsdesc':
-        url = `${API_BASE_URL}/boards/whole/${classification}/views-desc?page=${pageNo}`;
-        break;
-      case 'viewsasc':
-        url = `${API_BASE_URL}/boards/whole/${classification}/views-asc?page=${pageNo}`;
-        break;
-      default:
-        url = `${API_BASE_URL}/whole/${classification}?page=${pageNo}`;
-    }
-    api.get(url, {
-      headers: {
-        Authorization: `Bearer ${user.accessToken}`,
-      },
-    })
-      .then((res) => {
-        setArticles({
-          content: res.data.data.content.filter(article => article.title !== "").sort((a, b) => new Date(b.id) - new Date(a.id)),
-          totalPages: res.data.data.totalPages
-        });
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  
-
-  // // 페이지네이션
-  // const handlePageButtonClick = (newPage) => {
-  //   setPage(newPage);
-  //   sortArticles(sortMethod, newPage);
-  // };
-  
-  // //페이지 변경 버튼
-  // const PageButton = ({ pageNumber, onClick }) => {
-  //   return (
-  //     <button onClick={() => onClick(pageNumber)}>
-  //       {pageNumber + 1}
-  //     </button>
-  //   );
-  // };
-
-  // const Pagination = ({ totalPages, onPageClick }) => {
-  //   // totalPages는 서버로부터 받은 총 페이지 수
-  //   const pageButtons = [];
-  //   for (let i = 0; i < totalPages; i++) {
-  //     pageButtons.push(
-  //       <PageButton key={i} pageNumber={i} onClick={onPageClick} />
-  //     );
-  //   }
-  
-  //   return (
-  //     <div>
-  //       {pageButtons}
-  //     </div>
-  //   );
-  // };
-  
-  const handlePageChange = (newPage) => {
-    setPage(newPage - 1);
-    sortArticles(sortMethod, newPage - 1);
-  };
-
-  
+    useEffect(() => {
+        fetchArticles(page);
+    }, [page]);
 
 
-  const goToArticleDetail = (id) => {                     // 클릭하면 게시글 디테일로 넘어감
-    window.location.href = `/CommunityBoardPage/${classification}/${id}`;
-  };
+    const fetchArticles = async (pageNo = 0) => {
+        setLoading(true);
+        api.get(`${API_BASE_URL}/whole/${classification}?page=${pageNo}`, {
+            // &sortted=createdat-desc, { 추가가 가능한가?     
+            headers: {
+                Authorization: `Bearer ${user.accessToken}`,
+            },
+        })
+            .then((res) => {
+                setLoading(false);
+                setArticles({
+                    content: res.data.data.content,
+                    // .reverse()
+                    totalPages: res.data.data.totalPages,
+                });
+                console.log(res);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
-  const openModal = () => {                               // 모달 열기
-    setModal(true);
-  };
+    const sortArticles = async (sort = 'default', pageNo = 0) => {
+        setLoading(true);
+        let url;
+        console.log(classification);
+        switch (sort) {
+            case 'title-desc':
+                url = `${API_BASE_URL}/whole/${classification}?page=${pageNo}&sortted=title-desc`;
+                break;
+            case 'title-asc':
+                url = `${API_BASE_URL}/whole/${classification}?page=${pageNo}&sortted=title-asc`;
+                break;
+            case 'views-desc':
+                url = `${API_BASE_URL}/whole/${classification}?page=${pageNo}&sortted=views-desc`;
+                break;
+            case 'views-asc':
+                url = `${API_BASE_URL}/whole/${classification}?page=${pageNo}&sortted=views-asc`;
+                break;
+            default:
+                url = `${API_BASE_URL}/whole/${classification}?page=${pageNo}`;
+        }
+        api.get(url, {
+            headers: {
+                Authorization: `Bearer ${user.accessToken}`,
+            },
+        })
+            .then((res) => {
+                setArticles({
+                    content: res.data.data.content,
+                    totalPages: res.data.data.totalPages
+                });
+                console.log(res);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
+    const handlePageChange = (newPage) => {
+        setPage(newPage - 1);
+        sortArticles(sortMethod, newPage - 1);
+    };
 
+    const goToArticleDetail = (id) => {
+        window.location.href = `/CommunityBoardPage/${classification}/${id}`;
+    };
 
-  return (
-    <div>
-    {loading ? <Loading /> : null}
+    const openModal = () => {
+        setModal(true);
+    };
 
-    <SBoardDetailWrapper>
-      <h1>{classification}</h1>
-      <SBoardDetailButton onClick={() => openModal()}>
-        게시글작성
-      </SBoardDetailButton>
-      {/* <Pagination totalPages={articles.totalPages} onPageClick={handlePageButtonClick} /> */}
-      <SBoardDetailViewSelect
-        value={sortMethod}
-        onChange={handleSortMethodChange}
-      >
-        <option value="whole">전체게시물</option>
-        <option value="desc">제목순 내림차순</option>
-        <option value="asc">제목순 오름차순</option>
-        <option value="viewsdesc">조회순 내림차순</option>
-        <option value="viewsasc">조회순 오름차순</option>
-      </SBoardDetailViewSelect>
+    const formatTime = (time) => {
+        const [year, month, day, hour, minute] = time.split('-').map(Number);
+        const modifyTime = new Date(year, month - 1, day, hour, minute);
+        const getKoreanTime = (dateObj) => {
+            const utc = dateObj.getTime() + (dateObj.getTimezoneOffset() * 60 * 1000);
+            const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+            return new Date(utc + KR_TIME_DIFF);
+        };
+        const current = getKoreanTime(new Date());
+        const currentDate = `${current.getFullYear()}-${current.getMonth() + 1}-${current.getDate()}`;
+        const timeDate = `${year}-${month}-${day}`;
+        if (currentDate === timeDate) {
+            return `${('0' + hour).slice(-2)}:${('0' + minute).slice(-2)}`;
+        } else {
+            return `${year.toString().substring(2, 4)}.${('0' + month).slice(-2)}.${('0' + day).slice(-2)}`;
+        }
+    };
 
-      {showmodal && (                                      // 게시글 작성 모달
-        <CreateArticleModal
-          classification={classification}
-          setModal={setModal}
-          fetchArticles={fetchArticles}
-        />
-      )}
+    return (
+        <div>
+            {loading ? <Loading /> : null}
+            <SBoardDetailWrapper>
+                <h1>{classification}</h1>
+                <SBoardDetailViewSelect value={sortMethod} onChange={handleSortMethodChange} >
+                    <option value="default">전체 게시물</option>
+                    <option value="title-desc">제목 내림차순</option>
+                    <option value="title-asc">제목 오름차순</option>
+                    <option value="views-desc">조회수 내림차순</option>
+                    <option value="views-asc">조회수 오름차순</option>
+                </SBoardDetailViewSelect>
+                {showmodal && (
+                    <CreateArticleModal classification={classification} setModal={setModal} fetchArticles={fetchArticles} />
+                )}
 
-      <SBoardDetailHr />
-      <SBoardDetailEmpty />
-
-      {Array.isArray(articles.content) ? (                        // 게시글 목록
-        articles.content.map((article) => (
-          <SBoardDetailBoard key={article.id}>
-            <SBoardDetailRow>
-              <SBoardDetailBoardInfo onClick={() => goToArticleDetail(article.id)}>
-                {article.title}
-              </SBoardDetailBoardInfo>
-              <div>
-                <SBoardDetailBoardInfo>작성자: {article.writer}</SBoardDetailBoardInfo>
-                <SBoardDetailBoardInfo>조회수: {article.views}</SBoardDetailBoardInfo>
-                <SBoardDetailBoardInfo>추천수: {article.likesCount}</SBoardDetailBoardInfo>
-                {/* <SBoardDetailBoardInfo>{article.liked}</SBoardDetailBoardInfo> */}
                 
-              </div>
-              
-            </SBoardDetailRow>
-            
-          </SBoardDetailBoard>
-      
-      
-          
-        ))
-        
-      ) : (
-        <p>Loading...</p>
-      )}
 
-    <Paging
-      activePage={page + 1}
-      totalItemsCount={articles.totalPages * 10}
-      onChange={handlePageChange}
-      />
-    </SBoardDetailWrapper>
-    </div>
-  );
+                <SEmpty2/>
+                <SHeaderWrapper2>
+                    <SBoardDetailBoardInfo>제목</SBoardDetailBoardInfo>
+                    <SBoardDetailBoardInfo>글쓴이</SBoardDetailBoardInfo>
+                    <SBoardDetailBoardInfo>작성일</SBoardDetailBoardInfo>
+                    <SBoardDetailBoardInfo>조회</SBoardDetailBoardInfo>
+                    <SBoardDetailBoardInfo>추천</SBoardDetailBoardInfo>
+                </SHeaderWrapper2>
+                {Array.isArray(articles.content) ? (
+                    articles.content.map((article) => (
+                        <SBoardDetailBoard key={article.id}>
+                            {/* <SBoardDetailRow> */}
+                            <SHeaderWrapper>
+                                {/* 여기다가 이미지 첨부여부 아이콘 표시<SBoardDetailBoardInfo></SBoardDetailBoardInfo> */}
+                                    <SBoardDetailBoardInfo onClick={() => goToArticleDetail(article.id)}>{article.title}</SBoardDetailBoardInfo>
+                                    <SBoardDetailBoardInfo>{article.writer}</SBoardDetailBoardInfo>
+                                    <SBoardDetailBoardInfo>{formatTime(article.modifyTime)}</SBoardDetailBoardInfo>
+                                    <SBoardDetailBoardInfo>{article.views}</SBoardDetailBoardInfo>
+                                    <SBoardDetailBoardInfo>{article.likesCount}</SBoardDetailBoardInfo>
+                                </SHeaderWrapper>
+                            {/* </SBoardDetailRow> */}
+                        </SBoardDetailBoard>
+                    ))
+                
+                ) : (
+                    <p>Loading...</p>
+                )}
+            </SBoardDetailWrapper>
+            <div>
+            <Paging
+                activePage={page + 1}
+                totalItemsCount={articles.totalPages * 10}
+                onChange={handlePageChange}
+            />
+            <SBoardDetailButton onClick={() => openModal()}> 게시글작성 </SBoardDetailButton>
+            </div>
+        </div>
+    );
 };
 
 export default CommunityBoardDetail;

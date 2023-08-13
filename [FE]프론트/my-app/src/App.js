@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect} from 'react';
 import { useSelector } from "react-redux";
 import {
   BrowserRouter,
@@ -29,7 +29,7 @@ import { Sfont } from "./styles/SCommon";
 import Swal from "sweetalert2";
 import GoogleCallback from "./component/user/socialLogin/GoogleCallback";
 import NaverCallback from "./component/user/socialLogin/NaverCallback";
-
+import Footer from './component/footer/footer';
 function App() {
   return (
     <Sfont>
@@ -41,6 +41,7 @@ function App() {
 }
 
 function AppRoutes() {
+  
   const location = useLocation();
 
   const user = useSelector((state) => state.users);
@@ -55,8 +56,12 @@ function AppRoutes() {
     "/login/oauth2/code/kakao",
   ];
 
-  const isAuthorizedPage = !authorizedPages.includes(location.pathname) & !user;
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
+
+  const isAuthorizedPage = !authorizedPages.includes(location.pathname) & !user;
   // 로그인하지 않은 상태에서 보지 못해야할 페이지로 접근하려 하면 로그인 페이지로 Redirect
   if (isAuthorizedPage) {
     Swal.fire({
@@ -75,7 +80,7 @@ function AppRoutes() {
       // imageHeight: 200,
       // imageAlt: 'Custom image',
     });
-
+    
     return <Navigate to="/LoginPage" />;
   }
 
@@ -109,6 +114,7 @@ function AppRoutes() {
         <Route path="/PayCanclePage" element={<PayCanclePage />} />
         <Route path="/PayConflictPage" element={<PayConflictPage />} />
       </Routes>
+      <Footer/>
     </>
   );
 }

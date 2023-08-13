@@ -4,6 +4,7 @@ import { api } from './../../src/api/api.js'
 import { useSelector } from "react-redux";
 import ModifyArticleModal from '../component/community/ModifyArticleModal.js';
 import {SCommentContainer,
+  SCommunityWrapper,
   SCommentList,
   SCommentItem,
   SCommentAuthor,
@@ -189,6 +190,7 @@ const CommunityArticleDetailPage = () => {
   
 
   return (
+    <SCommunityWrapper>
     <div>
       {
         articles && (
@@ -260,6 +262,7 @@ const CommunityArticleDetailPage = () => {
       </SCommentContainer>
       <button onClick={()=>{backtothePage()}}>돌아가기</button>
     </div>
+    </SCommunityWrapper>
   );
 };
 

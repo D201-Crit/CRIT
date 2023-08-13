@@ -117,6 +117,23 @@ export const SBoardCard = styled.div`
   overflow: hidden;
 `;
 
+
+export const SHeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: linear-gradient(180deg, #2B2B2B 0%, rgba(0, 0, 0, 0) 100%);
+  font-weight: bold;
+`;
+export const SHeaderWrapper2 = styled.div`
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  margin-bottom : 10px;
+  background-color: black;
+  
+`;
 export const SBoardTitle = styled.div`
   background: #0000c5;
   position: absolute;
@@ -130,9 +147,37 @@ export const SBoardTitle = styled.div`
 `;
 
 export const SBoardDetailBoardInfo = styled.p`
+
   margin: 0 5px;
   font-size: 14px;
   display: inline;
+  font-weight :150;
+  &:nth-child(1) {
+    flex: 8;
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  &:nth-child(2) {
+    flex: 1;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  &:nth-child(3) {
+    flex: 1;
+    text-align: center;
+  }
+  &:nth-child(4) {
+    flex: 1;
+    text-align: center;
+  }
+  &:nth-child(5) {
+    flex: 1;
+    text-align: center;
+  }
 `;
 
 export const SLikeButton = styled.button`
@@ -179,7 +224,21 @@ export const SBoardDetailEmpty = styled(SEmpty)``;
 
 export const SBoardDetailTitle = styled(STitle)``;
 
-export const SBoardDetailButton = styled(SButton)``;
+export const SBoardDetailButton = styled(SButton)`
+  display: flex;
+  margin-left: 1080px;
+  padding: 10px 15px;
+  background-color: #0000C5;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #3333ff;
+  }
+`;
 
 export const SBoardDetailViewSelect = styled.select`
   margin-left: 20px;
@@ -195,8 +254,10 @@ export const SBoardDetailRow = styled.div`
 export const SBoardDetailBoard = styled.div`
   background-color: #262626;
   border-radius: 10px;
-  padding: 10px;
   margin-bottom: 5px;
+  &:hover {
+    background-color: ${({ isLiked }) => (isLiked ? "#ff005a" : "#3333ff")};
+  }
 `;
 
 // 폰트 크기 조절하기
@@ -403,3 +464,4 @@ export const SCommentForm = styled.form`
     }
   }
 `;
+
