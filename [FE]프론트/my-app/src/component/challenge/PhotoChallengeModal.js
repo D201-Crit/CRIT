@@ -53,18 +53,16 @@ const PhotoChallengeModal = ({ challengeData, closePhotoModal }) => {
             return new Date(current.createdAt) > new Date(prev.createdAt)
               ? current
               : prev;
-          });
+          }, {});
           console.log(mostRecentCert);
           Swal.fire({
             position: "center",
             icon: "success",
-            // title: "챌린지 인증 완료!",
             html: `
             <div>
+            <h1>${mostRecentCert.certTime}</h1>
             <h1>${mostRecentCert.userId}님</h1>
-            <h1>챌린지 성공!</h1>
-              <h1>${mostRecentCert.certTime}</h1>
-                          
+            <h1>챌린지 성공!</h1>                               
             </div>
           `,
             showConfirmButton: false,
@@ -78,6 +76,7 @@ const PhotoChallengeModal = ({ challengeData, closePhotoModal }) => {
             // imageHeight: 200,
             // imageAlt: 'Custom image',
           });
+          closePhotoModal();
         } else {
           console.log("인증 데이터가 없습니다.");
         }
@@ -86,8 +85,18 @@ const PhotoChallengeModal = ({ challengeData, closePhotoModal }) => {
   };
 
   const submitPhoto = () => {
+    if (image === null) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "챌린지 인증 실패",
+        text: "챌린지 이미지가 없습니다.",
+        showConfirmButton: true,
+        background: "#272727",
+        color: "white",
+      });
+    }
     const formData = new FormData();
-    console.log(image);
     formData.append("file", image); // 이미지 파일 첨부
     formData.append(
       "requestDto",

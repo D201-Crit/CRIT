@@ -36,6 +36,7 @@ const Login = () => {
               nickname: res.data.nickname,
               accessToken: res.data.accessToken,
               refreshToken: res.data.refreshToken,
+              cashPoing: res.data.cashPoint,
             }),
           );
           persistor.flush(); // 상태를 영구적으로 저장

@@ -11,6 +11,7 @@ import UserModel from "../models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 import * as tmImage from "@teachablemachine/image";
 import { api } from "../api/api";
+import Swal from "sweetalert2";
 
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL = "https://i9d201.p.ssafy.io/api/room/";
@@ -319,7 +320,11 @@ class VideoRoomComponent extends Component {
         outTime,
       })
       .then((res) => {
-        console.log(res);
+        const cert = res.data.data;
+        console.log(cert);
+        // if(cert.finished === false ? ():())
+
+        // this.props.closeVideoModal();
       })
       .catch((err) => {
         console.log(err);

@@ -785,3 +785,57 @@ export const SPhotochallengeWrapper = styled.div`
     cursor: pointer;
   }
 `;
+
+// 참여내역
+export const SJoinListModal = {
+  content: {
+    backgroundColor: "rgba(22, 22, 22, 1)",
+    border: "0.5px solid rgba(80, 80, 80)",
+    borderRadius: "10px",
+    boxShadow: "0px 0px 15px gray",
+    width: "400px",
+    height: "470px",
+    margin: "auto",
+    padiing: "0px",
+    color: "black",
+  },
+  overlay: {
+    background: "rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: "999",
+  },
+};
+
+export const SJoinListWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: "0",
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+  overflow: hidden;
+  color:white;
+  text-align:center;
+  ul{
+    list-style: none;
+    padding:0;
+
+  }
+  #time{
+    font-size: 20px;
+  }
+  #certified{
+    font-size: 25px;
+  }
+  button{
+    position:absolute;
+    top:10px;
+    right:10px;
+    border:none;
+    background:none;
+    color: white;
+    font-size:30px;
+    cursor:pointer;
+  }
+`;

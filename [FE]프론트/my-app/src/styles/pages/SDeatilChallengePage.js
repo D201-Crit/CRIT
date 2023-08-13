@@ -112,18 +112,21 @@ export const SButtonWrapper = styled.div`
     cursor: pointer;
   }
   #enter {
+    position: absolute;
+    right: 200px;
+    color: white;
     width: 150px;
-    height: 40px;
+    height: 50px;
     font-size: 18px;
     font-weight: 700;
     border-radius: 10px;
     border: none;
-    margin: 150px 150px 0 0;
+    background-color: #0000c5;
     cursor: pointer;
   }
   #detailEnter {
     position: absolute;
-    right: 220px;
+    right: 200px;
     color: white;
     width: 150px;
     height: 50px;
@@ -137,7 +140,7 @@ export const SButtonWrapper = styled.div`
 
   #join {
     position: absolute;
-    right: 60px;
+    right: 30px;
     color: white;
     width: 150px;
     height: 50px;
@@ -150,7 +153,7 @@ export const SButtonWrapper = styled.div`
   }
   #photo {
     position: absolute;
-    right: 60px;
+    right: 200px;
     color: white;
     width: 150px;
     height: 50px;
@@ -158,7 +161,21 @@ export const SButtonWrapper = styled.div`
     font-weight: 700;
     border-radius: 10px;
     border: none;
-    background-color: #ff007a;
+    background-color: #0000c5;
+    cursor: pointer;
+  }
+  #joinList {
+    position: absolute;
+    right: 30px;
+    // color: white;
+    width: 150px;
+    height: 50px;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 10px;
+    border: none;
+    background-color: #33ff00;
+
     cursor: pointer;
   }
 `;
