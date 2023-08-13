@@ -11,7 +11,7 @@ const FooterList = styled.div`
   font-weight : 100;
   height: 300px;
   padding: 40px;
-  margin-top: 500px;
+  margin-top: 800px;
 
 `;
 
@@ -37,7 +37,7 @@ const Footer = () => {
       <Line>
         <StyledItem>(주)크릿</StyledItem>
         <StyledItem>|</StyledItem>
-        <StyledItem>02-2039-2939</StyledItem>
+        <StyledItem>054-259-2939</StyledItem>
       </Line>
       <Line>경상북도 구미시 임수동 94-1 번지 삼성전자2공장 2층</Line>
       <Line>사업자등록번호: 777-77-77777</Line>

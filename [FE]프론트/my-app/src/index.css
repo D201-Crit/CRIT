@@ -9,6 +9,7 @@ body {
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
+  
 }
 
 ::-webkit-scrollbar-thumb {
@@ -21,7 +22,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: rgb(21, 21, 21);
+  background-color: rgba(255, 255, 255, 0);
 }
 
 /* IE, Edge 등 일부 브라우저 스크롤바 */

@@ -43,7 +43,8 @@ const Nav = () => {
         <SMenuWrapper>
           <ul>
             <li>
-              <NavLink to="/IntroPage">CRIT</NavLink>
+              <NavLink to="/IntroPage"> <img src={process.env.PUBLIC_URL + '/logo2.png'} style={ {width:'55px', height: '25px'}}  alt="placeholder" />
+              </NavLink>
             </li>
             <li>
               <NavLink to="/MainPage">메인</NavLink>

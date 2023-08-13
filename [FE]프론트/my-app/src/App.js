@@ -30,6 +30,22 @@ import Swal from "sweetalert2";
 import GoogleCallback from "./component/user/socialLogin/GoogleCallback";
 import NaverCallback from "./component/user/socialLogin/NaverCallback";
 import Footer from './component/footer/footer';
+
+import styled from "styled-components";
+
+
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+
+const ContentWrapper = styled.div`
+  flex: 1;
+  width: 100%;
+`;
+
+
 function App() {
   return (
     <Sfont>
@@ -86,7 +102,10 @@ function AppRoutes() {
 
   return (
     <>
+      <AppContainer>
+
       {showNav && <Nav />}
+      <ContentWrapper>
       <Routes>
         <Route path="/" element={<StartPage />} />
         <Route path="/login/oauth2/code/kakao" element={<KakaoCallback />} />
@@ -114,7 +133,9 @@ function AppRoutes() {
         <Route path="/PayCanclePage" element={<PayCanclePage />} />
         <Route path="/PayConflictPage" element={<PayConflictPage />} />
       </Routes>
+      </ContentWrapper>
       <Footer/>
+      </AppContainer>
     </>
   );
 }

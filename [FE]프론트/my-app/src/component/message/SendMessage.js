@@ -67,7 +67,7 @@ const handleReceiverNameChange = (event) => {
   };
   return (
     <div>
-      <h3>메시지 보내기</h3>
+      <h3 style={{ margin: '25px 10px'}}>메시지 보내기</h3>
       <SForm onSubmit={sendMessage}>
         <label htmlFor="receiverName">받는 사람</label>
         <br/>
@@ -92,7 +92,7 @@ const handleReceiverNameChange = (event) => {
           onChange={handleTextChange}
         />
 
-         <br/>
+      <br/>
           <SSubmitButton type="submit" value={"작성완료"}></SSubmitButton>
       </SForm>
     </div>
