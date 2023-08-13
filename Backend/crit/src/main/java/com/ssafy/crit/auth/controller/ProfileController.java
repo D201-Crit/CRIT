@@ -1,7 +1,6 @@
 package com.ssafy.crit.auth.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,17 +10,10 @@ import com.ssafy.crit.common.error.exception.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.crit.auth.dto.FollowRequestDto;
-import com.ssafy.crit.auth.dto.LogOutRequestDto;
 import com.ssafy.crit.auth.dto.UpdateProfilePictureDto;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.jwt.JwtProvider;
@@ -48,12 +40,18 @@ public class ProfileController {
 	}
 
 	@PostMapping("/follow")
-	public Response<?> follow(@RequestBody FollowRequestDto followRequestDto, HttpServletRequest httpServletRequest) {
-		//Jwt 헤더에서 user 정보 가져오기
-		User user = getUser(httpServletRequest);
+	public UserResponseDto follow(@RequestBody FollowRequestDto followRequestDto, HttpServletRequest request) throws Exception {
 
-		//Response로 한번 감싸서 return
-		return new Response<>("true","follow 성공",userService.follow(followRequestDto));
+		User user = getUser(request);
+
+		return userService.follow(followRequestDto, user);
+	}
+
+	@PostMapping("/unfollow")
+	public String unfollow(@RequestBody FollowRequestDto followRequestDto, HttpServletRequest request) throws Exception {
+		User user = getUser(request);
+
+		return userService.deleteByFollowingIdAndFollowerId(followRequestDto, user);
 	}
 
 	@GetMapping("/myProfile")
@@ -76,7 +74,7 @@ public class ProfileController {
 	@GetMapping("/whole/user")
 	public Response<?> getWholeUserInMyFollowing(HttpServletRequest httpServletRequest){
 		User user = getUser(httpServletRequest);
-		List<UserResponseDto> users = userService.getWholeUserInMyFollowing(user.getNickname());
+		List<UserResponseDto> users = userService.getWholeUserInMyFollowing(user);
 		return new Response<>("성공", "팔로잉한 모든 유저 조회 성공", users);
 	}
 

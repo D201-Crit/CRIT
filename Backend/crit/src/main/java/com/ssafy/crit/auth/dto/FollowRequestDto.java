@@ -1,27 +1,19 @@
 package com.ssafy.crit.auth.dto;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
+
+@NoArgsConstructor
+@Getter
 public class FollowRequestDto implements Serializable {
-    private String followerId;
     private String followingId;
 
-    public FollowRequestDto() {
-    }
-
-    public String getFollowerId() {
-        return followerId;
-    }
-
-    public void setFollowerId(String followerId) {
-        this.followerId = followerId;
-    }
-
-    public String getFollowingId() {
-        return followingId;
-    }
-
-    public void setFollowingId(String followingId) {
+    @Builder
+    public FollowRequestDto(String followingId) {
         this.followingId = followingId;
     }
 }

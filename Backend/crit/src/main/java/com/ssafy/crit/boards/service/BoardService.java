@@ -33,7 +33,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,18 +65,20 @@ public class BoardService {
 
     //전체 게시물
     @Transactional(readOnly = true)
-    public Page<BoardShowSortDto> getBoards(Pageable pageable, String category) {
+    public Page<BoardShowSortDto> getBoards(String category) {
         classificationRepository.findByCategory(category).orElseThrow(
                 () -> {
                     return new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_CATEGORY);
                 });
 
+        Pageable pageable = getPageable();
         Page<Board> boards = boardRepository.findAllByClassificationCategory(pageable, category);
         return getBoardShowSortDtos(boards);
     }
 
     @Transactional(readOnly = true)
-    public Page<BoardShowSortDto> getWholeBoards(Pageable pageable) {
+    public Page<BoardShowSortDto> getWholeBoards() {
+        Pageable pageable = getPageable();
         Page<Board> boards = boardRepository.findAll(pageable);
         return getBoardShowSortDtos(boards);
     }
@@ -249,6 +253,9 @@ public class BoardService {
 
     public ArrayList<String> imageDelete(Long id, Long fileId) {
         Board board = boardRepository.findById(id).orElseThrow();
+
+        if(!uploadFileRepository.findById(fileId).isPresent()) return null;
+
         List<UploadFile> allByBoardsId = uploadFileRepository.findAllByBoardsId(board.getId());
         for (UploadFile uploadFile : allByBoardsId) {
             if (uploadFile.getId().equals(fileId)) {
@@ -277,27 +284,32 @@ public class BoardService {
         boardRepository.deleteById(id);
     }
 
-    public Page<BoardShowSortDto> orderByViewsDesc(Pageable pageable, String category) {
+    public Page<BoardShowSortDto> orderByViewsDesc(String category) {
+        Pageable pageable = getPageable();
         Page<Board> boards = boardRepository.orderByViewsDesc(pageable, category);
         return getBoardShowSortDtos(boards);
     }
 
-    public Page<BoardShowSortDto> orderByViewsAsc(Pageable pageable, String category) {
+    public Page<BoardShowSortDto> orderByViewsAsc( String category) {
+        Pageable pageable = getPageable();
         Page<Board> boards = boardRepository.orderByViewsAsc(pageable, category);
         return getBoardShowSortDtos(boards);
     }
 
-    public Page<BoardShowSortDto> orderByLikesDesc(Pageable pageable, String category) {
+    public Page<BoardShowSortDto> orderByLikesDesc(String category) {
+        Pageable pageable = getPageable();
         Page<Board> boards = boardRepository.orderByLikesDesc(pageable, category);
         return getBoardShowSortDtos(boards);
     }
 
-    public Page<BoardShowSortDto> orderByLikesAsc(Pageable pageable, String category) {
+    public Page<BoardShowSortDto> orderByLikesAsc( String category) {
+        Pageable pageable = getPageable();
         Page<Board> boards = boardRepository.orderByLikesAsc(pageable, category);
         return getBoardShowSortDtos(boards);
     }
 
-    public Page<BoardShowSortDto> findByTitleContaining(String find, String category, Pageable pageable) {
+    public Page<BoardShowSortDto> findByTitleContaining(String find, String category) {
+        Pageable pageable = getPageable();
         Page<Board> boards = boardRepository.findByTitleContaining(find,category, pageable);
         return getBoardShowSortDtos(boards);
     }
@@ -314,7 +326,8 @@ public class BoardService {
         return getBoardShowSortDtos(boards);
     }
 
-    public Page<BoardShowSortDto> findAllByUser(User user, Pageable pageable) {
+    public Page<BoardShowSortDto> findAllByUser(User user) {
+        Pageable pageable = getPageable();
         Page<Board> boards = boardRepository.findAllByUser(user, pageable);
         return getBoardShowSortDtos(boards);
     }
@@ -400,5 +413,10 @@ public class BoardService {
         String[] split = uploadFiles.split("\\.");
         String extension = split[split.length - 1];
         return extension;
+    }
+
+    private static Pageable getPageable() {
+        Pageable pageable = PageRequest.of(0, 20, Sort.by("id").descending());
+        return pageable;
     }
 }

@@ -58,8 +58,8 @@ public class BoardSaveResponseDto {
                 board.getContent(),
                 board.getClassification().getCategory(),
                 board.getUser().getNickname(),
-                board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")),
-                board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")),
+                board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")),
+                board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")),
                 filenames,
                 fileId);
     }

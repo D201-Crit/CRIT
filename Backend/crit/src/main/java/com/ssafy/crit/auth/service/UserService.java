@@ -171,40 +171,28 @@ public class UserService {
 		return jwtProvider.createAccessToken(userId, AuthProvider.findByCode(provider));
 	}
 
-	public UserResponseDto follow(FollowRequestDto followRequestDto) {
-		// user1 이 현재 로그인 한 유저
-		User user1 = userRepository.findByNickname(followRequestDto.getFollowerId())
-			.orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_FOLLOWER));
 
-		// user 2는 내가 팔로잉 할 유저
-		User user2 = userRepository.findByNickname(followRequestDto.getFollowingId())
-			.orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_FOLLOWING));
+	public UserResponseDto follow(FollowRequestDto followRequestDto, User me) {
+		log.info("user ={}", followRequestDto.getFollowingId());
+		User you = userRepository.findByNickname(followRequestDto.getFollowingId())
+				.orElseThrow(() -> new IllegalArgumentException("Following User not found"));
 
-		// user 1과 user 2가 모두 있다면
-		Optional<Follow> optionalFollow = followRepository.findByFollowerAndFollowing(user1, user2);
-
-		// 팔로우 안되어 있으면 팔로우, 팔로우 돼있으면 팔로우 취소
-		if (optionalFollow.isEmpty()) {
-			Follow follow = Follow.builder()
-				.follower(user1)
-				.following(user2)
+		Follow follow = Follow.builder()
+				.follower(me)
+				.following(you)
 				.build();
 
-			// followRepository에 저장
-			followRepository.save(follow);
+		followRepository.saveAndFlush(follow);
 
-			// user 1에 팔로잉 목록에 추가, user 2에 팔로워 목록 추가
-			user1.addMemberTofollowing(follow);
-			user2.addMemberTofollower(follow);
-		} else {
-			// user 1 팔로잉 목록에서 제거, user 2 팔로우 목록에서 제거
-			Follow follow = optionalFollow.get();
-			user1.removeMemberTofollower(follow);
-			user2.removeMemberTofollowing(follow);
-			followRepository.deleteByFollowerAndFollowing(user1, user2);
-		}
+		List<Follow> follows = followRepository.findAll();
 
-		return UserResponseDto.toUserResponseDto(user1);
+		return UserResponseDto.toUserResponseDto(me, follows);
+	}
+
+	public String deleteByFollowingIdAndFollowerId(FollowRequestDto followRequestDto, User user) { // 언팔로우
+		log.info("you and me = {}", followRequestDto.getFollowingId() + " " + user.getNickname());
+		followRepository.deleteFollow(userRepository.findByNickname(followRequestDto.getFollowingId()).orElseThrow(), user);
+		return "성공";
 	}
 
 	public Boolean validUserId(String userId) {
@@ -224,15 +212,17 @@ public class UserService {
 	}
 
 	public UserResponseDto getUserProfile(User user) {
-		return UserResponseDto.toUserResponseDto(userRepository.findByNickname(user.getNickname()).orElseThrow());
+		List<Follow> all = followRepository.findAll();
+		return UserResponseDto.toUserResponseDto(user, all);
 	}
 
 	public UserResponseDto getUserDetailProfile(String user){
 		User user1 = userRepository.findByNickname(user).orElseThrow(() -> {
 			return new IllegalArgumentException(String.valueOf(ErrorCode.NOT_EXISTS_USER_ID));
 		});
+		List<Follow> all = followRepository.findAll();
 
-		return UserResponseDto.toUserResponseDto(user1);
+		return UserResponseDto.toUserResponseDto(user1, all);
 	}
 
 	// public List<UserResponseDto> getWholeUserInMyFollowing(String user){
@@ -248,14 +238,11 @@ public class UserService {
 	// 	return urd;
 	// }
 
-	public List<UserResponseDto> getWholeUserInMyFollowing(String userNickname){
-		User user = userRepository.findByNickname(userNickname)
-			.orElseThrow(() -> new IllegalArgumentException("User not found with nickname: " + userNickname));
-
+	public List<UserResponseDto> getWholeUserInMyFollowing(User user){
 		List<Follow> myFollowings = followRepository.findByMyFollowings(user);
 
 		return myFollowings.stream()
-			.map(following -> UserResponseDto.toUserResponseDto(following.getFollowing()))
+			.map(following -> UserResponseDto.toUserResponseDto(following.getFollowing(), followRepository.findByMyFollowings(following.getFollower())))
 			.collect(Collectors.toList());
 	}
 
