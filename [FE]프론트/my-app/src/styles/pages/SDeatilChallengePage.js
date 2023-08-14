@@ -242,6 +242,10 @@ export const SBoardImage = styled.input`
 export const SBoardWrapper = styled.div`
   width: 1200px;
   margin: 30px auto;
+  h1 {
+    text-align: center;
+    font-size: 70px;
+  }
 `;
 
 export const SBoardLi = styled.li`

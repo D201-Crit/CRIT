@@ -12,14 +12,20 @@ import UpdateBoard from "./UpdateBoard";
 
 const ShowBoard = ({ boards, challenge, getBoard }) => {
   const user = useSelector((state) => state.users);
+  console.log(challenge);
   const reversedBoards = boards?.slice().reverse();
   console.log(reversedBoards);
   return (
     <SBoardWrapper>
-      <CreateBoard
-        getBoard={getBoard}
-        classification={challenge.classification}
-      />
+      {challenge.challengeStatus == "END" ? (
+        <h1>종료 된 챌린지 입니다</h1>
+      ) : (
+        <CreateBoard
+          getBoard={getBoard}
+          classification={challenge.classification}
+        />
+      )}
+
       {reversedBoards?.map((board) => (
         <SBoardLi key={board.id}>
           <p id="writer">{board.writer}</p>

@@ -13,7 +13,7 @@ const JoinListModal = ({ challengeData, closeJoinListModal }) => {
           headers: {
             Authorization: `Bearer ${challengeData.user.accessToken}`,
           },
-        },
+        }
       )
       .then((res) => {
         console.log(res);

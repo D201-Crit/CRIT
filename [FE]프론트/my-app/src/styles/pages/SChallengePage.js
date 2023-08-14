@@ -24,9 +24,8 @@ export const SCreateChallengeButton = styled.button`
 
 // MyChallenge
 export const SStatusWrapper = styled.div`
-  position: absolute;
-  top: 220px;
-  left: 550px;
+  width: 900px;
+  margin: 100px auto -120px;
   ul {
     display: flex;
     list-style: none;
@@ -831,7 +830,7 @@ export const SJoinListModal = {
 
 export const SJoinListWrapper = styled.div`
   width: 100%;
-  height: 100%;
+  overflow-y: auto; /* 스크롤 생성 */
   padding: "0",
   border: 1px solid #dddddd;
   border-radius: 10px;

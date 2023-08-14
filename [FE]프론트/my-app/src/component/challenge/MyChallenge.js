@@ -275,7 +275,10 @@ const MyChallenge = () => {
           className="mySwiper"
         >
           {sortedMyChallenges.map((challenge) => {
-            const daysInProgress = getDaysInProgress(challenge.startDate);
+            const daysInProgress = getDaysInProgress(
+              challenge.startDate,
+              challenge.endDate
+            );
 
             return (
               <SSwiperSlide key={challenge.id}>
