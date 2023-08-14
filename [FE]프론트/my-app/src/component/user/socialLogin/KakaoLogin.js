@@ -3,7 +3,7 @@ import { SKakaoLoginButton } from "../../../styles/pages/SLoginPage";
 
 const KakaoLogin = () => {
   const CLIENT_ID = "abc570fb116bd926266e60e2e34149bb";
-  const REDIRECT_URI = "https://i9d201.p.ssafy.io/api/login/oauth2/code/kakao";
+  const REDIRECT_URI = "https://i9d201.p.ssafy.io/login/oauth2/code/kakao";
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   return (
