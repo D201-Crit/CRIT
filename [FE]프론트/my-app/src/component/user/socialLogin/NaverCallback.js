@@ -18,7 +18,7 @@ const NaverCallback = () => {
         console.log(res);
         localStorage.setItem("token", res.data.accessToken);
         localStorage.setItem("nickName", res.data.nickname);
-        navigate("/IntroPage");
+        // navigate("/IntroPage");
       })
       .catch((err) => {
         console.log(err);
