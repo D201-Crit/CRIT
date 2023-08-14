@@ -13,6 +13,8 @@ import java.util.List;
 public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     List<Challenge> findAllByStartDateAfter(LocalDate curDate);
 
+    List<Challenge> findAllByStartDateBefore(LocalDate curDate);
+
     List<Challenge> findAllByEndDateBefore(LocalDate curDate); // 끝난 챌린지 조회
 
     @Query("select c from Challenge c where c.startDate <= :curdate and c.endDate >= :curdate")
@@ -20,6 +22,8 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
     List<Challenge> findAllByEndDate(LocalDate date);
     List<Challenge> findAllByStartDate(LocalDate date);
+
+
 
     @Query("select c from Challenge c join ChallengeUser cu on c = cu.challenge where c.startDate <= :endDate and c.endDate >= :startDate " +
             "and cu.user = :user")

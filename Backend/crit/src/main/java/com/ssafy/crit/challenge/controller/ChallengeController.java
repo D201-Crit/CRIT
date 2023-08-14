@@ -124,8 +124,17 @@ public class ChallengeController {
         return new ResponseEntity<>(new Response<>("success",
                 "진행중인 챌린지 불러오기", challenges), HttpStatus.OK);
     }
+
+    @GetMapping("/list/planned")
+    public ResponseEntity<Response<List<ChallengeListResponseDto>>> listPlannedChallenge() throws Exception{
+        List<ChallengeListResponseDto> challenges = challengeService.getChallengesPlanned().stream()
+                .map(challenge -> new ChallengeListResponseDto(challenge)).collect(Collectors.toList());
+
+        return new ResponseEntity<>(new Response<>("success",
+                "진행예정인 챌린지 불러오기", challenges), HttpStatus.OK);
+    }
 //    @GetMapping("/img/{challengeId}")
-//    public ResponseEntity<Response<InputStreamResource>> getChallengeImg(@PathVariable("challengeId") Long challengeId) throws Exception{}
+//    public ResponseEntity<Response<InputStreamResource>> getChallenge Img(@PathVariable("challengeId") Long challengeId) throws Exception{}
 
     private User getUser(HttpServletRequest httpServletRequest) {
         String bearer = httpServletRequest.getHeader("Authorization").substring(7);
