@@ -166,7 +166,7 @@ public class ChallengeService {
         List<Challenge> challengeList = new ArrayList<>();
         List<ChallengeUser> allByUser = challengeUserRepository.findAllByUser(user);
         for (ChallengeUser challengeUser : allByUser) {
-            if(challengeUser.getChallenge().getStartDate().isAfter(LocalDate.now())){
+            if (challengeUser.getChallenge().getStartDate().isAfter(LocalDate.now())) {
                 challengeList.add(challengeUser.getChallenge());
             }
         }
@@ -177,7 +177,7 @@ public class ChallengeService {
         List<Challenge> challengeList = new ArrayList<>();
         List<ChallengeUser> allByUser = challengeUserRepository.findAllByUser(user);
         for (ChallengeUser challengeUser : allByUser) {
-            if(challengeUser.getChallenge().getEndDate().isBefore(LocalDate.now())){
+            if (challengeUser.getChallenge().getEndDate().isBefore(LocalDate.now())) {
                 challengeList.add(challengeUser.getChallenge());
             }
         }
@@ -187,9 +187,12 @@ public class ChallengeService {
     public List<Challenge> getMyChallengesOngoing(User user) throws Exception {
         List<Challenge> challengeList = new ArrayList<>();
         List<ChallengeUser> allByUser = challengeUserRepository.findAllByUser(user);
+
         for (ChallengeUser challengeUser : allByUser) {
-            if() &&
-                    challengeUser.getChallenge().getStartDate().isBefore(LocalDate.now())){
+            log.info("cur : challenge: {}   user : {}", challengeUser.getChallenge().getName(), challengeUser.getUser().getId());
+            if (isBeforeOrEqual(LocalDate.now(), challengeUser.getChallenge().getStartDate()) &&
+                    isAfterOrEqual(LocalDate.now(), challengeUser.getChallenge().getEndDate())) {
+                log.info("OK");
                 challengeList.add(challengeUser.getChallenge());
             }
         }

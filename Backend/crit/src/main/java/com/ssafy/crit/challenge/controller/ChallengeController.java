@@ -83,6 +83,39 @@ public class ChallengeController {
                 "나의 챌린지 불러오기", challengeList), HttpStatus.OK);
     }
 
+    @GetMapping("/list/mine/ongoing")
+    public ResponseEntity<Response<List<ChallengeListResponseDto>>> listMyOngoingChallenge(HttpServletRequest httpServletRequest)
+            throws Exception {
+        User user = getUser(httpServletRequest);
+        List<ChallengeListResponseDto> challengeList = challengeService.getMyChallengesOngoing(user).stream()
+                .map(challenge -> new ChallengeListResponseDto(challenge)).collect(Collectors.toList());
+
+        return new ResponseEntity<>(new Response<>("success",
+                "나의 진행중인 챌린지 불러오기", challengeList), HttpStatus.OK);
+    }
+
+    @GetMapping("/list/mine/planned")
+    public ResponseEntity<Response<List<ChallengeListResponseDto>>> listMyPlannedChallenge(HttpServletRequest httpServletRequest)
+            throws Exception {
+        User user = getUser(httpServletRequest);
+        List<ChallengeListResponseDto> challengeList = challengeService.getMyChallengesPlanned(user).stream()
+                .map(challenge -> new ChallengeListResponseDto(challenge)).collect(Collectors.toList());
+
+        return new ResponseEntity<>(new Response<>("success",
+                "나의 진행 예정인 챌린지 불러오기", challengeList), HttpStatus.OK);
+    }
+
+    @GetMapping("/list/mine/finished")
+    public ResponseEntity<Response<List<ChallengeListResponseDto>>> listMyFinishedChallenge(HttpServletRequest httpServletRequest)
+            throws Exception {
+        User user = getUser(httpServletRequest);
+        List<ChallengeListResponseDto> challengeList = challengeService.getMyChallengesFinished(user).stream()
+                .map(challenge -> new ChallengeListResponseDto(challenge)).collect(Collectors.toList());
+
+        return new ResponseEntity<>(new Response<>("success",
+                "나의 끝난 챌린지 불러오기", challengeList), HttpStatus.OK);
+    }
+
 
     //이때까지 열린 모든 챌린지 불러오기
     @GetMapping("/list/all")
