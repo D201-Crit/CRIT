@@ -70,6 +70,7 @@ function AppRoutes() {
     "/LoginPage",
     "/SignUpPage",
     "/login/oauth2/code/kakao",
+    "/login/oauth2/code/naver",
   ];
 
   useEffect(() => {
