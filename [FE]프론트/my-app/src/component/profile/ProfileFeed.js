@@ -8,10 +8,13 @@ const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/feeds';
 
 const Feed = () => {
   const user = useSelector((state) => state.users);
-  
+
+  // 피드 아이디 설정
+  const [feedId, setFeedId] = useState(null);
+
   // 초기 게시물 상태 설정
   const [feeds, setFeeds] = useState([]);
-
+  
   
   // 작성 모달 상태 설정
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -51,7 +54,7 @@ const Feed = () => {
   
         {/* FeedCreateModal */}
         {isCreateModalOpen && (
-          <FeedCreateModal setIsCreateModalOpen={setIsCreateModalOpen} getFeeds={getFeeds} />
+          <FeedCreateModal setIsCreateModalOpen={setIsCreateModalOpen} feeds={feeds} getFeeds={getFeeds} />
         )}
   
         {/* 게시물 리스트 */}
@@ -64,23 +67,22 @@ const Feed = () => {
               src={feed.imageFiles}
               alt="피드 이미지"
               className="post-image"
-              onClick={() => setIsDetailModalOpen(true)}
+              onClick={() => {
+                setIsDetailModalOpen(true);
+                setFeedId(feed.id);
+              }}
             />
-  
-            
           </SPost>
         ))}
         </SFeedBox>
 
          {/* FeedDetailModal */}
           {isDetailModalOpen && (
-          <FeedDetailModal setIsDetailModalOpen={setIsDetailModalOpen} getFeeds={getFeeds} />
+          <FeedDetailModal setIsDetailModalOpen={setIsDetailModalOpen} feedId={feedId}/>  
         )}
-  
       </div>
     </SFeedArea>
   );
-  
 };
 
 export default Feed;

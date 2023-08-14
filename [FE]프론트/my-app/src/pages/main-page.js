@@ -21,7 +21,6 @@ import "swiper/css/effect-creative";
 import Swal from "sweetalert2";
 import Entrance from "../component/challenge/Entrance";
 import { useSelector } from "react-redux";
-
 import GetCompleteMyChallenge from "../component/challenge/GetCompleteMyChallenge";
 import GetOnGoingMyChallenge from "./../component/challenge/GetOnGoingMyChallenge";
 import GetAllMyChallenge from "../component/challenge/GetAllMyChallenge";

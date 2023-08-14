@@ -232,13 +232,13 @@ const CommunityArticleDetailPage = () => {
             
             <SArticleContent>{articles.content}</SArticleContent>
             <br/>
+            <SLikesCount>{articles.likesCount}</SLikesCount>
+
             {articles.liked.includes(user.nickname) ? (
                 <SLikeImgButton onClick={() => deleteLike(articles.id)}>
-                  <SLikesCount>{articles.likesCount}</SLikesCount>
                 </SLikeImgButton>
               ) : (
                 <SLikeImgButton onClick={() => articleLike(articles.id)}>
-                  <SLikesCount>{articles.liked_Count}</SLikesCount>
                 </SLikeImgButton>
               )
             }
