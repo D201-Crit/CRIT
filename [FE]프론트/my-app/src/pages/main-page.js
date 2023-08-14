@@ -32,7 +32,6 @@ const MainPage = () => {
   const user = useSelector((state) => state.users);
   const [shorts, setShorts] = useState([]);
   const onGoingChallenge = useSelector((state) => state.onGoingChallenges);
-
   // 쇼츠 데이터 최신, 조회수, 좋아요 순
   const [shortsByDate, setShortsByDate] = useState([]);
   const [shortsByView, setShortsByView] = useState([]);
