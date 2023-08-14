@@ -26,7 +26,11 @@ import {
 import { useSelector } from "react-redux";
 import { SImg } from "./../../styles/pages/SChallengePage";
 import { useDispatch } from "react-redux";
-import { setMyChallenge } from "../../slice/ChallengeSlice";
+import {
+  setCompleteMyChallenge,
+  setOnGoingChallenge,
+  setMyChallenge,
+} from "../../slice/ChallengeSlice";
 import Swal from "sweetalert2";
 import PhotoChallengeModal from "./PhotoChallengeModal";
 
@@ -97,7 +101,6 @@ const MyChallenge = () => {
       background: "#272727",
       color: "white",
       width: "500px",
-
       // 먼지
       // imageUrl: 'https://unsplash.it/400/200',
       // imageWidth: 400,
@@ -119,13 +122,39 @@ const MyChallenge = () => {
         },
       })
       .then((res) => {
-        const filteredChallenges = res.data.data.filter((challenge) => {
-          const endDate = new Date(challenge.endDate);
-          const today = new Date();
-          return endDate >= today; // endDate가 오늘 이후인 경우에만 반환
-        });
-        console.log(filteredChallenges);
-        dispatch(setMyChallenge(filteredChallenges));
+        console.log(res.data.data);
+        dispatch(setMyChallenge(res.data.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getCompleteMyChallenge = () => {
+    api
+      .get("https://i9d201.p.ssafy.io/api/challenge/list/finished", {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.data);
+        dispatch(setCompleteMyChallenge(res.data.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const getOngoindMyChallenge = () => {
+    api
+      .get("https://i9d201.p.ssafy.io/api/challenge/list/ongoing", {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.data);
+        dispatch(setOnGoingChallenge(res.data.data));
       })
       .catch((err) => {
         console.log(err);
@@ -191,6 +220,8 @@ const MyChallenge = () => {
   };
   useEffect(() => {
     getMyChallenge();
+    getCompleteMyChallenge();
+    getOngoindMyChallenge();
   }, []);
   return (
     <>
@@ -240,7 +271,7 @@ const MyChallenge = () => {
                   <p id="people">{challenge.userList.length}명 참여 중</p>
                   {getDaysInProgress(
                     challenge.startDate,
-                    challenge.endDate,
+                    challenge.endDate
                   )?.includes("현재") ? (
                     new Date(challenge.startTime) <= new Date() &&
                     new Date() <= new Date(challenge.endTime) ? (

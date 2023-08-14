@@ -29,6 +29,17 @@ export const onGoingChallengeSlice = createSlice({
   },
 });
 
+export const completeMyChallengeSlice = createSlice({
+  name: "completeMyChallenges",
+  initialState: [],
+  reducers: {
+    setCompleteMyChallenge: (state, action) => {
+      return action.payload;
+    },
+  },
+});
+
 export const { setChallenge } = challengeSlice.actions;
 export const { setMyChallenge } = myChallengeSlice.actions;
 export const { setOnGoingChallenge } = onGoingChallengeSlice.actions;
+export const { setCompleteMyChallenge } = onGoingChallengeSlice.actions;

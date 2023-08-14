@@ -10,7 +10,13 @@ const persistConfig = {
   key: "root",
   storage, //local Storage에 저장
   // whitelist: ["users"], //auth Reducer만 저장
-  whitelist: ["users", "challenges", "myChallenges", "onGoingChallenges"], //auth Reducer만 저장
+  whitelist: [
+    "users",
+    "challenges",
+    "myChallenges",
+    "onGoingChallenges",
+    "completeMyChallenges",
+  ], //auth Reducer만 저장
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

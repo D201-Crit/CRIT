@@ -15,7 +15,7 @@ const CreateBoard = ({ classification, getBoard }) => {
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [board, setBoard] = useState({
-    title: "",
+    // title: "",
     content: "",
     writer: user.id,
     classification: classification,
@@ -48,7 +48,7 @@ const CreateBoard = ({ classification, getBoard }) => {
     formData.append("file", image || formData.append("file", ""));
     formData.append(
       "boardSaveRequestDto",
-      new Blob([JSON.stringify(board)], { type: "application/json" }),
+      new Blob([JSON.stringify(board)], { type: "application/json" })
     );
 
     api
