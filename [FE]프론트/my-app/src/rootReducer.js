@@ -4,6 +4,7 @@ import {
   challengeSlice,
   myChallengeSlice,
   onGoingChallengeSlice,
+  completeMyChallengeSlice,
 } from "./slice/ChallengeSlice";
 
 export const rootReducer = combineReducers({
@@ -11,6 +12,7 @@ export const rootReducer = combineReducers({
   challenges: challengeSlice.reducer,
   myChallenges: myChallengeSlice.reducer,
   onGoingChallenges: onGoingChallengeSlice.reducer,
+  completeMyChallenges: completeMyChallengeSlice.reducer,
 });
 
 export default rootReducer;

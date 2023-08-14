@@ -23,6 +23,27 @@ export const SCreateChallengeButton = styled.button`
 `;
 
 // MyChallenge
+export const SStatusWrapper = styled.div`
+  position: absolute;
+  top: 220px;
+  left: 550px;
+  ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+  }
+  a {
+    margin: 0 20px 0 0;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 800;
+    color: gray;
+
+    &:hover {
+      color: #ff007a;
+    }
+  }
+`;
 export const SImg = styled.img`
   position: absolute;
   bottom: -120px;
@@ -35,7 +56,7 @@ export const SSwiper = styled(Swiper)`
   // background-color: rgba(22, 22, 22, 0.599);
   width: 900px;
   height: 300px;
-  margin: 100px auto;
+  margin: 150px auto;
   padding: 10px;
   border:none
   // border: 0.5px solid white;

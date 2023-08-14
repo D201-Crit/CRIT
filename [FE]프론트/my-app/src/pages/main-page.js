@@ -22,35 +22,22 @@ import Swal from "sweetalert2";
 import Entrance from "../component/challenge/Entrance";
 import { useSelector } from "react-redux";
 
+import GetCompleteMyChallenge from "../component/challenge/GetCompleteMyChallenge";
+import GetOnGoingMyChallenge from "./../component/challenge/GetOnGoingMyChallenge";
+import GetAllMyChallenge from "../component/challenge/GetAllMyChallenge";
+
 const MainPage = () => {
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(true);
   const user = useSelector((state) => state.users);
-  const [onGoingChallenges, setOnGoingChallenges] = useState([]);
   const [shorts, setShorts] = useState([]);
+  const onGoingChallenge = useSelector((state) => state.onGoingChallenges);
   // 쇼츠 데이터 최신, 조회수, 좋아요 순
   const [shortsByDate, setShortsByDate] = useState([]);
   const [shortsByView, setShortsByView] = useState([]);
   const [shortsByLike, setShortsByLike] = useState([]);
-  const getMyChallenge = () => {
-    setLoading(true);
-    api
-      .get("https://i9d201.p.ssafy.io/api/challenge/list/ongoing", {
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-      })
-      .then((res) => {
-        setLoading(false);
-        console.log(res.data.data);
-        setOnGoingChallenges(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
   const openChallenge = () => {
-    if (onGoingChallenges.length === 0) {
+    if (onGoingChallenge.length === 0) {
       Swal.fire({
         position: "center",
         icon: "success",
@@ -74,6 +61,7 @@ const MainPage = () => {
 
   // 쇼츠
   const getShorts = () => {
+    setLoading(false);
     api
       .get("https://i9d201.p.ssafy.io/api/shorts/main", {
         headers: {
@@ -91,7 +79,6 @@ const MainPage = () => {
       });
   };
   useEffect(() => {
-    getMyChallenge();
     getShorts();
   }, []);
   return (
@@ -99,7 +86,7 @@ const MainPage = () => {
       <SEntranceButtonWrapper>
         {loading ? <Loading /> : null}
         <SEntranceButton onClick={openChallenge}>바로입장</SEntranceButton>
-        {isOpen ? null : <Entrance onGoingChallenges={onGoingChallenges} />}
+        {isOpen ? null : <Entrance />}
       </SEntranceButtonWrapper>
       <SEmpty />
       <SearchShorts />
@@ -109,6 +96,9 @@ const MainPage = () => {
         <MostLikeShorts shortsByLike={shortsByLike} />
         <MostViewShorts shortsByView={shortsByView} />
       </SShortsWrapper>
+      <GetAllMyChallenge />
+      <GetCompleteMyChallenge />
+      <GetOnGoingMyChallenge />
     </>
   );
 };

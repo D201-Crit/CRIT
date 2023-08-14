@@ -14,9 +14,9 @@ import { SWebRTCModal } from "../../styles/pages/SChallengePage";
 import VideoRoomComponent from "../VideoRoomComponent";
 import PhotoChallengeModal from "./PhotoChallengeModal";
 
-const Entrance = ({ onGoingChallenges }) => {
-  console.log(onGoingChallenges);
+const Entrance = () => {
   const user = useSelector((state) => state.users);
+  const onGoingChallenge = useSelector((state) => state.onGoingChallenges);
   const navigate = useNavigate();
   const [challengeData, setChallengeData] = useState(null); // 모달에 전달할 데이터 state 추가
   const [selectedSessionId, setSelectedSessionId] = useState(null);
@@ -131,7 +131,7 @@ const Entrance = ({ onGoingChallenges }) => {
       modules={[EffectCreative]}
       className="mySwiper"
     >
-      {onGoingChallenges.map((challenge) => (
+      {onGoingChallenge.map((challenge) => (
         <SEntranceSlide key={challenge.id}>
           <img src={challenge.imgPath} alt="챌린지 이미지" />
           <h4>{challenge.name}</h4>
@@ -141,7 +141,7 @@ const Entrance = ({ onGoingChallenges }) => {
               : challenge.info}
           </p>
           {getDaysInProgress(challenge.startDate, challenge.endDate)?.includes(
-            "현재",
+            "현재"
           ) ? (
             new Date(challenge.startTime) <= new Date() &&
             new Date() <= new Date(challenge.endTime) ? (
