@@ -11,7 +11,6 @@ const JoinChallenge = ({ challenge }) => {
       position: "center",
       html: `<div>
       <h1>챌린지에 참여하시겠습니까?</h1>
-      
       <h3>참여한 챌린지는 취소하실 수 없습니다.</h3>
       <h3>참여비 : ${challenge.money}포인트</h3>
     </div>`,
@@ -41,7 +40,7 @@ const JoinChallenge = ({ challenge }) => {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
           },
-        },
+        }
       )
       .then((res) => {
         Swal.fire({
