@@ -71,7 +71,7 @@ public class ProfileController {
 	//
 	// 	return new Response<>("성공", "팔로잉한 모든 유저 조회 성공", userService.getWholeUserInMyFollowing(user.getNickname()));
 	// }
-	@GetMapping("/whole/user")
+	@GetMapping("/myfollowing/user")
 	public Response<?> getWholeUserInMyFollowing(HttpServletRequest httpServletRequest){
 		User user = getUser(httpServletRequest);
 		List<UserResponseDto> users = userService.getWholeUserInMyFollowing(user);

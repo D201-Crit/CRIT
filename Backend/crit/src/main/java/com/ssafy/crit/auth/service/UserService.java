@@ -175,7 +175,16 @@ public class UserService {
 	public UserResponseDto follow(FollowRequestDto followRequestDto, User me) {
 		log.info("user ={}", followRequestDto.getFollowingId());
 		User you = userRepository.findByNickname(followRequestDto.getFollowingId())
-				.orElseThrow(() -> new IllegalArgumentException("Following User not found"));
+				.orElseThrow(() -> {
+					return new IllegalArgumentException(String.valueOf(ErrorCode.NOT_EXISTS_DATA));
+				});
+
+		Optional<Follow> existingFollow = followRepository.findByFollowerAndFollowing(me, you);
+		if (existingFollow.isPresent()) {
+			log.info("Follow relationship already exists for ={}", followRequestDto.getFollowingId());
+			throw new BadRequestException(ErrorCode.ALREADY_REGISTERED_DATA);
+		}
+		log.info("log.info now? ={}", followRequestDto.getFollowingId());
 
 		Follow follow = Follow.builder()
 				.follower(me)
@@ -191,9 +200,24 @@ public class UserService {
 
 	public String deleteByFollowingIdAndFollowerId(FollowRequestDto followRequestDto, User user) { // 언팔로우
 		log.info("you and me = {}", followRequestDto.getFollowingId() + " " + user.getNickname());
-		followRepository.deleteFollow(userRepository.findByNickname(followRequestDto.getFollowingId()).orElseThrow(), user);
-		return "성공";
+
+		Optional<User> youOptional = userRepository.findByNickname(followRequestDto.getFollowingId());
+
+		if(!youOptional.isPresent()) {
+			throw new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
+		}
+
+		User you = youOptional.get();
+
+		boolean isFollowRelationExists = followRepository.existsByFollowerAndFollowing(user, you);
+		if(!isFollowRelationExists) {
+			throw new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
+		}
+
+		followRepository.deleteFollow(you, user);
+		return "success";
 	}
+
 
 	public Boolean validUserId(String userId) {
 		Optional<User> user = userRepository.findById(userId);

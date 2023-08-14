@@ -38,39 +38,40 @@ public class BoardController {
 	private final JwtProvider jwtProvider;
 
 	@GetMapping("/whole/{category_id}")
-	public Response<?> getBoards(@PathVariable("category_id") String category,
+	public Response<?> getBoards(Pageable pageable,
+								 @PathVariable("category_id") String category,
 								 @RequestParam(required = false) String sortted,
 								 @RequestParam(required = false) String part) {
 
 		Page<BoardShowSortDto> boards;
 
 		if (part != null) {
-			boards = boardService.findByTitleContaining(part,category);
+			boards = boardService.findByTitleContaining(part,category,pageable);
 			return new Response<>("성공", "포함된 단어 찾기", boards);
 		}
 
 		if ("views-desc".equals(sortted)) {
-			boards = boardService.orderByViewsDesc(category);
+			boards = boardService.orderByViewsDesc(category,pageable);
 			return new Response<>("성공", "조회순 내림차순", boards);
 		}
 
 		if ("views-asc".equals(sortted)) {
-			boards = boardService.orderByViewsAsc(category);
+			boards = boardService.orderByViewsAsc(category,pageable);
 			return new Response<>("성공", "조회순 오름차순", boards);
 		}
 
 		if ("likes-desc".equals(sortted)) {
-			boards = boardService.orderByLikesDesc(category);
+			boards = boardService.orderByLikesDesc(category,pageable);
 			return new Response<>("성공", "조회순 내림차순", boards);
 		}
 
 		if ("likes-asc".equals(sortted)) {
-			boards = boardService.orderByLikesAsc(category);
+			boards = boardService.orderByLikesAsc(category,pageable);
 			return new Response<>("성공", "조회순 오름차순", boards);
 		}
 
 
-		boards = boardService.getBoards( category);
+		boards = boardService.getBoards( category,pageable);
 		return new Response<>("성공", "카테고리별 전체 게시물 리턴", boards);
 	}
 
@@ -150,7 +151,7 @@ public class BoardController {
 	public Response<?> getMyBoards(HttpServletRequest httpServletRequest, Pageable pageable){
 		User user = getUser(httpServletRequest);
 		return new Response<>("성공", "분류 별 내가 쓴 게시판 찾기",
-				boardService.findAllByUser(user));
+				boardService.findAllByUser(user,pageable));
 	}
 
 
