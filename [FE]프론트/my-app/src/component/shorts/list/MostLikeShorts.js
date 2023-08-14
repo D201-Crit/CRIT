@@ -32,17 +32,19 @@ const MostLikeShorts = ({ shortsByLike }) => {
       <SShortsContainer>
         {shortsByLike &&
           shortsByLike.map((short) => (
-            <SShortItem key={short.id}>
+            <SShortItem key={short.id}
+            onClick={() =>
+              !isAnyModalOpen() &&
+              setOpenDetailModal({
+                ...openDetailModal,
+                [short.id]: !openDetailModal[short.id],
+              })
+            }
+            >
               <img
                 src={short.thumbnailUrl}
                 alt={short.title}
-                onClick={() =>
-                  !isAnyModalOpen() &&
-                  setOpenDetailModal({
-                    ...openDetailModal,
-                    [short.id]: !openDetailModal[short.id],
-                  })
-                }
+                
               />
               <h2>{short.title}</h2>
               <p>♥ &nbsp; {short.likesCount}</p>

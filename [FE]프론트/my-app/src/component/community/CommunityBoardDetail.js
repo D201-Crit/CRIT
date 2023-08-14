@@ -39,9 +39,9 @@ const CommunityBoardDetail = ({ classification }) => {
     }, [page]);
 
 
-    const fetchArticles = async (pageNo = 0) => {
+    const fetchArticles = async (page) => {
         setLoading(true);
-        api.get(`${API_BASE_URL}/whole/${classification}?page=${pageNo}`, {
+        api.get(`${API_BASE_URL}/whole/${classification}?page=${page}`, {
             // &sortted=createdat-desc, { 추가가 가능한가?     
             headers: {
                 Authorization: `Bearer ${user.accessToken}`,
@@ -61,7 +61,7 @@ const CommunityBoardDetail = ({ classification }) => {
             });
     };
 
-    const sortArticles = async (sort = 'default', pageNo = 0) => {
+    const sortArticles = async (sort = 'default', pageNo) => {
         setLoading(true);
         let url;
         console.log(classification);

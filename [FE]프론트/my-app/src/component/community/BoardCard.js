@@ -1,5 +1,7 @@
 // BoardCard 컴포넌트
-import React from 'react';
+import React, { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { SBoardCard, SBoardTitle, SHr2, SPrimaryButton } from '../../styles/pages/SCommunityPage';
 
 const BoardCard = ({ classification, boards }) => {
@@ -11,7 +13,23 @@ const BoardCard = ({ classification, boards }) => {
     window.location.href = `/CommunityBoardPage/${classification}`;
   };
 
+  useEffect(() => {
+    AOS.init({
+      offset: 0,
+      duration: 200,
+      easing: "ease-in-out",
+      once: false,
+      delay: 50,
+      anchorPlacement: "bottom-top",
+    });
+  
+    return () => {
+      AOS.refresh();
+    };
+  }, []);
+
   return (
+    <div data-aos="flip-up">
     <SBoardCard onClick={handleGoToDetail}>
       <h1>{classification}</h1>
       <SBoardTitle />
@@ -30,6 +48,7 @@ const BoardCard = ({ classification, boards }) => {
         ))}
         <SPrimaryButton className="gotodetail" onClick={handleGoToDetail}>게시판 입장</SPrimaryButton>
     </SBoardCard>
+    </div>
   );
 };
 

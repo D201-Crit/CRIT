@@ -459,7 +459,6 @@ export const SCommentItem = styled.div`
   align-items: center;
   margin-bottom: 10px;
   padding: 10px;
-  // background: #050505;
   border-radius: 5px;
   & p {
     margin: 0;
@@ -678,11 +677,12 @@ export const SLikeImgButton = styled.button`
 
 export const SLikesCount = styled.span`
   display: flex;
-  position: absolute;
+  position: relative;
   font-size: 25px;
-  top: 37%;
-  left: 49.5%;
-  transform: translate(-50%, -50%);
+  align-items: center;
+  font-weight : 1000;
+  color : #ff007a;
+  left: 48.7%;
 `;
 
 export const SButtonWrapper = styled.div`
@@ -725,7 +725,7 @@ export const SSecondaryButton2 = styled.button`
 
   &:hover {
     box-shadow: 0px 0px 20px 0.1px rgba(255,255,255,15%);
-    background: #ff007a;;
+    background: #ff007a;
 
   }
 `;
