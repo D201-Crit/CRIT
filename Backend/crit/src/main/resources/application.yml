@@ -54,14 +54,14 @@ spring:
           naver:
             client-id: ENC(6ElfcLuPRhLeo1PEx0qn/LixzRLkZnt7WXeWWz86zeM=)
             client-secret: ENC(qWFGcIp+wooPXNWfpgPDbxdd83N3e1Ya)
-            redirect-uri: ENC(JrK+XWD3SpJ5l/b4biCK3gzIL+FuFr8RrbOglZX4EsTPRutWUGCGDqrqxtMfQO19rvgeU2FsTH8=)
+            redirect-uri: ENC(SKGlU5F9Drt9b/WGqoh8M2uC8oQfqaYwKRYAogT3pD2PMZm/WUwhbazBgX3GYVVJ0ZHzuy8Oq0oih9S7m+m+hw==)
             authorization-grant-type: authorization_code
             scope: name, email, profile_image
             client-name: Naver
 
           kakao:
             client-id: ENC(w/z6II7EsQwPdi8aX8pYUtcFXJK5kGULmt8kQrjPkuUuiH0t/CQ6JHL0TLZpCuLU)
-            redirect-uri: ENC(Ln+LmgshdUN41XPxxlRykyF1x2655A7xBr5PW4nFbgRRDeZxzpHbS3GZ6yo7OLH7IqgtcSkBTw8=)
+            redirect-uri: ENC(w5I01CgaY0IBQi4GcVy3w54YgoemC214QQxwRYaF7MmT7maEfp6jAw5mLs7dKGpj0cL++iteC7y4wL6JD7+BYA==)
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             scope: profile_nickname, profile_image, account_email
