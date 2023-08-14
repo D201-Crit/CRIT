@@ -70,7 +70,7 @@ public class ChallengeService {
         checkSchedule(user, challenge); // 스케줄 겹치는지 확인
 
         // 돈 확인
-        if(!user.useCashPoint(challenge.getMoney())){
+        if (!user.useCashPoint(challenge.getMoney())) {
             throw new BadRequestException(ErrorCode.INSUFFICIENT_POINT);
         }
 
@@ -123,7 +123,7 @@ public class ChallengeService {
         if (LocalDate.now().isBefore(challenge.getStartDate())) { // 챌린지가 시작하기 이전인 경우
 //            log.info("현재 시간 : {}", LocalDate.now());
             /** 챌린지 참여 로직 */
-            if(!user.useCashPoint(challenge.getMoney())){
+            if (!user.useCashPoint(challenge.getMoney())) {
                 throw new BadRequestException(ErrorCode.INSUFFICIENT_POINT);
             }
 
@@ -141,8 +141,8 @@ public class ChallengeService {
         List<Challenge> overlappedChallengeList = challengeRepository.findAllScheduledChallenge(challenge.getStartDate(),
                 challenge.getEndDate(), user); // 시간 제외 일정이 겹치는 챌린지들
 
-        for(Challenge c : overlappedChallengeList){
-            if(c.getStartTime().isBefore(challenge.getEndTime()) && c.getEndTime().isAfter(challenge.getStartTime())){
+        for (Challenge c : overlappedChallengeList) {
+            if (c.getStartTime().isBefore(challenge.getEndTime()) && c.getEndTime().isAfter(challenge.getStartTime())) {
                 // 겹치는 경우
                 throw new BadRequestException(ErrorCode.OVERLAPPED_CHALLENGE_REQUEST);
             }
@@ -156,6 +156,47 @@ public class ChallengeService {
 
     public List<Challenge> getChallengesAll() throws Exception {
         return challengeRepository.findAll();
+    }
+
+    public List<Challenge> getChallengesPlanned() throws Exception {
+        return challengeRepository.findAllByStartDateBefore(LocalDate.now());
+    }
+
+    public List<Challenge> getMyChallengesPlanned(User user) throws Exception {
+        List<Challenge> challengeList = new ArrayList<>();
+        List<ChallengeUser> allByUser = challengeUserRepository.findAllByUser(user);
+        for (ChallengeUser challengeUser : allByUser) {
+            if (challengeUser.getChallenge().getStartDate().isAfter(LocalDate.now())) {
+                challengeList.add(challengeUser.getChallenge());
+            }
+        }
+        return challengeList;
+    }
+
+    public List<Challenge> getMyChallengesFinished(User user) throws Exception {
+        List<Challenge> challengeList = new ArrayList<>();
+        List<ChallengeUser> allByUser = challengeUserRepository.findAllByUser(user);
+        for (ChallengeUser challengeUser : allByUser) {
+            if (challengeUser.getChallenge().getEndDate().isBefore(LocalDate.now())) {
+                challengeList.add(challengeUser.getChallenge());
+            }
+        }
+        return challengeList;
+    }
+
+    public List<Challenge> getMyChallengesOngoing(User user) throws Exception {
+        List<Challenge> challengeList = new ArrayList<>();
+        List<ChallengeUser> allByUser = challengeUserRepository.findAllByUser(user);
+
+        for (ChallengeUser challengeUser : allByUser) {
+            log.info("cur : challenge: {}   user : {}", challengeUser.getChallenge().getName(), challengeUser.getUser().getId());
+            if (isBeforeOrEqual(LocalDate.now(), challengeUser.getChallenge().getStartDate()) &&
+                    isAfterOrEqual(LocalDate.now(), challengeUser.getChallenge().getEndDate())) {
+                log.info("OK");
+                challengeList.add(challengeUser.getChallenge());
+            }
+        }
+        return challengeList;
     }
 
     // 현재 가능한 챌린지 불러오기
@@ -192,7 +233,7 @@ public class ChallengeService {
         }
 
         for (Challenge challenge : finishedChallengeList) { // 끝난거 종료시키기
-            if(challenge.getChallengeStatus() == ChallengeStatus.PROGRESS) { // 진행 중인거 종료 시키기
+            if (challenge.getChallengeStatus() == ChallengeStatus.PROGRESS) { // 진행 중인거 종료 시키기
                 settleChallenge(challenge); // 챌린지 정산 로직
 
                 challenge.setChallengeStatus(ChallengeStatus.END);
@@ -204,9 +245,9 @@ public class ChallengeService {
     public static void refundMoney(Challenge challenge) {
         int money = challenge.getMoney();
         challenge.getChallengeUserList().forEach(challengeUser -> {
-                    User user = challengeUser.getUser();
-                    user.addCashPoint(money);
-                });
+            User user = challengeUser.getUser();
+            user.addCashPoint(money);
+        });
     }
 
 
@@ -233,7 +274,7 @@ public class ChallengeService {
         return Arrays.stream(fileExtension).anyMatch(extension::equals);
     }
 
-    public void settleChallenge(Challenge challenge){
+    public void settleChallenge(Challenge challenge) {
         log.info("========={} 챌린지 정산 시작=========", challenge.getName());
         List<User> successList = new ArrayList<>(); // 챌린지를 100퍼센트 참여한 사람들의 리스트 (자기돈 + 실패한 사람들의 돈의 sum 1/n)
         List<User> passList = new ArrayList<>(); // 챌린지를 85퍼센트 이상 참여한 사람들의 리스트 (자기 돈만 가져감)
@@ -243,23 +284,23 @@ public class ChallengeService {
         // 유저별로 인증 목록 분리
         Map<User, List<IsCert>> userIsCertList = isCerts.stream().collect(Collectors.groupingBy(isCert -> isCert.getUser()));
 
-        for(User user : userIsCertList.keySet()){ // 유저별로 퍼센트 구분
+        for (User user : userIsCertList.keySet()) { // 유저별로 퍼센트 구분
             log.info("User : {}", user.getId());
             List<IsCert> isCertList = userIsCertList.get(user);
-        
+
             int certifiedDays = (int) isCertList.stream().filter(isCert -> isCert.isCertified()).count();
-            log.info("{}가 인증한 일수 : {}",user.getId(), certifiedDays);
+            log.info("{}가 인증한 일수 : {}", user.getId(), certifiedDays);
             int totalDays = isCertList.size();
             log.info("챌린지 총 일수 : {}", totalDays);
             double percent = (double) certifiedDays / (double) totalDays * 100.0;
             log.info("참여한 퍼센트 : {}", percent);
-            if(percent == 100.){ // 성공한 유저
+            if (percent == 100.) { // 성공한 유저
                 log.info("{} 유저 {} 챌린지 성공!!", user.getId(), challenge.getName());
                 successList.add(user);
-            } else if(percent >= 85.){ // 패스한 유저
+            } else if (percent >= 85.) { // 패스한 유저
                 log.info("{} 유저 {} 챌린지 패스", user.getId(), challenge.getName());
                 passList.add(user);
-            } else{ // 실패한 유저
+            } else { // 실패한 유저
                 log.info("{} 유저 {} 챌린지 실패", user.getId(), challenge.getName());
                 failList.add(user);
             }
@@ -271,13 +312,13 @@ public class ChallengeService {
         log.info("총 정산할 금액 : {}", settledMoney);
 
         log.info("=======챌린지를 패스한 인원들 정산=======");
-        for(User user : passList){
+        for (User user : passList) {
             log.info("유저 {}의 정산 금액: {} ", user.getId(), challenge.getMoney());
             user.addCashPoint(challenge.getMoney());
         }
 
         log.info("=======챌린지를 성공한 인원들 정산=======");
-        for(User user : successList){
+        for (User user : successList) {
             int finallyAddedMoney = settledMoney / successList.size() + challenge.getMoney();
             log.info("유저 {}의 정산 금액: {} ", user.getId(), finallyAddedMoney);
             user.addCashPoint(finallyAddedMoney);
@@ -287,4 +328,17 @@ public class ChallengeService {
 
     }
 
+    private boolean isBeforeOrEqual(LocalDate date, LocalDate compareToDate) {
+        if (date == null || compareToDate == null) {
+            return false;
+        }
+        return compareToDate.isBefore(date) || compareToDate.isEqual(date);
+    }
+
+    private boolean isAfterOrEqual(LocalDate date, LocalDate compareToDate) {
+        if (date == null || compareToDate == null) {
+            return false;
+        }
+        return compareToDate.isAfter(date) || compareToDate.isEqual(date);
+    }
 }
