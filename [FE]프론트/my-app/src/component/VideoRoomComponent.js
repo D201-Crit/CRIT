@@ -96,13 +96,45 @@ class VideoRoomComponent extends Component {
     window.addEventListener("resize", this.updateLayout);
     window.addEventListener("resize", this.checkSize);
     this.joinSession();
+
+    this.checkChallengeEndTimeInterval = setInterval(() => {
+      const currentTime = new Date();
+      const currentHour = this.formatNumber(currentTime.getHours());
+      const currentMinute = this.formatNumber(currentTime.getMinutes());
+      const endTime = this.props.challengeData.challenge.endTime;
+
+      if (`${currentHour}:${currentMinute}` == endTime) {
+        clearInterval(this.checkChallengeEndTimeInterval);
+        this.showChallengeResultModal();
+      }
+    }, 1000); // 1초마다 체크
   }
 
   componentWillUnmount() {
     window.removeEventListener("beforeunload", this.onbeforeunload);
     window.removeEventListener("resize", this.updateLayout);
     window.removeEventListener("resize", this.checkSize);
+    // 컴포넌트가 언마운트될 때 setInterval을 클리어합니다.
+    clearInterval(this.checkChallengeEndTimeInterval);
     this.leaveSession();
+  }
+
+  showChallengeResultModal() {
+    this.camStatusChanged();
+    Swal.fire({
+      position: "center",
+      // icon: "success",
+      title: "챌린지 종료!",
+      text: "화면 상단의 종료버튼을 눌러야 챌린지가 종료됩니다.",
+      showCancelButton: true,
+      confirmButtonText: "확인",
+      cancelButtonText: "취소",
+      background: "#272727",
+      color: "white",
+      preConfirm: () => {
+        return this.leaveSession();
+      },
+    });
   }
 
   onbeforeunload(event) {
@@ -287,8 +319,13 @@ class VideoRoomComponent extends Component {
     );
   }
 
+  formatNumber(number) {
+    return number < 10 ? `0${number}` : number;
+  }
+
   leaveSession() {
     const mySession = this.state.session;
+
     // this.props.closeModal(); // closeModal 함수 호출
     if (mySession) {
       mySession.disconnect();
@@ -309,11 +346,10 @@ class VideoRoomComponent extends Component {
     }
     console.log("Teachable Machine 종료");
     this.isUnmounted = true;
-
     const challengeId = this.props.challengeData.challenge.id;
     const inTime = 0 + this.totalTimeRef.current;
     console.log(`이탈 시간: ${this.totalTimeRef.current}ms`);
-    console.log(challengeId, inTime);
+
     api
       .post("https://i9d201.p.ssafy.io/api/cert/video", {
         challengeId,

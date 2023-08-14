@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SNav,
   SMenuWrapper,
@@ -17,7 +17,7 @@ const Nav = () => {
   const user = useSelector((state) => state.users); // useSelector를 통해 userSlice의 상태를 가져옴
   const [view, setView] = useState(false);
   const [massageView, setMassageView] = useState(false);
-  console.log(user);
+
   const MessageInfo = ({ massageView }) => (
     <div style={{ position: "fixed" }}>
       {massageView && <MessageBox setMassageView={setMassageView} />}
@@ -36,14 +36,19 @@ const Nav = () => {
       )}
     </div>
   );
-
   return (
     <SNav>
       {user && user.accessToken ? (
         <SMenuWrapper>
           <ul>
             <li>
-              <NavLink to="/IntroPage"> <img src={process.env.PUBLIC_URL + '/logo2.png'} style={ {width:'55px', height: '25px'}}  alt="placeholder" />
+              <NavLink to="/IntroPage">
+                {" "}
+                <img
+                  src={process.env.PUBLIC_URL + "/logo2.png"}
+                  style={{ width: "55px", height: "25px" }}
+                  alt="placeholder"
+                />
               </NavLink>
             </li>
             <li>

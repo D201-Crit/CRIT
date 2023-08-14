@@ -42,4 +42,4 @@ export const completeMyChallengeSlice = createSlice({
 export const { setChallenge } = challengeSlice.actions;
 export const { setMyChallenge } = myChallengeSlice.actions;
 export const { setOnGoingChallenge } = onGoingChallengeSlice.actions;
-export const { setCompleteMyChallenge } = onGoingChallengeSlice.actions;
+export const { setCompleteMyChallenge } = completeMyChallengeSlice.actions;

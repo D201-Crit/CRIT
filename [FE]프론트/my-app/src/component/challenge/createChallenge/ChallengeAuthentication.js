@@ -23,13 +23,13 @@ const ChallengeAuthentication = ({ onChangeAuthentication }) => {
       </li>
       <li>
         <input
-          id="photo"
+          id="createPhoto"
           type="radio"
           value="PHOTO"
           onChange={onChallengeAuthentication}
           name="AuthenticationType"
         />
-        <label htmlFor="photo">사진 인증</label>
+        <label htmlFor="createPhoto">사진 인증</label>
       </li>
     </SAuthenticationMethodWrapper>
   );
