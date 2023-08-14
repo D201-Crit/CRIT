@@ -83,11 +83,11 @@ public class CertService {
         /** Challenge EndTime 10분 이내 인지 체크 */
         long certSeconds = Duration.between(challenge.getEndTime(), LocalTime.now()).getSeconds(); // 인증 종료 시간과 현재 시간의 차
         log.info("시간: {}", certSeconds);
-        int errorTime = 600; // 오차 10분
-        if (Math.abs(certSeconds) <= errorTime) { // 종료시간 +- 10 분 이내에 인증해야 처리됨
-            // 종료 시간에서 10분 이내에 인증한 경우가 아닌 경우
-            throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_CERT_TIME);
-        }
+        // int errorTime = 600; // 오차 10분
+        // if (Math.abs(certSeconds) <= errorTime) { // 종료시간 +- 10 분 이내에 인증해야 처리됨
+        //     // 종료 시간에서 10분 이내에 인증한 경우가 아닌 경우
+        //     throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_CERT_TIME);
+        // }
 
         // 자리있는 시간 초단위로 보내줌
         int inTime = requestDto.getInTime();
