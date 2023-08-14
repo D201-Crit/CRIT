@@ -66,11 +66,11 @@ const CommunityBoardDetail = ({ classification }) => {
         let url;
         console.log(classification);
         switch (sort) {
-            case 'title-desc':
-                url = `${API_BASE_URL}/whole/${classification}?page=${pageNo}&sortted=title-desc`;
+            case 'likes-desc':
+                url = `${API_BASE_URL}/whole/${classification}?page=${pageNo}&sortted=likes-desc`;
                 break;
-            case 'title-asc':
-                url = `${API_BASE_URL}/whole/${classification}?page=${pageNo}&sortted=title-asc`;
+            case 'likes-asc':
+                url = `${API_BASE_URL}/whole/${classification}?page=${pageNo}&sortted=likes-asc`;
                 break;
             case 'views-desc':
                 url = `${API_BASE_URL}/whole/${classification}?page=${pageNo}&sortted=views-desc`;
@@ -137,8 +137,8 @@ const CommunityBoardDetail = ({ classification }) => {
                 <h1>{classification}</h1>
                 <SBoardDetailViewSelect value={sortMethod} onChange={handleSortMethodChange} >
                     <option value="default">전체 게시물</option>
-                    <option value="title-desc">제목 내림차순</option>
-                    <option value="title-asc">제목 오름차순</option>
+                    <option value="likes-desc">추천 내림차순</option>
+                    <option value="likes-asc">추천 오름차순</option>
                     <option value="views-desc">조회수 내림차순</option>
                     <option value="views-asc">조회수 오름차순</option>
                 </SBoardDetailViewSelect>

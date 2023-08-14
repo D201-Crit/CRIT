@@ -6,6 +6,7 @@ import {
   SLogoWrapper,
   SBtnAnimation,
 } from "../../styles/SCommon";
+import { StyledSent } from "../../styles/pages/SMessage";	
 import { FaRegUserCircle } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { BiEnvelope } from "react-icons/bi";
@@ -76,22 +77,28 @@ const Nav = () => {
       )}
       <SUserWrapper>
         {/* 메시지 파트 */}
-        {user && user.accessToken ? (
-          <SBtnAnimation>
-            <ul onClick={() => setMassageView(!massageView)}>
-              <li>
-                <BiEnvelope
-                  size={35}
-                  style={{
-                    cursor: "pointer",
-                    position: "absolute",
-                    top: "-15px",
-                    left: "-30px",
-                  }}
-                />{" "}
-              </li>
-            </ul>
-          </SBtnAnimation>
+        {user && user.accessToken ? (	
+          <SBtnAnimation>	
+            <ul onClick={() => setMassageView(!massageView)}>	
+              <li>	
+                <StyledSent style={{	
+                    cursor: "pointer",	
+                    position: "absolute",	
+                    top: "-15px",	
+                    left: "-30px",	
+                  }}/>	
+                {/* <BiEnvelope	
+                  size={35}	
+                  style={{	
+                    cursor: "pointer",	
+                    position: "absolute",	
+                    top: "-15px",	
+                    left: "-30px",	
+                  }}	
+                />{" "} */}	
+              </li>	
+            </ul>	
+          </SBtnAnimation>	
         ) : (
           <div></div>
         )}
@@ -109,7 +116,7 @@ const Nav = () => {
                 style={{
                   cursor: "pointer",
                   position: "absolute",
-                  top: "-15px",
+                  top: "-18px",
                 }}
               />{" "}
             </li>

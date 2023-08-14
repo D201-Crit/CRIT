@@ -186,8 +186,9 @@ export const SHeaderWrapper = styled.div`
 export const SHeaderWrapper2 = styled.div`
   font-weight: bold;
   display: flex;
+  width: 1140px;
+  height : 50px;
   align-items: center;
-  padding: 15px;
   margin-bottom : 10px;
   background-color: black;
   
@@ -678,9 +679,9 @@ export const SLikeImgButton = styled.button`
 export const SLikesCount = styled.span`
   display: flex;
   position: absolute;
-  font-size: 16px;
-  top: 50%;
-  left: 50%;
+  font-size: 25px;
+  top: 37%;
+  left: 49.5%;
   transform: translate(-50%, -50%);
 `;
 
