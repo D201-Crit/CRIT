@@ -1,25 +1,27 @@
 package com.ssafy.crit.auth.jwt;
 
 import com.ssafy.crit.auth.dto.TokenDto;
+import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.entity.enumType.AuthProvider;
+import com.ssafy.crit.auth.repository.UserRepository;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
+    private final UserRepository userRepository;
     @Value("app.auth.token-secret") private String secret;
-
     private static final Long ACCESS_TOKEN_EXPIRATION_TIME = 1000 * 60 * 60L; // 1 hours
     private static final Long REFRESH_TOKEN_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30L; // 30 days
 
     public TokenDto createAccessToken(String userId, AuthProvider provider) {
-        System.out.println("====createAccessToken=====" + provider + "===========");
         HashMap<String, Object> claim = new HashMap<>();
         claim.put("userId", userId);
         claim.put("provider", provider);
@@ -89,8 +91,25 @@ public class JwtProvider {
         return new Date().getTime() > (expirationTime - weekTime);
     }
 
-    public String getUserId(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token)
-                .getBody().get("userId", String.class);
+    /**
+    * userId 추출하기
+     */
+    public String extractUserId(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        String token = null;
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            token = authorizationHeader.substring(7);
+        }
+        return (String)get(token).get("userId");
+    }
+
+    public User extractUser(HttpServletRequest httpServletRequest) {
+        String header = httpServletRequest.getHeader("Authorization");
+        String token = header.substring(7);
+        String userId = (String) get(token).get("userId");
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("유저 ID를 찾을수 없습니다."));
+        return user;
     }
 }

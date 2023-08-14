@@ -6,13 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChallengeCategory {

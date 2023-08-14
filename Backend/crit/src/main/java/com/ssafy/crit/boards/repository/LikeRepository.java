@@ -2,14 +2,23 @@ package com.ssafy.crit.boards.repository;
 
 import java.util.List;
 
+import com.ssafy.crit.auth.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import com.ssafy.crit.boards.entity.Board;
-import com.ssafy.crit.boards.entity.LikeTable;
-import com.ssafy.crit.imsimember.entity.Member;
-
+import com.ssafy.crit.boards.entity.board.Board;
+import com.ssafy.crit.boards.entity.board.LikeTable;
+/**
+ * author : 강민승
+ */
 public interface LikeRepository extends JpaRepository<LikeTable,Long> {
 
-    List<LikeTable> findByMemberAndBoard(Member member, Board board);
-    Long deleteByMemberAndBoard(Member member, Board board);
+    List<LikeTable> findByUserAndBoard(User user, Board board);
+
+    @Modifying
+    @Query("delete from LikeTable l where l.user = :user and l.board = :board")
+    int deleteByUserAndBoard(@Param("user") User user, @Param("board") Board board);
+
 }
