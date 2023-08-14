@@ -127,12 +127,28 @@ public class ShortsService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
+//    public ShortsDto get(Long id) {
+//        return shortsRepository.findById(id)
+//                .map(ShortsDto::toDto)
+//                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_VALID_SHORTS_DATA));
+//    }
+
+    @Transactional  // readOnly 속성을 제거하였습니다.
     public ShortsDto get(Long id) {
-        return shortsRepository.findById(id)
-                .map(ShortsDto::toDto)
+        Shorts shorts = shortsRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_VALID_SHORTS_DATA));
+
+        // views 값을 증가시킵니다.
+        shorts.setViews(shorts.getViews() + 1);
+
+        // 변경된 엔터티를 저장합니다.
+        shortsRepository.save(shorts);
+
+        // Dto를 반환합니다.
+        return ShortsDto.toDto(shorts);
     }
+
 
     public MainThumbnailDto getMainThumbnail() {
         List<Shorts> shortsViewsDesc = shortsRepository.findAllByOrderByViewsDesc();

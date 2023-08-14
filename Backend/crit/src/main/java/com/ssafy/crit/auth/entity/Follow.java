@@ -24,12 +24,10 @@ public class Follow {
     private Long id;
 
     // 양방향 맵핑
-    @JsonIgnore // 무한 참조를 방지
     @ManyToOne(fetch = FetchType.LAZY) // 성능 최적화를 위함.
     @JoinColumn(name = "follower_id")
     private User follower;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "following_id")
     private User following;

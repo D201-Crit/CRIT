@@ -137,22 +137,6 @@ public class User extends BaseTimeEntity {
         this.profileImageUrl = s;
     }
 
-    public void addMemberTofollower(Follow follow) {
-        followers.add(follow);
-    }
-
-    public void addMemberTofollowing(Follow follow) {
-        followings.add(follow);
-    }
-
-    public void removeMemberTofollower(Follow follow) {
-        followers.remove(follow);
-    }
-
-    public void removeMemberTofollowing(Follow follow) {
-        followings.remove(follow);
-    }
-
     public void addCashPoint(int point) {
         this.cashPoint += point;
     }

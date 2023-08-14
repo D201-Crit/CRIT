@@ -30,6 +30,7 @@ public class BoardResponseDto {
     private List<String> liked;
     private List<Long> fileId;
     private List<String> imageFiles;
+    private int likesCount;
 
 
     @Builder
@@ -54,11 +55,12 @@ public class BoardResponseDto {
                 board.getViews(),
                 board.getUser().getNickname(),
                 board.getClassification().getCategory(),
-                board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")),
-                board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")),
+                board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")),
+                board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")),
                 likedName,
                 fileId,
-                filenames);
+                filenames,
+                board.getLikes().size());
         return boardDto;
     }
 
