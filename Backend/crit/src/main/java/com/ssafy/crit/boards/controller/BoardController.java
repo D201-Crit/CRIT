@@ -80,8 +80,8 @@ public class BoardController {
 
 	//전체 게시물 조회
 	@GetMapping("/whole")
-	public Response<?> getBoards(Pageable pageable) {
-		return new Response<>("성공", "전체 게시물 리턴", boardService.getWholeBoards(pageable));
+	public Response<?> getBoards() {
+		return new Response<>("성공", "전체 게시물 리턴", boardService.getWholeBoards());
 	}
 
 	//챌린지별 전체 조회
