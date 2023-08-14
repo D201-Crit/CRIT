@@ -208,7 +208,7 @@ class VideoRoomComponent extends Component {
       const classPrediction = prediction[i].className;
       const probability = prediction[i].probability.toFixed(2);
       console.log(`예측: ${classPrediction}, 확률: ${probability}`);
-      if (classPrediction === "Class 2" && parseFloat(probability) >= 0.8) {
+      if (classPrediction === "Class 1" && parseFloat(probability) >= 0.75) {
         this.totalTimeRef.current += 1; // 0.01 second
       }
     }
