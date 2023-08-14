@@ -3,7 +3,7 @@ import { setMyChallenge } from "../../slice/ChallengeSlice";
 import { useEffect } from "react";
 import { api } from "../../api/api";
 
-const GetMyChallenge = () => {
+const GetAllMyChallenge = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.users);
 
@@ -28,4 +28,4 @@ const GetMyChallenge = () => {
   return;
 };
 
-export default GetMyChallenge;
+export default GetAllMyChallenge;

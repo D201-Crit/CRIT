@@ -21,9 +21,10 @@ import "swiper/css/effect-creative";
 import Swal from "sweetalert2";
 import Entrance from "../component/challenge/Entrance";
 import { useSelector } from "react-redux";
-import GetMyChallenge from "../component/challenge/GetMyChallenge";
+
 import GetCompleteMyChallenge from "../component/challenge/GetCompleteMyChallenge";
 import GetOnGoingMyChallenge from "./../component/challenge/GetOnGoingMyChallenge";
+import GetAllMyChallenge from "../component/challenge/GetAllMyChallenge";
 
 const MainPage = () => {
   const [loading, setLoading] = useState(true);
@@ -96,7 +97,7 @@ const MainPage = () => {
         <MostLikeShorts shortsByLike={shortsByLike} />
         <MostViewShorts shortsByView={shortsByView} />
       </SShortsWrapper>
-      <GetMyChallenge />
+      <GetAllMyChallenge />
       <GetCompleteMyChallenge />
       <GetOnGoingMyChallenge />
     </>
