@@ -14,7 +14,7 @@ const persistConfig = {
     "users",
     "challenges",
     "myChallenges",
-    "onGoingChallenges",
+    "onGoingMyChallengeSlice",
     "completeMyChallenges",
   ], //auth Reducer만 저장
 };

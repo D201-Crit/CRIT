@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setOnGoingChallenge } from "../../slice/ChallengeSlice";
+import { setOnGoingMyChallenge } from "../../slice/ChallengeSlice";
 import { useEffect } from "react";
 import { api } from "../../api/api";
 
@@ -9,14 +9,14 @@ const GetOnGoingMyChallenge = () => {
 
   const onGoindMyChallenge = () => {
     api
-      .get("https://i9d201.p.ssafy.io/api/challenge/list/ongoing", {
+      .get("https://i9d201.p.ssafy.io/api/challenge/list/mine/ongoing", {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
         },
       })
       .then((res) => {
         console.log(res.data.data);
-        dispatch(setOnGoingChallenge(res.data.data));
+        dispatch(setOnGoingMyChallenge(res.data.data));
       })
       .catch((err) => {
         console.log(err);

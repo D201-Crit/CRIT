@@ -30,8 +30,9 @@ import PhotoChallengeModal from "./PhotoChallengeModal";
 const MyChallenge = () => {
   const user = useSelector((state) => state.users);
   const myChallenges = useSelector((state) => state.myChallenges);
-  const ongoingChallenges = useSelector((state) => state.onGoingChallenges);
-  const completeChallenges = useSelector((state) => state.completeChallenges);
+  const ongoingChallenges = useSelector((state) => state.onGoingMyChallenges);
+  const completeChallenges = useSelector((state) => state.completeMyChallenges);
+  const plannedChallenges = useSelector((state) => state.plannedMyChallenges);
   const location = useLocation();
   const navigate = useNavigate();
   const [isVideoOpen, setIsVideoOpen] = useState(false);
@@ -43,8 +44,7 @@ const MyChallenge = () => {
   const handleCategoryClick = (status) => {
     if (status == "전체") {
       if (myChallenges) {
-        const searchResult = myChallenges;
-        setSelectedCategory(searchResult);
+        setSelectedCategory(myChallenges);
       }
       if (!myChallenges) {
         Swal.fire({
@@ -68,8 +68,7 @@ const MyChallenge = () => {
     }
     if (status == "진행 중") {
       if (ongoingChallenges) {
-        const searchResult = ongoingChallenges;
-        setSelectedCategory(searchResult);
+        setSelectedCategory(ongoingChallenges);
       }
       if (!ongoingChallenges) {
         Swal.fire({
@@ -91,13 +90,33 @@ const MyChallenge = () => {
         });
       }
     }
-    // if(status=="진행 예정"){
-    //   searchResult =
-    // }
+    if (status == "진행 예정") {
+      if (plannedChallenges) {
+        setSelectedCategory(plannedChallenges);
+      }
+      if (!plannedChallenges) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "진행 예정인 챌린지가 없습니다.",
+          text: "CRIT",
+          showConfirmButton: false,
+          timer: 1500,
+          background: "#272727",
+          color: "white",
+          width: "500px",
+
+          // 먼지
+          // imageUrl: 'https://unsplash.it/400/200',
+          // imageWidth: 400,
+          // imageHeight: 200,
+          // imageAlt: 'Custom image',
+        });
+      }
+    }
     if (status == "종료") {
       if (completeChallenges) {
-        const searchResult = completeChallenges;
-        setSelectedCategory(searchResult);
+        setSelectedCategory(completeChallenges);
       }
       if (!completeChallenges) {
         Swal.fire({
@@ -277,7 +296,7 @@ const MyChallenge = () => {
           {sortedMyChallenges.map((challenge) => {
             const daysInProgress = getDaysInProgress(
               challenge.startDate,
-              challenge.endDate
+              challenge.endDate,
             );
 
             return (
@@ -307,7 +326,7 @@ const MyChallenge = () => {
                   <p id="people">{challenge.userList.length}명 참여 중</p>
                   {getDaysInProgress(
                     challenge.startDate,
-                    challenge.endDate
+                    challenge.endDate,
                   )?.includes("현재") ? (
                     new Date(challenge.startTime) <= new Date() &&
                     new Date() <= new Date(challenge.endTime) ? (

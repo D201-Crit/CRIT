@@ -3,16 +3,18 @@ import { userSlice } from "./slice/UserSlice";
 import {
   challengeSlice,
   myChallengeSlice,
-  onGoingChallengeSlice,
+  onGoingMyChallengeSlice,
   completeMyChallengeSlice,
+  plannedMyChallengeSlice,
 } from "./slice/ChallengeSlice";
 
 export const rootReducer = combineReducers({
   users: userSlice.reducer,
   challenges: challengeSlice.reducer,
   myChallenges: myChallengeSlice.reducer,
-  onGoingChallenges: onGoingChallengeSlice.reducer,
+  onGoingMyChallenges: onGoingMyChallengeSlice.reducer,
   completeMyChallenges: completeMyChallengeSlice.reducer,
+  plannedMyChallenges: plannedMyChallengeSlice.reducer,
 });
 
 export default rootReducer;

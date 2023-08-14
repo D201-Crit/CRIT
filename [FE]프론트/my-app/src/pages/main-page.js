@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 import GetCompleteMyChallenge from "../component/challenge/GetCompleteMyChallenge";
 import GetOnGoingMyChallenge from "./../component/challenge/GetOnGoingMyChallenge";
 import GetAllMyChallenge from "../component/challenge/GetAllMyChallenge";
+import GetPlannedMyChallenge from "../component/challenge/GetPlannedMyChallenge";
 
 const MainPage = () => {
   const [loading, setLoading] = useState(true);
@@ -98,6 +99,7 @@ const MainPage = () => {
       <GetAllMyChallenge />
       <GetCompleteMyChallenge />
       <GetOnGoingMyChallenge />
+      <GetPlannedMyChallenge />
     </>
   );
 };
