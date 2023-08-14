@@ -38,7 +38,7 @@ public class BoardController {
 	private final JwtProvider jwtProvider;
 
 	@GetMapping("/whole/{category_id}")
-	public Response<?> getBoards(Pageable pageable,
+	public Response<?> getBoards(
 								 @PathVariable("category_id") String category,
 								 @RequestParam(required = false) String sortted,
 								 @RequestParam(required = false) String part) {
@@ -46,32 +46,32 @@ public class BoardController {
 		Page<BoardShowSortDto> boards;
 
 		if (part != null) {
-			boards = boardService.findByTitleContaining(part,category,pageable);
+			boards = boardService.findByTitleContaining(part,category);
 			return new Response<>("성공", "포함된 단어 찾기", boards);
 		}
 
 		if ("views-desc".equals(sortted)) {
-			boards = boardService.orderByViewsDesc(category,pageable);
+			boards = boardService.orderByViewsDesc(category);
 			return new Response<>("성공", "조회순 내림차순", boards);
 		}
 
 		if ("views-asc".equals(sortted)) {
-			boards = boardService.orderByViewsAsc(category,pageable);
+			boards = boardService.orderByViewsAsc(category);
 			return new Response<>("성공", "조회순 오름차순", boards);
 		}
 
 		if ("likes-desc".equals(sortted)) {
-			boards = boardService.orderByLikesDesc(category,pageable);
+			boards = boardService.orderByLikesDesc(category);
 			return new Response<>("성공", "조회순 내림차순", boards);
 		}
 
 		if ("likes-asc".equals(sortted)) {
-			boards = boardService.orderByLikesAsc(category,pageable);
+			boards = boardService.orderByLikesAsc(category);
 			return new Response<>("성공", "조회순 오름차순", boards);
 		}
 
 
-		boards = boardService.getBoards( category,pageable);
+		boards = boardService.getBoards( category);
 		return new Response<>("성공", "카테고리별 전체 게시물 리턴", boards);
 	}
 
@@ -141,17 +141,17 @@ public class BoardController {
 
 
 	@GetMapping("/classificationOfMyBoards")
-	public Response<?> getMyBoardsClassification(@RequestParam("classification") String classificationString, HttpServletRequest httpServletRequest, Pageable pageable){
+	public Response<?> getMyBoardsClassification(@RequestParam("classification") String classificationString, HttpServletRequest httpServletRequest){
 		User user = getUser(httpServletRequest);
 		return new Response<>("성공", "분류 별 내가 쓴 게시판 찾기",
-				boardService.findAllByUserAndClassification(user, classificationString, pageable));
+				boardService.findAllByUserAndClassification(user, classificationString));
 	}
 
 	@GetMapping("/myBoards")
-	public Response<?> getMyBoards(HttpServletRequest httpServletRequest, Pageable pageable){
+	public Response<?> getMyBoards(HttpServletRequest httpServletRequest){
 		User user = getUser(httpServletRequest);
 		return new Response<>("성공", "분류 별 내가 쓴 게시판 찾기",
-				boardService.findAllByUser(user,pageable));
+				boardService.findAllByUser(user));
 	}
 
 
