@@ -28,7 +28,7 @@ public class MessageController {
 	@PostMapping
 	public Response<?> sendMessage(@RequestBody MessageSendRequestDto messageSendRequestDto, HttpServletRequest httpServletRequest) {
 		User sender = getUser(httpServletRequest);
-		return new Response<>("성공", "쪽지를 보냈습니다.", messageService.write(messageSendRequestDto, sender.getId()));
+		return new Response<>("성공", "쪽지를 보냈습니다.", messageService.write(messageSendRequestDto, sender.getNickname()));
 	}
 
 
