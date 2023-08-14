@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { setUser } from "../../../slice/UserSlice";
+import { useDispatch } from "react-redux";
+import { persistor } from "../../../store";
 
 const NaverCallback = () => {
   const nav = useNavigate();
+  const dispatch = useDispatch();
   const code = new URL(window.location.href).searchParams.get("code");
   const registrationId = "naver";
   const state = "200";
