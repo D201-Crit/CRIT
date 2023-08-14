@@ -166,11 +166,13 @@ public class BoardService {
                 .writer(user.getNickname())
                 .classification(classification.getCategory())
                 // date 가독성을 위해
-                .createTime(now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")))
-                .modifyTime(now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")))
+                .createTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")))
+                .modifyTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")))
                 .imageFiles(storeFileResult)
                 .fileId(fileId)
                 .build();
+
+
     }
 
 
@@ -264,6 +266,41 @@ public class BoardService {
         return deleted;
     }
 
+    public String addFile(List<MultipartFile> multipartFiles, Long id, User user) throws IOException {
+
+        Board board = boardRepository.findById(id).orElseThrow(() -> {
+            return new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_ID);
+        });
+
+        // 다중 파일 보내기 위해 List 인스턴스 생성
+        List<String> storeFileResult = new ArrayList<>();
+        List<Long> fileId = new ArrayList<>();
+
+        if (multipartFiles != null) {
+            for (MultipartFile multipartFile : multipartFiles) {
+                String uploadFiles = s3Uploader.uploadFiles(multipartFile, "Boards");
+
+                Boolean IsTrue = ImageExtention(uploadFiles);
+                if (!IsTrue) {
+                    throw new BadRequestException(ErrorCode.UNSUPPORTED_BOARD_MEDIA_TYPE);
+                }
+
+                UploadFile uploadFile = UploadFile.builder()
+                    .board(board)
+                    .userName(user.getId())
+                    .storeFilePath(uploadFiles)
+                    .classification(board.getClassification().getCategory())
+                    .build();
+
+                uploadFileRepository.saveAndFlush(uploadFile);
+                storeFileResult.add(uploadFiles);
+                fileId.add(uploadFile.getId());
+                board.getUploadFiles().add(uploadFile);
+            }
+            boardRepository.save(board);
+        }
+        return "put";
+    }
 
     public void clearList() {
         deleted = new ArrayList<>();
@@ -357,8 +394,8 @@ public class BoardService {
                     .classification(board.getClassification().getCategory())
                     .liked(likedName)
                     .imageUrl(filenames)
-                    .createTime(board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")))
-                    .modifyTime(board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")))
+                    .createTime(board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")))
+                    .modifyTime(board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")))
                     .build();
 
             bt.add(build);
@@ -391,8 +428,8 @@ public class BoardService {
                     board.getLikes().size(),
                     board.getClassification().getCategory(),
                     likedName, filenames, fileId,
-                    board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")),
-                    board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")));
+                    board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")),
+                    board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")));
         });
     }
 
@@ -426,8 +463,8 @@ public class BoardService {
                 board.getLikes().size(),
                 board.getClassification().getCategory(),
                 likedName, filenames, fileId,
-                board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")),
-                board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")));
+                board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")),
+                board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")));
 
             array.add(boardShowSortDto);
         });
