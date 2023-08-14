@@ -6,6 +6,7 @@ import java.util.List;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.repository.UserRepository;
+import com.ssafy.crit.boards.repository.UploadFileRepository;
 import com.ssafy.crit.boards.service.dto.BoardResponseDto;
 import com.ssafy.crit.boards.service.dto.BoardSaveRequestDto;
 import com.ssafy.crit.boards.service.dto.BoardShowSortDto;
@@ -36,6 +37,7 @@ public class BoardController {
 	private final BoardService boardService;
 	private final UserRepository userRepository;
 	private final JwtProvider jwtProvider;
+	private final UploadFileRepository uploadFileRepository;
 
 	@GetMapping("/whole/{category_id}")
 	public Response<?> getBoards(
@@ -62,12 +64,12 @@ public class BoardController {
 
 		if ("likes-desc".equals(sortted)) {
 			boards = boardService.orderByLikesDesc(category);
-			return new Response<>("성공", "조회순 내림차순", boards);
+			return new Response<>("성공", "좋아요순 내림차순", boards);
 		}
 
 		if ("likes-asc".equals(sortted)) {
 			boards = boardService.orderByLikesAsc(category);
-			return new Response<>("성공", "조회순 오름차순", boards);
+			return new Response<>("성공", "좋아요순 오름차순", boards);
 		}
 
 
@@ -129,6 +131,10 @@ public class BoardController {
 
 	@PostMapping("/deleteImageOne/{boardId}/{fileId}")
 	public Response<?> imageDelete(@PathVariable("boardId") Long id, @PathVariable("fileId") Long fileId, HttpServletRequest httpServletRequest){
+
+		if(!uploadFileRepository.findById(fileId).isPresent())
+			return null;
+
 		User user = getUser(httpServletRequest);
 		return new Response<>("성공", "이미지 삭제 링크 추가 성공", boardService.imageDelete(id, fileId));
 

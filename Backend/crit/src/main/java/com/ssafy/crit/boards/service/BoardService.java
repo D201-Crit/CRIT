@@ -255,8 +255,6 @@ public class BoardService {
     public ArrayList<String> imageDelete(Long id, Long fileId) {
         Board board = boardRepository.findById(id).orElseThrow();
 
-        if(!uploadFileRepository.findById(fileId).isPresent()) return null;
-
         List<UploadFile> allByBoardsId = uploadFileRepository.findAllByBoardsId(board.getId());
         for (UploadFile uploadFile : allByBoardsId) {
             if (uploadFile.getId().equals(fileId)) {
@@ -265,6 +263,7 @@ public class BoardService {
         }
         return deleted;
     }
+
 
     public void clearList() {
         deleted = new ArrayList<>();
