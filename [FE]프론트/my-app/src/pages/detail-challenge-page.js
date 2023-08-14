@@ -13,7 +13,6 @@ const DetailChallengePage = () => {
   const user = useSelector((state) => state.users);
   const [boards, setBoards] = useState([]);
   const date = new Date();
-  const today = date.toLocaleDateString();
   const [loading, setLoading] = useState(true);
 
   const [checkUser, setCheckUser] = useState(false);
@@ -30,7 +29,7 @@ const DetailChallengePage = () => {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
           },
-        },
+        }
       )
       .then((res) => {
         setLoading(false);

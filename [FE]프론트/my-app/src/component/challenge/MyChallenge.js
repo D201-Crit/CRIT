@@ -9,7 +9,6 @@ import "swiper/css/effect-cards";
 // 나머지
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { api } from "../../api/api";
 import Modal from "react-modal";
 import VideoRoomComponent from "../VideoRoomComponent";
 
@@ -21,30 +20,106 @@ import {
   SMidWrapper,
   SBotWrapper,
   SWebRTCModal,
-  SSwalContent,
+  SStatusWrapper,
 } from "../../styles/pages/SChallengePage";
 import { useSelector } from "react-redux";
 import { SImg } from "./../../styles/pages/SChallengePage";
-import { useDispatch } from "react-redux";
-import {
-  setCompleteMyChallenge,
-  setOnGoingChallenge,
-  setMyChallenge,
-} from "../../slice/ChallengeSlice";
 import Swal from "sweetalert2";
 import PhotoChallengeModal from "./PhotoChallengeModal";
 
 const MyChallenge = () => {
   const user = useSelector((state) => state.users);
   const myChallenges = useSelector((state) => state.myChallenges);
+  const ongoingChallenges = useSelector((state) => state.onGoingChallenges);
+  const completeChallenges = useSelector((state) => state.completeChallenges);
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isPhotoOpen, setIsPhotoOpen] = useState(false);
   const [challengeData, setChallengeData] = useState(null); // 모달에 전달할 데이터 state 추가
   const [selectedSessionId, setSelectedSessionId] = useState(null);
-  console.log(myChallenges);
+
+  const [selectedStatus, setSelectedCategory] = useState(myChallenges); // 초기값: 전체
+  const handleCategoryClick = (status) => {
+    if (status == "전체") {
+      if (myChallenges) {
+        const searchResult = myChallenges;
+        setSelectedCategory(searchResult);
+      }
+      if (!myChallenges) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "아직 챌린지가 없습니다!. \n 챌린지에 참여해주세요!.",
+          text: "CRIT",
+          showConfirmButton: false,
+          timer: 1500,
+          background: "#272727",
+          color: "white",
+          width: "500px",
+
+          // 먼지
+          // imageUrl: 'https://unsplash.it/400/200',
+          // imageWidth: 400,
+          // imageHeight: 200,
+          // imageAlt: 'Custom image',
+        });
+      }
+    }
+    if (status == "진행 중") {
+      if (ongoingChallenges) {
+        const searchResult = ongoingChallenges;
+        setSelectedCategory(searchResult);
+      }
+      if (!ongoingChallenges) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "진행중인 챌린지가 없습니다.",
+          text: "CRIT",
+          showConfirmButton: false,
+          timer: 1500,
+          background: "#272727",
+          color: "white",
+          width: "500px",
+
+          // 먼지
+          // imageUrl: 'https://unsplash.it/400/200',
+          // imageWidth: 400,
+          // imageHeight: 200,
+          // imageAlt: 'Custom image',
+        });
+      }
+    }
+    // if(status=="진행 예정"){
+    //   searchResult =
+    // }
+    if (status == "종료") {
+      if (completeChallenges) {
+        const searchResult = completeChallenges;
+        setSelectedCategory(searchResult);
+      }
+      if (!completeChallenges) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "종료 된 챌린지가 없습니다.",
+          text: "CRIT",
+          showConfirmButton: false,
+          timer: 1500,
+          background: "#272727",
+          color: "white",
+          width: "500px",
+
+          // 먼지
+          // imageUrl: 'https://unsplash.it/400/200',
+          // imageWidth: 400,
+          // imageHeight: 200,
+          // imageAlt: 'Custom image',
+        });
+      }
+    }
+  };
 
   const checkEnterTime = () => {
     return Swal.fire({
@@ -114,52 +189,6 @@ const MyChallenge = () => {
   const closePhotoModal = () => {
     setIsPhotoOpen(false);
   };
-  const getMyChallenge = () => {
-    api
-      .get("https://i9d201.p.ssafy.io/api/challenge/list/mine", {
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-      })
-      .then((res) => {
-        console.log(res.data.data);
-        dispatch(setMyChallenge(res.data.data));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const getCompleteMyChallenge = () => {
-    api
-      .get("https://i9d201.p.ssafy.io/api/challenge/list/finished", {
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-      })
-      .then((res) => {
-        console.log(res.data.data);
-        dispatch(setCompleteMyChallenge(res.data.data));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  const getOngoindMyChallenge = () => {
-    api
-      .get("https://i9d201.p.ssafy.io/api/challenge/list/ongoing", {
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-      })
-      .then((res) => {
-        console.log(res.data.data);
-        dispatch(setOnGoingChallenge(res.data.data));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   // 시작일 기준 오름차순 정렬
   const sortByStartDate = (a, b) => {
@@ -167,7 +196,7 @@ const MyChallenge = () => {
     const startDateB = new Date(b.startDate);
     return startDateA - startDateB;
   };
-  const sortedMyChallenges = [...myChallenges].sort(sortByStartDate);
+  const sortedMyChallenges = [...selectedStatus].sort(sortByStartDate);
   // 상세보기 클릭
   const detailClick = (challenge) => {
     if (location.pathname === "/ChallengePage") {
@@ -218,13 +247,17 @@ const MyChallenge = () => {
       return `현재 ${daysInProgress + 1}일째 참여 중`;
     }
   };
-  useEffect(() => {
-    getMyChallenge();
-    getCompleteMyChallenge();
-    getOngoindMyChallenge();
-  }, []);
+
   return (
     <>
+      <SStatusWrapper>
+        <ul id="myChallengeStatus">
+          <a onClick={() => handleCategoryClick("전체")}>전체</a>
+          <a onClick={() => handleCategoryClick("진행 중")}>진행 중</a>
+          <a onClick={() => handleCategoryClick("진행 예정")}>진행 예정</a>
+          <a onClick={() => handleCategoryClick("종료")}>종료</a>
+        </ul>
+      </SStatusWrapper>
       {sortedMyChallenges.length === 0 ? (
         <SSwiper
           effect={"cards"}

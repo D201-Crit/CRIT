@@ -29,82 +29,110 @@ const SignUp = () => {
       setMismatchError(e.target.value !== passwordCheck);
     },
     // 함수 기준 외부 변수만 deps[]에 작성
-    [passwordCheck],
+    [passwordCheck]
   );
   const onCheckId = (userId) => {
-    axios
-      .post(`https://i9d201.p.ssafy.io/api/auth/valid/userId?userId=${userId}`)
-      .then((res) => {
-        if (
-          res.data
-            ? Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "사용가능한 아이디입니다.",
-                text: "CRIT",
-                showConfirmButton: false,
-                timer: 1500,
-                background: "#272727",
-                color: "white",
-              })
-            : Swal.fire({
-                position: "center",
-                icon: "error",
-                title: "이미 사용중인 아이디입니다.",
-                text: "CRIT",
-                showConfirmButton: false,
-                timer: 1500,
-                background: "#272727",
-                color: "white",
-              })
-        )
-          // 중복 확인 성공한 경우 id 중복 상태를 false로 변경
-          setCheckId(true);
-      })
-      .catch((err) => {
-        console.log(err);
-        // 중복 확인 실패한 경우 id 중복 상태를 true로 변경
-        setCheckId(false);
+    if (userId.length > 20 || userId.length < 5) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "아이디는 \n5자이상 20이하여야 합니다.",
+        text: "CRIT",
+        showConfirmButton: false,
+        timer: 1500,
+        background: "#272727",
+        color: "white",
       });
+    } else {
+      axios
+        .post(
+          `https://i9d201.p.ssafy.io/api/auth/valid/userId?userId=${userId}`
+        )
+        .then((res) => {
+          if (
+            res.data
+              ? Swal.fire({
+                  position: "center",
+                  icon: "success",
+                  title: "사용가능한 아이디입니다.",
+                  text: "CRIT",
+                  showConfirmButton: false,
+                  timer: 1500,
+                  background: "#272727",
+                  color: "white",
+                })
+              : Swal.fire({
+                  position: "center",
+                  icon: "error",
+                  title: "이미 사용중인 아이디입니다.",
+                  text: "CRIT",
+                  showConfirmButton: false,
+                  timer: 1500,
+                  background: "#272727",
+                  color: "white",
+                })
+          )
+            // 중복 확인 성공한 경우 id 중복 상태를 false로 변경
+            setCheckId(true);
+        })
+        .catch((err) => {
+          console.log(err);
+          // 중복 확인 실패한 경우 id 중복 상태를 true로 변경
+          setCheckId(false);
+        });
+    }
   };
 
   const onCheckNickname = (nickname) => {
-    axios
-      .post(
-        `https://i9d201.p.ssafy.io/api/auth/valid/nickname?nickname=${nickname}`,
-      )
-      .then((res) => {
-        if (
-          res.data
-            ? Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "사용가능한 닉네임입니다.",
-                text: "CRIT",
-                showConfirmButton: false,
-                timer: 1500,
-                background: "#272727",
-                color: "white",
-              })
-            : Swal.fire({
-                position: "center",
-                icon: "error",
-                title: "이미 사용중인 닉네임입니다.",
-                text: "CRIT",
-                showConfirmButton: false,
-                timer: 1500,
-                background: "#272727",
-                color: "white",
-              })
-        )
-          // 중복 확인 성공한 경우 nickname 중복 상태를 false로 변경
-          setcheckNickname(true);
-      })
-      .catch((err) => {
-        console.log(err);
-        // 중복 확인 실패한 경우 nickname 중복 상태를 true로 변경
-        setcheckNickname(false);
+    if (nickname.length > 10 || nickname.length < 2) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "닉네임은\n2자이상 10이하여야 합니다.",
+        text: "CRIT",
+        showConfirmButton: false,
+        timer: 1500,
+        background: "#272727",
+        color: "white",
       });
+    } else {
+      axios
+        .post(
+          `https://i9d201.p.ssafy.io/api/auth/valid/nickname?nickname=${nickname}`
+        )
+        .then((res) => {
+          if (
+            res.data
+              ? Swal.fire({
+                  position: "center",
+                  icon: "success",
+                  title: "사용가능한 닉네임입니다.",
+                  text: "CRIT",
+                  showConfirmButton: false,
+                  timer: 1500,
+                  background: "#272727",
+                  color: "white",
+                })
+              : Swal.fire({
+                  position: "center",
+                  icon: "error",
+                  title: "이미 사용중인 닉네임입니다.",
+                  text: "CRIT",
+                  showConfirmButton: false,
+                  timer: 1500,
+                  background: "#272727",
+                  color: "white",
+                })
+          )
+            // 중복 확인 성공한 경우 nickname 중복 상태를 false로 변경
+            setcheckNickname(true);
+        })
+        .catch((err) => {
+          console.log(err);
+          // 중복 확인 실패한 경우 nickname 중복 상태를 true로 변경
+          setcheckNickname(false);
+        });
+    }
   };
 
   const onChangePasswordCheck = useCallback(
@@ -112,7 +140,7 @@ const SignUp = () => {
       setPasswordCheck(e.target.value);
       setMismatchError(e.target.value !== password);
     },
-    [password],
+    [password]
   );
   const [mismatchError, setMismatchError] = useState(false);
   // 가입 실패
@@ -140,6 +168,30 @@ const SignUp = () => {
           position: "center",
           icon: "error",
           title: "닉네임 중복체크를 해주세요.",
+          text: "CRIT",
+          showConfirmButton: false,
+          timer: 1500,
+          background: "#272727",
+          color: "white",
+        });
+      }
+      if (id.length > 20 || id.length < 5) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "아이디는 \n5자이상 20이하여야 합니다.",
+          text: "CRIT",
+          showConfirmButton: false,
+          timer: 1500,
+          background: "#272727",
+          color: "white",
+        });
+      }
+      if (nickname.length > 10 || nickname.length < 2) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "닉네임은\n2자이상 10이하여야 합니다.",
           text: "CRIT",
           showConfirmButton: false,
           timer: 1500,
@@ -207,7 +259,7 @@ const SignUp = () => {
           });
       }
     },
-    [email, nickname, password, passwordCheck, checkId, checkNickname],
+    [email, nickname, password, passwordCheck, checkId, checkNickname]
   );
 
   return (
@@ -221,6 +273,7 @@ const SignUp = () => {
             name="id"
             value={id}
             onChange={onChangeId}
+            placeholder="아이디는 5자이상 20자이하"
           />
           <SCheckButton type="button" onClick={() => onCheckId(id)}>
             중복확인
