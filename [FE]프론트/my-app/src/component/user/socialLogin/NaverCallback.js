@@ -10,8 +10,8 @@ const NaverCallback = () => {
 
   const naverLogin = () => {
     axios({
-      method: "GET",
-      url: `http://i9d201.p.ssafy.io/api/oauth/login/oauth2/code/${registrationId}?code=${code}&state=${state}`,
+      method: "POST",
+      url: `https://i9d201.p.ssafy.io/api/oauth/login/oauth2/code/${registrationId}?code=${code}&state=${state}`,
       // url: `http://localhost:8080/api/oauth/login/oauth2/code/${registrationId}?code=${code}&state=${state}`,
     })
       .then((res) => {
