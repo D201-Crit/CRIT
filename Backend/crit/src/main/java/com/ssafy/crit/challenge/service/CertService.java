@@ -89,8 +89,8 @@ public class CertService {
         //     throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_CERT_TIME);
         // }
 
-        // 자리있는 시간 초단위로 보내줌
-        int inTime = requestDto.getInTime();
+        // 자리있는 시간 밀리초단위로 보내줌
+        int inTime = requestDto.getInTime() / 1000;
         LocalTime startTime = challenge.getStartTime();
         LocalTime endTime = challenge.getEndTime();
 
