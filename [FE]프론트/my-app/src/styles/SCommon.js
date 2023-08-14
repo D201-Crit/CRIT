@@ -7,7 +7,7 @@ export const SNav = styled.nav`
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background: rgba(20, 20, 20, 20);
+  background: black;
   font-size: 20px;
   mbox-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
@@ -60,6 +60,7 @@ export const SMenuWrapper = styled.div`
     color: white;
     &:hover {
       color: #ff007a;
+      font-size : 21px;
     }
 
     &.active {
@@ -187,5 +188,7 @@ export const SLoadingBackground = styled.div`
 
 export const SLoadingText = styled.div`
   font: 1rem "Noto Sans KR";
+  text-align: center;
+  font-weight : 1000;
   text-align: center;
 `;
