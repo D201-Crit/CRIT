@@ -175,7 +175,15 @@ public class UserService {
 	public UserResponseDto follow(FollowRequestDto followRequestDto, User me) {
 		log.info("user ={}", followRequestDto.getFollowingId());
 		User you = userRepository.findByNickname(followRequestDto.getFollowingId())
-				.orElseThrow(() -> new IllegalArgumentException("Following User not found"));
+				.orElseThrow(() -> {
+					return new IllegalArgumentException(String.valueOf(ErrorCode.NOT_EXISTS_DATA));
+				});
+
+		if(followRepository.findByFollowerAndAndFollowing(me, you)){
+			log.info("여기까지는 되나? ={}", followRequestDto.getFollowingId());
+			throw new BadRequestException(ErrorCode.ALREADY_REGISTERED_DATA);
+		}
+		log.info("log.info now? ={}", followRequestDto.getFollowingId());
 
 		Follow follow = Follow.builder()
 				.follower(me)
@@ -191,7 +199,9 @@ public class UserService {
 
 	public String deleteByFollowingIdAndFollowerId(FollowRequestDto followRequestDto, User user) { // 언팔로우
 		log.info("you and me = {}", followRequestDto.getFollowingId() + " " + user.getNickname());
-		followRepository.deleteFollow(userRepository.findByNickname(followRequestDto.getFollowingId()).orElseThrow(), user);
+		followRepository.deleteFollow(userRepository.findByNickname(followRequestDto.getFollowingId()).orElseThrow(() -> {
+			return new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
+		}), user);
 		return "성공";
 	}
 

@@ -23,7 +23,7 @@ spring:
     password: ENC(UoG6QmblfdyyheAZHohflGtuOTo7S+6s)
     driver-class-name: org.mariadb.jdbc.Driver
     hikari:
-      maximum-pool-size:3
+      maximum-pool-size:1
   main:
     allow-circular-references: true
 
