@@ -4,7 +4,7 @@ import {
   SEntranceButtonWrapper,
   SShortsWrapper,
 } from "../styles/pages/SMainPage";
-import { SEmpty } from '../styles/SCommon';
+import { SEmpty } from "../styles/SCommon";
 import SearchShorts from "../component/shorts/SearchShorts";
 import MostLikeShorts from "../component/shorts/list/MostLikeShorts";
 import CreateShortsModal from "../component/shorts/CreateShortsModal";
@@ -101,7 +101,7 @@ const MainPage = () => {
         <SEntranceButton onClick={openChallenge}>바로입장</SEntranceButton>
         {isOpen ? null : <Entrance onGoingChallenges={onGoingChallenges} />}
       </SEntranceButtonWrapper>
-      <SEmpty/>
+      <SEmpty />
       <SearchShorts />
       {/* 쇼츠 영역 */}
       <SShortsWrapper>
