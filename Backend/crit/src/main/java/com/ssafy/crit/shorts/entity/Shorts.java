@@ -42,7 +42,7 @@ public class Shorts extends BaseTimeEntity {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private User user;
 
-    @OneToMany(mappedBy = "shorts")
+    @OneToMany(mappedBy = "shorts", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ShortsLikeTable> shortsLikeTables;
 
     @JsonIgnore
