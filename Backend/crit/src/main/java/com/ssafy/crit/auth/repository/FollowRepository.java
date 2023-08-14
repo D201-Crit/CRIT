@@ -26,6 +26,8 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     @Query("select f from Follow f where f.follower = :me")
     List<Follow> findByMyFollowings(@Param("me") User me);
 
+    Optional<Follow> findByFollowerAndFollowing(User follower, User following);
 
+    boolean existsByFollowerAndFollowing(User follower, User following);
 
 }

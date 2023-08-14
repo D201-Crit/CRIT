@@ -50,4 +50,5 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     Page<Board> findAllByUser(User user, Pageable pageable);
 
+
 }
