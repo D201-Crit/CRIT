@@ -20,7 +20,6 @@ const ChallengePage = () => {
   const user = useSelector((state) => state.users);
   const challenges = useSelector((state) => state.challenges);
   const dispatch = useDispatch();
-  console.log(user);
   // 챌린지 만들기 모달
   const [isOpen, setIsOpen] = useState(false);
   const openModal = () => {
