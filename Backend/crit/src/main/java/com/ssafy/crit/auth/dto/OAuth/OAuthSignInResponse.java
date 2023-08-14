@@ -2,6 +2,7 @@ package com.ssafy.crit.auth.dto.OAuth;
 
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.entity.enumType.AuthProvider;
+import com.ssafy.crit.auth.entity.enumType.Grade;
 import com.ssafy.crit.auth.entity.enumType.Role;
 import com.ssafy.crit.common.util.PasswordUtil;
 import lombok.Builder;
@@ -51,6 +52,9 @@ public class OAuthSignInResponse {
                 .password(password)
                 .email(email)
                 .role(Role.USER)
+                .grade(Grade.Beginner)
+                .profileImageUrl("https://critservice.s3.ap-northeast-2.amazonaws.com/Profile/369bbf78-2bf6-4072-be96-e5f9f2a12d87.user-basic-profile.png")
+                .exp(0)
                 .refreshToken(refreshToken)
                 .tokenExpirationTime(refreshTokenExpirationTime)
                 .build();

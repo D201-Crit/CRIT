@@ -44,9 +44,9 @@ public class PayService {
         parameters.add("total_amount", String.valueOf(amount));
         parameters.add("vat_amount", "0");
         parameters.add("tax_free_amount", "0");
-        parameters.add("approval_url", "http://localhost:3000/payment/success"); // 성공 시 redirect url
-        parameters.add("cancel_url", "http://localhost:3000/payment/cancel"); // 취소 시 redirect url
-        parameters.add("fail_url", "http://localhost:3000/payment/fail"); // 실패 시 redirect url
+        parameters.add("approval_url", "https://i9d201.p.ssafy.io/payment/success"); // 성공 시 redirect url
+        parameters.add("cancel_url", "https://i9d201.p.ssafy.io/payment/cancel"); // 취소 시 redirect url
+        parameters.add("fail_url", "https://i9d201.p.ssafy.io/payment/fail"); // 실패 시 redirect url
 
         // 파라미터, 헤더
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());

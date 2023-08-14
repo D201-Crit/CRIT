@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import reactor.util.annotation.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -42,6 +43,9 @@ public class IsCert {
 
     private String filePath; // 이미지 저장 경로
 
+    @ColumnDefault("false")
+    private boolean isFinished;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
@@ -69,6 +73,10 @@ public class IsCert {
 
     public void setPercentage(String percentage) {
         this.percentage = percentage;
+    }
+
+    public void setIsFinished(boolean bool) {
+        this.isFinished = bool;
     }
 
 }

@@ -64,6 +64,12 @@ public class CertService {
         isCert.certification(true); // 인증 완료로 설정
         isCert.setCertTimeNow(); // 인증 시간을 현재로 지정
 
+        if (challenge.getEndDate().isEqual(LocalDate.now())) { // 인증이 마지막 날이라면
+            isCert.setIsFinished(true);
+        } else {
+            isCert.setIsFinished(false);
+        }
+
         isCertRepository.save(isCert);
 
         return isCert;
@@ -74,32 +80,40 @@ public class CertService {
     public IsCert videoCertification(CertVideoRequestDto requestDto, User user) throws Exception {
         Challenge challenge = isChallenge(requestDto.getChallengeId(), Cert.WEBRTC, user);
 
-        /** Challenge EndTime 10분 이내 인지 체크*/
+        /** Challenge EndTime 10분 이내 인지 체크 */
         long certSeconds = Duration.between(challenge.getEndTime(), LocalTime.now()).getSeconds(); // 인증 종료 시간과 현재 시간의 차
         log.info("시간: {}", certSeconds);
-//        if (certSeconds < 0 || certSeconds > 3000) { // 종료 이전에 인증 하였거나
-//            // 종료 시간에서 10분 이내에 인증한 경우가 아닌 경우
-//            throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_CERT_TIME);
-//        }
+        // int errorTime = 600; // 오차 10분
+        // if (Math.abs(certSeconds) <= errorTime) { // 종료시간 +- 10 분 이내에 인증해야 처리됨
+        //     // 종료 시간에서 10분 이내에 인증한 경우가 아닌 경우
+        //     throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_CERT_TIME);
+        // }
 
-        // 이탈시간 초단위로 보내줌
-        int outTime = requestDto.getOutTime();
+        // 자리있는 시간 초단위로 보내줌
+        int inTime = requestDto.getInTime();
         LocalTime startTime = challenge.getStartTime();
         LocalTime endTime = challenge.getEndTime();
 
         // 챌린지 끝나고 나서
         int allSeconds = (int) Duration.between(startTime, endTime).toSeconds(); // 챌린지 전체 초
+        LocalTime presenceTime = LocalTime.ofSecondOfDay(inTime); // 자리에 있었던 시간
+        LocalTime absentTime = LocalTime.ofSecondOfDay(allSeconds - inTime); // 부재 시간
+        double doubleInTime = inTime;
+        double presencePercentage = Math.round((doubleInTime / allSeconds * 100) * 10) / 10.; // 자리에 앉아 있는 비율
+        IsCert isCert = todayChallengeIsCert(challenge, user); // 오늘 해당 챌린지 인증 불러오기
 
-        LocalTime absentTime = LocalTime.ofSecondOfDay(outTime); // 부재 시간
-        LocalTime presenceTime = LocalTime.ofSecondOfDay(allSeconds - outTime); // 자리에 있었던 시간
-        double doubleOutTime = outTime;
-        double presencePercentage = Math.round((100 - (doubleOutTime / allSeconds * 100)) * 10) / 10.; // 자리에 앉아 있는 비율
-        IsCert isCert = todayChallengeIsCert(challenge, user);
-
+        // 불러온 인증 수정하기
         isCert.setOutTime(absentTime);
         isCert.setPresenceTime(presenceTime);
         isCert.setPercentage(String.valueOf(presencePercentage));
         isCert.setCertTimeNow();
+
+        if (challenge.getEndDate().isEqual(LocalDate.now())) { // 인증이 마지막 날이라면
+            isCert.setIsFinished(true);
+        } else {
+            isCert.setIsFinished(false);
+        }
+
 
         if (presencePercentage >= 85.) { // 85퍼센트 이상이면 인증
             isCert.certification(true);
@@ -128,7 +142,6 @@ public class CertService {
     public void dailyInsertionIsCert() throws Exception {
         log.info("일일 챌린지 인증 내역 넣기");
         List<Challenge> allOngoingChallenge = challengeRepository.findAllOngoingChallenge(LocalDate.now());
-//        log.info("진행중 : ㅇㅇ");
         List<IsCert> insertedIsCert = new ArrayList<>();
         for (Challenge challenge : allOngoingChallenge) {
             log.info("challengeId : {}", challenge.getId());
@@ -176,7 +189,7 @@ public class CertService {
 
         return challenge;
     }
-
+    
     // 오늘 챌린지 리스트들
     private IsCert todayChallengeIsCert(Challenge challenge, User user) {
         LocalDateTime startDatetime = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(23, 59, 59));

@@ -41,7 +41,7 @@ public class Shorts extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private User user;
-    
+
     @OneToMany(mappedBy = "shorts", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ShortsLikeTable> shortsLikeTables;
 

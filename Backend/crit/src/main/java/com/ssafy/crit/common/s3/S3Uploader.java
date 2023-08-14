@@ -35,6 +35,8 @@ public class S3Uploader {
     private static final String EXTENSION = "png";
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
+    @Value("d3byqpylj7jy1e.cloudfront.net")
+    private String cloudFrontUrl;
 
     public String uploadFiles(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile) // 파일 변환할 수 없으면 에러
@@ -56,7 +58,9 @@ public class S3Uploader {
 
     public String upload(File uploadFile, String filePath) {
         String fileName = filePath + "/" + UUID.randomUUID() + "."+ uploadFile.getName();   // S3에 저장된 파일 이름
+        log.info("upload");
         String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
+        log.info("upload URL : {}", uploadImageUrl);
         removeNewFile(uploadFile);
         return uploadImageUrl;
     }
@@ -64,7 +68,12 @@ public class S3Uploader {
     // S3로 업로드
     private String putS3(File uploadFile, String fileName) {
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
-        return amazonS3Client.getUrl(bucket, fileName).toString();
+        log.info("upload putS3");
+        //return amazonS3Client.getUrl(bucket, fileName).toString(); // S3 업로드된 주소 반환
+        return "https://" + cloudFrontUrl + "/" + fileName; // S3 업로드된 주소 반환
+        /**
+        * return을 할때 crit service s3 주소기 때문에 fileName만 반환진행 -> 반환한 후에는 CloundFront URI 붙여서 DB에 저장
+         */
     }
 
     // 로컬에 저장된 이미지 지우기
@@ -123,7 +132,11 @@ public class S3Uploader {
             ImageIO.write(bufferedImage, EXTENSION, thumbnailFile);
             amazonS3Client.putObject(new PutObjectRequest(bucket, thumbnailName, thumbnailFile).withCannedAcl(CannedAccessControlList.PublicRead));
             removeNewFile(thumbnailFile);
-            return amazonS3Client.getUrl(bucket, thumbnailName).toString();
+            //return amazonS3Client.getUrl(bucket, thumbnailName).toString();
+            return "https://" + cloudFrontUrl + "/" + thumbnailName; // S3 업로드된 주소 반환
+            /**
+             * return을 할때 crit service s3 주소기 때문에 fileName만 반환진행 -> 반환한 후에는 CloundFront URI 붙여서 DB에 저장
+             */
         } catch (JCodecException | IOException e) {
             throw new RuntimeException(e);
         }
