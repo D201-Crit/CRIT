@@ -65,14 +65,11 @@ public class BoardService {
 
     //전체 게시물
     @Transactional(readOnly = true)
-    public Page<BoardShowSortDto> getBoards(String category) {
-
+    public Page<BoardShowSortDto> getBoards(String category,Pageable pageable) {
         classificationRepository.findByCategory(category).orElseThrow(
                 () -> {
                     return new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_CATEGORY);
                 });
-
-        Pageable pageable = getPageable();
 
         Page<Board> boards = boardRepository.findAllByClassificationCategory(pageable, category);
         return getBoardShowSortDtos(boards);
@@ -80,8 +77,8 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public List<BoardShowSortDto> getWholeBoards() {
-        List<Board> all = boardRepository.findAll();
-        return getBoardShowSortDtos(all);
+        List<Board> boards = boardRepository.findAll();
+        return getBoardShowSortDtos(boards);
     }
 
     //개별 게시물 조회
@@ -114,13 +111,13 @@ public class BoardService {
         if (boardSaveRequestDto.getTitle() != null) {
             title = boardSaveRequestDto.getTitle();
         } else {
-        // System.out.println("타이틀 없으므로 Title로 대체");
+            // System.out.println("타이틀 없으므로 Title로 대체");
             title = "Title";
         }
 
-        // if(bannedWords.isBannedWords(title)){
-        //     throw new BadRequestException(ErrorCode.NOT_VALID_BOARD_TITLE);
-        // }
+        if(bannedWords.isBannedWords(title)){
+            throw new BadRequestException(ErrorCode.NOT_VALID_BOARD_TITLE);
+        }
 
         Board board = Board.builder()
                 .title(title)
@@ -244,9 +241,9 @@ public class BoardService {
 
         board.setUpdate(title, boardDto.getContent());
 
-        // if(bannedWords.isBannedWords(board.getTitle())){
-        //     throw new BadRequestException(ErrorCode.NOT_VALID_BOARD_TITLE);
-        // }
+        if(bannedWords.isBannedWords(board.getTitle())){
+            throw new BadRequestException(ErrorCode.NOT_VALID_BOARD_TITLE);
+        }
 
         boardRepository.save(board);
         return BoardResponseDto.toDto(board);
@@ -254,6 +251,8 @@ public class BoardService {
 
     public ArrayList<String> imageDelete(Long id, Long fileId) {
         Board board = boardRepository.findById(id).orElseThrow();
+
+        if(!uploadFileRepository.findById(fileId).isPresent()) return null;
 
         List<UploadFile> allByBoardsId = uploadFileRepository.findAllByBoardsId(board.getId());
         for (UploadFile uploadFile : allByBoardsId) {
@@ -263,7 +262,6 @@ public class BoardService {
         }
         return deleted;
     }
-
 
     public void clearList() {
         deleted = new ArrayList<>();
@@ -284,39 +282,36 @@ public class BoardService {
         boardRepository.deleteById(id);
     }
 
-    public Page<BoardShowSortDto> orderByViewsDesc(String category) {
-        Pageable pageable = getPageable();
+    public Page<BoardShowSortDto> orderByViewsDesc(String category,Pageable pageable) {
         Page<Board> boards = boardRepository.orderByViewsDesc(pageable, category);
         return getBoardShowSortDtos(boards);
     }
 
-    public Page<BoardShowSortDto> orderByViewsAsc( String category) {
-        Pageable pageable = getPageable();
+    public Page<BoardShowSortDto> orderByViewsAsc( String category,Pageable pageable) {
         Page<Board> boards = boardRepository.orderByViewsAsc(pageable, category);
         return getBoardShowSortDtos(boards);
     }
 
-    public Page<BoardShowSortDto> orderByLikesDesc(String category) {
-        Pageable pageable = getPageable();
+    public Page<BoardShowSortDto> orderByLikesDesc(String category,Pageable pageable) {
+
         Page<Board> boards = boardRepository.orderByLikesDesc(pageable, category);
         return getBoardShowSortDtos(boards);
     }
 
-    public Page<BoardShowSortDto> orderByLikesAsc(String category) {
-        Pageable pageable = getPageable();
+    public Page<BoardShowSortDto> orderByLikesAsc( String category,Pageable pageable) {
         Page<Board> boards = boardRepository.orderByLikesAsc(pageable, category);
         return getBoardShowSortDtos(boards);
     }
 
-    public Page<BoardShowSortDto> findByTitleContaining(String find, String category) {
-        Pageable pageable = getPageable();
+    public Page<BoardShowSortDto> findByTitleContaining(String find, String category,Pageable pageable) {
+
         Page<Board> boards = boardRepository.findByTitleContaining(find,category, pageable);
         return getBoardShowSortDtos(boards);
     }
 
-    public Page<BoardShowSortDto> findAllByUserAndClassification(User user, String classificationString
-                                                                ) {
-        Pageable pageable = getPageable();
+    public Page<BoardShowSortDto> findAllByUserAndClassification(User user, String classificationString,
+                                                                 Pageable pageable) {
+
         Classification classification = classificationRepository.findByCategory(classificationString)
                 .orElseThrow(() -> {
                     return new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_CATEGORY);
@@ -326,8 +321,7 @@ public class BoardService {
         return getBoardShowSortDtos(boards);
     }
 
-    public Page<BoardShowSortDto> findAllByUser(User user) {
-        Pageable pageable = getPageable();
+    public Page<BoardShowSortDto> findAllByUser(User user,Pageable pageable) {
         Page<Board> boards = boardRepository.findAllByUser(user, pageable);
         return getBoardShowSortDtos(boards);
     }
@@ -366,11 +360,45 @@ public class BoardService {
         return bt;
     }
 
+    @Transactional(readOnly = true)
+    public List<BoardShowSortDto> getBoardShowSortDtos(List<Board> boards) {
+
+        List<BoardShowSortDto> bt = new ArrayList<>();
+
+        for (Board board : boards) {
+            List<String> likedName = board.getLikes().stream()
+                    .map(like -> like.getUser().getNickname())
+                    .collect(Collectors.toList());
+
+            List<String> filenames = board.getUploadFiles().stream()
+                    .map(UploadFile::getStoreFilePath)
+                    .collect(Collectors.toList());
+
+            BoardShowSortDto build = BoardShowSortDto.builder()
+                    .id(board.getId())
+                    .title(board.getTitle())
+                    .content(board.getContent())
+                    .views(board.getViews())
+                    .writer(board.getUser().getNickname())
+                    .likesCount(board.getLikes().size())
+                    .classification(board.getClassification().getCategory())
+                    .liked(likedName)
+                    .imageUrl(filenames)
+                    .createTime(board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")))
+                    .modifyTime(board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")))
+                    .build();
+
+            bt.add(build);
+        }
+        return bt;
+    }
+
     private Page<BoardShowSortDto> getBoardShowSortDtos(Page<Board> boards) {
         return boards.map(board -> {
             if (board.getUser() == null) {
                 throw new RuntimeException("User is null for board id: " + board.getId());
             }
+
             List<String> likedName = board.getLikes().stream()
                     .map(like -> like.getUser().getNickname())
                     .collect(Collectors.toList());
@@ -396,46 +424,6 @@ public class BoardService {
         });
     }
 
-    private List<BoardShowSortDto> getBoardShowSortDtos(List<Board> boards) {
-        List<BoardShowSortDto> array = new ArrayList<>();
-
-        boards.forEach(board -> {
-            if (board.getUser() == null) {
-                throw new RuntimeException("User is null for board id: " + board.getId());
-            }
-
-            log.info("h2h2={}", board.getClassification().getCategory());
-
-            List<String> likedName = board.getLikes().stream()
-                .map(like -> like.getUser().getNickname())
-                .collect(Collectors.toList());
-
-            List<String> filenames = board.getUploadFiles().stream()
-                .map(UploadFile::getStoreFilePath)
-                .collect(Collectors.toList());
-
-            List<Long> fileId = board.getUploadFiles().stream()
-                .map(UploadFile::getId)
-                .collect(Collectors.toList());
-
-            BoardShowSortDto boardShowSortDto = new BoardShowSortDto(board.getId(),
-                board.getTitle(),
-                board.getContent(),
-                board.getViews(),
-                board.getUser().getNickname(),
-                board.getLikes().size(),
-                board.getClassification().getCategory(),
-                likedName, filenames, fileId,
-                board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")),
-                board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")));
-
-            array.add(boardShowSortDto);
-        });
-
-        return array;
-    }
-
-
     private boolean ImageExtention(String uploadFiles) {
         String extension = getString(uploadFiles);
 
@@ -452,10 +440,5 @@ public class BoardService {
         String[] split = uploadFiles.split("\\.");
         String extension = split[split.length - 1];
         return extension;
-    }
-
-    private static Pageable getPageable() {
-        Pageable pageable = PageRequest.of(0, 20, Sort.by("createdDate").descending());
-        return pageable;
     }
 }
