@@ -40,7 +40,7 @@ const DeleteBoard = ({ boardId, getBoard }) => {
         console.log(err);
       });
   };
-  return <SDeleteBoardButton onClick={onClickDelete}>X</SDeleteBoardButton>;
+  return <SDeleteBoardButton onClick={onClickDelete}>삭제</SDeleteBoardButton>;
 };
 
 export default DeleteBoard;

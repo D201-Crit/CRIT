@@ -31,14 +31,15 @@ const MainPage = () => {
   const [isOpen, setIsOpen] = useState(true);
   const user = useSelector((state) => state.users);
   const [shorts, setShorts] = useState([]);
-  const onGoingChallenge = useSelector((state) => state.onGoingChallenges);
+  const ongoingChallenges = useSelector((state) => state.onGoingMyChallenges);
+
   // 쇼츠 데이터 최신, 조회수, 좋아요 순
   const [shortsByDate, setShortsByDate] = useState([]);
   const [shortsByView, setShortsByView] = useState([]);
   const [shortsByLike, setShortsByLike] = useState([]);
   // 바로입장 클릭 시
   const openChallenge = () => {
-    if (onGoingChallenge === undefined) {
+    if (ongoingChallenges === undefined) {
       Swal.fire({
         position: "center",
         icon: "error",

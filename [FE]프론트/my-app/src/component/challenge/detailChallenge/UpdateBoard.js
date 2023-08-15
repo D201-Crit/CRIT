@@ -2,10 +2,8 @@ import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { api } from "../../../api/api";
 import {
-  SBoardWriteWrapper,
+  SUpdateForm,
   SUpdateBoardButton,
-  SLabelImage,
-  SBoardImage,
 } from "../../../styles/pages/SDeatilChallengePage";
 import Swal from "sweetalert2";
 const UpdateBoard = ({ boardId, classification, getBoard }) => {
@@ -48,11 +46,11 @@ const UpdateBoard = ({ boardId, classification, getBoard }) => {
     formData.append(
       "file",
       image ||
-        formData.append("file", new Blob([], { type: "application/json" }))
+        formData.append("file", new Blob([], { type: "application/json" })),
     );
     formData.append(
       "boardDto",
-      new Blob([JSON.stringify(board)], { type: "application/json" })
+      new Blob([JSON.stringify(board)], { type: "application/json" }),
     );
     api
       .patch(
@@ -63,7 +61,7 @@ const UpdateBoard = ({ boardId, classification, getBoard }) => {
             Authorization: `Bearer ${user.accessToken}`,
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       )
       .then((res) => {
         setBoard({
@@ -109,7 +107,7 @@ const UpdateBoard = ({ boardId, classification, getBoard }) => {
     fileInputRef.current.click();
   };
   return (
-    <SBoardWriteWrapper>
+    <>
       {updateCheck ? (
         <SUpdateBoardButton onClick={onClickUpdate}>취소</SUpdateBoardButton>
       ) : (
@@ -117,14 +115,14 @@ const UpdateBoard = ({ boardId, classification, getBoard }) => {
       )}
 
       {updateCheck === true ? (
-        <form id="update" onSubmit={onSubmitUpdate}>
+        <SUpdateForm id="update" onSubmit={onSubmitUpdate}>
           <input
             id="content"
             type="textarea"
             value={board.content}
             onChange={onChangeContent}
           />
-          <img
+          {/* <img
             id="updateImage"
             onClick={handleLabelClick}
             src="https://github.com/Jinga02/ChallengePJT/assets/110621233/6eae105c-1d90-4136-93c3-1df5f1c74ac8"
@@ -136,10 +134,10 @@ const UpdateBoard = ({ boardId, classification, getBoard }) => {
             type="file"
             ref={fileInputRef}
             onChange={onChangeImage}
-          />
-        </form>
+          /> */}
+        </SUpdateForm>
       ) : null}
-    </SBoardWriteWrapper>
+    </>
   );
 };
 

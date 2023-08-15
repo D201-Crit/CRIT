@@ -1,6 +1,55 @@
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import Swal from "sweetalert2";
 import { Swiper, SwiperSlide } from "swiper/react";
+
+// 애니메이션
+const glowEffect = keyframes`
+  0% {
+    box-shadow: 0 0 2px rgba(255,255,255,10%)
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(255,255,255,10%), 0 0 20px rgba(255,255,255,30%);
+  }
+  100% {
+    box-shadow: 0 0 2px rgba(255,255,255,10%);
+  }
+`;
+
+const floatEffect = keyframes`
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+`;
+
+const glowEffect2 = keyframes`
+  0% {
+    box-shadow: 0 0 2px rgba(255,255,255,10%)
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(255,255,255,10%), 0 0 20px rgba(255,255,255,30%);
+  }
+  100% {
+    box-shadow: 0 0 2px rgba(255,255,255,10%);
+  }
+`;
+
+const floatEffect2 = keyframes`
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+`;
 
 // ChallengPage
 export const SCreateChallengeWrapper = styled.div`
@@ -226,7 +275,8 @@ export const SCategoryWrapper = styled.div`
 export const SSearchSwiper = styled(Swiper)`
   width: 1100px;
   margin: 30px auto 90px;
-  height: 600px;
+  padding: 10px;
+  height: 650px;
   border: none;
   ${
     "" /* gap: 20px;
@@ -247,9 +297,10 @@ SSearchSwiper.displayName = "SwiperWrapper";
 
 export const SSearchSwiperSlide = styled(SwiperSlide)`
   ${"" /* width: 200px; */}
-  height: calc((100% - 20px) / 2) !important;
+  height: calc((100% - 10px) / 2) !important;
   transition: background-color 0.25s ease-in-out, box-shadow 0.3s ease-in-out; // Added 's' to seconds
-  margin: 5px;
+  // margin: 5px;
+  // padding: 10px;
   border-radius: 10px;
   &:hover {
     background-color: rgba(
@@ -259,7 +310,10 @@ export const SSearchSwiperSlide = styled(SwiperSlide)`
       0.28
     ); // Changed last value to 0.28 for transparency
     box-shadow: 0px 0px 15px gray;
+    animation: ${glowEffect} 0.5s infinite alternate,
+      ${floatEffect} 1s ease-in-out infinite;
   }
+
   img {
     position: absolute;
     top: 80px;
@@ -815,7 +869,7 @@ export const SJoinListModal = {
     width: "400px",
     height: "470px",
     margin: "auto",
-    padiing: "0px",
+    padding: "0",
     color: "black",
   },
   overlay: {
@@ -826,35 +880,49 @@ export const SJoinListModal = {
     zIndex: "999",
   },
 };
+export const SJoinTitle = styled.div`
+  background: #0000c5;
+  height: 250px;
+  border-radius: 45%;
+  transform: translateY(-50%);
+  z-index: -1;
+  color: white;
+  margin-bottom: -120px;
 
+  p {
+    position: absolute;
+    top: 110px;
+    left: 130px;
+    font-size: 40px;
+    font-weight: 700;
+  }
+`;
 export const SJoinListWrapper = styled.div`
   width: 100%;
-  overflow-y: auto; /* 스크롤 생성 */
-  padding: "0",
-  border: 1px solid #dddddd;
-  border-radius: 10px;
+  overflow-y: auto;
   overflow: hidden;
-  color:white;
-  text-align:center;
-  ul{
+  color: white;
+  text-align: center;
+  ul {
     list-style: none;
-    padding:0;
-
+    padding: 0;
+    font-weight: 800;
   }
-  #time{
+  #time {
     font-size: 20px;
   }
-  #certified{
+  #certified {
     font-size: 25px;
   }
-  button{
-    position:absolute;
-    top:10px;
-    right:10px;
-    border:none;
-    background:none;
-    color: white;
-    font-size:30px;
-    cursor:pointer;
-  }
+`;
+
+export const SJoinListExit = styled.button`
+  position: absolute;
+  top: 1px;
+  right: 5px;
+  border: none;
+  background: none;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
 `;

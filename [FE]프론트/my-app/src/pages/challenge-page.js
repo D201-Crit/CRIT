@@ -6,6 +6,9 @@ import {
 } from "../styles/pages/SChallengePage";
 import Loading from "../component/Loading";
 // 나머지
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import MyChallenge from "../component/challenge/MyChallenge";
@@ -50,6 +53,18 @@ const ChallengePage = () => {
   };
   useEffect(() => {
     getAllChallenge();
+    AOS.init({
+      offset: 0,
+      duration: 700,
+      easing: "ease-in-out",
+      once: false,
+      delay: 50,
+      anchorPlacement: "bottom-top",
+    });
+
+    return () => {
+      AOS.refresh();
+    };
   }, []);
   return (
     <>

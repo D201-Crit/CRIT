@@ -218,7 +218,11 @@ const InformationChallenge = () => {
           closePhotoModal={closePhotoModal}
         ></PhotoChallengeModal>
       </Modal>
-      <Modal style={SJoinListModal} isOpen={isJoinListOpen}>
+      <Modal
+        style={SJoinListModal}
+        isOpen={isJoinListOpen}
+        onRequestClose={closeJoinListModal}
+      >
         <JoinListModal
           challengeData={challengeData}
           closeJoinListModal={closeJoinListModal}
