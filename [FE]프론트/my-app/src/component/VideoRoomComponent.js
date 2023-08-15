@@ -55,6 +55,10 @@ class VideoRoomComponent extends Component {
       subscribers: [],
       chatDisplay: "none",
       currentVideoDevice: undefined,
+      // 타이머 관련 변수
+      isClass1: false,
+      startTime: null,
+      totalTime: 0,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -235,15 +239,53 @@ class VideoRoomComponent extends Component {
     const image = this.webcamRef.current.canvas;
     // 모델로 예측을 수행합니다.
     const prediction = await this.modelRef.current.predict(image);
-    // 예측 결과를 콘솔에 출력합니다.
-    for (let i = 0; i < maxPredictions; i++) {
-      const classPrediction = prediction[i].className;
-      const probability = prediction[i].probability.toFixed(2);
-      console.log(`예측: ${classPrediction}, 확률: ${probability}`);
-      if (classPrediction === "Class 1" && parseFloat(probability) >= 0.75) {
-        this.totalTimeRef.current += 1; // 0.01 second
+    const class1Prediction = prediction[0].probability.toFixed(2);
+    const class2Prediction = prediction[1].probability.toFixed(2);
+    console.log(`자리 있음 : ${class1Prediction},  자리 없음 : ${class2Prediction}`);
+    
+    if (class1Prediction > 0.5) {
+      if (!this.state.startTime) {
+        this.setState({
+          startTime: Date.now()
+        });
+      } else if (this.state.startTime) {
+        this.setState(prevState => ({
+          startTime: Date.now(),
+          totalTime: prevState.totalTime + (Date.now() - prevState.startTime) / 1000
+        }));
+      }
+    } else {
+      if (this.state.startTime) {
+        this.setState(prevState => ({
+          startTime: null,
+          totalTime: prevState.totalTime + (Date.now() - prevState.startTime) / 1000
+        }));
       }
     }
+    // 예측 결과를 콘솔에 출력합니다.
+    // for (let i = 0; i < maxPredictions; i++) {
+    //   const classPrediction = prediction[i].className;
+    //   const probability = prediction[i].probability.toFixed(2);
+      
+    // console.log(`예측: ${classPrediction}, 확률: ${probability}`);
+    //   if (classPrediction === "Class 1" && parseFloat(probability) >= 0.6) {
+    //     // this.totalTimeRef.current += 1; // 0.01 second
+    //     if (!this.state.isClass1) {
+    //       this.setState({
+    //         isClass1: true,
+    //         startTime: now,
+    //       });
+    //     }
+    //   }
+    // } 
+    // if (this.state.isClass1) {
+    //   const endTime = new Date();
+    //   const elapsedTime = (endTime - this.state.startTime) / 1000; // ms를 초로 변환
+    //   this.setState(prevState => ({
+    //     isClass1: false,
+    //     totalTime: prevState.totalTime + elapsedTime,
+    //   }));
+    // }
   }
   //-----------------------teachable machine----------------------------//
 
@@ -348,8 +390,9 @@ class VideoRoomComponent extends Component {
     this.isUnmounted = true;
     const challengeId = this.props.challengeData.challenge.id;
     const inTime = 0 + this.totalTimeRef.current;
-    console.log(`이탈 시간: ${this.totalTimeRef.current}ms`);
-
+    // console.log(`지속 시간: ${this.totalTimeRef.current}ms`);
+    console.log(`지속 시간: ${this.state.totalTime.toFixed(2)}초`);
+    
     api
       .post("https://i9d201.p.ssafy.io/api/cert/video", {
         challengeId,
