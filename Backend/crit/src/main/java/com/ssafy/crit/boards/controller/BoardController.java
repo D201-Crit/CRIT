@@ -182,7 +182,8 @@ public class BoardController {
 	}
 
 	private static Pageable getPageable(int page) {
-		Pageable pageable = PageRequest.of(page, 20, Sort.by("id").descending());
+		Pageable pageable = PageRequest.of(page, 20, Sort.by("createdDate").descending());
 		return pageable;
 	}
 }
++
