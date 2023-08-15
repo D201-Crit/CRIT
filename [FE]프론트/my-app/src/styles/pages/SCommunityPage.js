@@ -302,8 +302,40 @@ export const SBoardDetailButton = styled(SButton)`
 `;
 
 export const SBoardDetailViewSelect = styled.select`
-  margin-left: 20px;
-`;
+  margin-top : 25px;
+  padding: 10px 15px; 
+  text-align : center;
+  color : white;
+  width: 130px;
+  background-color: #0000c5; 
+  border-radius: 5px; 
+  border: none; 
+  cursor: pointer; 
+  -webkit-appearance: none; /* Chrome, Safari, Opera */
+  -moz-appearance: none;    /* Firefox */
+  appearance: none;
+  position: relative;
+
+  &:after {
+    content: '▼';
+    position: absolute;
+    background-color: white; 
+    // top: 50%;
+    right: 15px;
+    // transform: translateY(-50%);
+    pointer-events: none;
+    
+  }
+  
+
+  &:hover {
+    background-color: #0000c5; 
+    color : white;
+    box-shadow: 0px 0px 20px 0.1px rgba(255,255,255,15%);
+
+
+  }
+  `;
 
 export const SBoardArticleDeleteButton = styled.div`
   position: absolute;
@@ -618,6 +650,7 @@ export const SPreviewImage = styled.img`
 // 커뮤니티 디테일 스타일
 export const SCommunityDetailWrapper = styled(SCommunityWrapper)`
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
   padding: 30px;
@@ -626,6 +659,13 @@ export const SCommunityDetailWrapper = styled(SCommunityWrapper)`
     align-items: center;
     padding: 20px;
   }
+`;
+
+export const SImageContainer2 = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 export const SArticleTitle = styled.h1`

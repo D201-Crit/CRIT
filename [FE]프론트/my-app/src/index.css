@@ -13,7 +13,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(0, 0, 92, 0) 25%, #0009EC 50%, rgba(0, 0, 92, 0) 75%);
+  background: linear-gradient(180deg, rgba(0, 0, 92, 0) 25%, #0008ec61 50%, rgba(0, 0, 92, 0) 75%);
   border-radius: 5px;
 }
 

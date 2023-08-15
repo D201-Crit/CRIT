@@ -58,6 +58,8 @@ const CreateShortsModal = ({setShortsCreateModal}) => {
     })
     .then(() => {
       setLoading(false);
+      console.log("쇼츠 작성 성공");
+
       setShortsCreateModal(false);
     })
     .catch(() => {

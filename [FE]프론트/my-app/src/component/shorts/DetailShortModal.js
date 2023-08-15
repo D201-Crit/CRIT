@@ -1,5 +1,5 @@
 // DetailShortModal.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, forwardRef } from "react";
 import { api } from '../../api/api';
 import { useSelector } from "react-redux";
 import Loading from '../Loading';
@@ -26,7 +26,7 @@ import { HiOutlineHeart, HiHeart } from "react-icons/hi2";
 import ModifyShortsModal from "./ModifyShortsModal";
 import ReactPlayer from "react-player";
 
-const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
+const DetailShortModal = ({ shortId, setOpenDetailModal, ref}) => {
   const [loading, setLoading] = useState(true);
   const user = useSelector((state) => state.users);
   const [short, setShort] = useState([]);
@@ -228,7 +228,8 @@ const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
 
   return (
     <ModalOverlay onClick={handleOutsideClick} data-cy="modal-overlay">
-    <div>
+    <div ref={ref}>
+
       {loading ? <Loading /> : null}
       {showModifyModal ? (
         <ModifyShortsModal getShort={getShort} setModifyModal={setModifyModal} prevshotrs={short} shortId={shortId} />
@@ -343,4 +344,4 @@ const DetailShortModal = ({ shortId, setOpenDetailModal }) => {
   );
 };
 
-export default DetailShortModal;
+export default forwardRef(DetailShortModal);

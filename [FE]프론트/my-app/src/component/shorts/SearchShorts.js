@@ -7,14 +7,22 @@ import {
   SInput,
   SShortItem,
   SResultList,
+  SResultContainer,
   SResultItem,
+  ShortsSpanWrapper
 } from "../../styles/pages/SMainPage";
-import { SShortsContainer } from '../../styles/pages/SMainPage';
-const SearchShorts = () => {
+import { SEmpty2 } from '../../styles/SCommon';
+import {SLogoImage} from '../../styles/pages/SStartPage'
+
+
+
+const SearchShorts = ({shortsByDate}) => {
+  const shortLength = shortsByDate.length
   const user = useSelector((state) => state.users);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [openDetailModal, setOpenDetailModal] = useState({});
+
 
   useEffect(() => {
     if (searchTerm.length > 0) {
@@ -49,8 +57,11 @@ const SearchShorts = () => {
 
   return (
     <SSearchShortsWrapper>
-      <h4>갓생러들의 챌린지를 지금 바로 만나보세요!</h4>
-      <h2>100,293,176개의 챌스가 등록되어있습니다.</h2>
+            <SLogoImage src={process.env.PUBLIC_URL + "/logo.png"} alt="placeholder" />
+            <SEmpty2/>
+
+      <h1 style={{color:"gray", fontWeight:"normal"}}> {shortLength}개의 숏챌이 등록되어있습니다.</h1>
+      <SEmpty2/>
       <SInput
         value={searchTerm}
         onChange={handleInputChange}
@@ -60,27 +71,32 @@ const SearchShorts = () => {
       
       <SResultList>
       {/* <SResultItem> */}
-      <SShortsContainer>
+      <SResultContainer>
       {searchResults &&
         searchResults.map((result) => (
-          <SShortItem key={result.id}>
+          <SResultItem onClick={() =>
+            !isAnyModalOpen() &&
+            setOpenDetailModal({
+              ...openDetailModal,
+              [result.id]: !openDetailModal[result.id],
+            })
+          }key={result.id}>
             <img
                 src={result.thumbnailUrl}
                 alt={result.title}
-                onClick={() =>
-                  !isAnyModalOpen() &&
-                  setOpenDetailModal({
-                    ...openDetailModal,
-                    [result.id]: !openDetailModal[result.id],
-                  })
-                }
+                
               />
               <h2>{result.title}</h2>
-              <p>{result.content}</p>
-          </SShortItem>
+              <p>♥ &nbsp; {result.likesCount}</p>
+              <ShortsSpanWrapper>
+              <span>{result.title}</span>
+              <span style={{color:"gray",fontWeight:"normal"}}>{result.writer}</span>
+              <span style={{color:"gray", fontWeight:"normal"}}>조회수&nbsp;{result.views}회</span>
+              </ShortsSpanWrapper>
+          </SResultItem>
           
         ))}
-      </SShortsContainer>
+      </SResultContainer>
       {/* </SResultItem> */}
       </SResultList>
         {searchResults &&

@@ -45,6 +45,11 @@ const ContentWrapper = styled.div`
   width: 100%;
 `;
 
+const StyledApp = styled(App)`
+  transform: scale(0.5);
+  transform-origin: top left;
+`;
+
 
 function App() {
   return (
@@ -141,4 +146,9 @@ function AppRoutes() {
   );
 }
 
-export default App;
+
+
+export default StyledApp;
+
+
+

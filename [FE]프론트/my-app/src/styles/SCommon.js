@@ -162,7 +162,10 @@ export const ModalOverlay = styled.div`
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1200;
+
+  z-index: 1400;
+  width: 100%;
+  height: 100%;
 `;
 
 export const SBtnAnimation = styled.div`

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import ModifyArticleModal from '../component/community/ModifyArticleModal.js';
 import { SEmpty2 } from '../styles/SCommon.js';
 import {SCommentContainer,
-
+  SImageContainer2,
   SImprovedCommentItem,
   SImprovedCommentAuthor,
   SCommentWrapper,
@@ -199,38 +199,51 @@ const CommunityArticleDetailPage = () => {
     window.location.href = `/CommunityBoardPage/${classification}`;
   }
   // 댓글 형식 변환
-  const formatDate = (timeArray) => {
-    if (!Array.isArray(timeArray) || timeArray.length !== 7) return 'Invalid';
+  const formatDate = (timeString) => {
+    const timeParts = timeString.split("-").map(Number);
+    if (timeParts.length !== 6) return "Invalid";
   
-    const [year, month, day, hour, minute, second, _] = timeArray;
+    const [year, month, day, hour, minute, second] = timeParts;
+    const date = new Date(year, month - 1, day, hour, minute, second);
+    
+    if (isNaN(date.getTime())) return "Invalid";
   
-    const formattedMonth = '0' + month;
-    const formattedDay = '0' + day;
-    const formattedHour = '0' + hour;
-    const formattedMinute = '0' + minute;
+    const currentYear = new Date().getFullYear();
+    const formattedMonth = "0" + (date.getMonth() + 1);
+    const formattedDay = "0" + date.getDate();
+    const formattedHour = "0" + date.getHours();
+    const formattedMinute = "0" + date.getMinutes();
+    const formattedSecond = "0" + date.getSeconds();
   
-    return `${formattedMonth.slice(-2)}.${formattedDay.slice(-2)} ${formattedHour.slice(-2)}:${formattedMinute.slice(-2)}`;
+    if (year === currentYear) {
+      return `${formattedMonth.slice(-2)}.${formattedDay.slice(-2)} ${formattedHour.slice(-2)}:${formattedMinute.slice(-2)}:${formattedSecond.slice(-2)}`;
+    } else {
+      const shortYear = year.toString().slice(-2);
+      return `${shortYear}.${formattedMonth.slice(-2)}.${formattedDay.slice(-2)} ${formattedHour.slice(-2)}:${formattedMinute.slice(-2)}:${formattedSecond.slice(-2)}`;
+    }
   };
   
   
+
+
   return (
     <SCommunityDetailWrapper>
-    <div>
-      {
-        articles && (
-          <div>
-            <SArticleTitle>{articles.title}</SArticleTitle>
-            {/* <h3>{articles.liked}</h3> */}
-            {articles.imageFiles.map((image, index) => (
-              <img
-                key={index}
-                src={image}
-                alt={`Article image ${index}`}
-                style={{ maxWidth: "500px", maxHeight: "px", margin: "5px" }}
-              />
-            ))}
-            
-            <SArticleContent>{articles.content}</SArticleContent>
+      <div>
+        {
+          articles && (
+            <div>
+              <SArticleTitle>{articles.title}</SArticleTitle>
+              <SImageContainer2> {/* ImageContainer 추가 */}
+                {articles.imageFiles.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image}
+                    alt={`Article image ${index}`}
+                    style={{ maxWidth: "500px", maxHeight: "px", margin: "5px" }}
+                  />
+                ))}
+              </SImageContainer2> {/* ImageContainer 닫기 */}
+              <SArticleContent>{articles.content}</SArticleContent>
             <br/>
             <SLikesCount>{articles.likesCount}</SLikesCount>
 

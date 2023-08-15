@@ -6,7 +6,6 @@ import AdvertisingBoard from "../component/community/AdvertisingBoard ";
 import CommunityBoard from "./../component/community/CommunityBoard";
 // import { ChangeName, useUsername } from "./../store/CommunityStore";
 
-
 const CommunityPage = () => {
   useEffect(() => {
     AOS.init({
@@ -22,7 +21,6 @@ const CommunityPage = () => {
       AOS.refresh();
     };
   }, []);
-
 
   return (
     <div className="content" data-aos="flip-left">

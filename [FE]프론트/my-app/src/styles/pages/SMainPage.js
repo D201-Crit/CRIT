@@ -7,9 +7,10 @@ const fadeIn = keyframes`
 export const SShortsWrapper = styled.div`
   width: 100%;
   height: 100%;
+  margin-top: 20px;
   justify-content: flex-end;
-  margin: auto;
 `;
+
 
 export const SEntranceButtonWrapper = styled.div`
   width: 100%;
@@ -120,8 +121,7 @@ export const SInput = styled.input`
   color: black;
   width: 50%;
   border: none;
-  border-radius: 10px;
-
+  border-radius: 6px;
   padding: 15px;
   margin: 0 auto;
   display: block;
@@ -142,16 +142,18 @@ export const SShortsCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 320px;
+  width: 500px;
+  max-width: 500px;
   border: 1px solid #e1e1e1;
-  border-radius: 8px;
+  border-radius: 6px;
   overflow: hidden;
   margin: 20px;
+  height: auto;
 
   img {
-    width: 100%;
+    width: 500px;
     height: 200px;
+    
     transform: rotate(270deg);
     object-fit: cover;
     border-radius: 8px 8px 0 0;
@@ -172,32 +174,39 @@ export const SShortsCard = styled.div`
 export const SShortsContainer = styled.div`
   padding: 10px;
   display: flex;
-  
-  width: 100%;
-  height: 250px;
-  
-  gap: 15px;
-  -webkit-overflow-scrolling: touch;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  border-radius: 20px;
+  overflow: hidden;
+  height : 800px;
   &::-webkit-scrollbar {
     display: none;
   }
 `;
 
+
 // SShortItem style
 export const SShortItem = styled.div`
   position: relative;
-  background-color: black;
-  width: 700px;
-  height: 100%;
+  border-radius: 15px;
+  width: 22%; // 수정: 아이템의 가로 높이를 변경
+  height: 23%; // 수정: 아이템의 세로 높이를 변경
   display: flex;
+  
+
+  box-shadow: 0px 0px 20px 0.1px rgba(255,255,255,15%);
+
   flex-direction: column;
   justify-content: flex-start;
   // overflow: hidden;
   // cursor : pointer;
+  margin-bottom : 20px;
+
 
   img {
     width: 100%;
     height: 100%;
+    border-radius: 15px;
     object-fit: cover;
     opacity: 1;
   }
@@ -257,6 +266,23 @@ export const SShortItem = styled.div`
   }
 `;
 
+export const ShortsSpanWrapper = styled.div`
+  display: flex;
+  padding: 15px;
+  flex-direction: column; // 기존에 있는 행으로 유지하면 텍스트가 레이아웃 밖으로 나갈 수 있습니다.
+  justify-content: center;
+  align-items: flex-start; // 텍스트를 왼쪽 정렬합니다.
+  max-width: 100%; // 컴포넌트 영역을 넘지 않도록 너비 제한을 설정합니다.
+
+  // 컴포넌트 이하의 모든 span에 스타일을 적용합니다.
+  > span {
+    overflow: hidden; // 텍스트 가로 너비를 초과하면 자르는 효과를 적용합니다.
+    text-overflow: ellipsis; // 자른 텍스트 끝에 생략 표시 (...)를 넣습니다.
+    white-space: nowrap; // 텍스트가 자동으로 줄바꿈 되지 않도록 설정합니다.
+  }
+`;
+
+
 export const SVideoWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -274,7 +300,7 @@ export const SShortDetail = styled.div`
 
 export const SDetailModal = styled.div`
   overflow-y: auto;
-  position: fixed;
+  position: fixed; // 변경된 부분
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -313,6 +339,7 @@ export const SDetailModal = styled.div`
     animation: ${fadeIn} 0.3s ease-in;
   }
 `;
+
 
 export const SDetailCloseButton = styled.button`
   position: absolute;
@@ -495,20 +522,100 @@ export const SSubmitButton = styled.input`
 export const SResultList = styled.ul`
   list-style-type: none;
   padding: 0;
-  margin-top: 10px;
+  margin-top: 50px;
+`;
+
+export const SResultContainer= styled.div`
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  border-radius: 20px;
+  overflow: hidden;
+  height : auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const SResultItem = styled.li`
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  transition: background-color 0.2s;
+position: relative;
+border-radius: 15px;
+width: 12%; // 수정: 아이템의 가로 높이를 변경
+height: 23%; // 수정: 아이템의 세로 높이를 변경
+display: flex;
 
-  &:hover {
-    background-color: #f1f1f1;
+
+box-shadow: 0px 0px 20px 0.1px rgba(255,255,255,15%);
+
+flex-direction: column;
+justify-content: flex-start;
+// overflow: hidden;
+// cursor : pointer;
+margin-bottom : 20px;
+
+
+img {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  object-fit: cover;
+  opacity: 1;
+}
+
+h2,
+p {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+h2 {
+  pointer-events: none; 
+  font-size: 25px;
+  margin-top: -15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateY(-50%) translateX(-50%);
+  -moz-transform: translateY(-50%) translateX(-50%);
+  transform: translateY(-50%) translateX(-50%);
+}
+
+p {
+  pointer-events: none; 
+  font-size: 14px;
+  margin: auto;
+  margin-top: 10px;
+
+  text-align: justify;
+  color : #ff007a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateY(-50%) translateX(-50%);
+  -moz-transform: translateY(-50%) translateX(-50%);
+  transform: translateY(-50%) translateX(-50%);
+}
+
+&:hover {
+  img {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(90deg) scale(0.8);
   }
+
+  h2,
+  p {
+    opacity: 1;
+  }
+}
 `;
 
 export const SLikeShorts = styled.p`
@@ -625,3 +732,62 @@ export const SSubmitButton2 = styled.input`
     background-color: #1877f2;
   }
 `;
+
+
+export const SScrollButtonWrapper = styled.div`
+position: fixed;
+display: flex;
+flex-direction: column;
+
+justifyContent: center;
+marginBottom: 1rem;
+z-index : 1500;
+.btn1 {
+  background: linear-gradient(90deg, rgba(21, 21, 21, 0.82) 59.45%, rgba(29, 29, 29, 0) 120.65%);
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  width: 200px;
+  text-align: left;
+  border: none;
+  cursor: pointer;
+  font-family: "Pretendard";
+  outline: none;
+  &:hover {
+    background: linear-gradient(90deg, rgba(51, 51, 51, 0.82) 59.45%, rgba(29, 29, 29, 0) 120.65%);
+  }
+}
+.btn2 {
+  background: linear-gradient(90deg, rgba(21, 21, 21, 0.82) 59.45%, rgba(29, 29, 29, 0) 120.65%);
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  width: 200px;
+  text-align: left;
+  border: none;
+  cursor: pointer;
+  font-family: "Pretendard";
+  outline: none;
+  &:hover {
+    background: linear-gradient(90deg, rgba(51, 51, 51, 0.82) 59.45%, rgba(29, 29, 29, 0) 120.65%);
+  }
+}
+.btn3 {
+  background: linear-gradient(90deg, rgba(21, 21, 21, 0.82) 59.45%, rgba(29, 29, 29, 0) 120.65%);
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  width: 200px;
+  text-align: left;
+  border: none;
+  cursor: pointer;
+  font-family: "Pretendard";
+  outline: none;
+    &:hover {
+    background: linear-gradient(90deg, rgba(51, 51, 51, 0.82) 59.45%, rgba(29, 29, 29, 0) 120.65%);
+  }
+}
+`
