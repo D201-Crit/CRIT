@@ -34,8 +34,8 @@ public class CommentDto {
                 comment.getId(),
                 comment.getContent(),
                 comment.getUser().getNickname(),
-                comment.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")),
-                comment.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss"))
+                comment.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")),
+                comment.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss"))
         );
     }
 }

@@ -139,6 +139,14 @@ public class BoardController {
 
 	}
 
+	@PutMapping(value = "/{id}/putImage",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	public Response<?> put(@PathVariable(value = "id") Long id, HttpServletRequest httpServletRequest,
+		@RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles) throws IOException{
+
+		User user = getUser(httpServletRequest);
+		return new Response<>("성공", "이미지 업로드 성공", boardService.addFile(multipartFiles, id, user));
+	}
+
 	// 게시글 삭제
 	@DeleteMapping("/delete/{id}")
 	public Response<?> delete(@PathVariable("id") Long id, HttpServletRequest httpServletRequest) {

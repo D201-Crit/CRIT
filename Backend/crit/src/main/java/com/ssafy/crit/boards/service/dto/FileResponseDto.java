@@ -51,8 +51,8 @@ public class FileResponseDto {
 				board.getClassification().getCategory(),
 			board.getUser().getNickname(),
 			filenames,
-				board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")),
-				board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss"))
+				board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")),
+				board.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss"))
 		);
 	}
 
