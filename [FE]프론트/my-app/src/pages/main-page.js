@@ -36,11 +36,12 @@ const MainPage = () => {
   const [shortsByDate, setShortsByDate] = useState([]);
   const [shortsByView, setShortsByView] = useState([]);
   const [shortsByLike, setShortsByLike] = useState([]);
+  // 바로입장 클릭 시
   const openChallenge = () => {
-    if (onGoingChallenge.length === 0) {
+    if (onGoingChallenge === undefined) {
       Swal.fire({
         position: "center",
-        icon: "success",
+        icon: "error",
         title: "진행중인 챌린지가 없습니다.",
         text: "CRIT",
         showConfirmButton: false,

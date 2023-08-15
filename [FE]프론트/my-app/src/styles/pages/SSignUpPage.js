@@ -1,8 +1,9 @@
 import styled from "styled-components";
 export const SSignUpWrapper = styled.div`
   position: absolute;
-  top: 52%;
-  left: 50%;
+  top: 480px;
+  left: 52%;
+  height: 700px;
   transform: translate(-50%, -50%);
 `;
 
@@ -21,6 +22,7 @@ export const SForm = styled.form`
     type: text;
     width: 300px;
     height: 35px;
+    padding: 0 10px 0 10px;
     border-radius: 5px;
   }
 `;
@@ -46,14 +48,15 @@ export const SButtonWrapper = styled.div`
 export const SSignUpbutton = styled.button`
   background-color: #33ff00;
   border: none;
-  width: 100px;
-  height: 30px;
+  width: 120px;
+  height: 50px;
   border-radius: 5px;
   cursor: pointer;
   type: submit;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 500;
   font-family: "Pretendard";
+  margin-top: 20px;
 `;
 
 export const ErrorWrapper = styled.div`

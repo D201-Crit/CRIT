@@ -166,7 +166,6 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
 
     api
       .post("https://i9d201.p.ssafy.io/api/challenge/create", formData, {
-        // .post("http://i9d201.p.ssafy.io/api/challenge/create", formData, {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
           "Content-Type": `multipart/form-data`,
@@ -197,21 +196,17 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
         Swal.fire({
           position: "center",
           icon: "error",
-          title: "챌린지 생성 실패..!",
-          text: "CRIT",
+          html: `
+            <h1>${
+              error.response.data.errorMessage
+                ? error.response.data.errorMessage
+                : error.response.data
+            }</h1>
+          `,
           showConfirmButton: false,
           timer: 1500,
           background: "#272727",
           color: "white",
-          // preConfirm: () => {
-          //   return createChallenge();
-          // },
-          // width: "500px",
-          // 먼지
-          // imageUrl: 'https://unsplash.it/400/200',
-          // imageWidth: 400,
-          // imageHeight: 200,
-          // imageAlt: 'Custom image',
         });
       });
   };

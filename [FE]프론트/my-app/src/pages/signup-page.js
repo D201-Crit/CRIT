@@ -21,7 +21,13 @@ const SignUp = () => {
   const [nickname, onChangeNickname] = useInput("");
   const [checkId, setCheckId] = useState(false);
   const [checkNickname, setcheckNickname] = useState(false);
+  const [mismatchError, setMismatchError] = useState(false);
+  // 가입 실패
+  const [signUpError, setSignUpError] = useState("");
+  // 가입 성공
+  const [signUpSuccess, setSignUpSuccess] = useState(false);
   const nav = useNavigate();
+
   // 비밀번호 확인
   const onChangePassword = useCallback(
     (e) => {
@@ -29,8 +35,9 @@ const SignUp = () => {
       setMismatchError(e.target.value !== passwordCheck);
     },
     // 함수 기준 외부 변수만 deps[]에 작성
-    [passwordCheck]
+    [passwordCheck],
   );
+  // 아이디 중복확인
   const onCheckId = (userId) => {
     if (userId.length > 20 || userId.length < 5) {
       Swal.fire({
@@ -46,7 +53,7 @@ const SignUp = () => {
     } else {
       axios
         .post(
-          `https://i9d201.p.ssafy.io/api/auth/valid/userId?userId=${userId}`
+          `https://i9d201.p.ssafy.io/api/auth/valid/userId?userId=${userId}`,
         )
         .then((res) => {
           if (
@@ -72,17 +79,18 @@ const SignUp = () => {
                   color: "white",
                 })
           )
-            // 중복 확인 성공한 경우 id 중복 상태를 false로 변경
+            // 중복 확인 성공한 경우 id 중복 상태를 true로 변경
             setCheckId(true);
         })
         .catch((err) => {
           console.log(err);
-          // 중복 확인 실패한 경우 id 중복 상태를 true로 변경
+          // 중복 확인 실패한 경우 id 중복 상태를 false 변경
           setCheckId(false);
         });
     }
   };
 
+  // 닉네임 중복확인
   const onCheckNickname = (nickname) => {
     if (nickname.length > 10 || nickname.length < 2) {
       Swal.fire({
@@ -98,7 +106,7 @@ const SignUp = () => {
     } else {
       axios
         .post(
-          `https://i9d201.p.ssafy.io/api/auth/valid/nickname?nickname=${nickname}`
+          `https://i9d201.p.ssafy.io/api/auth/valid/nickname?nickname=${nickname}`,
         )
         .then((res) => {
           if (
@@ -135,18 +143,16 @@ const SignUp = () => {
     }
   };
 
+  // 비밀번호 확인
   const onChangePasswordCheck = useCallback(
     (e) => {
       setPasswordCheck(e.target.value);
       setMismatchError(e.target.value !== password);
     },
-    [password]
+    [password],
   );
-  const [mismatchError, setMismatchError] = useState(false);
-  // 가입 실패
-  const [signUpError, setSignUpError] = useState("");
-  // 가입 성공
-  const [signUpSuccess, setSignUpSuccess] = useState(false);
+
+  // 회원가입 폼 제출
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
@@ -175,65 +181,8 @@ const SignUp = () => {
           color: "white",
         });
       }
-      if (id.length > 20 || id.length < 5) {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "아이디는 \n5자이상 20이하여야 합니다.",
-          text: "CRIT",
-          showConfirmButton: false,
-          timer: 1500,
-          background: "#272727",
-          color: "white",
-        });
-      }
-      if (nickname.length > 10 || nickname.length < 2) {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "닉네임은\n2자이상 10이하여야 합니다.",
-          text: "CRIT",
-          showConfirmButton: false,
-          timer: 1500,
-          background: "#272727",
-          color: "white",
-        });
-      }
-      if (password.length > 20 || password.length < 8) {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "비밀번호는 \n8자이상 20이하여야 합니다.",
-          text: "CRIT",
-          showConfirmButton: false,
-          timer: 1500,
-          background: "#272727",
-          color: "white",
-        });
-      }
-      if (email === "") {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "이메일을 입력해주세요.",
-          text: "CRIT",
-          showConfirmButton: false,
-          timer: 1500,
-          background: "#272727",
-          color: "white",
-        });
-      }
-      if (
-        !mismatchError &&
-        checkId &&
-        checkNickname &&
-        nickname &&
-        email &&
-        password
-      ) {
+      if (!mismatchError && checkId && checkNickname) {
         console.log("서버로 회원가입하기");
-        // 요청 전 초기화
-        // 요청을 여러번 할때 초기값이 이상할 수 있으니
         setSignUpError("");
         setSignUpSuccess(false);
         axios
@@ -256,14 +205,34 @@ const SignUp = () => {
           })
           .catch((error) => {
             console.log(error);
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              html: `
+                <h1>${
+                  error.response.data.errorMessage
+                    ? error.response.data.errorMessage
+                    : error.response.data
+                }</h1>
+              `,
+              showConfirmButton: false,
+              timer: 1500,
+              background: "#272727",
+              color: "white",
+            });
           });
       }
     },
-    [email, nickname, password, passwordCheck, checkId, checkNickname]
+    [email, nickname, password, passwordCheck, checkId, checkNickname],
   );
 
   return (
     <SSignUpWrapper>
+      <img
+        src={process.env.PUBLIC_URL + "/logo2.png"}
+        style={{ width: "400px", height: "200px" }}
+        alt="placeholder"
+      />
       <SForm onSubmit={onSubmit}>
         <span>
           <label>아이디</label>

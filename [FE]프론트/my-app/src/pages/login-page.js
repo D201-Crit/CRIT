@@ -13,6 +13,11 @@ import {
 const LoginPage = () => {
   return (
     <SLoginPageWrapper>
+      <img
+        src={process.env.PUBLIC_URL + "/logo2.png"}
+        style={{ width: "400px", height: "200px" }}
+        alt="placeholder"
+      />
       <Login />
       <SSpan>
         <h3>혹시 가입된 아이디가 없으신가요?</h3>

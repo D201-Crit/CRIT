@@ -6,7 +6,7 @@ import {
   SLogoWrapper,
   SBtnAnimation,
 } from "../../styles/SCommon";
-import { StyledSent } from "../../styles/pages/SMessage";	
+import { StyledSent } from "../../styles/pages/SMessage";
 import { FaRegUserCircle } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { BiEnvelope } from "react-icons/bi";
@@ -67,26 +67,36 @@ const Nav = () => {
         <SLogoWrapper>
           <ul>
             <li>
-              <NavLink to="/IntroPage">CRIT</NavLink>
+              <NavLink to="/IntroPage">
+                <img
+                  src={process.env.PUBLIC_URL + "/logo2.png"}
+                  style={{ width: "80px", height: "40px" }}
+                  alt="placeholder"
+                />
+              </NavLink>
             </li>
             <li>
-              <NavLink to="/LoginPage">로그인</NavLink>
+              <NavLink id="login" to="/LoginPage">
+                로그인
+              </NavLink>
             </li>
           </ul>
         </SLogoWrapper>
       )}
       <SUserWrapper>
         {/* 메시지 파트 */}
-        {user && user.accessToken ? (	
-          <SBtnAnimation>	
-            <ul onClick={() => setMassageView(!massageView)}>	
-              <li>	
-                <StyledSent style={{	
-                    cursor: "pointer",	
-                    position: "absolute",	
-                    top: "-15px",	
-                    left: "-30px",	
-                  }}/>	
+        {user && user.accessToken ? (
+          <SBtnAnimation>
+            <ul onClick={() => setMassageView(!massageView)}>
+              <li>
+                <StyledSent
+                  style={{
+                    cursor: "pointer",
+                    position: "absolute",
+                    top: "-15px",
+                    left: "-30px",
+                  }}
+                />
                 {/* <BiEnvelope	
                   size={35}	
                   style={{	
@@ -95,10 +105,10 @@ const Nav = () => {
                     top: "-15px",	
                     left: "-30px",	
                   }}	
-                />{" "} */}	
-              </li>	
-            </ul>	
-          </SBtnAnimation>	
+                />{" "} */}
+              </li>
+            </ul>
+          </SBtnAnimation>
         ) : (
           <div></div>
         )}
