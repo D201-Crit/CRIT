@@ -4,6 +4,7 @@ import { api } from '../../api/api';
 import { useSelector } from "react-redux";
 import { ProfileShortsListArea, ProfileShortsList } from "../../styles/pages/SProfilePage";
 import ProfileMyShorts from "./ProfileMyShorts";
+import { SDividerLine } from '../../styles/pages/SMainPage';
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/feeds';
 
 const ProfileShorts = () => {
@@ -34,7 +35,8 @@ const ProfileShorts = () => {
 
     return (
       <ProfileShortsListArea>
-        <h2 style={{margin:"5px"}}>내가 만든 쇼츠</h2>
+        <h2>내가 만든 쇼츠</h2>
+        <SDividerLine/>
         <ProfileShortsList>
           <ProfileMyShorts shortsByDate={shortsByDate}/>
         </ProfileShortsList>

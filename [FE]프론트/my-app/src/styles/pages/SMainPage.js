@@ -733,61 +733,68 @@ export const SSubmitButton2 = styled.input`
   }
 `;
 
-
 export const SScrollButtonWrapper = styled.div`
-position: fixed;
-display: flex;
-flex-direction: column;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  opacity: 0; // 추가된 속성
+  transition: opacity 0.3s; // 추가된 속성
+  marginBottom: rem;
+  z-index : 1500;
 
-justifyContent: center;
-marginBottom: 1rem;
-z-index : 1500;
-.btn1 {
-  background: linear-gradient(90deg, rgba(21, 21, 21, 0.82) 59.45%, rgba(29, 29, 29, 0) 120.65%);
-  color: white;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  width: 200px;
-  text-align: left;
-  border: none;
-  cursor: pointer;
-  font-family: "Pretendard";
-  outline: none;
+
   &:hover {
-    background: linear-gradient(90deg, rgba(51, 51, 51, 0.82) 59.45%, rgba(29, 29, 29, 0) 120.65%);
+    opacity: 1;
   }
-}
-.btn2 {
-  background: linear-gradient(90deg, rgba(21, 21, 21, 0.82) 59.45%, rgba(29, 29, 29, 0) 120.65%);
-  color: white;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  width: 200px;
-  text-align: left;
-  border: none;
-  cursor: pointer;
-  font-family: "Pretendard";
-  outline: none;
-  &:hover {
-    background: linear-gradient(90deg, rgba(51, 51, 51, 0.82) 59.45%, rgba(29, 29, 29, 0) 120.65%);
+
+  .showButtons {
+    opacity: 1 !important;
   }
-}
-.btn3 {
-  background: linear-gradient(90deg, rgba(21, 21, 21, 0.82) 59.45%, rgba(29, 29, 29, 0) 120.65%);
-  color: white;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  width: 200px;
-  text-align: left;
-  border: none;
-  cursor: pointer;
-  font-family: "Pretendard";
-  outline: none;
+  
+  .btn1, .btn2, .btn3 {
+    background: linear-gradient(90deg, rgba(21, 21, 21, 0.82) 59.45%, rgba(29, 29, 29, 0) 120.65%);
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    width: 200px;
+    text-align: left;
+    border: none;
+    cursor: pointer;
+    font-family: "Pretendard";
+    outline: none;
+
     &:hover {
-    background: linear-gradient(90deg, rgba(51, 51, 51, 0.82) 59.45%, rgba(29, 29, 29, 0) 120.65%);
+      background: linear-gradient(90deg, rgba(51, 51, 51, 0.82) 59.45%, rgba(29, 29, 29, 0) 120.65%);
+    }
+
+    &.active {
+      color: #ff007a;
+    }
   }
-}
 `
+
+export const SScrollImage = styled.img`
+  width: 50px;
+  height: 50px;
+  transition: opacity 0.3s;
+  opacity: ${props => props.isHovered ? 0 : 1};
+`;
+
+export const SScrollCircle = styled.div`
+  padding : 7px 10px;
+  position: fixed;
+  margin-top: 70px;
+  margin-left: 10px;
+  background-color: #0000c5;
+  border-radius: 50%;
+  transition: opacity 0.3s;
+  opacity: ${props => props.isHovered ? 0 : 1};
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 27px;
+  color: white;
+  box-shadow: 0px 0px 20px 0.1px rgba(255,255,255,15%);
+
+`;

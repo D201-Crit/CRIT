@@ -4,6 +4,7 @@ import {
   SEntranceButtonWrapper,
   SShortsWrapper,
   SScrollButtonWrapper,
+  SScrollImage, SScrollCircle
 } from "../styles/pages/SMainPage";
 import { SEmpty } from "../styles/SCommon";
 import SearchShorts from "../component/shorts/SearchShorts";
@@ -27,9 +28,7 @@ import GetOnGoingMyChallenge from "../component/challenge/GetOnGoingMyChallenge"
 import GetAllMyChallenge from "../component/challenge/GetAllMyChallenge";
 import GetPlannedMyChallenge from "../component/challenge/GetPlannedMyChallenge";
 import InfiniteScroll from "react-infinite-scroll-component";
-import AOS from "aos";
-import "aos/dist/aos.css";
-
+import exampleImage from "../assets/예시용 이미지/2023-07-21 14 03 07.png"
 const MainPage = () => {
 
   const [loading, setLoading] = useState(true);
@@ -150,7 +149,11 @@ const scrollToPage = (index) => {
       break;
   }
 };
+const [isHovered, setIsHovered] = useState(false);
 
+// 마우스를 올릴 때와 내릴 때 상태를 변경하는 함수를 추가
+const handleMouseEnter = () => setIsHovered(true);
+const handleMouseLeave = () => setIsHovered(false);
   return (
     <>
       <SEntranceButtonWrapper>
@@ -160,20 +163,29 @@ const scrollToPage = (index) => {
       </SEntranceButtonWrapper>
       <SEmpty />
 
-      <SScrollButtonWrapper>
-        <button className = "btn1" onClick={() => scrollToPage(0)} style={{ marginRight: '1rem' }}>
+      <div
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      style={{ position: "relative" }}
+      >
+
+      <SScrollButtonWrapper
+        className={isHovered ? "showButtons" : ""}
+      >
+        <span className = "btn1" onClick={() => scrollToPage(0)} style={{ marginRight: '1rem' }}>
           최신순
-        </button>
+        </span>
 
-          <button className = "btn2" onClick={() => scrollToPage(1)} style={{ marginRight: '1rem' }}>
+          <span className = "btn2" onClick={() => scrollToPage(1)} style={{ marginRight: '1rem' }}>
             HOT
-          </button>
+          </span>
 
-          <button className = "btn3" onClick={() => scrollToPage(2)}>
+          <span className = "btn3" onClick={() => scrollToPage(2)}>
             많이 본
-          </button>
+          </span>
       </SScrollButtonWrapper>
-
+      <SScrollCircle isHovered={isHovered}>→</SScrollCircle>
+      </div>
 
       {/* 검색 */}
       <SearchShorts shortsByDate={shortsByDate} />
@@ -196,6 +208,7 @@ const scrollToPage = (index) => {
         <GetOnGoingMyChallenge />
         <GetPlannedMyChallenge />
       </>
+
     );
 }
 export default MainPage;

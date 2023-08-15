@@ -150,6 +150,8 @@ export const OpacityZero = styled.div`
 export const ShortsGrid = styled.div`
   display: flex;
   flex-direction: row;
+  padding: 90px;
+
   flex-wrap: wrap;
   justify-content: center;
   background : #2F2F2F;
@@ -160,12 +162,14 @@ export const ShortsGrid = styled.div`
 export const SShortsArea = styled.div`
   display: flex;
   justify-content: center;
-  height: 850px;
-  max-height: 700px;
+  
+  height: 1000px;
+  max-height: 600px;
   padding: 30px;
   align-items: center;
   box-sizing: border-box;
   background : #2F2F2F;
+    padding: 30px;
 
   .grid-container {
     display: grid;
@@ -176,18 +180,100 @@ export const SShortsArea = styled.div`
 `;
 
 export const ProfileShortsListArea = styled.div`
-  max-width : 1200px;
-  position : absolute;
-  max-height: 400px;
-  margin-top :50px;
-  width: 1200px;
-  height : 400px;
-  background : #red;
+  
+  position : relative;
+  max-height: 600px;
+  justify-content: center;
+  width: 1200px;  
+  
 `
 
 export const ProfileShortsList = styled.div`
-  padding: 15px;
-  width : 800px;
-  max-width : 800px;
-  max-height: 400px;
+  margin-left : 90px;
+  padding: 30px;
+  justify-content: center;
+  max-width : 80%;
+  max-height: 70%;
+  
 `
+
+export const SShortItemProfileVer = styled.div`
+  position: relative;
+  background : black;
+
+  border-radius: 15px;
+  width: 22%; // 수정: 아이템의 가로 높이를 변경
+  height: 23%; // 수정: 아이템의 세로 높이를 변경
+  display: flex;
+  box-shadow: 0px 0px 20px 0.1px rgba(255,255,255,15%);
+
+  flex-direction: column;
+  justify-content: flex-start;
+  // overflow: hidden;
+  // cursor : pointer;
+  margin-bottom : 20px;
+
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    backgruond : black;
+    object-fit: cover;
+    opacity: 1;
+  }
+
+  h2,
+  p {
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  h2 {
+    pointer-events: none; 
+    font-size: 25px;
+    margin-top: -15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translateY(-50%) translateX(-50%);
+    -moz-transform: translateY(-50%) translateX(-50%);
+    transform: translateY(-50%) translateX(-50%);
+  }
+
+  p {
+    pointer-events: none; 
+    font-size: 14px;
+    margin: auto;
+    margin-top: 10px;
+
+    text-align: justify;
+    color : #ff007a;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translateY(-50%) translateX(-50%);
+    -moz-transform: translateY(-50%) translateX(-50%);
+    transform: translateY(-50%) translateX(-50%);
+  }
+
+  &:hover {
+    img {
+      opacity: 0;
+      transform: translate(-50%, -50%) rotate(90deg) scale(0.8);
+    }
+
+    h2,
+    p {
+      opacity: 1;
+    }
+  }
+`;

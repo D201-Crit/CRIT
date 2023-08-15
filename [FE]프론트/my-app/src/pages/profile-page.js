@@ -1,5 +1,6 @@
 
 import { SFeedButton, SShortsArea, SProfileWrapper, ShortsGrid, Empty, Row, Col, OpacityZero, SProfileImg, SProfileImgCover, FeedGrid } from "../styles/pages/SProfilePage";
+import { SEmpty, SEmpty2 } from '../styles/SCommon';
 import { useState, useRef, useEffect } from "react";
 import CreateShortsModal from '../component/shorts/CreateShortsModal';
 import ProfileShorts from "../component/profile/ProfileShorts";
@@ -107,24 +108,28 @@ const ProfilePage = () => {
               name="profile_img"
             />
           </OpacityZero>
+          <button onClick={updateImage}>이미지 업로드</button>
+
           <Row>
             <Row>
             <h2>{profileInfo.grade}</h2>
             </Row>
             <Row> 
             <h1>{profileInfo.nickname}</h1>
+            
             </Row>
+
             <a className="follower">팔로워</a><a>{followersCount}</a>
-            <a className="follower">팔로잉</a><a>{followingCount}</a>
+            <a className="following">팔로잉</a><a>{followingCount}</a>
           </Row>
 
-          <button onClick={updateImage}>이미지 업로드</button>
         </Row>
         <Empty />
+        <SEmpty2/>
         {/* 이후 추가될 쇼츠 영역 */}
-        <ShortsGrid>
         <SFeedButton onClick={() => { setShortsCreateModal(true) }}>쇼츠 만들기</SFeedButton>
-
+        <SEmpty/>
+        <ShortsGrid>
         <SShortsArea>
         {shortsCreateModal && (
           <CreateShortsModal setShortsCreateModal={setShortsCreateModal} />
@@ -132,6 +137,7 @@ const ProfilePage = () => {
         <ProfileShorts/>
         </SShortsArea>
         </ShortsGrid>
+
         {/* 이후 추가될 피드 영역 */}
         <FeedGrid>
           <Feed />
