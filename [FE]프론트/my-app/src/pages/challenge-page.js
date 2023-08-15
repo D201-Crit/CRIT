@@ -14,6 +14,10 @@ import CreateChallengeModal from "../component/challenge/CreateChallengeModal";
 import SearchChallenge from "../component/challenge/SearchChallenge";
 import { useDispatch, useSelector } from "react-redux";
 import { setChallenge } from "../slice/ChallengeSlice";
+import GetCompleteMyChallenge from "../component/challenge/GetCompleteMyChallenge";
+import GetOnGoingMyChallenge from "./../component/challenge/GetOnGoingMyChallenge";
+import GetAllMyChallenge from "../component/challenge/GetAllMyChallenge";
+import GetPlannedMyChallenge from "../component/challenge/GetPlannedMyChallenge";
 
 const ChallengePage = () => {
   const [loading, setLoading] = useState(true);
@@ -64,6 +68,10 @@ const ChallengePage = () => {
           getAllChallenge={getAllChallenge}
         />
       </Modal>
+      <GetAllMyChallenge />
+      <GetCompleteMyChallenge />
+      <GetOnGoingMyChallenge />
+      <GetPlannedMyChallenge />
     </>
   );
 };
