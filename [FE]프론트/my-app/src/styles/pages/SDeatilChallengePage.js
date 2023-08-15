@@ -195,34 +195,33 @@ export const SButtonWrapper = styled.div`
 
 // 디테일챌린지 글 작성
 export const SBoardWriteWrapper = styled.div`
-  width: 1100px;
+  width: 1200px;
   margin: 30px auto;
   text-align: center;
-  #updateImage {
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    right: -55px;
-  }
+  // #updateImage {
+  //   width: 40px;
+  //   height: 40px;
+  //   position: absolute;
+  //   right: -55px;
+  // }
   #label {
     width: 100px;
   }
-  #update {
-    position: relative;
-    right: 860px;
-    bottom: 15px;
-    #content {
-      width: 790px;
-      height: 60px;
-      margin: -5px 0 0 0;
-      border: none;
-      background-color: rgb(21 21 21);
-      border-bottom: solid 3px gray;
-    }
+  form {
+    // background-color: red;
+  }
+`;
+export const SUpdateForm = styled.form`
+  #content {
+    width: 600px;
+    height: 60px;
+    border: none;
+    background: none;
+    border-bottom: solid 3px gray;
   }
 `;
 export const SBoardInput = styled.input`
-  width: 70%;
+  width: 930px;
   height: 70px;
   background: transparent;
   border: none;
@@ -240,6 +239,21 @@ export const SBoardInput = styled.input`
 //   height: 30px;
 //   cursor: pointer;
 // `;
+
+export const SSumbitButton = styled.button`
+  background-color: #0000c5;
+  padding: 5px 10px;
+  width: 60px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-left: 20px;
+  position: relative;
+  top: 20px;
+`;
+
 export const SLabelImage = styled.label`
   img {
     width: 40px;
@@ -252,7 +266,7 @@ export const SBoardImage = styled.input`
 `;
 
 // 디테일챌린지 게시판 보기
-export const SBoardWrapper = styled.div`
+export const SBoardsWrapper = styled.div`
   width: 1200px;
   margin: 30px auto;
   h1 {
@@ -261,24 +275,26 @@ export const SBoardWrapper = styled.div`
   }
 `;
 
-export const SBoardLi = styled.li`
+export const SBoardWrapper = styled.div`
   list-style: none;
-  width: 960px;
+  display: flex;
+  width: 1000px;
   margin: 20px auto;
-  ${"" /* padding: 15px 15px 0 15px; */}
+  background-color: #181818;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
   #writer {
     font-size: 18px;
-    color: gray;
-    margin: 0;
-  }
-
-  div {
-    display: flex;
+    color: #1c5aea;
+    font-weight: 1000;
+    width: 150px;
   }
   #content {
-    width: 90%;
     font-size: 25px;
     color: white;
+    width: 700px;
     &::placeholder {
       font-weight: 800;
       font-size: 20px;
@@ -287,57 +303,57 @@ export const SBoardLi = styled.li`
   }
 `;
 
+// export const SDetailButtonWrapper = styled.div`
+//   widht: 150px;
+//   // background-color: red;
+// `;
+
 export const SDeleteBoardButton = styled.button`
-  background: transparent;
-  color: gray;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  position: absolute;
-`;
-export const SSpan = styled.span`
-  ${"" /* position: absolute; */}
-  ${"" /* right: 200px; */}
-  width: 100px;
-  display: flex;
-  margin: 0 0 0 500px;
-`;
-export const SUpdateBoardButton = styled.button`
-  position: absolute;
-  color: white;
-  background-color: #0000c5;
+  background-color: #ff5e5e;
+  padding: 5px 10px;
   width: 60px;
-  height: 25px;
+  color: white;
   border: none;
   border-radius: 5px;
-  color: white;
   font-size: 15px;
   cursor: pointer;
+  margin-left: 70px;
+`;
+
+export const SUpdateBoardButton = styled.button`
+  background-color: #0000c5;
+  padding: 5px 10px;
+  width: 60px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-right: 5px;
+  margin-left: 15px;
 `;
 
 export const SLikeBoardButton = styled.button`
-  ${"" /* position: absolute; */}
-  ${"" /* right: 240px; */}
-  color: white;
   background-color: #0000c5;
+  padding: 5px 10px;
   width: 60px;
-  height: 25px;
+  color: white;
   border: none;
   border-radius: 5px;
-  color: white;
   font-size: 15px;
   cursor: pointer;
+  margin-right: 5px;
+  margin-left: 70px;
 `;
 export const SUnLikeBoardButton = styled.button`
-  ${"" /* position: absolute; */}
-  ${"" /* right: 240px; */}
-  color: white;
   background-color: #0000c5;
-  width: 95px;
-  height: 25px;
+  padding: 5px 10px;
+  width: 90px;
+  color: white;
   border: none;
   border-radius: 5px;
-  color: white;
   font-size: 15px;
   cursor: pointer;
+  margin-right: 5px;
+  margin-left: 65px;
 `;

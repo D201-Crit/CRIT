@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { api } from "../../api/api";
-import { SJoinListWrapper } from "../../styles/pages/SChallengePage";
+import {
+  SJoinListWrapper,
+  SJoinTitle,
+  SJoinListExit,
+} from "../../styles/pages/SChallengePage";
 
 const JoinListModal = ({ challengeData, closeJoinListModal }) => {
   const [joinList, setJoinList] = useState([]);
@@ -13,7 +17,7 @@ const JoinListModal = ({ challengeData, closeJoinListModal }) => {
           headers: {
             Authorization: `Bearer ${challengeData.user.accessToken}`,
           },
-        }
+        },
       )
       .then((res) => {
         console.log(res);
@@ -29,7 +33,9 @@ const JoinListModal = ({ challengeData, closeJoinListModal }) => {
   console.log(joinList);
   return (
     <SJoinListWrapper>
-      <h1>참여내역</h1>
+      <SJoinTitle>
+        <p>참여내역</p>
+      </SJoinTitle>
       {joinList.map((join) => (
         <ul>
           <li key={join.id}>
@@ -38,7 +44,7 @@ const JoinListModal = ({ challengeData, closeJoinListModal }) => {
           </li>
         </ul>
       ))}
-      <button onClick={closeJoinListModal}>X</button>
+      <SJoinListExit onClick={closeJoinListModal}>x</SJoinListExit>
     </SJoinListWrapper>
   );
 };

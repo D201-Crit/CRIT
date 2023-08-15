@@ -16,7 +16,7 @@ const CommunityPage = () => {
       delay: 50,
       anchorPlacement: "bottom-top",
     });
-  
+
     return () => {
       AOS.refresh();
     };
@@ -27,7 +27,7 @@ const CommunityPage = () => {
       <SCommunityWrapper>
         <SEmpty />
         <div data-aos="fade-right">
-        <h1>커뮤니티</h1>
+          <h1>커뮤니티</h1>
         </div>
         <SHr />
         <AdvertisingBoard />
