@@ -18,7 +18,7 @@ const CreateArticleModal = ({ classification, setModal, fetchArticles}) => {
 
   const onArticleImage = (e) => {
     const imageList = e.target.files;
-    let imageObjList = [];
+    let imageObjList = [...images]; // 기존 이미지 객체의 배열을 이어서 사용합니다.
   
     for (let i = 0; i < imageList.length; i++) {
       const imageUrl = URL.createObjectURL(imageList[i]);
@@ -27,6 +27,7 @@ const CreateArticleModal = ({ classification, setModal, fetchArticles}) => {
   
     setImages(imageObjList);
   };
+  
   
 
   const writeArticle = (e) => {

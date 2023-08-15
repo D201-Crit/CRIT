@@ -28,14 +28,25 @@ const ModifyArticleModal = ({ classification, setIsEditOpen, prevArticles, fetch
     }
   
     setImages(imageObjList);
+
   };
 
-  const removeImage = (fileId, e) => {
+  const removeImage = (fileId, index) => {
+    // 파일 아이디가 정의되지 않으면 초기화합니다.
+    if (fileId === undefined) {
+      let updatedImages = [...images];
+      updatedImages.splice(index, 1);
+      setImages(updatedImages);
+      document.getElementById("fileInput").value = null;
+
+      return;
+    }
+  
     console.log("파일아이디 테스트", fileId);
     api
       .post(`${API_BASE_URL}/deleteImageOne/${article.id}/${fileId}`, {
         headers: {
-          Authorization: `Bearer ${user .accessToken}`,
+          Authorization: `Bearer ${user.accessToken}`,
           "Content-Type": "multipart/form-data",
         },
       })
@@ -44,11 +55,10 @@ const ModifyArticleModal = ({ classification, setIsEditOpen, prevArticles, fetch
         console.log(fileId);
         setImages(images.filter((image) => image.fileId !== fileId));
       })
-      .catch((err)=>{
+      .catch((err) => {
         console.log(err);
       });
   };
-  
 
   const writeArticle = (e) => {
     e.preventDefault();
@@ -132,7 +142,7 @@ const ModifyArticleModal = ({ classification, setIsEditOpen, prevArticles, fetch
               style={{ maxWidth: "100px", maxHeight: "px", margin: "60px 5px 0px 0px" }}
             />
             <SBoardArticleDeleteButton
-              onClick={() => removeImage(imageObj.fileId)}
+            onClick={() => removeImage(imageObj.fileId, index)}
             >⊖
             </SBoardArticleDeleteButton>
           </div>
