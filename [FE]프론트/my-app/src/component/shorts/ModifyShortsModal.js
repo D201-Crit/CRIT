@@ -41,7 +41,7 @@ const ModifyShortsModal = ({ setModifyModal, prevshotrs, shortId, getShort }) =>
 
   return (
     <SDetailModal>
-    <h1 style={{color: "white" , padding:"20px"}}>숏폼 수정</h1>
+    <h1 style={{color: "white" , padding:"20px"}}>숏챌 수정</h1>
     <SDividerLine/>
     <div>
       <SForm2 onSubmit={modifyShorts}>

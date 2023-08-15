@@ -17,6 +17,8 @@ const ProfilePage = () => {
   const [shortsCreateModal, setShortsCreateModal] = useState(false);
   const followersCount = profileInfo.followers ? profileInfo.followers.length : 0;
   const followingCount = profileInfo.followings ? profileInfo.followings.length : 0;
+  const point = profileInfo.cashPoint ? profileInfo.cashPoint: 0;
+  const exp = profileInfo.exp ? profileInfo.exp: 0;
 
   // 프로필 정보 가져오기
   useEffect(() => {
@@ -90,7 +92,7 @@ const ProfilePage = () => {
               <img
                 className="profileImage"
                 src={(profileImage && profileImage.url) || profileInfo.imageUrl}
-                alt="이미지 수정"
+                // alt="이미지 수정"
                 onClick={() => {
                   profileImgFileInput.current.click();
                 }}
@@ -112,18 +114,39 @@ const ProfilePage = () => {
 
           <Row>
             <Row>
-            <h2>{profileInfo.grade}</h2>
+            <h2 style={{margin:"4px", fontWeight:"200", color:"#33FF00"}}>{profileInfo.grade}</h2>
             </Row>
             <Row> 
-            <h1>{profileInfo.nickname}</h1>
-            
+            <h1 style={{margin:"1px"}}>{profileInfo.nickname}</h1>
             </Row>
-
-            <a className="follower">팔로워</a><a>{followersCount}</a>
-            <a className="following">팔로잉</a><a>{followingCount}</a>
           </Row>
 
         </Row>
+        <SEmpty2/>
+
+        <Row>
+        <Col/>
+        <Col/>
+
+        <Col>
+        <a style={{color:"grey"}} className="follower">포인트</a><a style={{margin:"10px" ,fontSize: "24px", fontWeight: "1000"}}>{point}</a>
+        </Col>
+        <Col>
+        <a style={{color:"grey"}} className="follower">경험치</a><a style={{margin:"10px" ,fontSize: "24px", fontWeight: "1000"}}>{exp}</a>
+
+        </Col>
+        <Col>
+        <a style={{color:"grey"}} className="follower">팔로워</a><a style={{margin:"10px" ,fontSize: "24px", fontWeight: "1000"}}>{followersCount}</a>
+
+        </Col>
+        <Col>
+        <a style={{color:"grey"}} className="following">팔로잉</a><a style={{margin:"10px" ,fontSize: "24px", fontWeight: "1000"}}>{followingCount}</a>
+        </Col>
+        <Col/>
+        <Col/>
+
+        </Row>
+
         <Empty />
         <SEmpty2/>
         {/* 이후 추가될 쇼츠 영역 */}

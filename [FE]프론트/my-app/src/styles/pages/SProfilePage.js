@@ -63,15 +63,26 @@ export const SProfileImgCover = styled.div`
 `;
 
 export const SProfileImg = styled.div`
-  padding: 10px;
-  border-radius: 50%;
-  border: 5px solid gold;
-  width: 200px;
-  height: 200px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
+  // padding: 10px;
+  // border-radius: 50%;
+  // border: 5px solid gold;
+  // width: 200px;
+  // height: 200px;
+  // overflow: hidden;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
   justify-content: center;
+  align-items: center;
+  width: 200px;
+  
+  height: 200px;
+  border: 5px solid transparent;
+  border-radius: 50%;
+  background-image: linear-gradient(#444444, #444444), linear-gradient(to right, #FFB800, #fff, #FFB800);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  margin: 10px;
 
   img {
     width: 100%;
@@ -194,13 +205,15 @@ export const ProfileShortsList = styled.div`
   justify-content: center;
   max-width : 80%;
   max-height: 70%;
+
+  
+  
   
 `
 
 export const SShortItemProfileVer = styled.div`
-  position: relative;
   background : black;
-
+  position: relative;
   border-radius: 15px;
   width: 22%; // 수정: 아이템의 가로 높이를 변경
   height: 23%; // 수정: 아이템의 세로 높이를 변경
@@ -209,8 +222,8 @@ export const SShortItemProfileVer = styled.div`
 
   flex-direction: column;
   justify-content: flex-start;
-  // overflow: hidden;
-  // cursor : pointer;
+  overflow: hidden;
+  cursor : pointer;
   margin-bottom : 20px;
 
 
@@ -218,7 +231,6 @@ export const SShortItemProfileVer = styled.div`
     width: 100%;
     height: 100%;
     border-radius: 15px;
-    backgruond : black;
     object-fit: cover;
     opacity: 1;
   }
