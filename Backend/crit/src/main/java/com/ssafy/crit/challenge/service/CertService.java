@@ -97,7 +97,8 @@ public class CertService {
         // 챌린지 끝나고 나서
         int allSeconds = (int) Duration.between(startTime, endTime).toSeconds(); // 챌린지 전체 초
         LocalTime presenceTime = LocalTime.ofSecondOfDay(inTime); // 자리에 있었던 시간
-        LocalTime absentTime = LocalTime.ofSecondOfDay(allSeconds - inTime); // 부재 시간
+        int absentSecond = allSeconds - inTime < 0 ? 0 : allSeconds - inTime; // 초과로 있었을 때 음수 방지
+        LocalTime absentTime = LocalTime.ofSecondOfDay(absentSecond); // 부재 시간
         double doubleInTime = inTime;
         double presencePercentage = Math.round((doubleInTime / allSeconds * 100) * 10) / 10.; // 자리에 앉아 있는 비율
         IsCert isCert = todayChallengeIsCert(challenge, user); // 오늘 해당 챌린지 인증 불러오기
