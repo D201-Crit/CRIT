@@ -37,7 +37,6 @@ export const SStatusWrapper = styled.div`
     font-size: 18px;
     font-weight: 800;
     color: gray;
-
     &:hover {
       color: #ff007a;
     }
@@ -45,10 +44,10 @@ export const SStatusWrapper = styled.div`
 `;
 export const SImg = styled.img`
   position: absolute;
-  bottom: -120px;
+  bottom: -160px;
   left: 120px;
   width: 600px;
-  height: 600px;
+  height: 500px;
 `;
 
 export const SSwiper = styled(Swiper)`

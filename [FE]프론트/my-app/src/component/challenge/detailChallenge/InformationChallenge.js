@@ -144,6 +144,8 @@ const InformationChallenge = () => {
         <p id="info">{challenge.info}</p>
         <h1 id="USERLIST">참여중인 사람들</h1>
         <p id="userList">{challenge.userList.join(", ")}</p>
+        <h1 id="MONEY">참가비</h1>
+        <p id="money">{challenge.money}포인트</p>
       </SInfoWrapper>
       <SButtonWrapper>
         {challenge.userList.includes(user.nickname) === true ? (

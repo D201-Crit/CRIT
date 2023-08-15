@@ -14,7 +14,7 @@ const DetailChallengePage = () => {
   const [boards, setBoards] = useState([]);
   const date = new Date();
   const [loading, setLoading] = useState(true);
-
+  console.log(challenge);
   const [checkUser, setCheckUser] = useState(false);
   const checkedUser = () => {
     if (challenge.userList.includes(user.nickname)) {
@@ -29,7 +29,7 @@ const DetailChallengePage = () => {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
           },
-        }
+        },
       )
       .then((res) => {
         setLoading(false);

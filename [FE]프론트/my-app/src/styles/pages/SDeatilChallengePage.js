@@ -91,8 +91,21 @@ export const SInfoWrapper = styled.div`
   #userList {
     position: absolute;
     top: 205px;
-    width: 200px;
+    width: 220px;
     font-size: 20px;
+    margin: 0 0 0 400px;
+  }
+  #MONEY {
+    position: absolute;
+    top: 335px;
+    font-size: 25px;
+    margin: 0 0 0 400px;
+  }
+  #money {
+    position: absolute;
+    top: 380px;
+    width: 200px;
+    font-size: 25px;
     margin: 0 0 0 400px;
   }
 `;
