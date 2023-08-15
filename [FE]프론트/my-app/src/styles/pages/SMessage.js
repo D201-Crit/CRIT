@@ -25,7 +25,8 @@ export const SForm = styled.form`
   align-items: center;
   max-height: 500px;
   max-width: 500px;
-  
+  font-family: "Pretendard";
+
   border-radius: 5px;
   margin: 6px 0;
   padding: 8px 15px;
@@ -34,17 +35,20 @@ export const SForm = styled.form`
 export const SInput = styled.input`
   border: 1px solid #ccc;
   border-radius: 5px;
+  font-family: "Pretendard";
   margin: 6px 0;
   margin-top: 12px;
   padding: 8px 12px;
   width: 90%;
-  
+  font-weight : 1000;
 `;
 
 export const SInputContext = styled.textarea`
   border: 1px solid #ccc;
   border-radius: 5px;
   margin: 6px 0;
+  font-family: "Pretendard";
+
   padding: 8px 12px;
   width: 90%;
   height: 200px;

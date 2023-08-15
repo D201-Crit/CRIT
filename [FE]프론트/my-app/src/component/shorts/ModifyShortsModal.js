@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { api } from "../../api/api";
-import { SModifyModal } from "../../styles/pages/SMainPage";
+import { SDividerLine, SSubmitButton2, SDetailModal, SForm2, SInput2, SInputContext2} from "../../styles/pages/SMainPage";
 import { SMessageBox, SInput, SSubmitButton, SInputContext, SForm } from "../../styles/pages/SMessage";
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/shorts';
 
@@ -40,25 +40,27 @@ const ModifyShortsModal = ({ setModifyModal, prevshotrs, shortId, getShort }) =>
   };
 
   return (
-    <SModifyModal>
+    <SDetailModal>
+    <h1 style={{color: "white" , padding:"20px"}}>숏폼 수정</h1>
+    <SDividerLine/>
     <div>
-      <SForm onSubmit={modifyShorts}>
-        <SInput
+      <SForm2 onSubmit={modifyShorts}>
+        <SInput2
           name="title"
           type="text"
           value={shorts.title}
           onChange={handleShotsChange}
-        ></SInput>
-        <SInputContext
+        ></SInput2>
+        <SInputContext2
           name="content"
           type="textarea"
           value={shorts.content}
           onChange={handleShotsChange}
-        ></SInputContext>
-        <SSubmitButton type="submit" value={"작성완료"}></SSubmitButton>
-      </SForm>
+        ></SInputContext2>
+        <SSubmitButton2 type="submit" value={"작성완료"}></SSubmitButton2>
+      </SForm2>
     </div>
-    </SModifyModal>
+    </SDetailModal>
   );
 };
 export default ModifyShortsModal;

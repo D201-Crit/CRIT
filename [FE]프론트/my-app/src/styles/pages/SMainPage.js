@@ -5,11 +5,10 @@ const fadeIn = keyframes`
   100% {opacity: 1;}
 `;
 export const SShortsWrapper = styled.div`
-  width: 1200px;
+  width: 100%;
+  height: 100%;
   justify-content: flex-end;
-  // margin: 30px auto -40px auto;
   margin: auto;
-  margin-top: -50px;
 `;
 
 export const SEntranceButtonWrapper = styled.div`
@@ -117,13 +116,13 @@ export const SSearchShortsWrapper = styled.div`
   text-align: center;
 `;
 export const SInput = styled.input`
-  background-color: rgba(50, 50, 50, 0.599);
-  color: white;
+  background-color: rgba(255, 255, 255, 1);
+  color: black;
   width: 50%;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
 
-  padding: 13px;
+  padding: 15px;
   margin: 0 auto;
   display: block;
   font-size: 18px;
@@ -173,11 +172,11 @@ export const SShortsCard = styled.div`
 export const SShortsContainer = styled.div`
   padding: 10px;
   display: flex;
-  flex-wrap: nowrap;
-  width: 600px;
-  height: 300px;
-  overflow-x: auto;
-  gap: 10px;
+  
+  width: 100%;
+  height: 250px;
+  
+  gap: 15px;
   -webkit-overflow-scrolling: touch;
   &::-webkit-scrollbar {
     display: none;
@@ -188,40 +187,31 @@ export const SShortsContainer = styled.div`
 export const SShortItem = styled.div`
   position: relative;
   background-color: black;
-  width: 500px;
-  height: 300px;
+  width: 700px;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-
   justify-content: flex-start;
-  overflow: hidden;
+  // overflow: hidden;
+  // cursor : pointer;
 
   img {
     width: 100%;
-    height: 60%;
+    height: 100%;
     object-fit: cover;
-    position: absolute;
-    top: 50%;
-    left: 50%;
     opacity: 1;
-    transition: opacity 0.3s, transform 0.3s;
-    -webkit-transform: translate(-50%, -50%) rotate(90deg);
-    -moz-transform: translate(-50%, -50%) rotate(90deg);
-    transform: translate(-50%, -50%) rotate(90deg);
   }
 
   h2,
   p {
     opacity: 0;
     transition: opacity 0.3s;
-    margin-top: -30px;
   }
 
   h2 {
-    margin-top: 30px;
+    pointer-events: none; 
     font-size: 25px;
-    font-weight: bold;
+    margin-top: -15px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -234,9 +224,13 @@ export const SShortItem = styled.div`
   }
 
   p {
+    pointer-events: none; 
     font-size: 14px;
-    margin: 0;
+    margin: auto;
+    margin-top: 10px;
+
     text-align: justify;
+    color : #ff007a;
     overflow: hidden;
     text-overflow: ellipsis;
     -webkit-line-clamp: 3;
@@ -286,13 +280,9 @@ export const SDetailModal = styled.div`
   transform: translate(-50%, -50%);
   width: 700px;
   max-height: 700px;
-  background: linear-gradient(
-    to bottom,
-    rgba(69, 72, 77, 1) 0%,
-    rgba(0, 0, 0, 0.66) 100%
-  );
-  border: 0.5px solid rgba(50, 50, 50);
-  border-radius: 8px;
+  background: black;
+  border: 0.5px solid rgba(40, 40, 40);
+  border-radius: 20px;
   padding: 32px;
   z-index: 1000;
   font-family: "Pretendard";
@@ -307,6 +297,20 @@ export const SDetailModal = styled.div`
   &::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 20px;
+  }
+
+  animation: ${fadeIn} 0.3s ease-in;
+  &:before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 10%;
+    height: 10%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+    /* 애니메이션 코드 추가 */
+    animation: ${fadeIn} 0.3s ease-in;
   }
 `;
 
@@ -330,7 +334,6 @@ export const SPlayerSection = styled.div`
   height: 50%;
   display: flex;
   transform: translate(45%, -0%);
-
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -348,9 +351,10 @@ export const SInfoSection = styled.section`
   display: flex;
   flex-direction: column;
   padding: 35px;
-  background-color: #ffffff;
+  background-color: rgba(20, 20, 20);
+  color : white;
   margin-top: 16px;
-  border-radius: 4px;
+  border-radius: 15px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 `;
 
@@ -364,12 +368,20 @@ export const SInfoRow = styled.div`
 export const SCommentSection = styled.div`
   display: flex;
   flex-direction: column;
-  
+  background-color: rgba(20, 20, 20);
+  padding : 35px;
   gap: 16px;
   margin-top: 24px;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
   h2{
     color : white;
+  }
+  input{
+    
+    border: none;
+    
   }
 `;
 
@@ -377,7 +389,8 @@ export const SCommentList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background-color: #f9f9f9;
+  color : white;
+  background-color: black;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -391,6 +404,7 @@ export const SCommentList = styled.div`
   form {
     display: flex;
     flex-direction: row;
+    background-color: black;
     gap: 8px;
   }
 
@@ -398,10 +412,11 @@ export const SCommentList = styled.div`
     margin-left: 15px;
   }
 
-  .comment-item:not(:last-child) {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    padding-bottom: 10px;
-    margin-bottom: 10px;
+  .comment-item {
+    display: grid;
+    grid-template-columns: 1.5fr 10fr 0.5fr;
+    gap: 12px;
+    word-break: break-word;
   }
 `;
 
@@ -452,10 +467,14 @@ export const SModifyModal = styled.div`
 `;
 
 export const SCommentInput = styled.input`
-  background-color: #f1f1f1;
+  background-color: #000;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  font-family: "Pretendard";
+
+  border-radius: 5px;
+  margin-right : 10px;
   padding: 8px;
+  color : white;
   font-size: 14px;
   flex-grow: 1;
   font-family: "Pretendard";
@@ -489,5 +508,120 @@ export const SResultItem = styled.li`
 
   &:hover {
     background-color: #f1f1f1;
+  }
+`;
+
+export const SLikeShorts = styled.p`
+  font-size : 40px;
+  display: flex;
+  cursor: pointer;
+  justify-content: center;
+  color : #ff007a;
+  &:hover {
+    color: #ff004a;
+  }
+`
+export const SDropDownMenu = styled.div`
+  position: absolute;
+  display: ${props => props.show ? 'block' : 'none'};
+  min-width: 160px;
+  border-radius: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  right: 90px;
+  margin-top : 110px;
+
+  button {
+    background-color: rgba(13,13,13, 0.92);
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: none;
+    cursor: pointer;
+    font-family: "Pretendard";
+    outline: none;
+
+    &:hover {
+      background-color: rgba(20,20,20);
+      font-weight : 1000;
+    }
+  }
+`;
+
+export const SDividerLine = styled.div`
+  background-color: rgba(255, 255, 255, 0.3);
+  height: 1px;
+  width: 100%;
+  margin-top: auto;
+`;
+export const SDeleteIcon = styled.button`
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 0;
+
+  &:hover {
+    color: #ff0000;
+  }
+`;
+
+export const SForm2 = styled.form`
+  position: relative;
+  align-items: center;
+  max-height: 800px;
+  max-width: 800px;
+  font-family: "Pretendard";
+
+  border-radius: 5px;
+  margin: 6px 0;
+  padding: 8px 15px;
+
+`;
+
+export const SInput2 = styled.input`
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: "Pretendard";
+  font-size: 24px;
+  margin: 6px 0;
+  margin-top: 12px;
+  padding: 15px 14px;
+  width: 90%;
+  font-weight : 1000;
+`;
+
+export const SInputContext2 = styled.textarea`
+  border: 1px solid #ccc;
+  font-weight : 500;
+  font-size: 20px;
+  border-radius: 5px;
+  margin: 6px 0;
+  font-family: "Pretendard";
+  padding: 15px 14px;
+  width: 90%;
+  height: 200px;
+  max-height : 200px;
+  resize: none;
+`;
+
+export const SSubmitButton2 = styled.input`
+  background-color: #0000C5;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 12px;
+  padding: 15px 16px;
+  text-align: center;
+  width: 20%;
+
+  &:hover {
+    background-color: #1877f2;
   }
 `;
