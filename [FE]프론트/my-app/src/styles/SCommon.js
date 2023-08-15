@@ -3,9 +3,7 @@ import { createGlobalStyle } from "styled-components";
 
 //Nav
 export const SNav = styled.nav`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  height: 70px;
   padding: 1rem 2rem;
   background: black;
   font-size: 20px;
@@ -13,24 +11,31 @@ export const SNav = styled.nav`
   z-index: 1000;
   position: sticky;
   top: 0;
+  left: 50%;
 `;
 
 export const SLogoWrapper = styled.div`
-  height: 100%;
-  margin: px;
+  position: absolute;
+  height: 70px;
+  top: 10px;
+  width: 96%;
   overflow-x: hidden;
 
+  // background-color: red;
   ul {
     list-style: none;
     display: flex;
   }
-  a {
-    width: 100%;
-    margin-right: 1200px;
-    height: auto;
+  img {
+    position: absolute;
+    left: 20px;
+  }
+  #login {
+    position: absolute;
+    right: 20px;
+    top: 25px;
+    font-size: 25px;
     text-decoration: none;
-    display: inline-block;
-
     color: white;
     &:hover {
       color: #ff007a;
@@ -49,7 +54,7 @@ export const SMenuWrapper = styled.div`
     display: flex;
   }
   li {
-    margin: 0px 50px;
+    margin: 0px 120px;
     width: 100px;
     color: white;
   }
@@ -60,7 +65,7 @@ export const SMenuWrapper = styled.div`
     color: white;
     &:hover {
       color: #ff007a;
-      font-size : 21px;
+      font-size: 21px;
     }
 
     &.active {
@@ -71,10 +76,12 @@ export const SMenuWrapper = styled.div`
 
 // User
 export const SUserWrapper = styled.div`
-  position: relative;
+  position: absolute;
   width: 120px;
   font-size: 17px;
   cursor: pointer;
+  right: 10px;
+  top: 50px;
 
   ul {
     list-style: none;
@@ -189,6 +196,6 @@ export const SLoadingBackground = styled.div`
 export const SLoadingText = styled.div`
   font: 1rem "Noto Sans KR";
   text-align: center;
-  font-weight : 1000;
+  font-weight: 1000;
   text-align: center;
 `;

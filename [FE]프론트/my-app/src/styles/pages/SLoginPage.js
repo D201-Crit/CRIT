@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 
 export const SLoginPageWrapper = styled.div`
   position: absolute;
-  top: 50%;
+  top: 480px;
   left: 50%;
+  height: 600px;
   transform: translate(-50%, -50%);
 `;
 export const SForm = styled.form``;
@@ -19,6 +20,7 @@ export const SSpan = styled.span`
     font-size: 18px;
     font-weight: 500;
     font-family: "Pretendard";
+    padding: 0 15px 0 15px;
   }
 `;
 

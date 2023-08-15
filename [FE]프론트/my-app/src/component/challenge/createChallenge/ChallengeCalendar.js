@@ -5,7 +5,7 @@ import { SCalendarwrapper } from "../../../styles/pages/SChallengePage";
 
 const ChallengeCalendar = ({ onChangeDate }) => {
   const currentDate = new Date();
-  const sevenDaysAfter = moment(currentDate).add(0, "days").toDate();
+  const sevenDaysAfter = moment(currentDate).add(7, "days").toDate();
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -23,14 +23,14 @@ const ChallengeCalendar = ({ onChangeDate }) => {
         setEndDate(date);
         onChangeDate(
           moment(startDate).format("YYYY-MM-DD"),
-          moment(date).format("YYYY-MM-DD")
+          moment(date).format("YYYY-MM-DD"),
         ); // startDate와 endDate가 모두 설정된 경우
       } else {
         setEndDate(startDate);
         setStartDate(date);
         onChangeDate(
           moment(date).format("YYYY-MM-DD"),
-          moment(startDate).format("YYYY-MM-DD")
+          moment(startDate).format("YYYY-MM-DD"),
         ); // startDate와 endDate가 모두 설정된 경우
       }
     } else {
