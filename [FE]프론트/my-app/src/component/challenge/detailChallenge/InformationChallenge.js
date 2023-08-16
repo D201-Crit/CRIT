@@ -5,17 +5,16 @@ import {
   SImgWrapper,
   SInfoWrapper,
   SButtonWrapper,
+  SJoinListModal,
 } from "../../../styles/pages/SDeatilChallengePage";
 import PhotoChallengeModal from "../PhotoChallengeModal";
 import Modal from "react-modal";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import Swal from "sweetalert2";
-import {
-  SJoinListModal,
-  SWebRTCModal,
-} from "../../../styles/pages/SChallengePage";
+import { SWebRTCModal } from "../../../styles/pages/SChallengePage";
 import JoinListModal from "../JoinListModal";
+import VideoRoomComponent from "./../../VideoRoomComponent";
 
 const InformationChallenge = () => {
   const location = useLocation();
@@ -152,7 +151,7 @@ const InformationChallenge = () => {
           <>
             {getDaysInProgress(
               challenge.startDate,
-              challenge.endDate,
+              challenge.endDate
             )?.includes("현재") ? (
               new Date(challenge.startTime) <= new Date() &&
               new Date() <= new Date(challenge.endTime) ? (
@@ -212,6 +211,13 @@ const InformationChallenge = () => {
           </>
         )}
       </SButtonWrapper>
+
+      <Modal style={SWebRTCModal} isOpen={isVideoOpen}>
+        <VideoRoomComponent
+          closeVideoModal={closeVideoModal}
+          challengeData={challengeData}
+        />
+      </Modal>
       <Modal style={SWebRTCModal} isOpen={isPhotoOpen}>
         <PhotoChallengeModal
           challengeData={challengeData}
@@ -224,6 +230,7 @@ const InformationChallenge = () => {
         onRequestClose={closeJoinListModal}
       >
         <JoinListModal
+          style={SJoinListModal}
           challengeData={challengeData}
           closeJoinListModal={closeJoinListModal}
         ></JoinListModal>

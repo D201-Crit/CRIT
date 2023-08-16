@@ -796,7 +796,25 @@ export const SWebRTCModal = {
     zIndex: "999",
   },
 };
-
+export const SPhotoModal = {
+  content: {
+    backgroundColor: "rgba(22, 22, 22, 1)",
+    border: "0.5px solid rgba(80, 80, 80)",
+    borderRadius: "10px",
+    boxShadow: "0px 0px 15px gray",
+    margin: "100px auto",
+    width: "400px",
+    height: "550px",
+    color: "black",
+  },
+  overlay: {
+    background: "rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: "999",
+  },
+};
 // 사진인증 모달
 export const SPhotochallengeWrapper = styled.div`
   position: relative;
@@ -804,8 +822,8 @@ export const SPhotochallengeWrapper = styled.div`
   height: 100%;
   #title {
     position: absolute;
-    left: 470px;
-    font-size: 40px;
+    left: 90px;
+    font-size: 30px;
     margin: 15px 0 0 0;
     color: white;
   }
@@ -825,19 +843,18 @@ export const SPhotochallengeWrapper = styled.div`
   #image {
     position: absolute;
     top: 30px;
-    left: -40px;
-    width: 600px;
-    height: 500px;
+    right: -5px;
+    width: 300px;
+    height: 300px;
   }
   #submit {
     position: absolute;
-    right: -140px;
-    bottom: -639px;
-    width: 200px;
-    height: 60px;
-    font-size: 30px;
+    right: 260px;
+    top: 400px;
+    width: 150px;
+    height: 50px;
+    font-size: 25px;
     font-weight: 900;
-
     border: none;
     border-radius: 10px;
     background-color: #0000c5;
@@ -846,10 +863,11 @@ export const SPhotochallengeWrapper = styled.div`
   }
   #close {
     position: absolute;
-    left: 650px;
-    width: 200px;
-    height: 60px;
-    font-size: 30px;
+    right: 40px;
+    top: 460px;
+    width: 150px;
+    height: 50px;
+    font-size: 25px;
     font-weight: 900;
     bottom: 50px;
     border: none;
@@ -857,72 +875,4 @@ export const SPhotochallengeWrapper = styled.div`
     background-color: #33ff00;
     cursor: pointer;
   }
-`;
-
-// 참여내역
-export const SJoinListModal = {
-  content: {
-    backgroundColor: "rgba(22, 22, 22, 1)",
-    border: "0.5px solid rgba(80, 80, 80)",
-    borderRadius: "10px",
-    boxShadow: "0px 0px 15px gray",
-    width: "400px",
-    height: "470px",
-    margin: "auto",
-    padding: "0",
-    color: "black",
-  },
-  overlay: {
-    background: "rgba(0, 0, 0, 0.5)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: "999",
-  },
-};
-export const SJoinTitle = styled.div`
-  background: #0000c5;
-  height: 250px;
-  border-radius: 45%;
-  transform: translateY(-50%);
-  z-index: -1;
-  color: white;
-  margin-bottom: -120px;
-
-  p {
-    position: absolute;
-    top: 110px;
-    left: 130px;
-    font-size: 40px;
-    font-weight: 700;
-  }
-`;
-export const SJoinListWrapper = styled.div`
-  width: 100%;
-  overflow-y: auto;
-  overflow: hidden;
-  color: white;
-  text-align: center;
-  ul {
-    list-style: none;
-    padding: 0;
-    font-weight: 800;
-  }
-  #time {
-    font-size: 20px;
-  }
-  #certified {
-    font-size: 25px;
-  }
-`;
-
-export const SJoinListExit = styled.button`
-  position: absolute;
-  top: 1px;
-  right: 5px;
-  border: none;
-  background: none;
-  color: white;
-  font-size: 30px;
-  cursor: pointer;
 `;

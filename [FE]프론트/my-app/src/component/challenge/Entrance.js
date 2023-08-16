@@ -7,10 +7,11 @@ import {
   SEntranceSlide,
   SEntranceSwiper,
 } from "../../styles/pages/SMainPage";
+
 import { useNavigate } from "react-router";
 import { EffectCreative } from "swiper/modules";
 import Modal from "react-modal";
-import { SWebRTCModal } from "../../styles/pages/SChallengePage";
+import { SPhotoModal, SWebRTCModal } from "../../styles/pages/SChallengePage";
 import VideoRoomComponent from "../VideoRoomComponent";
 import PhotoChallengeModal from "./PhotoChallengeModal";
 
@@ -141,7 +142,7 @@ const Entrance = () => {
               : challenge.info}
           </p>
           {getDaysInProgress(challenge.startDate, challenge.endDate)?.includes(
-            "현재",
+            "현재"
           ) ? (
             new Date(challenge.startTime) <= new Date() &&
             new Date() <= new Date(challenge.endTime) ? (
@@ -182,9 +183,8 @@ const Entrance = () => {
           closeVideoModal={closeVideoModal}
           challengeData={challengeData}
         />
-        {/* <VideoRoomComponent /> */}
       </Modal>
-      <Modal style={SWebRTCModal} isOpen={isPhotoOpen}>
+      <Modal style={SPhotoModal} isOpen={isPhotoOpen}>
         <PhotoChallengeModal
           closePhotoModal={closePhotoModal}
           challengeData={challengeData}

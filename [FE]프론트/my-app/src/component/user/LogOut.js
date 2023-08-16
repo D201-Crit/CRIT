@@ -7,6 +7,7 @@ import { api } from "../../api/api";
 const LogOut = () => {
   const user = useSelector((state) => state.users); // useSelector를 통해 userSlice의 상태를 가져옴
   const nav = useNavigate();
+  console.log(user);
 
   const logOut = () => {
     api

@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { api } from "../../api/api";
 import {
   SJoinListWrapper,
-  SJoinTitle,
+  SJoinWrapper,
   SJoinListExit,
-} from "../../styles/pages/SChallengePage";
+  SJoinTitle,
+} from "../../styles/pages/SDeatilChallengePage";
 
 const JoinListModal = ({ challengeData, closeJoinListModal }) => {
   const [joinList, setJoinList] = useState([]);
@@ -17,7 +18,7 @@ const JoinListModal = ({ challengeData, closeJoinListModal }) => {
           headers: {
             Authorization: `Bearer ${challengeData.user.accessToken}`,
           },
-        },
+        }
       )
       .then((res) => {
         console.log(res);
@@ -33,18 +34,17 @@ const JoinListModal = ({ challengeData, closeJoinListModal }) => {
   console.log(joinList);
   return (
     <SJoinListWrapper>
-      <SJoinTitle>
-        <p>참여내역</p>
-      </SJoinTitle>
+      <SJoinTitle></SJoinTitle>
       {joinList.map((join) => (
-        <ul>
-          <li key={join.id}>
+        <>
+          <SJoinWrapper key={join.id}>
+            {join.certified ? <p id="success">완료</p> : <p id="fail">실패</p>}
             <p id="time">{join.certTime}</p>
-            <p id="certified">{join.certified ? "완료" : "실패"}</p>
-          </li>
-        </ul>
+          </SJoinWrapper>
+          <hr />
+        </>
       ))}
-      <SJoinListExit onClick={closeJoinListModal}>x</SJoinListExit>
+      {/* <SJoinListExit onClick={closeJoinListModal}></SJoinListExit> */}
     </SJoinListWrapper>
   );
 };

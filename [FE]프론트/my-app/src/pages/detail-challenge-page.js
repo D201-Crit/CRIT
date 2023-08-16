@@ -29,11 +29,10 @@ const DetailChallengePage = () => {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
           },
-        },
+        }
       )
       .then((res) => {
         setLoading(false);
-
         setBoards(res.data.data);
       })
       .catch((err) => {

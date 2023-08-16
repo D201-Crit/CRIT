@@ -250,6 +250,7 @@ export const SSumbitButton = styled.button`
   font-size: 15px;
   cursor: pointer;
   margin-left: 20px;
+  font-weight: 600;
   position: relative;
   top: 20px;
 `;
@@ -272,6 +273,14 @@ export const SBoardsWrapper = styled.div`
   h1 {
     text-align: center;
     font-size: 70px;
+  }
+`;
+
+export const SDiv = styled.div`
+  text-align: center;
+  margin: 10px 0;
+  h2 {
+    margin: 50px 0;
   }
 `;
 
@@ -303,11 +312,6 @@ export const SBoardWrapper = styled.div`
   }
 `;
 
-// export const SDetailButtonWrapper = styled.div`
-//   widht: 150px;
-//   // background-color: red;
-// `;
-
 export const SDeleteBoardButton = styled.button`
   background-color: #ff5e5e;
   padding: 5px 10px;
@@ -316,6 +320,7 @@ export const SDeleteBoardButton = styled.button`
   border: none;
   border-radius: 5px;
   font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
   margin-left: 70px;
 `;
@@ -342,18 +347,97 @@ export const SLikeBoardButton = styled.button`
   border-radius: 5px;
   font-size: 15px;
   cursor: pointer;
+  font-weight: 600;
   margin-right: 5px;
   margin-left: 70px;
 `;
 export const SUnLikeBoardButton = styled.button`
   background-color: #0000c5;
   padding: 5px 10px;
-  width: 90px;
+  width: 105px;
   color: white;
   border: none;
   border-radius: 5px;
   font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
   margin-right: 5px;
   margin-left: 65px;
+`;
+
+// 참여내역
+export const SJoinListModal = {
+  content: {
+    backgroundColor: "#131313",
+    border: "0.5px solid rgba(80, 80, 80)",
+    borderRadius: "10px",
+    boxShadow: "0px 0px 15px gray",
+    width: "400px",
+    height: "650px",
+    margin: "70px auto",
+    padding: "0",
+    color: "black",
+  },
+
+  overlay: {
+    background: "rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: "999",
+  },
+};
+
+export const SJoinListWrapper = styled.div`
+  width: 100%;
+  overflow-y: auto;
+  overflow: hidden;
+  color: white;
+  hr {
+    border: 1px solid #838383;
+    transform: scaleY(0.5);
+    margin-left: 60px;
+    width: 280px;
+  }
+`;
+
+export const SJoinTitle = styled.div`
+  background-image: url("https://github.com/Jinga02/ChallengePJT/assets/110621233/0a141bad-4414-439b-ae15-e015a5f4f5c7");
+  background-size: 100% 700px;
+  height: 330px;
+  margin: -20px;
+`;
+export const SJoinWrapper = styled.div`
+  display: flex;
+  height: 50px;
+  margin: 10px;
+  #time {
+    font-size: 20px;
+    font-weight: 800;
+    color: #838383;
+  }
+  #success {
+    font-size: 20px;
+    font-weight: 800;
+    color: white;
+    margin-left: 50px;
+    margin-right: 70px;
+  }
+  #fail {
+    font-size: 20px;
+    font-weight: 800;
+    color: #33ff00;
+    margin-left: 50px;
+    margin-right: 70px;
+  }
+`;
+export const SJoinListExit = styled.button`
+  position: absolute;
+  top: 1px;
+  right: 5px;
+  border: none;
+  background: none;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
 `;
