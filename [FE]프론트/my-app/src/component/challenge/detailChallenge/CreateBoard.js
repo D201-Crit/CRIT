@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { api } from "../../../api/api";
 import {
@@ -119,7 +119,6 @@ const CreateBoard = ({ boards, classification, getBoard }) => {
       }
     }
   };
-
   return (
     <SBoardWriteWrapper>
       <form onSubmit={writeBoard}>

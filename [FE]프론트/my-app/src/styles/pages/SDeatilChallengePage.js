@@ -180,11 +180,11 @@ export const SButtonWrapper = styled.div`
   #joinList {
     position: absolute;
     right: 30px;
-    // color: white;
     width: 150px;
     height: 50px;
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 1000;
+
     border-radius: 10px;
     border: none;
     background-color: #33ff00;
@@ -393,6 +393,7 @@ export const SJoinListWrapper = styled.div`
   overflow-y: auto;
   overflow: hidden;
   color: white;
+
   hr {
     border: 1px solid #838383;
     transform: scaleY(0.5);
@@ -404,7 +405,7 @@ export const SJoinListWrapper = styled.div`
 export const SJoinTitle = styled.div`
   background-image: url("https://github.com/Jinga02/ChallengePJT/assets/110621233/0a141bad-4414-439b-ae15-e015a5f4f5c7");
   background-size: 100% 700px;
-  height: 330px;
+  height: 340px;
   margin: -20px;
 `;
 export const SJoinWrapper = styled.div`

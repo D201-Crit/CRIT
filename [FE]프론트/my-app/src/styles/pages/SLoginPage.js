@@ -3,10 +3,19 @@ import { Link } from "react-router-dom";
 
 export const SLoginPageWrapper = styled.div`
   position: absolute;
-  top: 480px;
+  top: 450px;
   left: 50%;
-  height: 600px;
+  width: 500px;
+  height: 630px;
   transform: translate(-50%, -50%);
+  ${"" /* background-color: rgb(23, 23, 23); */}
+  ${"" /* border-radius: 20px; */}
+  text-align: center;
+  ${"" /* box-shadow: 5px 5px 20px gray; */}
+`;
+export const SImg = styled.img`
+  width: 350px;
+  height: 150px;
 `;
 export const SForm = styled.form``;
 export const SSpan = styled.span`
@@ -21,6 +30,9 @@ export const SSpan = styled.span`
     font-weight: 500;
     font-family: "Pretendard";
     padding: 0 15px 0 15px;
+  }
+  h3 {
+    font-weight: 500;
   }
 `;
 
@@ -61,16 +73,6 @@ export const SNaverLoginButton = styled.img`
   cursor: pointer;
   margin: 10px;
 `;
-export const SGoogleButton = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 10px;
-  padding: 5px;
-  background-color: white;
-`;
-
 export const Error = styled.div`
   color: #e01e5a;
   text-align: center;

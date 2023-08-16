@@ -6,7 +6,6 @@ import CreateBoard from "./CreateBoard";
 import {
   SBoardsWrapper,
   SBoardWrapper,
-  SDetailButtonWrapper,
   SDiv,
 } from "../../../styles/pages/SDeatilChallengePage";
 

@@ -7,7 +7,7 @@ import "swiper/css/scrollbar";
 import "swiper/css/effect-cards";
 
 // 나머지
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 import VideoRoomComponent from "../VideoRoomComponent";
@@ -20,6 +20,7 @@ import {
   SMidWrapper,
   SBotWrapper,
   SWebRTCModal,
+  SPhotoModal,
   SStatusWrapper,
 } from "../../styles/pages/SChallengePage";
 import { useSelector } from "react-redux";
@@ -296,7 +297,7 @@ const MyChallenge = () => {
           {sortedMyChallenges.map((challenge) => {
             const daysInProgress = getDaysInProgress(
               challenge.startDate,
-              challenge.endDate,
+              challenge.endDate
             );
 
             return (
@@ -326,7 +327,7 @@ const MyChallenge = () => {
                   <p id="people">{challenge.userList.length}명 참여 중</p>
                   {getDaysInProgress(
                     challenge.startDate,
-                    challenge.endDate,
+                    challenge.endDate
                   )?.includes("현재") ? (
                     new Date(challenge.startTime) <= new Date() &&
                     new Date() <= new Date(challenge.endTime) ? (
@@ -384,7 +385,7 @@ const MyChallenge = () => {
         />
         {/* <VideoRoomComponent /> */}
       </Modal>
-      <Modal style={SWebRTCModal} isOpen={isPhotoOpen}>
+      <Modal style={SPhotoModal} isOpen={isPhotoOpen}>
         <PhotoChallengeModal
           challengeData={challengeData}
           closePhotoModal={closePhotoModal}

@@ -27,7 +27,7 @@ const SearchChallenge = ({ allChallenge }) => {
 
   const onSearchChallenge = () => {
     const filterChallenge = allChallenge.filter((challenge) =>
-      challenge.name.includes(title),
+      challenge.name.includes(title)
     );
     if (filterChallenge.length === 0) {
       Swal.fire({
@@ -49,16 +49,16 @@ const SearchChallenge = ({ allChallenge }) => {
 
   const categorizeChallenges = () => {
     const studyChallenges = allChallenge.filter(
-      (challenge) => challenge.category === "공부",
+      (challenge) => challenge.category === "공부"
     );
     const sportChallenges = allChallenge.filter(
-      (challenge) => challenge.category === "운동",
+      (challenge) => challenge.category === "운동"
     );
     const bookChallenges = allChallenge.filter(
-      (challenge) => challenge.category === "독서",
+      (challenge) => challenge.category === "독서"
     );
     const stretchingChallenges = allChallenge.filter(
-      (challenge) => challenge.category === "스트레칭",
+      (challenge) => challenge.category === "스트레칭"
     );
 
     setStudy(studyChallenges);
@@ -137,8 +137,12 @@ const SearchChallenge = ({ allChallenge }) => {
           return (
             <SSearchSwiperSlide key={challenge.id}>
               <h2>{challenge.name}</h2>
-              <img src={challenge.imgPath} alt="챌린지 이미지" />
-              <button onClick={() => detailClick(challenge)}>상세보기</button>
+              <img
+                src={challenge.imgPath}
+                alt="챌린지 이미지"
+                onClick={() => detailClick(challenge)}
+              />
+              <h4>{challenge.money} 포인트</h4>{" "}
             </SSearchSwiperSlide>
           );
         })}

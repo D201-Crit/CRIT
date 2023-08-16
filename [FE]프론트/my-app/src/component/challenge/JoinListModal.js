@@ -3,13 +3,12 @@ import { api } from "../../api/api";
 import {
   SJoinListWrapper,
   SJoinWrapper,
-  SJoinListExit,
   SJoinTitle,
 } from "../../styles/pages/SDeatilChallengePage";
+import Swal from "sweetalert2";
 
 const JoinListModal = ({ challengeData, closeJoinListModal }) => {
   const [joinList, setJoinList] = useState([]);
-  console.log(challengeData);
   const getJoinList = () => {
     api
       .get(
@@ -21,8 +20,29 @@ const JoinListModal = ({ challengeData, closeJoinListModal }) => {
         }
       )
       .then((res) => {
-        console.log(res);
-        setJoinList(res.data.data);
+        console.log(res.data.data);
+        if (res.data.data > 0) {
+          setJoinList(res.data.data);
+        }
+        if (res.data.data.length == 0) {
+          closeJoinListModal();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "완료한 챌린지가 없습니다.",
+            text: "CRIT",
+            showConfirmButton: false,
+            timer: 1500,
+            background: "#272727",
+            color: "white",
+            width: "500px",
+            // 먼지
+            // imageUrl: 'https://unsplash.it/400/200',
+            // imageWidth: 400,
+            // imageHeight: 200,
+            // imageAlt: 'Custom image',
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -35,7 +55,7 @@ const JoinListModal = ({ challengeData, closeJoinListModal }) => {
   return (
     <SJoinListWrapper>
       <SJoinTitle></SJoinTitle>
-      {joinList.map((join) => (
+      {joinList.reverse().map((join) => (
         <>
           <SJoinWrapper key={join.id}>
             {join.certified ? <p id="success">완료</p> : <p id="fail">실패</p>}
@@ -44,7 +64,6 @@ const JoinListModal = ({ challengeData, closeJoinListModal }) => {
           <hr />
         </>
       ))}
-      {/* <SJoinListExit onClick={closeJoinListModal}></SJoinListExit> */}
     </SJoinListWrapper>
   );
 };

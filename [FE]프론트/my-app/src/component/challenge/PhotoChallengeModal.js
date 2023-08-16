@@ -42,7 +42,7 @@ const PhotoChallengeModal = ({ challengeData, closePhotoModal }) => {
   const getCertList = () => {
     api
       .get(
-        `https://i9d201.p.ssafy.io/api/cert/list/${challengeData.challenge.id}`,
+        `https://i9d201.p.ssafy.io/api/cert/list/${challengeData.challenge.id}`
       )
       .then((res) => {
         const certList = res.data.data[res.data.data.length - 1]; // 마지막 요소 선택
@@ -59,7 +59,7 @@ const PhotoChallengeModal = ({ challengeData, closePhotoModal }) => {
             </div>
           `,
           showConfirmButton: false,
-          // timer: 1500,
+          timer: 1500,
           background: "#272727",
           color: "white",
           // width: "500px",
@@ -92,7 +92,7 @@ const PhotoChallengeModal = ({ challengeData, closePhotoModal }) => {
       "requestDto",
       new Blob([JSON.stringify(challengeData.challenge.id)], {
         type: "application/json",
-      }),
+      })
     ); // requestDto를 JSON 형식으로 추가
     api
       .post("https://i9d201.p.ssafy.io/api/cert/img", formData, {

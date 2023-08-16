@@ -24,7 +24,6 @@ const Login = () => {
       setLogInError(false);
       api
         .post("https://i9d201.p.ssafy.io/api/auth/login", {
-          // .post("http://localhost:8080/auth/login", {
           id,
           password,
         })
@@ -37,26 +36,9 @@ const Login = () => {
               nickname: res.data.nickname,
               accessToken: res.data.accessToken,
               refreshToken: res.data.refreshToken,
-              // cashPoint: res.data.cashPoint,
-            }),
+            })
           );
           persistor.flush(); // 상태를 영구적으로 저장
-          // Swal.fire({
-          //   position: "center",
-          //   icon: "success",
-          //   title: "로그인 완료",
-          //   text: "CRIT 시작~",
-          //   showConfirmButton: false,
-          //   timer: 1500,
-          //   background: "#272727",
-          //   color: "white",
-          //   // width: "500px",
-          //   // 먼지
-          //   // imageUrl: 'https://unsplash.it/400/200',
-          //   // imageWidth: 400,
-          //   // imageHeight: 200,
-          //   // imageAlt: 'Custom image',
-          // });
           nav("/MainPage");
         })
         .catch((error) => {
@@ -64,7 +46,7 @@ const Login = () => {
           setLogInError(error.response?.status === 400);
         });
     },
-    [id, password],
+    [id, password]
   );
   return (
     <SForm onSubmit={onSubmit}>

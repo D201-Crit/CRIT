@@ -12,7 +12,10 @@ import Modal from "react-modal";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import Swal from "sweetalert2";
-import { SWebRTCModal } from "../../../styles/pages/SChallengePage";
+import {
+  SWebRTCModal,
+  SPhotoModal,
+} from "../../../styles/pages/SChallengePage";
 import JoinListModal from "../JoinListModal";
 import VideoRoomComponent from "./../../VideoRoomComponent";
 
@@ -29,6 +32,7 @@ const InformationChallenge = () => {
   const [isPhotoOpen, setIsPhotoOpen] = useState(false);
   const [challengeData, setChallengeData] = useState(null); // 모달에 전달할 데이터 state 추가
   const [selectedSessionId, setSelectedSessionId] = useState(null);
+
   const checkEnterTime = () => {
     return Swal.fire({
       position: "center",
@@ -58,7 +62,7 @@ const InformationChallenge = () => {
       title: "챌린지 입장 중!",
       text: "CRIT",
       showConfirmButton: false,
-      timer: 2000,
+      timer: 1500,
       background: "#272727",
       color: "white",
       width: "500px",
@@ -201,7 +205,11 @@ const InformationChallenge = () => {
                   </button>
                 </>
               )
-            ) : null}
+            ) : (
+              <button id="joinList" onClick={onClickJoinList}>
+                참여내역
+              </button>
+            )}
           </>
         ) : (
           <>
@@ -218,7 +226,7 @@ const InformationChallenge = () => {
           challengeData={challengeData}
         />
       </Modal>
-      <Modal style={SWebRTCModal} isOpen={isPhotoOpen}>
+      <Modal style={SPhotoModal} isOpen={isPhotoOpen}>
         <PhotoChallengeModal
           challengeData={challengeData}
           closePhotoModal={closePhotoModal}

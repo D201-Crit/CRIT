@@ -15,12 +15,19 @@ const ChallengeTime = ({ onChangeTime }) => {
     const end = new Date(`2000-01-01T${endTime}`);
     const diffInMinutes = Math.abs((end - start) / 1000 / 60);
 
-    // 종료 시간이 시작 시간보다 빠른 경우에만 최대 3시간 조절
-    if (end < start || diffInMinutes > 180) {
+    // 최소 30분 차이 보장
+    if (diffInMinutes < 30) {
+      const adjustedEndTime = new Date(start.getTime() + 30 * 60 * 1000);
+      setEndTime(adjustedEndTime.toTimeString().slice(0, 5));
+      onChangeTime(newStartTime, adjustedEndTime.toTimeString().slice(0, 5));
+    } else if (end < start) {
+      // 종료 시간이 시작 시간보다 빠른 경우에만 최대 3시간 조절
       const adjustedEndTime = new Date(start.getTime() + 180 * 60 * 1000);
       setEndTime(adjustedEndTime.toTimeString().slice(0, 5));
+      onChangeTime(newStartTime, adjustedEndTime.toTimeString().slice(0, 5));
+    } else {
+      onChangeTime(newStartTime, endTime);
     }
-    onChangeTime(newStartTime, endTime); // startTime과 endTime을 onChangeTime으로 전달
   };
 
   const onEndTimeChange = (e) => {
@@ -32,13 +39,21 @@ const ChallengeTime = ({ onChangeTime }) => {
     const end = new Date(`2000-01-01T${newEndTime}`);
     const diffInMinutes = Math.abs((end - start) / 1000 / 60);
 
-    // 종료 시간이 시작 시간보다 빠른 경우에만 최대 3시간 조절
-    if (end < start || diffInMinutes > 180) {
+    // 최소 30분 차이 보장
+    if (diffInMinutes < 30) {
+      const adjustedStartTime = new Date(end.getTime() - 30 * 60 * 1000);
+      setStartTime(adjustedStartTime.toTimeString().slice(0, 5));
+      onChangeTime(adjustedStartTime.toTimeString().slice(0, 5), newEndTime);
+    } else if (end < start) {
+      // 종료 시간이 시작 시간보다 빠른 경우에만 최대 3시간 조절
       const adjustedStartTime = new Date(end.getTime() - 180 * 60 * 1000);
       setStartTime(adjustedStartTime.toTimeString().slice(0, 5));
+      onChangeTime(adjustedStartTime.toTimeString().slice(0, 5), newEndTime);
+    } else {
+      onChangeTime(startTime, newEndTime);
     }
-    onChangeTime(startTime, newEndTime); // startTime과 endTime을 onChangeTime으로 전달
   };
+
   return (
     <SChallengeTimeWrapper>
       <h4>챌린지 시간</h4>

@@ -4,7 +4,6 @@ import {
   SEntranceButtonWrapper,
   SShortsWrapper,
   SScrollButtonWrapper,
-  SScrollImage,
   SScrollCircle,
 } from "../styles/pages/SMainPage";
 
@@ -31,7 +30,6 @@ import GetAllMyChallenge from "../component/challenge/GetAllMyChallenge";
 import GetPlannedMyChallenge from "../component/challenge/GetPlannedMyChallenge";
 import InfiniteScroll from "react-infinite-scroll-component";
 import exampleImage from "../assets/예시용 이미지/2023-07-21 14 03 07.png";
-import { SPhotoModal } from "../styles/pages/SChallengePage";
 const MainPage = () => {
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(true);
@@ -51,8 +49,9 @@ const MainPage = () => {
   const [shortsByLike, setShortsByLike] = useState([]);
 
   // 바로입장 클릭 시
+  console.log(ongoingChallenges);
   const openChallenge = () => {
-    if (ongoingChallenges === undefined) {
+    if (ongoingChallenges.length === 0) {
       Swal.fire({
         position: "center",
         icon: "error",

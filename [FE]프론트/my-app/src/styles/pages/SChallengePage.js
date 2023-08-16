@@ -247,7 +247,7 @@ export const SInput = styled.input`
   }
 
   &::placeholder {
-    font-weight: 800;
+    font-weight: 500;
     font-size: 20px;
   }
 `;
@@ -278,11 +278,6 @@ export const SSearchSwiper = styled(Swiper)`
   padding: 10px;
   height: 650px;
   border: none;
-  ${
-    "" /* gap: 20px;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr); */
-  }
   .swiper-button-next::after,
   .swiper-button-prev::after {
     display: none;
@@ -296,11 +291,8 @@ SSearchSwiper.displayName = "SwiperWrapper";
 SSearchSwiper.displayName = "SwiperWrapper";
 
 export const SSearchSwiperSlide = styled(SwiperSlide)`
-  ${"" /* width: 200px; */}
   height: calc((100% - 10px) / 2) !important;
   transition: background-color 0.25s ease-in-out, box-shadow 0.3s ease-in-out; // Added 's' to seconds
-  // margin: 5px;
-  // padding: 10px;
   border-radius: 10px;
   &:hover {
     background-color: rgba(
@@ -316,30 +308,50 @@ export const SSearchSwiperSlide = styled(SwiperSlide)`
 
   img {
     position: absolute;
-    top: 80px;
-    left: 80px;
-    width: 120px;
-    height: 120px;
-    ${"" /* margin: 10px 25px 0px 25px; */}
+    margin: 0 auto;
+    left: 20px;
+    top: 15px;
+    width: 85%;
+    height: 65%;
     border-radius: 10px;
+    cursor: pointer;
   }
   h2 {
-    margin: 15px 0 0 0;
-    font-size: 18px;
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    border-radius: 10px;
+    width: 200px;
+    font-size: 20px;
+    z-index: 999;
   }
-  button {
+
+  h4 {
+    color: #1877f2;
+    position: absolute;
+    bottom: 10px;
+    left: 40px;
+    border-radius: 10px;
+    width: 200px;
+    z-index: 999;
+    font-weight: 500;
+  }
+  ${
+    "" /* button {
     position: absolute;
     width: 150px;
     height: 40px;
-    top: 230px;
+    top: 280px;
     left: 65px;
     border: 0.2px solid gray;
+    border:none;
     border-radius: 10px;
     cursor: pointer;
-    background-color: rgba(40, 40, 40, 40);
+    background-color: rgba(100, 100, 100, 100);
     color: white;
     font-size: 16px;
     font-weight: 600;
+  } */
   }
 `;
 SSearchSwiperSlide.displayName = "SwiperSlide";
@@ -395,7 +407,7 @@ export const SChallengeImage = styled.div`
   div {
     position: absolute;
     width: 180px;
-    height: 180px;
+    height: 150px;
     top: 95px;
     background: white;
     border-radius: 50px;
@@ -411,7 +423,6 @@ export const SChallengeImage = styled.div`
     position: absolute;
     width: 180px;
     height: 180px;
-    top: px;
   }
   input {
     position: absolute;
@@ -433,7 +444,7 @@ export const STextArea = styled.textarea`
   width: 482px;
   height: 120px;
   font-size: 16px;
-  top: 270px;
+  top: 245px;
   color: white;
   margin: 30px 0 20px 0;
   padding: 15px;
@@ -460,7 +471,7 @@ export const SSelectChallengeWrapper = styled.div`
   padding: 0 20px;
   margin: 0 0 20px 0;
   font-weight: 440;
-  top: 460px;
+  top: 435px;
   div {
     margin: 20px 0;
   }
@@ -483,9 +494,9 @@ export const SChallengeTimeWrapper = styled.div`
   font-size: 18px;
   padding: 0 20px;
   background-color: rgb(40, 40, 40);
-  font-weight: 440;
+  font-weight: 500;
   font-family: "Pretendard";
-  top: 615px;
+  top: 590px;
   h4 {
     margin: 10px 0 15px 0;
   }
@@ -494,13 +505,14 @@ export const SChallengeTimeWrapper = styled.div`
     width: 255px;
   }
   input {
-    width: 120px;
-    height: 20px;
-    font-size: 15px;
-    font-weight: 700;
+    width: 150px;
+    height: 30px;
+    font-size: 18px;
+    font-weight: 1000;
+    font-family: bold;
     border: none;
     border-radius: 6px;
-    margin: 10px;
+    margin: 7px;
   }
 `;
 
@@ -509,7 +521,7 @@ export const SAuthenticationMethodWrapper = styled.div`
   position: absolute;
   bottom: 302px;
   left: 332px;
-  top: 460px;
+  top: 435px;
   width: 210px;
   height: 145px;
   border: 0.5px solid gray;
@@ -535,7 +547,7 @@ export const SAuthenticationMethodWrapper = styled.div`
 export const SMemberWrapper = styled.div`
   font-family: "Pretendard";
   position: absolute;
-  top: 615px;
+  top: 590px;
   left: 332px;
   width: 210px;
   height: 145px;
@@ -783,9 +795,9 @@ export const SWebRTCModal = {
     border: "0.5px solid rgba(80, 80, 80)",
     borderRadius: "10px",
     boxShadow: "0px 0px 15px gray",
-    margin: "auto",
-    width: "1200px",
-    height: "750px",
+    margin: "80px auto",
+    width: "1000px",
+    height: "600px",
     color: "black",
   },
   overlay: {
@@ -846,6 +858,7 @@ export const SPhotochallengeWrapper = styled.div`
     right: -5px;
     width: 300px;
     height: 300px;
+    border-radius: 10px;
   }
   #submit {
     position: absolute;

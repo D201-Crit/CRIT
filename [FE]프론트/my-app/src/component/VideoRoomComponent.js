@@ -375,7 +375,7 @@ class VideoRoomComponent extends Component {
     // this.props.closeModal(); // closeModal 함수 호출
     if (mySession) {
       mySession.disconnect();
-      this.webcamRef.current.stop();
+      this.webcamRef.current?.stop();
     }
 
     // Empty all properties...
@@ -794,6 +794,7 @@ class VideoRoomComponent extends Component {
                 style={chatDisplay}
               >
                 <ChatComponent
+                  challengeData={this.props.challengeData.challenge}
                   user={localUser}
                   chatDisplay={this.state.chatDisplay}
                   close={this.toggleChat}

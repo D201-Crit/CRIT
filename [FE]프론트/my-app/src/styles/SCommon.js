@@ -3,9 +3,11 @@ import { createGlobalStyle } from "styled-components";
 
 //Nav
 export const SNav = styled.nav`
-  height: 70px;
-  padding: 1rem 2rem;
-  background: black;
+  height: 60px;
+  padding: 7px;
+  margin: 15px;
+  border-radius: 10px;
+  background-color: black;
   font-size: 20px;
   mbox-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
@@ -16,24 +18,23 @@ export const SNav = styled.nav`
 
 export const SLogoWrapper = styled.div`
   position: absolute;
-  height: 70px;
+
   top: 10px;
   width: 96%;
   overflow-x: hidden;
 
-  // background-color: red;
   ul {
     list-style: none;
     display: flex;
   }
   img {
-    position: absolute;
-    left: 20px;
+    width: 100px;
+    margin: -10px;
   }
   #login {
     position: absolute;
     right: 20px;
-    top: 25px;
+    top: 15px;
     font-size: 25px;
     text-decoration: none;
     color: white;
@@ -45,7 +46,6 @@ export const SLogoWrapper = styled.div`
 
 // Menu
 export const SMenuWrapper = styled.div`
-  height: 100%;
   margin: 0 auto;
   overflow-x: hidden;
 
@@ -54,7 +54,7 @@ export const SMenuWrapper = styled.div`
     display: flex;
   }
   li {
-    margin: 0px 120px;
+    margin: 0px 80px;
     width: 100px;
     color: white;
   }
@@ -72,6 +72,10 @@ export const SMenuWrapper = styled.div`
       color: #ff007a;
     }
   }
+  img {
+    width: 100px;
+    margin: -10px;
+  }
 `;
 
 // User
@@ -81,7 +85,7 @@ export const SUserWrapper = styled.div`
   font-size: 17px;
   cursor: pointer;
   right: 10px;
-  top: 50px;
+  top: 35px;
 
   ul {
     list-style: none;
