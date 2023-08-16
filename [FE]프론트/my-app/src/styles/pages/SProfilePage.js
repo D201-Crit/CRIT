@@ -238,7 +238,6 @@ export const SPost = styled.div`
 export const FeedGrid = styled.div`
   display: flex;
   padding: 90px;
-  
   flex-wrap: wrap;
   justify-content: center;
   background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0.15) 0.01%, rgba(0, 0, 0, 0.01) 100%);
@@ -315,10 +314,10 @@ export const SDetailFeedModalArea = styled.div`
   align-items: center;
   flex-direction: column;
   overflow-y: auto;
-  width: 450px;
-  height: 500px;
-  max-height: 500px;
-  max-width: 450px;
+  width: 500px;
+  height: 550px;
+  max-height: 550px;
+  max-width: 500px;
   top: 50%;
   left: 50%;
   margin-top: 50px;
@@ -339,7 +338,7 @@ export const SDetailFeedModalArea = styled.div`
   border-radius: 20px;
   border: 1px solid rgba(200, 200, 200, 0.7);
   background-color: rgba(2, 2, 2, 0.1);
-  /* display: block; */
+  display: block;
   margin-left: auto;
   margin-right: auto;
 }
@@ -490,4 +489,64 @@ export const SliderContainer = styled.div`
   justify-content: center;
   margin-left: -150px;
 `;
+
+
+export const SProfileModifyModal = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 370px;
+  height: 250px;
+  z-index: 1500;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
+  display: ${({ show }) => (show ? 'block' : 'none')};
+`;
+
+export const SProfileModifyModalArea = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+`;
+
+export const ModalText = styled.p`
+  color: white;
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
+export const ModalButtonContainer = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+export const ModalButton = styled.button`
+  padding: 8px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+
+  ${({ variant }) =>
+    variant === 'confirm'
+      ? `
+      background-color: #007bff;
+      color: white;
+    `
+      : `
+      background-color: #e5e5e5;
+      color: black;
+    `}
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
 

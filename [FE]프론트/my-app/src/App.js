@@ -23,6 +23,7 @@ import PaySuccessPage from "./pages/pay-success-page";
 import PayCanclePage from "./pages/pay-cancle-page";
 import PayConflictPage from "./pages/pay-conflict-page";
 import ProfilePage from "./pages/profile-page";
+import AnotherProfilePage from './pages/another-profile-page';
 import SignUpPage from "./pages/signup-page";
 import StartPage from "./pages/start-page";
 import { Sfont } from "./styles/SCommon";
@@ -129,11 +130,16 @@ function AppRoutes() {
             <Route path="/SignUpPage" element={<SignUpPage />} />
             <Route path="/LoginPage" element={<LoginPage />} />
             <Route path="/ProfilePage" element={<ProfilePage />} />
+            <Route path="/ProfilePage/:nickname" element={<AnotherProfilePage />} />
+
             <Route path="/MyPage" element={<MyPage />} />
             <Route path="/PayPage" element={<PayPage />} />
             <Route path="/payment/success" element={<PaySuccessPage />} />
             <Route path="/PayCanclePage" element={<PayCanclePage />} />
             <Route path="/PayConflictPage" element={<PayConflictPage />} />
+
+
+            
           </Routes>
         </ContentWrapper>
         <Footer />

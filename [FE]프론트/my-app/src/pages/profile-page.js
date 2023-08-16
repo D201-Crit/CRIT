@@ -1,4 +1,4 @@
-import { SFeedButton, SShortsArea, SProfileWrapper, ShortsGrid, Empty, Row, Col, OpacityZero, SProfileImg, SProfileImgCover, FeedGrid } from "../styles/pages/SProfilePage";
+import { SFeedButton, SShortsArea, SProfileWrapper, SProfileModifyModal, SProfileModifyModalArea, ModalText, ModalButtonContainer, ModalButton, ShortsGrid, Empty, Row, Col, OpacityZero, SProfileImg, SProfileImgCover, FeedGrid } from "../styles/pages/SProfilePage";
 import { SEmpty, SEmpty2 } from '../styles/SCommon';
 import { useState, useRef, useEffect } from "react";
 import { faCog } from '@fortawesome/free-solid-svg-icons';
@@ -107,21 +107,27 @@ const ProfilePage = () => {
   
   return (
     <>
-      {showConfirmModal && (
-        <div>
-          <p>프로필 변경 하시겠습니까?</p>
-          <button onClick={handleConfirm}>예</button>
-          <button onClick={handleCancel}>아니오</button>
-        </div>
-      )}
+   <SProfileModifyModal show={showConfirmModal}>
+      <SProfileModifyModalArea>
+        <ModalText>프로필 변경 하시겠습니까?</ModalText>
+        <ModalButtonContainer>
+          <ModalButton variant="confirm" onClick={handleConfirm}>
+            예
+          </ModalButton>
+          <ModalButton variant="cancel" onClick={handleCancel}>
+            아니오
+          </ModalButton>
+        </ModalButtonContainer>
+      </SProfileModifyModalArea>
+    </SProfileModifyModal>
 
       
       <SProfileWrapper>
       <SEmpty2/>
 
-      <Row>
+      {/* <Row>
         <FontAwesomeIcon style={{marginLeft:"600px" }} icon={faCog} />
-      </Row>
+      </Row> */}
         <Row>
           <SProfileImgCover>
             <SProfileImg>

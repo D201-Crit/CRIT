@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { api } from '../../api/api';
 import { useSelector } from "react-redux";
 import { SCreateModal,SAriticleForm, SImageContainer, SFileInput, SPreviewImage, SFileInputLabel  } from '../../styles/pages/SCommunityPage';
-import { Divider } from '@material-ui/core';
 import { ModalOverlay } from '../../styles/SCommon';
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/feeds';
 
@@ -96,19 +95,19 @@ const FeedCreateModal = ({ setIsCreateModalOpen, getFeeds }) => {
         <SCreateModal>
         <h1>피드 작성</h1>
         <hr/>
-
         <div className="FeedCreateModal">
         <SAriticleForm onSubmit={feedCreate}>
         <input
+
           name="title"
           placeholder="제목을 입력하세요."
           type="text"
-          value=""
+          value={feedContent.title}
           onChange={handleFeedChange}
         ></input>
         <textarea
             name="content"
-            value=""
+            value={feedContent.content}
             onChange={handleFeedChange}
           ></textarea>
 

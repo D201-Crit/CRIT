@@ -4,6 +4,8 @@ import { SButtonWrapper2, SSecondaryButton3, SPrimaryButton3,  SPost, SDetailFee
 import { SDividerLine } from "../../styles/pages/SMainPage";
 import { api } from '../../api/api';
 import { useSelector } from "react-redux";
+import { useParams } from 'react-router-dom';
+
 import FeedModifyModal from "./FeedModifyModal";
 import Loading from "../Loading";
 
@@ -20,7 +22,8 @@ const FeedDetailModal = ({
   const [editingContent, setEditingContent] = useState('');
   const [editingImage, setEditingImage] = useState('');
   const [feed, setFeed] = useState([]);
-  
+  const { nickname } = useParams();
+
 // 단일 피드 불러오기
 const getFeed = () => {
   setLoading(true);
@@ -91,9 +94,14 @@ return (
       <SDividerLine/>
       <p>{feed.content}</p>
       <SButtonWrapper2>
-      <SSecondaryButton3 onClick={()=>{setModifyModal(true)}}>피드 수정</SSecondaryButton3>
-      <SPrimaryButton3 onClick={()=>{deleteFeed(feed.id)}}>피드 삭제</SPrimaryButton3>
-      </SButtonWrapper2>
+      {!nickname && (
+        <>
+          <SSecondaryButton3 onClick={() => { setModifyModal(true) }}>피드 수정</SSecondaryButton3>
+          <SPrimaryButton3 onClick={() => { deleteFeed(feed.id) }}>피드 삭제</SPrimaryButton3>
+        </>
+      )}
+    </SButtonWrapper2>
+
 
     </div>
 
@@ -115,3 +123,8 @@ export default FeedDetailModal;
 // value={editingContent}
 // onChange={(e) => setEditingContent(e.target.value)}
 // />
+
+
+
+
+
