@@ -217,6 +217,7 @@ const MyChallenge = () => {
     return startDateA - startDateB;
   };
   const sortedMyChallenges = [...selectedStatus].sort(sortByStartDate);
+  console.log(sortedMyChallenges);
   // 상세보기 클릭
   const detailClick = (challenge) => {
     if (location.pathname === "/ChallengePage") {
@@ -267,6 +268,10 @@ const MyChallenge = () => {
       return `현재 ${daysInProgress + 1}일째 참여 중`;
     }
   };
+  const currentTime = new Date();
+  const currentHour = currentTime.getHours();
+  const currentMinute = currentTime.getMinutes();
+  const Time = `${currentHour}:${currentMinute}`;
 
   return (
     <>
@@ -297,9 +302,8 @@ const MyChallenge = () => {
           {sortedMyChallenges.map((challenge) => {
             const daysInProgress = getDaysInProgress(
               challenge.startDate,
-              challenge.endDate
+              challenge.endDate,
             );
-
             return (
               <SSwiperSlide key={challenge.id}>
                 <STopWrapper>
@@ -327,10 +331,9 @@ const MyChallenge = () => {
                   <p id="people">{challenge.userList.length}명 참여 중</p>
                   {getDaysInProgress(
                     challenge.startDate,
-                    challenge.endDate
+                    challenge.endDate,
                   )?.includes("현재") ? (
-                    new Date(challenge.startTime) <= new Date() &&
-                    new Date() <= new Date(challenge.endTime) ? (
+                    challenge.startTime <= Time && Time <= challenge.endTime ? (
                       challenge.cert === "실시간" ? (
                         <button
                           id="enter"
@@ -347,20 +350,11 @@ const MyChallenge = () => {
                         </button>
                       )
                     ) : challenge.cert === "실시간" ? (
-                      <button
-                        id="enter"
-                        // onClick={() => openVideoModal(challenge)}
-
-                        onClick={() => checkEnterTime()}
-                      >
+                      <button id="enter" onClick={() => checkEnterTime()}>
                         입장하기
                       </button>
                     ) : (
-                      <button
-                        id="photo"
-                        onClick={() => checkEnterTime()}
-                        // onClick={() => openPhotoModal(challenge)}
-                      >
+                      <button id="photo" onClick={() => checkEnterTime()}>
                         사진인증
                       </button>
                     )

@@ -92,7 +92,8 @@ const InformationChallenge = () => {
     const today = new Date();
     const start = new Date(startDate);
     const end = new Date(endDate);
-
+    console.log(start);
+    console.log(end);
     // 연, 월, 일만 비교
     today.setHours(0, 0, 0, 0);
     start.setHours(0, 0, 0, 0);
@@ -155,12 +156,13 @@ const InformationChallenge = () => {
           <>
             {getDaysInProgress(
               challenge.startDate,
-              challenge.endDate
+              challenge.endDate,
             )?.includes("현재") ? (
               new Date(challenge.startTime) <= new Date() &&
               new Date() <= new Date(challenge.endTime) ? (
                 challenge.cert === "실시간" ? (
                   <>
+                    {" "}
                     <button
                       id="enter"
                       onClick={() => openVideoModal(challenge)}
