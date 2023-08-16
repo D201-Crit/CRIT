@@ -1,15 +1,16 @@
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import React, { useState, useEffect } from "react";
-import { SShortItemProfileVer, SliderContainer, SliderItem } from '../../styles/pages/SProfilePage';
-import { SEmpty, SEmpty2 } from '../../styles/pages/SCommunityPage';
-import { SWrapper } from '../../styles/SCommon';
-import { SShortsCard, ShortsSpanWrapper, SShortsContainer, SShortItem } from "../../styles/pages/SMainPage";
+import { SShortItemProfileVer, SliderContainer } from '../../styles/pages/SProfilePage';
+import { ShortsSpanWrapper, } from "../../styles/pages/SMainPage";
 import { useSelector } from "react-redux";
 import Slider from "react-slick";
 import DetailShortModal from '../shorts/DetailShortModal';
+import { useParams } from 'react-router-dom';
 
-const ProfileMyShorts = ({ shortsByAll }) => {
+const AnotherProfileShortsItem = ({ shortsByAll }) => {
+  const { nickname } = useParams();
+  console.log(nickname)
   const [openDetailModal, setOpenDetailModal] = useState({});
   const user = useSelector((state) => state.users);
 
@@ -30,7 +31,7 @@ const ProfileMyShorts = ({ shortsByAll }) => {
 
 
 
-const slideLength = shortsByAll && shortsByAll.filter((short) => short.writer === user.nickname).length;
+const slideLength = shortsByAll && shortsByAll.filter((short) => short.writer === nickname).length;
 console.log("매끼고",slideLength)
 const settings = {
   dots: slideLength > 1,
@@ -50,7 +51,6 @@ const settings = {
 
           <Slider {...settings}>
             {shortsByAll
-              .filter((short) => short.writer === user.nickname)
               .map((short) => (
                 <SShortItemProfileVer  onClick={() =>
                   !isAnyModalOpen() &&
@@ -98,4 +98,4 @@ const settings = {
     </div>
   );
 };
-export default ProfileMyShorts;
+export default AnotherProfileShortsItem;

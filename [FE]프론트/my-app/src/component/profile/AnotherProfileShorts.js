@@ -2,11 +2,15 @@ import React, { useState, useEffect } from "react";
 import { api } from '../../api/api';
 import { useSelector } from "react-redux";
 import { ProfileShortsListArea, ProfileShortsList } from "../../styles/pages/SProfilePage";
-import ProfileMyShortsItem from "./ProfileMyShortsItem";
+import AnotherProfileShortsItem from "./AnotherProfileShortsItem";
 import { SDividerLine } from '../../styles/pages/SMainPage';
+import { useParams } from 'react-router-dom';
+
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/feeds';
 
-const ProfileShorts = () => {
+const AnotherProfileShorts = () => {
+  const { nickname } = useParams();
+
   const user = useSelector((state) => state.users);
   const [shortsByAll, setShortsByAll] = useState([]);
 
@@ -19,7 +23,8 @@ const ProfileShorts = () => {
         },
       })
       .then((res) => {
-        setShortsByAll(res.data.data);
+        setShortsByAll(res.data.data.filter((short) => short.writer === nickname));
+        console.log("ㅇㅇㅇㅇㅇ",shortsByAll)
       })
       .catch((err) => {
         console.log(err);
@@ -36,11 +41,11 @@ const ProfileShorts = () => {
         <h2>내가 만든 쇼츠</h2>
         <SDividerLine/>
         <ProfileShortsList>
-          <ProfileMyShortsItem shortsByAll={shortsByAll}/>
+          <AnotherProfileShortsItem shortsByAll={shortsByAll}/>
         </ProfileShortsList>
       </ProfileShortsListArea>   
     );
   };
 
 
-export default ProfileShorts;
+export default AnotherProfileShorts;
