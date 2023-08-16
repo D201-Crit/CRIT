@@ -336,7 +336,7 @@ export const SUpdateBoardButton = styled.button`
 export const SLikeBoardButton = styled.button`
   background-color: #0000c5;
   padding: 5px 10px;
-  width: 60px;
+  width: 65px;
   color: white;
   border: none;
   border-radius: 5px;

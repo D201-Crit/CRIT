@@ -29,7 +29,7 @@ const Token = () => {
           },
           (error) => {
             return Promise.reject(error);
-          },
+          }
         );
 
         // Response Interceptor 추가
@@ -42,7 +42,8 @@ const Token = () => {
             console.log(error);
             if (
               error.response &&
-              (error.response.status === 500 || error.response.status === 401)
+              // (error.response.status === 500 || error.response.status === 401)
+              error.response.status === 401
             ) {
               // 만료된 AccessToken으로 인증 실패한 경우
               // persistor.purge(); // 영구 저장된 모든 상태를 초기화
@@ -56,7 +57,7 @@ const Token = () => {
                     nickname: user.nickname,
                     accessToken: newAccessToken,
                     refreshToken: user.refreshToken,
-                  }),
+                  })
                 );
                 persistor.flush(); // 상태를 영구적으로 저장
                 error.config.headers.Authorization = `Bearer ${newAccessToken}`;
@@ -70,7 +71,7 @@ const Token = () => {
               }
             }
             return Promise.reject(error);
-          },
+          }
         );
       } else {
         console.log("No data found in localStorage.");

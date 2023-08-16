@@ -241,24 +241,28 @@ class VideoRoomComponent extends Component {
     const prediction = await this.modelRef.current.predict(image);
     const class1Prediction = prediction[0].probability.toFixed(2);
     const class2Prediction = prediction[1].probability.toFixed(2);
-    console.log(`자리 있음 : ${class1Prediction},  자리 없음 : ${class2Prediction}`);
-    
+    console.log(
+      `자리 있음 : ${class1Prediction},  자리 없음 : ${class2Prediction}`
+    );
+
     if (class1Prediction > 0.5) {
       if (!this.state.startTime) {
         this.setState({
-          startTime: Date.now()
+          startTime: Date.now(),
         });
       } else if (this.state.startTime) {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
           startTime: Date.now(),
-          totalTime: prevState.totalTime + (Date.now() - prevState.startTime) / 1000
+          totalTime:
+            prevState.totalTime + (Date.now() - prevState.startTime) / 1000,
         }));
       }
     } else {
       if (this.state.startTime) {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
           startTime: null,
-          totalTime: prevState.totalTime + (Date.now() - prevState.startTime) / 1000
+          totalTime:
+            prevState.totalTime + (Date.now() - prevState.startTime) / 1000,
         }));
       }
     }
@@ -266,7 +270,7 @@ class VideoRoomComponent extends Component {
     // for (let i = 0; i < maxPredictions; i++) {
     //   const classPrediction = prediction[i].className;
     //   const probability = prediction[i].probability.toFixed(2);
-      
+
     // console.log(`예측: ${classPrediction}, 확률: ${probability}`);
     //   if (classPrediction === "Class 1" && parseFloat(probability) >= 0.6) {
     //     // this.totalTimeRef.current += 1; // 0.01 second
@@ -277,7 +281,7 @@ class VideoRoomComponent extends Component {
     //       });
     //     }
     //   }
-    // } 
+    // }
     // if (this.state.isClass1) {
     //   const endTime = new Date();
     //   const elapsedTime = (endTime - this.state.startTime) / 1000; // ms를 초로 변환
@@ -389,10 +393,11 @@ class VideoRoomComponent extends Component {
     console.log("Teachable Machine 종료");
     this.isUnmounted = true;
     const challengeId = this.props.challengeData.challenge.id;
-    const inTime = 0 + this.totalTimeRef.current;
+    // const inTime = 0 + this.totalTimeRef.current;
+    const inTime = this.state.totalTime.toFixed(0);
     // console.log(`지속 시간: ${this.totalTimeRef.current}ms`);
     console.log(`지속 시간: ${this.state.totalTime.toFixed(2)}초`);
-    
+
     api
       .post("https://i9d201.p.ssafy.io/api/cert/video", {
         challengeId,
