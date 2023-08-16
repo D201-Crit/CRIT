@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SButtonWrapper2, SSecondaryButton3, SPrimaryButton3, SPost, SDetailFeedModal, SDetailFeedModalArea } from "../../styles/pages/SProfilePage";
+import { SButtonWrapper2, SSecondaryButton3, SPrimaryButton3,  SPost, SDetailFeedModal, SDetailFeedModalArea } from "../../styles/pages/SProfilePage";
 import { SDividerLine } from "../../styles/pages/SMainPage";
 import { api } from '../../api/api';
 import { useSelector } from "react-redux";
@@ -82,7 +82,7 @@ return (
 
     <SDetailFeedModalArea>
     <div className="FeedDetailModal">
-      <h1>피드 수정</h1>
+      <h1>피드</h1>
       <SDividerLine/>
       <img src={feed.imageFiles} alt="피드 이미지"></img>
       <p style={{color:"#1877f2"}}>{feed.createTime}</p>
@@ -93,6 +93,7 @@ return (
       <SSecondaryButton3 onClick={()=>{setModifyModal(true)}}>피드 수정</SSecondaryButton3>
       <SPrimaryButton3 onClick={()=>{deleteFeed(feed.id)}}>피드 삭제</SPrimaryButton3>
       </SButtonWrapper2>
+
     </div>
 
     

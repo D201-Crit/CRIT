@@ -314,15 +314,13 @@ export const SDetailFeedModalArea = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  max-height: 750px;
   overflow-y: auto;
-  width: 750px;
-  height: 790px;
-  max-width: 700px;
-  max-height: 790px;
+  width: 550px;
+  height: 600px;
+  max-width: 550px;
   top: 50%;
   left: 50%;
-  
+  margin-top: 20px;
   transform: translate(-50%, -50%);
   border-radius: 20px;
   background-color: #2F2F2F;
@@ -438,10 +436,9 @@ export const SButtonWrapper2 = styled.div`
   display: flex;
   justify-content: center;
   position: absolute;
-  bottom: 20px;
+  bottom: 0px;
   margin-left: 60px;
-  margin-top: 30px;
-
+  margin-bottom: -100px;
   left: 50%;
   transform: translateX(-50%);
   padding: 15px;
@@ -453,12 +450,10 @@ export const SPrimaryButton3 = styled.button`
   transform: translateX(-50%);
   background: #0000c5;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
-  padding: 10px 15px;
+  padding: 5px 10px;
   color: white;
   border: none;
-  
-  font-size: 23px;
+  font-size: 18px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -473,10 +468,8 @@ export const SSecondaryButton3 = styled.button`
   transform: translateX(-50%);
   background: #ff007a;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
-  padding: 10px 15px;
-  font-size: 23px;
-  font-weight: 1000;
+  font-size: 18px;
+  padding: 5px 10px;
   color: white;
   border: none;
   border-radius: 5px;

@@ -219,7 +219,7 @@ const handleMouseLeave = () => setIsHovered(false);
       {/* 쇼츠 영역 */}
       <SShortsWrapper>
         <InfiniteScroll
-          style={{ flexDirection: 'column' }}
+          style={{ flexDirection: "column" }}
           pageStart={0}
           dataLength={pageIndex + 1} // 이 부분이 무한 스크롤이 가지고 있는 아이템의 길이
           next={fetchMoreData} // 바닥에 도달하면 실행되는 콜백 함수
