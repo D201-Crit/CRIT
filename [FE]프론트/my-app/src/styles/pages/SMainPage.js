@@ -11,7 +11,6 @@ export const SShortsWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-
 export const SEntranceButtonWrapper = styled.div`
   width: 100%;
   height: 100px;
@@ -153,7 +152,7 @@ export const SShortsCard = styled.div`
   img {
     width: 500px;
     height: 200px;
-    
+
     transform: rotate(270deg);
     object-fit: cover;
     border-radius: 8px 8px 0 0;
@@ -178,12 +177,11 @@ export const SShortsContainer = styled.div`
   justify-content: space-around;
   border-radius: 20px;
   overflow: hidden;
-  height : 800px;
+  height: 800px;
   &::-webkit-scrollbar {
     display: none;
   }
 `;
-
 
 // SShortItem style
 export const SShortItem = styled.div`
@@ -192,16 +190,14 @@ export const SShortItem = styled.div`
   width: 22%; // 수정: 아이템의 가로 높이를 변경
   height: 23%; // 수정: 아이템의 세로 높이를 변경
   display: flex;
-  
 
-  box-shadow: 0px 0px 20px 0.1px rgba(255,255,255,15%);
+  box-shadow: 0px 0px 20px 0.1px rgba(255, 255, 255, 15%);
 
   flex-direction: column;
   justify-content: flex-start;
   // overflow: hidden;
   // cursor : pointer;
-  margin-bottom : 20px;
-
+  margin-bottom: 20px;
 
   img {
     width: 100%;
@@ -218,7 +214,7 @@ export const SShortItem = styled.div`
   }
 
   h2 {
-    pointer-events: none; 
+    pointer-events: none;
     font-size: 25px;
     margin-top: -15px;
     overflow: hidden;
@@ -233,13 +229,13 @@ export const SShortItem = styled.div`
   }
 
   p {
-    pointer-events: none; 
+    pointer-events: none;
     font-size: 14px;
     margin: auto;
     margin-top: 10px;
 
     text-align: justify;
-    color : #ff007a;
+    color: #ff007a;
     overflow: hidden;
     text-overflow: ellipsis;
     -webkit-line-clamp: 3;
@@ -281,7 +277,6 @@ export const ShortsSpanWrapper = styled.div`
     white-space: nowrap; // 텍스트가 자동으로 줄바꿈 되지 않도록 설정합니다.
   }
 `;
-
 
 export const SVideoWrapper = styled.div`
   display: flex;
@@ -340,7 +335,6 @@ export const SDetailModal = styled.div`
   }
 `;
 
-
 export const SDetailCloseButton = styled.button`
   position: absolute;
   top: 10px;
@@ -379,7 +373,7 @@ export const SInfoSection = styled.section`
   flex-direction: column;
   padding: 35px;
   background-color: rgba(20, 20, 20);
-  color : white;
+  color: white;
   margin-top: 16px;
   border-radius: 15px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -396,19 +390,17 @@ export const SCommentSection = styled.div`
   display: flex;
   flex-direction: column;
   background-color: rgba(20, 20, 20);
-  padding : 35px;
+  padding: 35px;
   gap: 16px;
   margin-top: 24px;
   border-radius: 15px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
-  h2{
-    color : white;
+  h2 {
+    color: white;
   }
-  input{
-    
+  input {
     border: none;
-    
   }
 `;
 
@@ -416,7 +408,7 @@ export const SCommentList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  color : white;
+  color: white;
   background-color: black;
   padding: 15px;
   border-radius: 8px;
@@ -499,9 +491,9 @@ export const SCommentInput = styled.input`
   font-family: "Pretendard";
 
   border-radius: 5px;
-  margin-right : 10px;
+  margin-right: 10px;
   padding: 8px;
-  color : white;
+  color: white;
   font-size: 14px;
   flex-grow: 1;
   font-family: "Pretendard";
@@ -525,121 +517,119 @@ export const SResultList = styled.ul`
   margin-top: 50px;
 `;
 
-export const SResultContainer= styled.div`
+export const SResultContainer = styled.div`
   padding: 10px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
   border-radius: 20px;
   overflow: hidden;
-  height : auto;
+  height: auto;
   &::-webkit-scrollbar {
     display: none;
   }
 `;
 
 export const SResultItem = styled.li`
-position: relative;
-border-radius: 15px;
-width: 12%; // 수정: 아이템의 가로 높이를 변경
-height: 23%; // 수정: 아이템의 세로 높이를 변경
-display: flex;
-
-
-box-shadow: 0px 0px 20px 0.1px rgba(255,255,255,15%);
-
-flex-direction: column;
-justify-content: flex-start;
-// overflow: hidden;
-// cursor : pointer;
-margin-bottom : 20px;
-
-
-img {
-  width: 100%;
-  height: 100%;
+  position: relative;
   border-radius: 15px;
-  object-fit: cover;
-  opacity: 1;
-}
+  width: 12%; // 수정: 아이템의 가로 높이를 변경
+  height: 23%; // 수정: 아이템의 세로 높이를 변경
+  display: flex;
 
-h2,
-p {
-  opacity: 0;
-  transition: opacity 0.3s;
-}
+  box-shadow: 0px 0px 20px 0.1px rgba(255, 255, 255, 15%);
 
-h2 {
-  pointer-events: none; 
-  font-size: 25px;
-  margin-top: -15px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translateY(-50%) translateX(-50%);
-  -moz-transform: translateY(-50%) translateX(-50%);
-  transform: translateY(-50%) translateX(-50%);
-}
+  flex-direction: column;
+  justify-content: flex-start;
+  // overflow: hidden;
+  // cursor : pointer;
+  margin-bottom: 20px;
 
-p {
-  pointer-events: none; 
-  font-size: 14px;
-  margin: auto;
-  margin-top: 10px;
-
-  text-align: justify;
-  color : #ff007a;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 3;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translateY(-50%) translateX(-50%);
-  -moz-transform: translateY(-50%) translateX(-50%);
-  transform: translateY(-50%) translateX(-50%);
-}
-
-&:hover {
   img {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(90deg) scale(0.8);
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    object-fit: cover;
+    opacity: 1;
   }
 
   h2,
   p {
-    opacity: 1;
+    opacity: 0;
+    transition: opacity 0.3s;
   }
-}
+
+  h2 {
+    pointer-events: none;
+    font-size: 25px;
+    margin-top: -15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translateY(-50%) translateX(-50%);
+    -moz-transform: translateY(-50%) translateX(-50%);
+    transform: translateY(-50%) translateX(-50%);
+  }
+
+  p {
+    pointer-events: none;
+    font-size: 14px;
+    margin: auto;
+    margin-top: 10px;
+
+    text-align: justify;
+    color: #ff007a;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translateY(-50%) translateX(-50%);
+    -moz-transform: translateY(-50%) translateX(-50%);
+    transform: translateY(-50%) translateX(-50%);
+  }
+
+  &:hover {
+    img {
+      opacity: 0;
+      transform: translate(-50%, -50%) rotate(90deg) scale(0.8);
+    }
+
+    h2,
+    p {
+      opacity: 1;
+    }
+  }
 `;
 
 export const SLikeShorts = styled.p`
-  font-size : 40px;
+  font-size: 40px;
   display: flex;
   cursor: pointer;
   justify-content: center;
-  color : #ff007a;
+  color: #ff007a;
   &:hover {
     color: #ff004a;
   }
-`
+`;
 export const SDropDownMenu = styled.div`
   position: absolute;
-  display: ${props => props.show ? 'block' : 'none'};
+  display: ${(props) => (props.show ? "block" : "none")};
   min-width: 160px;
   border-radius: 10px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   right: 90px;
-  margin-top : 110px;
+  margin-top: 110px;
 
   button {
-    background-color: rgba(13,13,13, 0.92);
+    background-color: rgba(13, 13, 13, 0.92);
     color: white;
     padding: 12px 16px;
     text-decoration: none;
@@ -652,8 +642,8 @@ export const SDropDownMenu = styled.div`
     outline: none;
 
     &:hover {
-      background-color: rgba(20,20,20);
-      font-weight : 1000;
+      background-color: rgba(20, 20, 20);
+      font-weight: 1000;
     }
   }
 `;
@@ -685,7 +675,6 @@ export const SForm2 = styled.form`
   border-radius: 5px;
   margin: 6px 0;
   padding: 8px 15px;
-
 `;
 
 export const SInput2 = styled.input`
@@ -697,12 +686,12 @@ export const SInput2 = styled.input`
   margin-top: 12px;
   padding: 15px 14px;
   width: 90%;
-  font-weight : 1000;
+  font-weight: 1000;
 `;
 
 export const SInputContext2 = styled.textarea`
   border: 1px solid #ccc;
-  font-weight : 500;
+  font-weight: 500;
   font-size: 20px;
   border-radius: 5px;
   margin: 6px 0;
@@ -710,12 +699,12 @@ export const SInputContext2 = styled.textarea`
   padding: 15px 14px;
   width: 90%;
   height: 200px;
-  max-height : 200px;
+  max-height: 200px;
   resize: none;
 `;
 
 export const SSubmitButton2 = styled.input`
-  background-color: #0000C5;
+  background-color: #0000c5;
   border: none;
   border-radius: 5px;
   color: white;
@@ -739,9 +728,8 @@ export const SScrollButtonWrapper = styled.div`
   flex-direction: column;
   opacity: 0; // 추가된 속성
   transition: opacity 0.3s; // 추가된 속성
-  marginBottom: rem;
-  z-index : 1500;
-
+  marginbottom: rem;
+  z-index: 1500;
 
   &:hover {
     opacity: 1;
@@ -750,9 +738,15 @@ export const SScrollButtonWrapper = styled.div`
   .showButtons {
     opacity: 1 !important;
   }
-  
-  .btn1, .btn2, .btn3 {
-    background: linear-gradient(90deg, rgba(21, 21, 21, 0.82) 59.45%, rgba(29, 29, 29, 0) 120.65%);
+
+  .btn1,
+  .btn2,
+  .btn3 {
+    background: linear-gradient(
+      90deg,
+      rgba(21, 21, 21, 0.82) 59.45%,
+      rgba(29, 29, 29, 0) 120.65%
+    );
     color: white;
     padding: 12px 16px;
     text-decoration: none;
@@ -765,36 +759,45 @@ export const SScrollButtonWrapper = styled.div`
     outline: none;
 
     &:hover {
-      background: linear-gradient(90deg, rgba(51, 51, 51, 0.82) 59.45%, rgba(29, 29, 29, 0) 120.65%);
+      background: linear-gradient(
+        90deg,
+        rgba(51, 51, 51, 0.82) 59.45%,
+        rgba(29, 29, 29, 0) 120.65%
+      );
     }
 
     &.active {
       color: #ff007a;
     }
   }
-`
-
+`;
+export const SScrollButtonWrapper2 = styled.div`
+  position: absolute;
+  // top: -100px;
+  // right:-100px;
+  background-color: red;
+  transition: opacity 0.3s; // 추가된 속성
+`;
 export const SScrollImage = styled.img`
   width: 50px;
   height: 50px;
   transition: opacity 0.3s;
-  opacity: ${props => props.isHovered ? 0 : 1};
+  opacity: ${(props) => (props.isHovered ? 0 : 1)};
 `;
 
 export const SScrollCircle = styled.div`
-  padding : 7px 10px;
+  padding: 7px 10px;
   position: fixed;
   margin-top: 70px;
   margin-left: 10px;
   background-color: #0000c5;
   border-radius: 50%;
   transition: opacity 0.3s;
-  opacity: ${props => props.isHovered ? 0 : 1};
+  opacity: ${(props) => (props.isHovered ? 0 : 1)};
   align-items: center;
   justify-content: center;
   font-weight: 600;
   font-size: 27px;
   color: white;
-  box-shadow: 0px 0px 20px 0.1px rgba(255,255,255,15%);
-
+  box-shadow: 0px 0px 20px 0.1px rgba(255, 255, 255, 15%);
 `;

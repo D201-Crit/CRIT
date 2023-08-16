@@ -7,10 +7,9 @@ import {
   SCritWrapper,
   SCrit2,
   SCritWrapper2,
-  SCrit3,
-  SCritWrapper3,
 } from "../styles/pages/SChallengePage";
 import Loading from "../component/Loading";
+
 // 나머지
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -29,6 +28,7 @@ import GetAllMyChallenge from "../component/challenge/GetAllMyChallenge";
 import GetPlannedMyChallenge from "../component/challenge/GetPlannedMyChallenge";
 import { SCrit } from "../styles/pages/SChallengePage";
 import { SStartImage } from "../styles/pages/SStartPage";
+import { SScrollButtonWrapper2 } from "../styles/pages/SMainPage";
 
 const ChallengePage = () => {
   const [loading, setLoading] = useState(true);
@@ -61,23 +61,11 @@ const ChallengePage = () => {
   };
   useEffect(() => {
     getAllChallenge();
-    AOS.init({
-      offset: 0,
-      duration: 700,
-      easing: "ease-in-out",
-      once: false,
-      delay: 50,
-      anchorPlacement: "bottom-top",
-    });
-
-    return () => {
-      AOS.refresh();
-    };
   }, []);
   return (
     <SChallengeWrapper>
       {loading ? <Loading /> : null}
-
+      <SScrollButtonWrapper2 />
       <SCreateChallengeWrapper>
         <SCreateChallengeButton onClick={openModal}>
           챌린지 만들기
