@@ -177,7 +177,6 @@ export const SFeedButton = styled.span`
 `;
 
 export const SFeedArea = styled.div`
-
   width: 100%;
   height: auto;
   margin-top : 40px;
@@ -315,12 +314,13 @@ export const SDetailFeedModalArea = styled.div`
   align-items: center;
   flex-direction: column;
   overflow-y: auto;
-  width: 550px;
-  height: 600px;
-  max-width: 550px;
+  width: 450px;
+  height: 500px;
+  max-height: 500px;
+  max-width: 450px;
   top: 50%;
   left: 50%;
-  margin-top: 20px;
+  margin-top: 50px;
   transform: translate(-50%, -50%);
   border-radius: 20px;
   background-color: #2F2F2F;
@@ -329,27 +329,22 @@ export const SDetailFeedModalArea = styled.div`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.28);
   
   img {
-  margin-top: 40px;
+  margin-bottom:  -5px;
   width: 400px;
-  height: 400px;
   max-width: 400px;
   max-height: 400px;
   object-fit: cover;
-  margin-bottom: 40px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
   border-radius: 20px;
   border: 1px solid rgba(200, 200, 200, 0.7);
   background-color: rgba(2, 2, 2, 0.1);
-  display: block;
+  /* display: block; */
   margin-left: auto;
   margin-right: auto;
-
 }
-
 
   p {
     font-size: 25px;
-    
     word-break: break-word;
     font-weight: 200;
   }
@@ -436,8 +431,9 @@ export const SButtonWrapper2 = styled.div`
   display: flex;
   justify-content: center;
   position: absolute;
+  width: 100%;
   bottom: 0px;
-  margin-left: 60px;
+  margin-left: 45px;
   margin-bottom: -100px;
   left: 50%;
   transform: translateX(-50%);
@@ -453,7 +449,7 @@ export const SPrimaryButton3 = styled.button`
   padding: 5px 10px;
   color: white;
   border: none;
-  font-size: 18px;
+  font-size: 16px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -468,7 +464,7 @@ export const SSecondaryButton3 = styled.button`
   transform: translateX(-50%);
   background: #ff007a;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  font-size: 18px;
+  font-size: 16px;
   padding: 5px 10px;
   color: white;
   border: none;

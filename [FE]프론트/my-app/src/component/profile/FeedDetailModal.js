@@ -83,10 +83,9 @@ return (
     <SDetailFeedModalArea>
     <div className="FeedDetailModal">
       <h1>피드</h1>
-      <SDividerLine/>
       <img src={feed.imageFiles} alt="피드 이미지"></img>
-      <p style={{color:"#1877f2"}}>{feed.createTime}</p>
-
+      
+      <p style={{color:"#1877f2" , fontSize:"15px", display:"flex" ,justifyContent:"center"}}>{feed.createTime}</p>
       <SDividerLine/>
       <p>{feed.content}</p>
       <SButtonWrapper2>

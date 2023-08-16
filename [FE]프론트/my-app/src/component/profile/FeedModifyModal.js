@@ -66,9 +66,8 @@ return (
     <SDetailFeedModalArea>
     <div className="FeedDetailModal">
       <h1>피드수정</h1>
-      <SDividerLine/>
       <img src={prevfeed.imageFiles} alt="피드 이미지"></img>
-      <SDividerLine/>
+      <br/><br/>
       <SInput2
         name="content"
         type="text"
