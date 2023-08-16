@@ -16,8 +16,9 @@ import {SLogoImage} from '../../styles/pages/SStartPage'
 
 
 
-const SearchShorts = ({shortsByDate}) => {
-  const shortLength = shortsByDate.length
+const SearchShorts = ({shortsByAll}) => {
+
+  const shortLength = shortsByAll.length
   const user = useSelector((state) => state.users);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -29,14 +30,14 @@ const SearchShorts = ({shortsByDate}) => {
       // 데이터를 불러오는 API 호출을 통해 실제 검색 결과를 가져옵니다.
       const fetchData = async () => {
         const response = await axios.get(
-          "https://i9d201.p.ssafy.io/api/shorts/main",
+          "https://i9d201.p.ssafy.io/api/shorts/whole",
           {
             headers: {
               Authorization: `Bearer ${user.accessToken}`,
             },
           }
         );
-        const data = response.data.data.thumbnailsByDate;
+        const data = response.data.data;
         const results = data.filter((short) =>
           short.title.toLowerCase().includes(searchTerm.toLowerCase())
         );

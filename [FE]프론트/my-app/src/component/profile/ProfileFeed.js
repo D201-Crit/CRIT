@@ -1,4 +1,4 @@
-import {SFeedButton,Empty, SFeedArea, SFeedBox, SPost} from "../../styles/pages/SProfilePage";
+import {SFeedButton2,Empty, SFeedButtonWrapper, SButtonWrapper2, SDetailFeedModal, SFeedArea, SFeedBox, SPost} from "../../styles/pages/SProfilePage";
 import FeedCreateModal from "./FeedCreateModal";
 import FeedDetailModal from "./FeedDetailModal";
 import { useSelector } from "react-redux";
@@ -44,12 +44,15 @@ const Feed = () => {
   }, []); 
 
   return (
+    <div>
     <SFeedArea>
       <div className="feed-container">
         {/* 작성 모달 버튼 */}
-        <SFeedButton onClick={() => setIsCreateModalOpen(true)}>
+        <SFeedButtonWrapper>
+        <SFeedButton2 onClick={() => setIsCreateModalOpen(true)}>
         게시글 작성
-        </SFeedButton>
+        </SFeedButton2>
+        </SFeedButtonWrapper>
         <Empty/>
   
         {/* FeedCreateModal */}
@@ -65,7 +68,6 @@ const Feed = () => {
             {/* 일반 게시물 */}
             <img
               src={feed.imageFiles}
-              alt="피드 이미지"
               className="post-image"
               onClick={() => {
                 setIsDetailModalOpen(true);
@@ -76,12 +78,19 @@ const Feed = () => {
         ))}
         </SFeedBox>
 
-         {/* FeedDetailModal */}
-          {isDetailModalOpen && (
-          <FeedDetailModal setIsDetailModalOpen={setIsDetailModalOpen} feedId={feedId}/>  
-        )}
+         
       </div>
     </SFeedArea>
+
+    <div>
+      {/* FeedDetailModal */}
+      {isDetailModalOpen && (
+        <SDetailFeedModal>
+          <FeedDetailModal getFeeds={getFeeds} setIsDetailModalOpen={setIsDetailModalOpen} feedId={feedId}/>  
+          </SDetailFeedModal>
+        )}
+    </div>
+    </div>
   );
 };
 
