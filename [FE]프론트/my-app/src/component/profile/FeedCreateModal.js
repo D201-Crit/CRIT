@@ -13,18 +13,6 @@ const FeedCreateModal = ({ setIsCreateModalOpen, getFeeds }) => {
     userName: user.id, 
   });
 
-  
-//user.nickname 으로 하니까 에러가 뜸. 뤼튼에게 서버코드 제공하니
-// 서버 코드를 분석한 결과, FileResponseDto의 userName 속성이 아래와 같이 user의 id로 설정되어 있습니다.
-// java
-// fileResponseDto.setUserName(user.getId());
-// 그리고 이후에는 해당 userName이 실제로 사용자의 id로 쓰이고 있는 것을 볼 수 있습니다.
-// java
-// .user(userRepository.findById(fileResponseDto.getUserName()).get())
-// 아까 드렸던 프론트코드의 경우, 아래와 같이 사용자의 닉네임을 userName 필드에 저장하고 있었습니다.
-// 라고 함.
-
-
   const [feedImage, setFeedImage] = useState([]);
 
   // 이미지 첨부 처리

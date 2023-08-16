@@ -263,9 +263,10 @@ export const ShortsGrid = styled.div`
 export const SShortsArea = styled.div`
   display: flex;
   justify-content: center;
-  height: 1000px;
-  max-height: 600px;
-  padding: 30px;
+  max-width: 960px;
+  height: 600px;
+  max-height: 500px;
+  padding: 10px;
   align-items: center;
   box-sizing: border-box;
   background: #2F2F2F;
@@ -355,8 +356,8 @@ export const SShortItemProfileVer = styled.div`
   background: black;
   position: relative;
   border-radius: 15px;
-  width: 22%;
-  height: 23%;
+  max-width: 320px; // 고정 가로 길이
+  max-height: 500px; // 고정 세로 길이
   display: flex;
   box-shadow: 0px 0px 20px 0.1px rgba(255, 255, 255, 15%);
   flex-direction: column;
@@ -366,9 +367,9 @@ export const SShortItemProfileVer = styled.div`
   margin-bottom: 20px;
 
   img {
-    width: 100%;
-    height: 100%;
-    border-radius: 15px;
+    width: 320px;
+    height: 300px;
+    /* border-radius: 15px; */
     object-fit: cover;
     opacity: 1;
   }
@@ -478,3 +479,21 @@ export const SSecondaryButton3 = styled.button`
 
   }
 `;
+
+
+export const SliderContainer = styled.div`
+  position: relative;
+  width: 1200px; // 고정 길이로 변경
+  height: 370px; // 고정 길이로 변경
+  overflow: hidden;
+  padding: 30px;
+  justify-content: center;
+  margin-left: -150px;
+`;
+
+// export  const SliderItem = styled.div`
+//   width: 200px;
+//   height : 00px;
+//   gap : 10px;
+  
+// `;

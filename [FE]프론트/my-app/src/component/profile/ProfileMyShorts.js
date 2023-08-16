@@ -1,7 +1,7 @@
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import React, { useState, useEffect } from "react";
-import { SShortItemProfileVer } from '../../styles/pages/SProfilePage';
+import { SShortItemProfileVer, SliderContainer, SliderItem } from '../../styles/pages/SProfilePage';
 import { SEmpty, SEmpty2 } from '../../styles/pages/SCommunityPage';
 import { SWrapper } from '../../styles/SCommon';
 import { SShortsCard, ShortsSpanWrapper, SShortsContainer, SShortItem } from "../../styles/pages/SMainPage";
@@ -9,39 +9,47 @@ import { useSelector } from "react-redux";
 import Slider from "react-slick";
 import DetailShortModal from '../shorts/DetailShortModal';
 
-const ProfileMyShorts = ({ shortsByDate }) => {
+const ProfileMyShorts = ({ shortsByAll }) => {
   const [openDetailModal, setOpenDetailModal] = useState({});
   const user = useSelector((state) => state.users);
 
   useEffect(() => {
-    if (shortsByDate) {
+    if (shortsByAll) {
       const initialModalState = {};
-      shortsByDate.forEach((short) => {
+      shortsByAll.forEach((short) => {
         initialModalState[short.id] = false;
       });
 
       setOpenDetailModal(initialModalState);
     }
-  }, [shortsByDate]);
+  }, [shortsByAll]);
 
   const isAnyModalOpen = () => {
     return Object.values(openDetailModal).some((value) => value === true);
   };
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    slidesToShow: 4,
-    slidesToScroll: 4,
-    draggable: !isAnyModalOpen(),
-  };
+
+
+const slideLength = shortsByAll && shortsByAll.filter((short) => short.writer === user.nickname).length;
+console.log("매끼고",slideLength)
+const settings = {
+  dots: slideLength > 1,
+  infinite: slideLength > 1,
+  slidesToShow: slideLength >= 4 ? 4 : slideLength,
+  slidesToScroll: slideLength >= 4 ? 4 : slideLength,
+  draggable: !isAnyModalOpen(),
+};
+
+
 
   return (
     <div>
-      {shortsByDate && (
+      {shortsByAll && (
         <div>
+            <SliderContainer>
+
           <Slider {...settings}>
-            {shortsByDate
+            {shortsByAll
               .filter((short) => short.writer === user.nickname)
               .map((short) => (
                 <SShortItemProfileVer  onClick={() =>
@@ -66,11 +74,14 @@ const ProfileMyShorts = ({ shortsByDate }) => {
                 </SShortItemProfileVer>
               ))}
           </Slider>
+          </SliderContainer>
+
         </div>
+        
       )}
 
-      {shortsByDate &&
-        shortsByDate.map((short) =>
+      {shortsByAll &&
+        shortsByAll.map((short) =>
           openDetailModal[short.id] ? (
             <DetailShortModal
               key={short.id}
