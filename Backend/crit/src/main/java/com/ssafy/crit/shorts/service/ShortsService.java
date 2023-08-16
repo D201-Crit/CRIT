@@ -156,17 +156,17 @@ public class ShortsService {
         List<Shorts> shortsLikesDesc = shortsRepository.findAllByOrderByLikesDesc();
 
         List<ShortsDto> sellectedViewShorts = shortsViewsDesc.stream()
-                .limit(10)
+                .limit(12)
                 .map(ShortsDto::toDto)
                 .collect(Collectors.toList());
 
         List<ShortsDto> sellectedCreatedShorts = shortsCreatedDateDesc.stream()
-                .limit(10)
+                .limit(12)
                 .map(ShortsDto::toDto)
                 .collect(Collectors.toList());
 
         List<ShortsDto> sellectedLikesShorts = shortsLikesDesc.stream()
-                .limit(10)
+                .limit(12)
                 .map(ShortsDto::toDto)
                 .collect(Collectors.toList());
 
