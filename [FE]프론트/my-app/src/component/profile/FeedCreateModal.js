@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import "./FeedCreateModal.css";
 import { api } from '../../api/api';
 import { useSelector } from "react-redux";
-
+import { SCreateModal,SAriticleForm, SImageContainer, SFileInput, SPreviewImage, SFileInputLabel  } from '../../styles/pages/SCommunityPage';
+import { Divider } from '@material-ui/core';
+import { ModalOverlay } from '../../styles/SCommon';
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/feeds';
 
 const FeedCreateModal = ({ setIsCreateModalOpen, getFeeds }) => {
@@ -29,12 +30,7 @@ const FeedCreateModal = ({ setIsCreateModalOpen, getFeeds }) => {
   };
   
 
-  const handleOutsideClick = (e) => {
-    if (e.target.className === "modal-overlay") {
-      setIsCreateModalOpen(false);
-    }
-  };
-  
+
 
   const feedCreate = (e) => {
     e.preventDefault();
@@ -88,32 +84,61 @@ const FeedCreateModal = ({ setIsCreateModalOpen, getFeeds }) => {
     });
   };
 
+  const handleOutsideClick = (e) => {
+    if (e.target.getAttribute('data-cy') === "modal-overlay") {
+      setIsCreateModalOpen(false);
+    }
+  };
 
 
     return (
-      <div onClick={handleOutsideClick} className="modal-overlay">
+      <ModalOverlay onClick={handleOutsideClick} data-cy="modal-overlay">
+        <SCreateModal>
+        <h1>피드 작성</h1>
+        <hr/>
+
         <div className="FeedCreateModal">
-        <form onSubmit={feedCreate}>
-          <input
+        <SAriticleForm onSubmit={feedCreate}>
+        <input
+          name="title"
+          placeholder="제목을 입력하세요."
+          type="text"
+          value=""
+          onChange={handleFeedChange}
+        ></input>
+        <textarea
             name="content"
-            type="textarea"
-            value={feedImage.content}
+            value=""
             onChange={handleFeedChange}
-          ></input>
-          <input type="file" multiple onChange={onFeedImage} />
-          {/* 선택된 이미지 불러오기 */}
+          ></textarea>
+
+
+          <SFileInputLabel htmlFor="fileInput">
+            이미지 첨부
+          <SFileInput id="fileInput" type="file" multiple onChange={onFeedImage} />
+          </SFileInputLabel>
+
+
+          <div>
+          <SImageContainer>
           {feedImage.map((imageObj, index) => (
-            <img
+            <SPreviewImage
               key={index}
               src={imageObj.url}
               alt={`Image ${index + 1}`}
               style={{ maxWidth: "100px", maxHeight: "px", margin: "5px" }}
             />
           ))}
+          </SImageContainer>
+
+          </div>
+
           <input type="submit" value={"작성완료"}></input>
-        </form>
+        </SAriticleForm>
         </div>
-      </div>   
+        </SCreateModal>
+          </ModalOverlay>
+
     );
   };
 

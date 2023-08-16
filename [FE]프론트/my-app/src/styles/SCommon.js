@@ -55,7 +55,7 @@ export const SMenuWrapper = styled.div`
   }
   li {
     margin: 0px 80px;
-    width: 100px;
+    width: px;
     color: white;
   }
 
