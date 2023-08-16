@@ -50,7 +50,7 @@ const Feed = () => {
         {/* 작성 모달 버튼 */}
         <SFeedButtonWrapper>
         <SFeedButton2 onClick={() => setIsCreateModalOpen(true)}>
-        게시글 작성
+        피드 작성
         </SFeedButton2>
         </SFeedButtonWrapper>
         <Empty/>

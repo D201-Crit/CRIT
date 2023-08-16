@@ -2,12 +2,42 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { api } from "../../api/api";
 import { SSubmitButton, SForm, SInput, SInputContext, SMessageBox } from '../../styles/pages/SMessage';
-
+import MyFollowingListForMessage from './MyFollowingListForMessage';
 
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/messages';
 const SendMessage = (setMassageView) => {
   const user = useSelector((state) => state.users);
+  const [followingListModal,setFollowingListModal] = useState(true);
+  const [myFollowingList,setMyFollowingList] = useState(null);
+
+  useEffect(() => {
+    getMyFollowingList();
+  }, []);
+
+  useEffect(() => {
+    if (myFollowingList !== null) {
+      console.log("내 팔로잉 리스트", myFollowingList);
+    }
+  }, [myFollowingList]);
+
   
+  // 내 팔로잉 목록 불러오기
+  const getMyFollowingList = async () => {
+    api.get(`https://i9d201.p.ssafy.io/api//myfollowing/user
+    `, {
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+      .then((res) => {
+        const followingsList = res.data.data;
+        setMyFollowingList(followingsList);
+      })
+      .catch((error) => {
+        console.log("getMyFollowingList 에러 (profile-page)", error);
+      });
+  };
+
   const [messageTosend,setMessageToSend] = useState({
     title: "",
     content: "",
@@ -33,7 +63,6 @@ const handleReceiverNameChange = (event) => {
     [name]: trimmedValue
   }));
 };
-
 
   // 메시지 보내기
   const sendMessage = async (event) => {
@@ -65,8 +94,25 @@ const handleReceiverNameChange = (event) => {
       console.log('메시지 보내기 실패');
     })
   };
+
+  const onClickFollowing = (nickname) => {
+    setMessageToSend(prevMessage => ({
+      ...prevMessage,
+      receiverName: nickname
+    }));
+  }
+
   return (
+
+
+    
     <div>
+
+{followingListModal && (
+      <MyFollowingListForMessage setFollowingListModal={setFollowingListModal} myFollowingList={myFollowingList} onClickFollowing={onClickFollowing}/>
+        )}
+
+
       <h3 style={{ margin: '25px 10px'}}>메시지 보내기</h3>
       <SForm onSubmit={sendMessage}>
         <label htmlFor="receiverName">받는 사람</label>

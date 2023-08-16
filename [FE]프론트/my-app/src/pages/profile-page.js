@@ -1,9 +1,7 @@
 import { SFeedButton, SShortsArea, SProfileWrapper, SProfileModifyModal, SProfileModifyModalArea, ModalText, ModalButtonContainer, ModalButton, ShortsGrid, Empty, Row, Col, OpacityZero, SProfileImg, SProfileImgCover, FeedGrid } from "../styles/pages/SProfilePage";
 import { SEmpty, SEmpty2 } from '../styles/SCommon';
 import { useState, useRef, useEffect } from "react";
-import { faCog } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import MyFollowingList from '../component/profile/MyFollowingList';
 import CreateShortsModal from '../component/shorts/CreateShortsModal';
 import ProfileShorts from "../component/profile/ProfileShorts";
 import Feed from "../component/profile/ProfileFeed";
@@ -16,8 +14,12 @@ const ProfilePage = () => {
   const [profileImage, setProfileImage] = useState(null);
   const [profileInfo, setProfileInfo] = useState({});
   const profileImgFileInput = useRef(null);
+  const [myFollowingList,setMyFollowingList] = useState(null);
   const [shortsCreateModal, setShortsCreateModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [followingListModal,setFollowingListModal] = useState(false);
+
+
   const followersCount = profileInfo.followers ? profileInfo.followers.length : 0;
   const followingCount = profileInfo.followings ? profileInfo.followings.length : 0;
   const point = profileInfo.cashPoint ? profileInfo.cashPoint: 0;
@@ -27,6 +29,17 @@ const ProfilePage = () => {
   useEffect(() => {
     getProfile();
   }, []); // 빈 의존성 배열을 사용하여 초기 렌더링 시에만 실행
+
+  useEffect(() => {
+    getMyFollowingList();
+  }, []);
+
+  useEffect(() => {
+    if (myFollowingList !== null) {
+      console.log("내 팔로잉 리스트", myFollowingList);
+    }
+  }, [myFollowingList]);
+
 
   // 프로필 이미지 변경 처리
   const profileChange = (e) => {
@@ -44,6 +57,23 @@ const ProfilePage = () => {
     }
   };
   
+  // 내 팔로잉 목록 불러오기
+  const getMyFollowingList = async () => {
+    api.get(`${API_BASE_URL}/myfollowing/user
+    `, {
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+      .then((res) => {
+        const followingsList = res.data.data;
+        setMyFollowingList(followingsList);
+      })
+      .catch((error) => {
+        console.log("getMyFollowingList 에러 (profile-page)", error);
+      });
+  };
+
 
   const handleConfirm = () => {
     updateImage();
@@ -107,7 +137,8 @@ const ProfilePage = () => {
   
   return (
     <>
-   <SProfileModifyModal show={showConfirmModal}>
+    
+    <SProfileModifyModal show={showConfirmModal}>
       <SProfileModifyModalArea>
         <ModalText>프로필 변경 하시겠습니까?</ModalText>
         <ModalButtonContainer>
@@ -121,13 +152,13 @@ const ProfilePage = () => {
       </SProfileModifyModalArea>
     </SProfileModifyModal>
 
-      
+    {followingListModal && (
+      <MyFollowingList setFollowingListModal={setFollowingListModal} myFollowingList={myFollowingList}/>
+        )}
+
+
       <SProfileWrapper>
       <SEmpty2/>
-
-      {/* <Row>
-        <FontAwesomeIcon style={{marginLeft:"600px" }} icon={faCog} />
-      </Row> */}
         <Row>
           <SProfileImgCover>
             <SProfileImg>
@@ -154,7 +185,6 @@ const ProfilePage = () => {
           </OpacityZero>
 
           <Row>
-       
 
             <Row>
             <h2 style={{margin:"4px", fontWeight:"200", color:"#33FF00"}}>{profileInfo.grade}</h2>
@@ -182,8 +212,8 @@ const ProfilePage = () => {
         <a style={{color:"grey"}} className="follower">팔로워</a><a style={{margin:"10px" ,fontSize: "24px", fontWeight: "1000"}}>{followersCount}</a>
 
         </Col>
-        <Col>
-        <a style={{color:"grey"}} className="following">팔로잉</a><a style={{margin:"10px" ,fontSize: "24px", fontWeight: "1000"}}>{followingCount}</a>
+        <Col style={{cursor:"pointer"}}>
+        <a style={{color:"grey", }} className="following">팔로잉</a><a style={{margin:"10px" ,fontSize: "24px", fontWeight: "1000"}} onClick={()=>{setFollowingListModal(true)}}>{followingCount}</a>
         </Col>
         <Col/>
         <Col/>

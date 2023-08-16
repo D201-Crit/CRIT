@@ -1,4 +1,4 @@
-import { SFeedButton, SShortsArea, SProfileWrapper, SProfileModifyModal, SProfileModifyModalArea, ModalText, ModalButtonContainer, ModalButton, ShortsGrid, Empty, Row, Col, OpacityZero, SProfileImg, SProfileImgCover, FeedGrid } from "../styles/pages/SProfilePage";
+import { SFollowButton, SAccessDenied, SShortsArea, SProfileWrapper, SProfileModifyModal, SProfileModifyModalArea, ModalText, ModalButtonContainer, ModalButton, ShortsGrid, Empty, Row, Col, OpacityZero, SProfileImg, SProfileImgCover, FeedGrid } from "../styles/pages/SProfilePage";
 import { SEmpty, SEmpty2 } from '../styles/SCommon';
 import { useState, useRef, useEffect } from "react";
 import { useParams } from 'react-router-dom';
@@ -10,9 +10,12 @@ const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/';
 
 const AnotherProfilePage = () => {
   const user = useSelector((state) => state.users);
+  const myNickname = user.nickname
   const { nickname } = useParams();
   const [profileImage, setProfileImage] = useState(null);
   const [profileInfo, setProfileInfo] = useState({});
+  const [myFollowings, setMyFollowings] = useState(null);
+
   const [userId, setUserId] = useState("")
   const followersCount = profileInfo.followers ? profileInfo.followers.length : 0;
   const followingCount = profileInfo.followings ? profileInfo.followings.length : 0;
@@ -20,26 +23,91 @@ const AnotherProfilePage = () => {
   // 프로필 정보 가져오기
   useEffect(() => {
     getAnotherProfile(nickname);
+    getMyProfile();
   }, []); // 빈 의존성 배열을 사용하여 초기 렌더링 시에만 실행
+
+
+  // 내 프로필 가져오기
+  const getMyProfile = async () => {
+    api.get(`${API_BASE_URL}/myProfile`, {
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+      .then((res) => {
+        const followingsList = res.data.data.followings;
+        setMyFollowings(followingsList);
+
+      })
+      .catch((error) => {
+        console.log("내 프로필 가져오기 에러 (another-profile-page)", error);
+      });
+  };
 
   // 남 프로필 가져오기
   const getAnotherProfile = async (nickname) => {
     api.get(`${API_BASE_URL}user/profile/${nickname}`, {
     })
       .then((res) => {
-        console.log("프로필 정보", res);
         setProfileInfo(res.data.data);
         setUserId(res.data.data.id);
         setProfileImage({ url: res.data.data.imageUrl, file: null });
-        console.log("ddd",userId)
 
       })
       .catch((error) => {
-        console.log("에러받아오냐?", error);
+        console.log("남의 프로필 가져오기 에러 (another-profile-page)", error);
       });
   };
 
-  
+  const followUser = async () => {
+    api.post(`${API_BASE_URL}follow`,
+    {
+      followingId: nickname,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+    .then((res) => {
+      console.log(res)
+      getAnotherProfile();
+    })
+  }
+
+
+  const unfollowUser = async () => {
+    api.post(`${API_BASE_URL}unfollow`,
+    {
+      followingId: nickname,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    })
+    .then((res) => {
+      console.log(res)
+      getAnotherProfile();
+
+    })
+  }
+
+  // 팔로잉한 유저인가 판단하는 함수
+  const isFollowing = () => {
+    return myFollowings && myFollowings.some(following => following === nickname);
+  };
+
+
+
+  if (myNickname === nickname) {
+    return (
+      <SAccessDenied>
+        <h2>본인의 프로필은 조회할 수 없습니다.</h2>
+      </SAccessDenied>
+    );
+  }
+
   return (
     <>
       <SProfileWrapper>
@@ -88,9 +156,16 @@ const AnotherProfilePage = () => {
         </Col>
         <Col/>
         <Col/>
+      
+        </Row>
+        <Row>
+        {isFollowing() ? (
+          <SFollowButton onClick={unfollowUser}>언팔로우</SFollowButton>
+        ) : (
+          <SFollowButton onClick={followUser}>팔로우</SFollowButton>
+        )}
 
         </Row>
-
         <Empty />
         <SEmpty2/>
         {/* 이후 추가될 쇼츠 영역 */}

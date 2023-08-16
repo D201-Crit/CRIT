@@ -7,10 +7,12 @@ import { FiInbox, FiSend, FiMail } from 'react-icons/fi';
 import { SMessageWrapper, SMessageBox, StyledInbox, StyledMail, StyledSent, IconContainer } from '../../styles/pages/SMessage';
 import { ModalOverlay } from '../../styles/SCommon';
 
+
+
 const MessageBox = ({ massageView, setMassageView }) => {
   const user = useSelector((state) => state.users);
   const [selectFunction, SetselectFunction] = useState(1);
-
+  
   const renderComponent = () => {
     switch (selectFunction) {
       case 1:

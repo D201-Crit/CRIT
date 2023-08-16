@@ -2,11 +2,14 @@ import {SFeedButton2,Empty, SFeedButtonWrapper, SButtonWrapper2, SDetailFeedModa
 import FeedCreateModal from "./FeedCreateModal";
 import FeedDetailModal from "./FeedDetailModal";
 import { useSelector } from "react-redux";
+import { useParams } from 'react-router-dom';
 import React, { useState, useEffect  } from "react";
 import { api } from '../../api/api';
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/feeds';
 
 const AnotherProfileFeed = ({userId}) => {
+  const {nickname}  = useParams();
+
   const user = useSelector((state) => state.users);
   // 피드 아이디 설정
   const [feedId, setFeedId] = useState(null);
@@ -24,9 +27,12 @@ const AnotherProfileFeed = ({userId}) => {
   }, [userId]); // 의존성 배열에 userId를 추가합니다.
 
   // 피드 불러오기
+
+
+
 const getFeeds = async () => {
   try {
-    const response = await api.get(`${API_BASE_URL}/whole`, {
+    const response = await api.get(`${API_BASE_URL}/whole?Nickname=${nickname}`, {
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
       },

@@ -144,6 +144,7 @@ export const SFeedButton2 = styled.span`
   align-items: center;
   display: inline-block;
   width: 90px;
+  cursor : pointer;
   height: 20px;
   padding: 15px;
   margin-bottom: 40px;
@@ -165,6 +166,7 @@ export const SFeedButton = styled.span`
   width: 90px;
   height: 20px;
   padding: 15px;
+  cursor : pointer;
   margin-bottom: 10px;
   font-size: 18px;
   color: white;
@@ -550,3 +552,58 @@ export const ModalButton = styled.button`
 `;
 
 
+export const SFollowButton = styled.a`
+  display: inline-block;
+  padding: 8px 14px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #fff;
+  margin-top : 50px;
+  background-color: #3897f0;
+  border: 1px solid #3897f0;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+
+  &:hover {
+    background-color: #2980b9;
+    box-shadow: 0px 0px 20px 0.1px rgba(255,255,255,15%);
+
+    border-color: #2980b9;
+  }
+`;
+
+
+export const SAccessDenied = styled.div`
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 600px;
+height: 600px;
+z-index: 1500;
+display : flex;
+justify-content: center;
+align-items: center;
+`
+export const SMyFollowingListModal= styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 370px;
+  height: 400px;
+  z-index: 1500;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
+`;
+export const SMyFollowingListModalArea= styled.div`
+width: 100%;
+height: 100%;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 0px;
+`;
