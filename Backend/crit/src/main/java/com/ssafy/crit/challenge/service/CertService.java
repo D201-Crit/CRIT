@@ -53,9 +53,9 @@ public class CertService {
         // 이미지 정보 확인 -> 챌린지 시작 시간이랑 사진 시간이랑 비교 -> (X)
         // 사진 올린 시간과 현재 시간을 비교
 
-//        if (Math.abs(Duration.between(LocalTime.now(), challenge.getStartTime()).getSeconds()) > 605) { // 시작 시간이랑  10분이상 차이나는 경우
-//            throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_CERT_TIME);
-//        }
+        if (Math.abs(Duration.between(LocalTime.now(), challenge.getStartTime()).getSeconds()) > 605) { // 시작 시간이랑  10분이상 차이나는 경우
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_CERT_TIME);
+        }
 
         // 올바르게 올린경우 사진 저장
         String uploadImgPath = s3Uploader.uploadFiles(file, "cert/img");
@@ -83,11 +83,11 @@ public class CertService {
         /** Challenge EndTime 10분 이내 인지 체크 */
         long certSeconds = Duration.between(challenge.getEndTime(), LocalTime.now()).getSeconds(); // 인증 종료 시간과 현재 시간의 차
         log.info("시간: {}", certSeconds);
-        // int errorTime = 600; // 오차 10분
-        // if (Math.abs(certSeconds) <= errorTime) { // 종료시간 +- 10 분 이내에 인증해야 처리됨
-        //     // 종료 시간에서 10분 이내에 인증한 경우가 아닌 경우
-        //     throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_CERT_TIME);
-        // }
+         int errorTime = 600; // 오차 10분
+         if (Math.abs(certSeconds) > errorTime) { // 종료시간 +- 10 분 이내에 인증해야 처리됨
+             // 종료 시간에서 10분 이내에 인증한 경우가 아닌 경우
+             throw new BadRequestException(ErrorCode.NOT_VALID_CHALLENGE_CERT_TIME);
+         }
 
         // 자리있는 시간 초단위로 보내줌
         int inTime = requestDto.getInTime();
@@ -101,6 +101,11 @@ public class CertService {
         LocalTime absentTime = LocalTime.ofSecondOfDay(absentSecond); // 부재 시간
         double doubleInTime = inTime;
         double presencePercentage = Math.round((doubleInTime / allSeconds * 100) * 10) / 10.; // 자리에 앉아 있는 비율
+
+        if(presencePercentage > 100.){
+            presencePercentage = 100.;
+        }
+
         IsCert isCert = todayChallengeIsCert(challenge, user); // 오늘 해당 챌린지 인증 불러오기
 
         // 불러온 인증 수정하기
@@ -115,9 +120,11 @@ public class CertService {
             isCert.setIsFinished(false);
         }
 
-
+        log.info("존재 비율 : {}", presencePercentage);
         if (presencePercentage >= 85.) { // 85퍼센트 이상이면 인증
             isCert.certification(true);
+        } else {
+            isCert.certification(false);
         }
 
         return isCertRepository.save(isCert);

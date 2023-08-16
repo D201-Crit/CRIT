@@ -63,6 +63,7 @@ public enum ErrorCode {
     ALREADY_REGISTERED_CHALLENGE_DATA(HttpStatus.BAD_REQUEST, "C-011", "이미 존재하는 챌린지 데이터입니다."),
     UNSUPPORTED_CHALLENGE_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "C-012", "지원하지 않는 챌린지 미디어 유형입니다."),
     OVERLAPPED_CHALLENGE_REQUEST(HttpStatus.BAD_REQUEST, "C-013", "기존에 참여중인 챌린지와 중복되는 스케줄입니다."),
+    NOT_VALID_CHALLENGE_CERT_TIME(HttpStatus.BAD_REQUEST, "C-014", "챌린지 인증시간이 아닙니다."),
 
     // 쇼츠
     NOT_EXISTS_SHORTS_ID(HttpStatus.BAD_REQUEST, "S-001", "존재하지 않는 쇼츠 아이디입니다."),
