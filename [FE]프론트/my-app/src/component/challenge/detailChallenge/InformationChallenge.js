@@ -186,8 +186,8 @@ const InformationChallenge = () => {
                 )
               ) : challenge.cert === "실시간" ? (
                 <>
-                  <button id="enter" onClick={() => openVideoModal(challenge)}>
-                    {/* <button id="join" onClick={() => checkEnterTime()}> */}
+                  {/* <button id="enter" onClick={() => openVideoModal(challenge)}> */}
+                  <button id="join" onClick={() => checkEnterTime()}>
                     입장하기
                   </button>
                   <button id="joinList" onClick={onClickJoinList}>
@@ -196,8 +196,8 @@ const InformationChallenge = () => {
                 </>
               ) : (
                 <>
-                  {/* <button id="join" onClick={() => checkEnterTime()}> */}
-                  <button id="photo" onClick={() => openPhotoModal(challenge)}>
+                  <button id="join" onClick={() => checkEnterTime()}>
+                    {/* <button id="photo" onClick={() => openPhotoModal(challenge)}> */}
                     사진인증
                   </button>
                   <button id="joinList" onClick={onClickJoinList}>

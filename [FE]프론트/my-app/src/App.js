@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
   BrowserRouter,
@@ -27,12 +27,9 @@ import SignUpPage from "./pages/signup-page";
 import StartPage from "./pages/start-page";
 import { Sfont } from "./styles/SCommon";
 import Swal from "sweetalert2";
-import GoogleCallback from "./component/user/socialLogin/GoogleCallback";
-import NaverCallback from "./component/user/socialLogin/NaverCallback";
-import Footer from './component/footer/footer';
+import Footer from "./component/footer/footer";
 
 import styled from "styled-components";
-
 
 const AppContainer = styled.div`
   display: flex;
@@ -50,7 +47,6 @@ const StyledApp = styled(App)`
   transform-origin: top left;
 `;
 
-
 function App() {
   return (
     <Sfont>
@@ -62,7 +58,6 @@ function App() {
 }
 
 function AppRoutes() {
-  
   const location = useLocation();
 
   const user = useSelector((state) => state.users);
@@ -75,13 +70,11 @@ function AppRoutes() {
     "/LoginPage",
     "/SignUpPage",
     "/login/oauth2/code/kakao",
-    "/login/oauth2/code/naver",
   ];
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
-
 
   const isAuthorizedPage = !authorizedPages.includes(location.pathname) & !user;
   // 로그인하지 않은 상태에서 보지 못해야할 페이지로 접근하려 하면 로그인 페이지로 Redirect
@@ -102,53 +95,51 @@ function AppRoutes() {
       // imageHeight: 200,
       // imageAlt: 'Custom image',
     });
-    
+
     return <Navigate to="/LoginPage" />;
   }
 
   return (
     <>
       <AppContainer>
-
-      {showNav && <Nav />}
-      <ContentWrapper>
-      <Routes>
-        <Route path="/" element={<StartPage />} />
-        <Route path="/login/oauth2/code/kakao" element={<KakaoCallback />} />
-        <Route path="/login/oauth2/code/naver" element={<NaverCallback />} />
-        <Route path="/login/oauth2/code/google" element={<GoogleCallback />} />
-        <Route path="/IntroPage" element={<IntroPage />} />
-        <Route path="/MainPage" element={<MainPage />} />
-        <Route path="/ChallengePage" element={<ChallengePage />} />
-        <Route path="/ChallengePage/:id" element={<DetailChallengePage />} />
-        <Route path="/CommunityPage" element={<CommunityPage />} />
-        <Route
-          path="/CommunityBoardPage/:id"
-          element={<CommunityBoardPage />}
-        />
-        <Route
-          path="/CommunityBoardPage/:classification/:articleid"
-          element={<CommunityArticleDetailPage />}
-        />
-        <Route path="/SignUpPage" element={<SignUpPage />} />
-        <Route path="/LoginPage" element={<LoginPage />} />
-        <Route path="/ProfilePage" element={<ProfilePage />} />
-        <Route path="/MyPage" element={<MyPage />} />
-        <Route path="/PayPage" element={<PayPage />} />
-        <Route path="/payment/success" element={<PaySuccessPage />} />
-        <Route path="/PayCanclePage" element={<PayCanclePage />} />
-        <Route path="/PayConflictPage" element={<PayConflictPage />} />
-      </Routes>
-      </ContentWrapper>
-      <Footer/>
+        {showNav && <Nav />}
+        <ContentWrapper>
+          <Routes>
+            <Route path="/" element={<StartPage />} />
+            <Route
+              path="/login/oauth2/code/kakao"
+              element={<KakaoCallback />}
+            />
+            <Route path="/IntroPage" element={<IntroPage />} />
+            <Route path="/MainPage" element={<MainPage />} />
+            <Route path="/ChallengePage" element={<ChallengePage />} />
+            <Route
+              path="/ChallengePage/:id"
+              element={<DetailChallengePage />}
+            />
+            <Route path="/CommunityPage" element={<CommunityPage />} />
+            <Route
+              path="/CommunityBoardPage/:id"
+              element={<CommunityBoardPage />}
+            />
+            <Route
+              path="/CommunityBoardPage/:classification/:articleid"
+              element={<CommunityArticleDetailPage />}
+            />
+            <Route path="/SignUpPage" element={<SignUpPage />} />
+            <Route path="/LoginPage" element={<LoginPage />} />
+            <Route path="/ProfilePage" element={<ProfilePage />} />
+            <Route path="/MyPage" element={<MyPage />} />
+            <Route path="/PayPage" element={<PayPage />} />
+            <Route path="/payment/success" element={<PaySuccessPage />} />
+            <Route path="/PayCanclePage" element={<PayCanclePage />} />
+            <Route path="/PayConflictPage" element={<PayConflictPage />} />
+          </Routes>
+        </ContentWrapper>
+        <Footer />
       </AppContainer>
     </>
   );
 }
 
-
-
 export default StyledApp;
-
-
-

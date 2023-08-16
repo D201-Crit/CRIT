@@ -34,7 +34,7 @@ const Entrance = () => {
     return Swal.fire({
       position: "center",
       icon: "error",
-      title: "챌린지 시간이 아닙니다!.",
+      title: "챌린지 시간이 아닙니다!",
       text: "CRIT",
       showConfirmButton: false,
       timer: 1500,
@@ -157,15 +157,15 @@ const Entrance = () => {
               )
             ) : challenge.cert === "실시간" ? (
               <SEntranceLiButton
-                // onClick={() => checkEnterTime()}
-                onClick={() => openVideoModal(challenge)}
+                onClick={() => checkEnterTime()}
+                // onClick={() => openVideoModal(challenge)}
               >
                 입장하기
               </SEntranceLiButton>
             ) : (
               <SEntranceLiButton
-                // onClick={() => checkEnterTime()}
-                onClick={() => openPhotoModal(challenge)}
+                onClick={() => checkEnterTime()}
+                // onClick={() => openPhotoModal(challenge)}
               >
                 사진인증
               </SEntranceLiButton>

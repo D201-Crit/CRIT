@@ -46,7 +46,7 @@ const ChallengeTime = ({ onChangeTime }) => {
       onChangeTime(adjustedStartTime.toTimeString().slice(0, 5), newEndTime);
     } else if (end < start) {
       // 종료 시간이 시작 시간보다 빠른 경우에만 최대 3시간 조절
-      const adjustedStartTime = new Date(end.getTime() - 180 * 60 * 1000);
+      const adjustedStartTime = new Date(end.getTime() - 120 * 60 * 1000);
       setStartTime(adjustedStartTime.toTimeString().slice(0, 5));
       onChangeTime(adjustedStartTime.toTimeString().slice(0, 5), newEndTime);
     } else {

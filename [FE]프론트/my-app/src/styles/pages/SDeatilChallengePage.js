@@ -400,6 +400,9 @@ export const SJoinListWrapper = styled.div`
     margin-left: 60px;
     width: 280px;
   }
+  h1 {
+    margin: 80px 35px;
+  }
 `;
 
 export const SJoinTitle = styled.div`

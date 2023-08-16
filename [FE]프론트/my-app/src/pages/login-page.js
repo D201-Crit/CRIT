@@ -1,6 +1,5 @@
 import Login from "../component/user/Login";
 import KakaoLoginButton from "../component/user/socialLogin/KakaoLogin";
-import NaverLoginButton from "../component/user/socialLogin/NaverLogin";
 
 import {
   SLoginPageWrapper,
@@ -19,7 +18,6 @@ const LoginPage = () => {
         <SMoveSignUp to="/SignUpPage">회원가입</SMoveSignUp>
       </SSpan>
       <SSpan>
-        <NaverLoginButton />
         <KakaoLoginButton />
       </SSpan>
     </SLoginPageWrapper>

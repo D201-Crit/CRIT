@@ -21,7 +21,6 @@ const CreateBoard = ({ boards, classification, getBoard }) => {
     const newContent = e.target.value;
     setBoard((prevBoard) => ({ ...prevBoard, content: newContent }));
   };
-  console.log(checkBoards);
   const writeBoard = (e) => {
     e.preventDefault();
     if (checkBoards.length !== 0) {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { api } from "../../api/api";
 import {
   SJoinListWrapper,
@@ -21,28 +21,8 @@ const JoinListModal = ({ challengeData, closeJoinListModal }) => {
       )
       .then((res) => {
         console.log(res.data.data);
-        if (res.data.data > 0) {
-          setJoinList(res.data.data);
-        }
-        if (res.data.data.length == 0) {
-          closeJoinListModal();
-          Swal.fire({
-            position: "center",
-            icon: "error",
-            title: "완료한 챌린지가 없습니다.",
-            text: "CRIT",
-            showConfirmButton: false,
-            timer: 1500,
-            background: "#272727",
-            color: "white",
-            width: "500px",
-            // 먼지
-            // imageUrl: 'https://unsplash.it/400/200',
-            // imageWidth: 400,
-            // imageHeight: 200,
-            // imageAlt: 'Custom image',
-          });
-        }
+
+        setJoinList(res.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -51,19 +31,26 @@ const JoinListModal = ({ challengeData, closeJoinListModal }) => {
   useEffect(() => {
     getJoinList();
   }, []);
-  console.log(joinList);
   return (
     <SJoinListWrapper>
       <SJoinTitle></SJoinTitle>
-      {joinList.reverse().map((join) => (
-        <>
-          <SJoinWrapper key={join.id}>
-            {join.certified ? <p id="success">완료</p> : <p id="fail">실패</p>}
-            <p id="time">{join.certTime}</p>
-          </SJoinWrapper>
-          <hr />
-        </>
-      ))}
+      {joinList.length > 0 ? (
+        joinList.reverse().map((join) => (
+          <React.Fragment key={join.id}>
+            <SJoinWrapper>
+              {join.certified ? (
+                <p id="success">완료</p>
+              ) : (
+                <p id="fail">실패</p>
+              )}
+              <p id="time">{join.certTime}</p>
+            </SJoinWrapper>
+            <hr />
+          </React.Fragment>
+        ))
+      ) : (
+        <h1>참여 내역이 없습니다.</h1>
+      )}
     </SJoinListWrapper>
   );
 };
