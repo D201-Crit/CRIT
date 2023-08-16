@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { SBoardCard, SBoardTitle, SHr2, SPrimaryButton } from '../../styles/pages/SCommunityPage';
+import { SBoardCard, SBoardItemTitle,SBoardItemWriter, SBoardItemViews, SBoardTitle, SHr2, SPrimaryButton } from '../../styles/pages/SCommunityPage';
 
 const BoardCard = ({ classification, boards }) => {
   const maxBoardArticle = 6;
@@ -34,15 +34,15 @@ const BoardCard = ({ classification, boards }) => {
       <h1>{classification}</h1>
       <SBoardTitle />
       {boards
-        .filter((board) => board.classification === classification)
-        .slice(0, maxBoardArticle)
-        .map((board, index) => (
-          <div key={board.id}>
-            <div className="board-item">
-              <p>{board.title}</p>
-              <p>작성자: {board.writer}</p>
-              <p>조회수: {board.views}</p>
-            </div>
+      .filter((board) => board.classification === classification)
+      .slice(0, maxBoardArticle)
+      .map((board, index) => (
+        <div key={board.id}>
+          <div className="board-item">
+            <SBoardItemTitle>{board.title}</SBoardItemTitle>
+            <SBoardItemWriter>{board.writer}</SBoardItemWriter>
+            <SBoardItemViews>조회수: {board.views}</SBoardItemViews>
+          </div>
             <SHr2 />
           </div>
         ))}

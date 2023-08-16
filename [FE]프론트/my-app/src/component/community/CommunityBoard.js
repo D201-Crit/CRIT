@@ -33,7 +33,7 @@ const CommunityBoard = () => {
         console.log(res);
       
         if (res.data.data && Array.isArray(res.data.data)) {
-          const fetchedBoards = res.data.data.filter(article => ["자유 게시판", "자랑게시판", "운동 게시판", "반려동물 게시판"].includes(article.classification));
+          const fetchedBoards = res.data.data.filter(article => ["자유 게시판", "자랑게시판", "운동 게시판", "반려동물 게시판"].includes(article.classification)).sort((a, b) => new Date(b.id) - new Date(a.id));;
                     // sort((a, b) => new Date(b.id) - new Date(a.id));
           
 

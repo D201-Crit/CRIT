@@ -82,12 +82,12 @@ const AdvertisingBoard = () => {
         <SEmpty2 />
 
         {/* 광고 넘기기 버튼 영역 */}
-        <div>
-          <span onClick={handlePrevAd} style={{ marginRight: "0.5rem" }}>
+        <div style={{userSelect:"none"}}>
+          <span onClick={handlePrevAd} style={{ cursor:"pointer", marginRight: "0.5rem" }}>
             {"<"}
           </span>
           <span>{`${currentAdIndex + 1} | ${ads.length}`}</span>
-          <span onClick={handleNextAd} style={{ marginLeft: "0.5rem" }}>
+          <span onClick={handleNextAd} style={{ cursor:"pointer", marginLeft: "0.5rem" }}>
             {">"}
           </span>
         </div>

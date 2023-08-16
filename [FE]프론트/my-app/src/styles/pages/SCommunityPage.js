@@ -176,6 +176,26 @@ export const SBoardCard = styled.div`
   overflow: hidden;
 `;
 
+export const SBoardItemTitle = styled.p`
+  flex: 6;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
+export const SBoardItemWriter = styled.p`
+  flex: 3;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  margin: 0;
+`;
+
+export const SBoardItemViews = styled.p`
+  flex: 2;
+  margin: 0;
+`;
 
 export const SHeaderWrapper = styled.div`
   display: flex;
