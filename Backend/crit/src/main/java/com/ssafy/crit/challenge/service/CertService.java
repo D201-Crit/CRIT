@@ -101,6 +101,11 @@ public class CertService {
         LocalTime absentTime = LocalTime.ofSecondOfDay(absentSecond); // 부재 시간
         double doubleInTime = inTime;
         double presencePercentage = Math.round((doubleInTime / allSeconds * 100) * 10) / 10.; // 자리에 앉아 있는 비율
+
+        if(presencePercentage > 100.){
+            presencePercentage = 100.;
+        }
+
         IsCert isCert = todayChallengeIsCert(challenge, user); // 오늘 해당 챌린지 인증 불러오기
 
         // 불러온 인증 수정하기
