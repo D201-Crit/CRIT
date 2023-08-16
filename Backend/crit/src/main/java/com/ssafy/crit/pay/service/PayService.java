@@ -102,7 +102,7 @@ public class PayService {
         // 포인트 충전
         user.addCashPoint(approveResponse.getAmount().getTotal());
         // 기록 추가
-        Pay pay = Pay.builder().price(user.getCashPoint()).build();
+        Pay pay = Pay.builder().user(user).price(approveResponse.getAmount().getTotal()).build();
         log.info("pay 기록중 : {} 유저의 결제 금액 {}원", pay.getUser().getNickname(), pay.getPrice());
         payRepository.save(pay);
 
