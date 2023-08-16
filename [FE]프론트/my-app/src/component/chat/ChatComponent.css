@@ -2,7 +2,7 @@
   position: absolute;
   z-index: 0;
   width: 100%;
-  height: 100%;
+  height: 90%;
 }
 
 #chatToolbar {
@@ -33,14 +33,14 @@
   right: 0;
   bottom: 0;
   margin: auto;
-  height: calc(100% - 30px);
+  height: calc(100% - 10px);
   width: calc(100% - 30px);
   border-radius: 20px;
 }
 
 .message-wrap {
-  padding: 0 15px;
-  height: calc(100% - 80px);
+  padding: 0;
+  height: 70%;
   overflow: auto;
 }
 
@@ -108,7 +108,8 @@ span.triangle {
 }
 
 .message.left .msg-detail {
-  padding-left: 65px;
+  padding-left: 15px;
+  margin-bottom: 40px;
 }
 
 .message.left .user-img {
