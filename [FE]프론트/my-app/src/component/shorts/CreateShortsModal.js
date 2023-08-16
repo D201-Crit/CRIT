@@ -1,5 +1,5 @@
 import { ModalOverlay } from '../../styles/SCommon';
-import { SCreateModal,SAriticleForm } from '../../styles/pages/SCommunityPage';
+import { SCreateModal,SAriticleForm, SFileInputLabel, SFileInput} from '../../styles/pages/SCommunityPage';
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { api } from "../../api/api";
@@ -117,9 +117,17 @@ const CreateShortsModal = ({setShortsCreateModal}) => {
           onChange={handleShortsChange}
           placeholder="해시태그 (예: hashtag1,hashtag2,hashtag3)"
         ></input>
-        <input type="file" onChange={onVideoChange} />
-        <input type="submit" value="작성완료"></input>
+         <SFileInputLabel htmlFor="fileInput">
+            동영상 첨부
+          <SFileInput id="fileInput" type="file" multiple onChange={onVideoChange} />
+          </SFileInputLabel>
+
+     
+
+        <input style={{marginLeft:"130px" , marginTop:"15px"}}type="submit" value="작성완료"></input>
+
       </SAriticleForm> 
+      
         </SCreateModal>
       </ModalOverlay>
     </div>

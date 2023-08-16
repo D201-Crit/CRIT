@@ -9,7 +9,6 @@ import ProfileShorts from "../component/profile/ProfileShorts";
 import Feed from "../component/profile/ProfileFeed";
 import { useSelector } from "react-redux";
 import { api } from '../api/api';
-import { Zoom } from "react-toastify";
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/';
 
 const ProfilePage = () => {

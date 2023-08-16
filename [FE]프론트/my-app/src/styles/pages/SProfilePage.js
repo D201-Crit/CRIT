@@ -491,9 +491,3 @@ export const SliderContainer = styled.div`
   margin-left: -150px;
 `;
 
-// export  const SliderItem = styled.div`
-//   width: 200px;
-//   height : 00px;
-//   gap : 10px;
-  
-// `;

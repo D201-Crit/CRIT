@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ModalOverlay } from '../../styles/SCommon';
 import { SButtonWrapper2, SSecondaryButton3, SPrimaryButton3,  SPost, SDetailFeedModal, SDetailFeedModalArea } from "../../styles/pages/SProfilePage";
 import { SDividerLine } from "../../styles/pages/SMainPage";
 import { api } from '../../api/api';
@@ -19,7 +20,7 @@ const FeedDetailModal = ({
   const [editingContent, setEditingContent] = useState('');
   const [editingImage, setEditingImage] = useState('');
   const [feed, setFeed] = useState([]);
-
+  
 // 단일 피드 불러오기
 const getFeed = () => {
   setLoading(true);
@@ -64,13 +65,14 @@ const deleteFeed = async (feedId) => {
   })
 };
 
-
   const handleOutsideClick = (e) => {
-    if (e.target.className === "modal-overlay") {
+    if (e.target.getAttribute('data-cy') === "modal-overlay") {
       setIsDetailModalOpen(null);
     }
   };
 
+
+  
 return (
   <div>
   {loading ? <Loading /> : null}
@@ -78,7 +80,7 @@ return (
         <FeedModifyModal getFeed={getFeed} setModifyModal={setModifyModal} prevfeed={feed} feedId={feedId} />
       ) : (
   <SDetailFeedModal>
-    <div onClick={handleOutsideClick} className="modal-overlay">
+      <ModalOverlay onClick={handleOutsideClick} data-cy="modal-overlay">
 
     <SDetailFeedModalArea>
     <div className="FeedDetailModal">
@@ -97,7 +99,7 @@ return (
 
     
     </SDetailFeedModalArea>
-    </div>
+    </ModalOverlay>
     
   </SDetailFeedModal>
       )}

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-
-import "./FeedCreateModal.css";
 import { api } from '../../api/api';
 import { useSelector } from "react-redux";
 import { ProfileShortsListArea, ProfileShortsList } from "../../styles/pages/SProfilePage";
