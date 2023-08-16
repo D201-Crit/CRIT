@@ -60,7 +60,13 @@ public class CertService {
         // 올바르게 올린경우 사진 저장
         String uploadImgPath = s3Uploader.uploadFiles(file, "cert/img");
 
+
         IsCert isCert = todayChallengeIsCert(challenge, user);
+
+        if(isCert.isCertified()){
+            return isCert;
+        }
+
         isCert.certification(true); // 인증 완료로 설정
         isCert.setCertTimeNow(); // 인증 시간을 현재로 지정
 
@@ -79,6 +85,7 @@ public class CertService {
     // 영상 인증
     public IsCert videoCertification(CertVideoRequestDto requestDto, User user) throws Exception {
         Challenge challenge = isChallenge(requestDto.getChallengeId(), Cert.WEBRTC, user);
+
 
         /** Challenge EndTime 10분 이내 인지 체크 */
         long certSeconds = Duration.between(challenge.getEndTime(), LocalTime.now()).getSeconds(); // 인증 종료 시간과 현재 시간의 차
@@ -107,6 +114,10 @@ public class CertService {
         }
 
         IsCert isCert = todayChallengeIsCert(challenge, user); // 오늘 해당 챌린지 인증 불러오기
+
+        if(isCert.isCertified()){
+            return isCert;
+        }
 
         // 불러온 인증 수정하기
         isCert.setOutTime(absentTime);
