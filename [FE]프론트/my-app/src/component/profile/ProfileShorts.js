@@ -9,19 +9,18 @@ const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/feeds';
 
 const ProfileShorts = () => {
   const user = useSelector((state) => state.users);
-  const [shortsByDate, setShortsByDate] = useState([]);
+  const [shortsByAll, setShortsByAll] = useState([]);
 
   // 쇼츠 정보 받아오기
   const getShorts = () => {
     api
-      .get("https://i9d201.p.ssafy.io/api/shorts/main", {
+      .get("https://i9d201.p.ssafy.io/api/shorts/whole", {
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
         },
       })
       .then((res) => {
-        console.log("쇼츠데이터", res.data.data);
-        setShortsByDate(res.data.data.thumbnailsByDate);
+        setShortsByAll(res.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -38,7 +37,7 @@ const ProfileShorts = () => {
         <h2>내가 만든 쇼츠</h2>
         <SDividerLine/>
         <ProfileShortsList>
-          <ProfileMyShorts shortsByDate={shortsByDate}/>
+          <ProfileMyShorts shortsByAll={shortsByAll}/>
         </ProfileShortsList>
       </ProfileShortsListArea>   
     );

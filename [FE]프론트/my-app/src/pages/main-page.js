@@ -31,12 +31,14 @@ import GetPlannedMyChallenge from "../component/challenge/GetPlannedMyChallenge"
 import InfiniteScroll from "react-infinite-scroll-component";
 import exampleImage from "../assets/예시용 이미지/2023-07-21 14 03 07.png";
 const MainPage = () => {
+
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(true);
   const user = useSelector((state) => state.users);
   const [shorts, setShorts] = useState([]);
   const ongoingChallenges = useSelector((state) => state.onGoingMyChallenges);
   const [visitedLastIndex, setVisitedLastIndex] = useState(false);
+
 
   // 인피니트 스크롤 바로 이동
   const recentShortsRef = useRef();
@@ -47,6 +49,8 @@ const MainPage = () => {
   const [shortsByDate, setShortsByDate] = useState([]);
   const [shortsByView, setShortsByView] = useState([]);
   const [shortsByLike, setShortsByLike] = useState([]);
+  const [shortsByAll, setShortsByAll] = useState([]);
+
 
   // 바로입장 클릭 시
   console.log(ongoingChallenges);
@@ -73,32 +77,51 @@ const MainPage = () => {
     }
   };
   // 인피니트 스크롤
-  const [pageIndex, setPageIndex] = useState(0);
-  const shortsArr = [
-    <>
-      <h4 ref={recentShortsRef}></h4>
-      <RecentShorts shortsByDate={shortsByDate} />
-    </>,
-    <>
-      <h4 ref={mostLikeShortsRef}></h4>
-      <MostLikeShorts shortsByLike={shortsByLike} />
-    </>,
-    <>
-      <h4 ref={mostViewShortsRef}></h4>
-      <MostViewShorts shortsByView={shortsByView} />
-    </>,
-  ];
-
-  const fetchMoreData = () => {
-    setPageIndex((prevIndex) => {
-      const newIndex = prevIndex + 1;
-      return newIndex;
-    });
-  };
-
+    const [pageIndex, setPageIndex] = useState(0);
+    const shortsArr = [
+      <>
+        <h4 ref={recentShortsRef}></h4>
+        <RecentShorts shortsByDate={shortsByDate} />
+      </>,
+      <>
+        <h4 ref={mostLikeShortsRef}></h4>
+        <MostLikeShorts shortsByLike={shortsByLike} />
+      </>,
+      <>
+        <h4 ref={mostViewShortsRef}></h4>
+        <MostViewShorts shortsByView={shortsByView} />
+      </>,
+    ];
+    
+    const fetchMoreData = () => {
+      setPageIndex(prevIndex => {
+        const newIndex = prevIndex + 1;
+        return newIndex;
+      });
+    };
+    
   // 쇼츠
+
+  const getAllShorts = () => {
+    api
+      .get("https://i9d201.p.ssafy.io/api/shorts/whole", {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      })
+      .then((res) => {
+        setLoading(false);
+        console.log("쇼츠데이터", res.data.data);
+        setShortsByAll(res.data.data);
+  
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  
   const getShorts = () => {
-    setLoading(false);
+    setLoading(true);
     api
       .get("https://i9d201.p.ssafy.io/api/shorts/main", {
         headers: {
@@ -106,6 +129,7 @@ const MainPage = () => {
         },
       })
       .then((res) => {
+        setLoading(false);
         console.log("쇼츠데이터", res.data.data);
         setShortsByDate(res.data.data.thumbnailsByDate);
         setShortsByView(res.data.data.thumbnailsByView);
@@ -115,43 +139,46 @@ const MainPage = () => {
         console.log(err);
       });
   };
+
   useEffect(() => {
     getShorts();
+    getAllShorts();
   }, []);
 
-  // 필요한 부분에 스크롤 이동 기능을 추가하세요.
-  const scrollToTargetRef = (ref) => {
-    ref.current.scrollIntoView({ behavior: "smooth" });
-  };
 
-  const scrollToPage = (index) => {
-    const targetIndex = Math.min(index, shortsArr.length - 1);
-    setPageIndex(targetIndex);
-    fetchMoreData(); // 배열의 요소들을 추가적으로 로드함.
+// 필요한 부분에 스크롤 이동 기능을 추가하세요.
+const scrollToTargetRef = (ref) => {
+  ref.current.scrollIntoView({ behavior: 'smooth' });
+};
 
-    switch (index) {
-      case 0:
-        if (recentShortsRef.current) {
-          scrollToTargetRef(recentShortsRef);
-        }
-        break;
-      case 1:
-        if (mostLikeShortsRef.current) {
-          scrollToTargetRef(mostLikeShortsRef);
-        }
-        break;
-      case 2:
-        if (mostViewShortsRef.current) {
-          scrollToTargetRef(mostViewShortsRef);
-        }
-        break;
-    }
-  };
-  const [isHovered, setIsHovered] = useState(false);
+const scrollToPage = (index) => {
+  const targetIndex = Math.min(index, shortsArr.length - 1);
+  setPageIndex(targetIndex);
+  fetchMoreData(); // 배열의 요소들을 추가적으로 로드함.
 
-  // 마우스를 올릴 때와 내릴 때 상태를 변경하는 함수를 추가
-  const handleMouseEnter = () => setIsHovered(true);
-  const handleMouseLeave = () => setIsHovered(false);
+  switch (index) {
+    case 0:
+      if (recentShortsRef.current) {
+        scrollToTargetRef(recentShortsRef);
+      }
+      break;
+    case 1:
+      if (mostLikeShortsRef.current) {
+        scrollToTargetRef(mostLikeShortsRef);
+      }
+      break;
+    case 2:
+      if (mostViewShortsRef.current) {
+        scrollToTargetRef(mostViewShortsRef);
+      }
+      break;
+  }
+};
+const [isHovered, setIsHovered] = useState(false);
+
+// 마우스를 올릴 때와 내릴 때 상태를 변경하는 함수를 추가
+const handleMouseEnter = () => setIsHovered(true);
+const handleMouseLeave = () => setIsHovered(false);
   return (
     <>
       <SEntranceButtonWrapper>
@@ -162,36 +189,31 @@ const MainPage = () => {
       <SEmpty />
 
       <div
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        style={{ position: "relative" }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      style={{ position: "relative" }}
       >
-        <SScrollButtonWrapper className={isHovered ? "showButtons" : ""}>
-          <span
-            className="btn1"
-            onClick={() => scrollToPage(0)}
-            style={{ marginRight: "1rem" }}
-          >
-            최신순
-          </span>
 
-          <span
-            className="btn2"
-            onClick={() => scrollToPage(1)}
-            style={{ marginRight: "1rem" }}
-          >
+      <SScrollButtonWrapper
+        className={isHovered ? "showButtons" : ""}
+      >
+        <span className = "btn1" onClick={() => scrollToPage(0)} style={{ marginRight: '1rem' }}>
+          최신순
+        </span>
+
+          <span className = "btn2" onClick={() => scrollToPage(1)} style={{ marginRight: '1rem' }}>
             HOT
           </span>
 
-          <span className="btn3" onClick={() => scrollToPage(2)}>
+          <span className = "btn3" onClick={() => scrollToPage(2)}>
             많이 본
           </span>
-        </SScrollButtonWrapper>
-        <SScrollCircle isHovered={isHovered}>→</SScrollCircle>
+      </SScrollButtonWrapper>
+      <SScrollCircle isHovered={isHovered}>→</SScrollCircle>
       </div>
 
       {/* 검색 */}
-      <SearchShorts shortsByDate={shortsByDate} />
+      <SearchShorts shortsByAll={shortsByAll} />
 
       {/* 쇼츠 영역 */}
       <SShortsWrapper>
@@ -205,12 +227,13 @@ const MainPage = () => {
         >
           {shortsArr.slice(0, pageIndex + 1)}
         </InfiniteScroll>
-      </SShortsWrapper>
-      <GetAllMyChallenge />
-      <GetCompleteMyChallenge />
-      <GetOnGoingMyChallenge />
-      <GetPlannedMyChallenge />
-    </>
-  );
-};
+        </SShortsWrapper>
+        <GetAllMyChallenge />
+        <GetCompleteMyChallenge />
+        <GetOnGoingMyChallenge />
+        <GetPlannedMyChallenge />
+      </>
+
+    );
+}
 export default MainPage;

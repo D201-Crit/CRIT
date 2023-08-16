@@ -39,9 +39,9 @@ const CommunityBoardDetail = ({ classification }) => {
     }, [page]);
 
 
-    const fetchArticles = async (page) => {
+    const fetchArticles = async (pageNo) => {
         setLoading(true);
-        api.get(`${API_BASE_URL}/whole/${classification}?page=${page}`, {
+        api.get(`${API_BASE_URL}/whole/${classification}?page=${pageNo}`, {
             // &sortted=createdat-desc, { 추가가 가능한가?     
             headers: {
                 Authorization: `Bearer ${user.accessToken}`,
@@ -143,7 +143,7 @@ const CommunityBoardDetail = ({ classification }) => {
                     <option value="views-asc">조회수 오름차순</option>
                 </SBoardDetailViewSelect>
                 {showmodal && (
-                    <CreateArticleModal classification={classification} setModal={setModal} fetchArticles={fetchArticles} />
+                    <CreateArticleModal page={page} classification={classification} setModal={setModal} fetchArticles={fetchArticles} />
                 )}
 
                 

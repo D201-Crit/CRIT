@@ -6,7 +6,7 @@ import { SCreateModal,SAriticleForm, SImageContainer, SFileInput, SPreviewImage,
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/boards';
 // const API_BASE_URL = "http://localhost:8080/boards";
 
-const CreateArticleModal = ({ classification, setModal, fetchArticles}) => {
+const CreateArticleModal = ({ classification, setModal, fetchArticles, page}) => {
   const user = useSelector((state) => state.users);
   const [images, setImages] = useState([]);
   const [article, setArticle] = useState({
@@ -62,7 +62,7 @@ const CreateArticleModal = ({ classification, setModal, fetchArticles}) => {
       })
       .then(() => {
         setModal(false);
-        fetchArticles();
+        fetchArticles(page);
         console.log("게시글 작성성공");
 
       })
