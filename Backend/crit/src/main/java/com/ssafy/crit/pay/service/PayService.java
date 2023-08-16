@@ -7,7 +7,10 @@ import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.pay.dto.KakaoApproveResponse;
 import com.ssafy.crit.pay.dto.KakaoCancelResponse;
 import com.ssafy.crit.pay.dto.KakaoReadyResponse;
+import com.ssafy.crit.pay.entity.Pay;
+import com.ssafy.crit.pay.repository.PayRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,11 +20,15 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PayService {
 
+    private final PayRepository payRepository;
     private final UserRepository userRepository;
     static final String cid = "TC0ONETIME"; // 가맹점 테스트 코드
     @Value("86f8e70b2e6f309e47d76e82c0e84441")
@@ -94,6 +101,11 @@ public class PayService {
 
         // 포인트 충전
         user.addCashPoint(approveResponse.getAmount().getTotal());
+        // 기록 추가
+        Pay pay = Pay.builder().price(user.getCashPoint()).build();
+        log.info("pay 기록중 : {} 유저의 결제 금액 {}원", pay.getUser().getNickname(), pay.getPrice());
+        payRepository.save(pay);
+
         return approveResponse;
     }
 
@@ -126,6 +138,16 @@ public class PayService {
 
         return cancelResponse;
     }
+
+    /**
+     * 결제 기록 불러오기
+    */
+    public List<Pay> getPayLogs(User user) throws Exception{
+        return payRepository.findAllByUser(user);
+    }
+
+
+
 
 
     /**
