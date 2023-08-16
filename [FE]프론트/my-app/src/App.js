@@ -17,7 +17,6 @@ import DetailChallengePage from "./pages/detail-challenge-page";
 import IntroPage from "./pages/intro-page";
 import LoginPage from "./pages/login-page";
 import MainPage from "./pages/main-page";
-import MyPage from "./pages/my-page";
 import PayPage from "./pages/pay-page";
 import PaySuccessPage from "./pages/pay-success-page";
 import PayCanclePage from "./pages/pay-cancle-page";
@@ -129,7 +128,6 @@ function AppRoutes() {
             <Route path="/SignUpPage" element={<SignUpPage />} />
             <Route path="/LoginPage" element={<LoginPage />} />
             <Route path="/ProfilePage" element={<ProfilePage />} />
-            <Route path="/MyPage" element={<MyPage />} />
             <Route path="/PayPage" element={<PayPage />} />
             <Route path="/payment/success" element={<PaySuccessPage />} />
             <Route path="/PayCanclePage" element={<PayCanclePage />} />

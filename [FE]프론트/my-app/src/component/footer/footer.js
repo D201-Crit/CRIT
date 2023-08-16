@@ -1,18 +1,22 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const FooterList = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) -20% , rgba(0, 0, 0, 100) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) -20%,
+    rgba(0, 0, 0, 100) 100%
+  );
   color: white;
-  font-weight : 100;
+  font-weight: 100;
   height: 300px;
   padding: 40px;
+  // z-index: 1;
   margin-top: 800px;
-
 `;
 
 const Line = styled.div`

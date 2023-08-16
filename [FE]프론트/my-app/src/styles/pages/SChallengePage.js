@@ -52,11 +52,17 @@ const floatEffect2 = keyframes`
 `;
 
 // ChallengPage
+
+export const SChallengeWrapper = styled.div`
+  width: 1200px;
+  height: 1600px;
+  margin: 0 auto;
+  // background-color: red;
+`;
 export const SCreateChallengeWrapper = styled.div`
   width: 1200px;
   display: flex;
   justify-content: flex-end;
-  margin: 30px auto -40px auto;
 `;
 export const SCreateChallengeButton = styled.button`
   font-family: "Pretendard";
@@ -67,6 +73,7 @@ export const SCreateChallengeButton = styled.button`
   height: 50px;
   font-weight: bold;
   font-size: 18px;
+  margin-top: 30px;
   color: white;
   cursor: pointer;
 `;
@@ -888,4 +895,40 @@ export const SPhotochallengeWrapper = styled.div`
     background-color: #33ff00;
     cursor: pointer;
   }
+`;
+
+// 챌린지 페이지 크릿 1
+export const SCritWrapper = styled.div`
+  position: absolute;
+`;
+export const SCrit = styled.img`
+  width: 400px;
+  position: absolute;
+  top: -40px;
+  left: 900px;
+  transform: rotate(70deg);
+`;
+
+// 챌린지 페이지 크릿 2
+export const SCritWrapper2 = styled.div`
+  position: absolute;
+`;
+export const SCrit2 = styled.img`
+  width: 800px;
+  position: absolute;
+  top: -400px;
+  left: -600px;
+  transform: rotate(70deg);
+`;
+
+// 챌린지 페이지 크릿 3
+export const SCritWrapper3 = styled.div`
+  position: absolute;
+`;
+export const SCrit3 = styled.img`
+  width: 800px;
+  position: absolute;
+  top: -750px;
+  left: 760px;
+  transform: rotate(-50deg);
 `;

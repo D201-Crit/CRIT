@@ -27,6 +27,7 @@ import { useSelector } from "react-redux";
 import { SImg } from "./../../styles/pages/SChallengePage";
 import Swal from "sweetalert2";
 import PhotoChallengeModal from "./PhotoChallengeModal";
+import { SCrit } from "../../styles/pages/SChallengePage";
 
 const MyChallenge = () => {
   const user = useSelector((state) => state.users);
