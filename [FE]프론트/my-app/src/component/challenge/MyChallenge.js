@@ -268,10 +268,12 @@ const MyChallenge = () => {
       return `현재 ${daysInProgress + 1}일째 참여 중`;
     }
   };
-  const currentTime = new Date();
-  const currentHour = currentTime.getHours();
-  const currentMinute = currentTime.getMinutes();
-  const Time = `${currentHour}:${currentMinute}`;
+  // 챌린지 입장가능 시간
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  const Time = `${hours}:${formattedMinutes}`;
 
   return (
     <>

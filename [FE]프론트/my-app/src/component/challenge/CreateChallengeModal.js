@@ -90,6 +90,9 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
       showCancelButton: true,
       confirmButtonText: "확인",
       cancelButtonText: "취소",
+      confirmButtonColor: "#0000c5",
+      cancelButtonColor: "#ff007a",
+
       background: "#272727",
       color: "white",
       preConfirm: () => {

@@ -19,6 +19,7 @@ import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import QuestionAnswer from "@material-ui/icons/QuestionAnswer";
 
 import IconButton from "@material-ui/core/IconButton";
+import Swal from "sweetalert2";
 
 export default class ToolbarComponent extends Component {
   constructor(props) {
@@ -70,6 +71,43 @@ export default class ToolbarComponent extends Component {
   render() {
     const mySessionId = this.props.sessionId;
     const localUser = this.props.user;
+    const challenge = this.props.challenge;
+    const startTime = challenge.startTime;
+    const endTime = challenge.endTime;
+    // 챌린지 입장가능 시간
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    const Time = `${hours}:${formattedMinutes}`;
+    const closeButton = () => {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "정말 나가시겠습니까?",
+        text: "지금 나가시면 인증시간이 초기화됩니다.",
+        showConfirmButton: true,
+        background: "#272727",
+        color: "white",
+        confirmButtonColor: "#0000c5",
+        cancelButtonColor: "#ff007a",
+        confirmButtonText: "확인",
+        cancelButtonText: "취소",
+        showCancelButton: true,
+        confirmButtonText: "확인",
+        cancelButtonText: "취소",
+        preConfirm: () => {
+          return this.props.close();
+        },
+        // width: "500px",
+        // 먼지
+        // imageUrl: 'https://unsplash.it/400/200',
+        // imageWidth: 400,
+        // imageHeight: 200,
+        // imageAlt: 'Custom image',
+      });
+    };
+
     return (
       <AppBar className="toolbar" id="header">
         <Toolbar className="toolbar">
@@ -144,14 +182,26 @@ export default class ToolbarComponent extends Component {
                 <Fullscreen />
               )}
             </IconButton>
-            <IconButton
-              color="secondary"
-              className="navButton"
-              onClick={this.leaveSession}
-              id="navLeaveButton"
-            >
-              <PowerSettingsNew />
-            </IconButton>
+            {endTime <= Time ? (
+              <IconButton
+                color="secondary"
+                className="navButton"
+                onClick={this.leaveSession}
+                id="navLeaveButton"
+              >
+                <PowerSettingsNew />
+              </IconButton>
+            ) : (
+              <IconButton
+                color="secondary"
+                className="navButton"
+                onClick={closeButton}
+                id="navLeaveButton"
+              >
+                <PowerSettingsNew />
+              </IconButton>
+            )}
+
             <IconButton
               color="inherit"
               onClick={this.toggleChat}

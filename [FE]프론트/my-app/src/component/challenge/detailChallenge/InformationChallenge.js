@@ -122,8 +122,14 @@ const InformationChallenge = () => {
     }
   };
 
+  // 챌린지 입장가능 시간
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  const Time = `${hours}:${formattedMinutes}`;
+  console.log(Time);
   // 참여하기 startDate 2일전까지만 보이게
-
   const twoDaysBefore = new Date(challenge.startDate);
   twoDaysBefore.setDate(twoDaysBefore.getDate() - 2);
 
@@ -158,8 +164,7 @@ const InformationChallenge = () => {
               challenge.startDate,
               challenge.endDate,
             )?.includes("현재") ? (
-              new Date(challenge.startTime) <= new Date() &&
-              new Date() <= new Date(challenge.endTime) ? (
+              challenge.startTime <= Time && Time <= challenge.endTime ? (
                 challenge.cert === "실시간" ? (
                   <>
                     {" "}

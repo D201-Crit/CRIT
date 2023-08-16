@@ -116,6 +116,13 @@ const Entrance = () => {
   const closePhotoModal = () => {
     setIsPhotoOpen(false);
   };
+  // 챌린지 입장가능 시간
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  const Time = `${hours}:${formattedMinutes}`;
+  console.log(Time);
   return (
     <SEntranceSwiper
       grabCursor={true}
@@ -142,10 +149,9 @@ const Entrance = () => {
               : challenge.info}
           </p>
           {getDaysInProgress(challenge.startDate, challenge.endDate)?.includes(
-            "현재"
+            "현재",
           ) ? (
-            new Date(challenge.startTime) <= new Date() &&
-            new Date() <= new Date(challenge.endTime) ? (
+            challenge.startTime <= Time && Time <= challenge.endTime ? (
               challenge.cert === "실시간" ? (
                 <SEntranceLiButton onClick={() => openVideoModal(challenge)}>
                   입장하기
@@ -156,17 +162,11 @@ const Entrance = () => {
                 </SEntranceLiButton>
               )
             ) : challenge.cert === "실시간" ? (
-              <SEntranceLiButton
-                onClick={() => checkEnterTime()}
-                // onClick={() => openVideoModal(challenge)}
-              >
+              <SEntranceLiButton onClick={() => checkEnterTime()}>
                 입장하기
               </SEntranceLiButton>
             ) : (
-              <SEntranceLiButton
-                onClick={() => checkEnterTime()}
-                // onClick={() => openPhotoModal(challenge)}
-              >
+              <SEntranceLiButton onClick={() => checkEnterTime()}>
                 사진인증
               </SEntranceLiButton>
             )

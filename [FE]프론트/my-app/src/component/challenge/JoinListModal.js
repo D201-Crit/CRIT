@@ -5,9 +5,11 @@ import {
   SJoinWrapper,
   SJoinTitle,
 } from "../../styles/pages/SDeatilChallengePage";
-import Swal from "sweetalert2";
+import Loading from "../../component/Loading";
 
 const JoinListModal = ({ challengeData, closeJoinListModal }) => {
+  const [loading, setLoading] = useState(true);
+
   const [joinList, setJoinList] = useState([]);
   const getJoinList = () => {
     api
@@ -17,12 +19,12 @@ const JoinListModal = ({ challengeData, closeJoinListModal }) => {
           headers: {
             Authorization: `Bearer ${challengeData.user.accessToken}`,
           },
-        }
+        },
       )
       .then((res) => {
         console.log(res.data.data);
-
         setJoinList(res.data.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -33,6 +35,7 @@ const JoinListModal = ({ challengeData, closeJoinListModal }) => {
   }, []);
   return (
     <SJoinListWrapper>
+      {loading ? <Loading /> : null}
       <SJoinTitle></SJoinTitle>
       {joinList.length > 0 ? (
         joinList.reverse().map((join) => (
