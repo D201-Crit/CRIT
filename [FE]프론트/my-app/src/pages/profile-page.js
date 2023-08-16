@@ -1,12 +1,15 @@
-
 import { SFeedButton, SShortsArea, SProfileWrapper, ShortsGrid, Empty, Row, Col, OpacityZero, SProfileImg, SProfileImgCover, FeedGrid } from "../styles/pages/SProfilePage";
 import { SEmpty, SEmpty2 } from '../styles/SCommon';
 import { useState, useRef, useEffect } from "react";
+import { faCog } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import CreateShortsModal from '../component/shorts/CreateShortsModal';
 import ProfileShorts from "../component/profile/ProfileShorts";
 import Feed from "../component/profile/ProfileFeed";
 import { useSelector } from "react-redux";
 import { api } from '../api/api';
+import { Zoom } from "react-toastify";
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/';
 
 const ProfilePage = () => {
@@ -15,6 +18,7 @@ const ProfilePage = () => {
   const [profileInfo, setProfileInfo] = useState({});
   const profileImgFileInput = useRef(null);
   const [shortsCreateModal, setShortsCreateModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const followersCount = profileInfo.followers ? profileInfo.followers.length : 0;
   const followingCount = profileInfo.followings ? profileInfo.followings.length : 0;
   const point = profileInfo.cashPoint ? profileInfo.cashPoint: 0;
@@ -28,13 +32,32 @@ const ProfilePage = () => {
   // 프로필 이미지 변경 처리
   const profileChange = (e) => {
     const imageList = e.target.files;
+  
     if (imageList.length > 0) {
       const imageObj = { url: URL.createObjectURL(imageList[0]), file: imageList[0] };
       setProfileImage(imageObj);
+      setShowConfirmModal(true); // 여기에 이 코드를 추가해주세요.
     } else {
       setProfileImage(null);
+      setShowConfirmModal(false);
+
+    
     }
   };
+  
+
+  const handleConfirm = () => {
+    updateImage();
+    setShowConfirmModal(false);
+  };
+
+  const handleCancel = () => {
+    cancelProfileUpload();
+    setShowConfirmModal(false);
+    window.location.reload();
+
+  };
+
 
   // 프로필 업로드 취소
   const cancelProfileUpload = () => {
@@ -59,8 +82,8 @@ const ProfilePage = () => {
   };
 
   // 프로필 이미지 업데이트
-  const updateImage = (e) => {
-    e.preventDefault();
+  const updateImage = () => {
+    // e.preventDefault();
     const formData = new FormData();
     if (!profileImage) {
       formData.append("file", new Blob([], { type: "application/json" }));
@@ -85,7 +108,21 @@ const ProfilePage = () => {
   
   return (
     <>
+      {showConfirmModal && (
+        <div>
+          <p>프로필 변경 하시겠습니까?</p>
+          <button onClick={handleConfirm}>예</button>
+          <button onClick={handleCancel}>아니오</button>
+        </div>
+      )}
+
+      
       <SProfileWrapper>
+      <SEmpty2/>
+
+      <Row>
+        <FontAwesomeIcon style={{marginLeft:"600px" }} icon={faCog} />
+      </Row>
         <Row>
           <SProfileImgCover>
             <SProfileImg>
@@ -110,9 +147,10 @@ const ProfilePage = () => {
               name="profile_img"
             />
           </OpacityZero>
-          <button onClick={updateImage}>이미지 업로드</button>
 
           <Row>
+       
+
             <Row>
             <h2 style={{margin:"4px", fontWeight:"200", color:"#33FF00"}}>{profileInfo.grade}</h2>
             </Row>

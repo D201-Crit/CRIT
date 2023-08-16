@@ -59,8 +59,9 @@ const CreateShortsModal = ({setShortsCreateModal}) => {
     .then(() => {
       setLoading(false);
       console.log("쇼츠 작성 성공");
-
       setShortsCreateModal(false);
+      window.location.reload();
+
     })
     .catch(() => {
       console.log("쇼츠 작성 실패");
