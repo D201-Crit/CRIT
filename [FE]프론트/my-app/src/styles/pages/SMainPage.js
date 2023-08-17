@@ -20,7 +20,7 @@ export const SEntranceButton = styled.button`
   position: absolute;
   left: 78%;
   top: 100px;
-  background-color: #ff007a;
+  background: linear-gradient(180deg, #060DB3 0%, #FF1EB2 100%);
   border: none;
   border-radius: 6px;
   margin: 25px;
@@ -51,7 +51,6 @@ export const SEntranceSlide = styled(SwiperSlide)`
   height: 120px;
   list-style: none;
   background-color: rgba(22, 22, 22, 1);
-  // border: 0.5px solid rgba(80, 80, 80);
   border-radius: 10px;
   box-shadow: 0px 0px 15px gray;
   font-family: "Pretendard";
@@ -195,9 +194,7 @@ export const SShortItem = styled.div`
 
   flex-direction: column;
   justify-content: flex-start;
-  // overflow: hidden;
-  // cursor : pointer;
-  margin-bottom: 20px;
+  margin-bottom: 80px;
 
   img {
     width: 100%;

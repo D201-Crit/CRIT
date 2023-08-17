@@ -29,7 +29,7 @@ import GetOnGoingMyChallenge from "./../component/challenge/GetOnGoingMyChalleng
 import GetAllMyChallenge from "../component/challenge/GetAllMyChallenge";
 import GetPlannedMyChallenge from "../component/challenge/GetPlannedMyChallenge";
 import { SCrit } from "../styles/pages/SChallengePage";
-import { SStartImage } from "../styles/pages/SStartPage";
+import { SStartImage, SStartImage2 } from "../styles/pages/SStartPage";
 import { SScrollButtonWrapper2 } from "../styles/pages/SMainPage";
 import CheckTime from "./../component/challenge/CheckTime";
 import GetAllChallenge from "./../component/challenge/GetAllChallenge";
@@ -78,6 +78,13 @@ const ChallengePage = () => {
         style={{ left: "860px", top: "-750px" }}
         alt="placeholder"
       />
+
+      <SStartImage2
+        src={process.env.PUBLIC_URL + "/backImg.png"}
+        style={{ left: "0px", top: "-1200px", zIndex: "-1000" }}
+        alt="placeholder"
+      />  
+
       <Modal style={customModalStyles} isOpen={isOpen}>
         <CreateChallengeModal closeModal={closeModal} />
       </Modal>

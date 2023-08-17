@@ -77,7 +77,10 @@ const SentMessage = (setMassageView) => {
               </SMessageItem>
             ))
         ) : (
+          <SMessageItem>
           <div>보낸 메시지가 없습니다</div>
+          </SMessageItem>
+
         )}
       </SMessageList>
     </div>

@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import ModifyArticleModal from "../component/community/ModifyArticleModal.js";
 import { SEmpty2 } from "../styles/SCommon.js";
 import CheckTime from "./../component/challenge/CheckTime";
+import { Link } from "react-router-dom";
 import {
   SCommentContainer,
   SImageContainer2,
@@ -241,6 +242,8 @@ const CommunityArticleDetailPage = () => {
         {articles && (
           <div>
             <SArticleTitle>{articles.title}</SArticleTitle>
+            <Link to={`/ProfilePage/${articles.writer}`} style={{ color: "#1877f2", textDecoration: "none" , display:"flex",     justifyContent: "flex-end", // 추가된 코드
+ }}><p>작성자 : {articles.writer}</p></Link>
             <SImageContainer2>
               {" "}
               {/* ImageContainer 추가 */}

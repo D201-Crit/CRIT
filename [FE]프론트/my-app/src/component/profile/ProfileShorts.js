@@ -33,7 +33,7 @@ const ProfileShorts = () => {
 
     return (
       <ProfileShortsListArea>
-        <h2>내가 만든 쇼츠</h2>
+        <h2>내가 만든 숏챌</h2>
         <SDividerLine/>
         <ProfileShortsList>
           <ProfileMyShortsItem shortsByAll={shortsByAll}/>

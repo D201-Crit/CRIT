@@ -153,7 +153,10 @@ const Nav = () => {
                   src={profile.url}
                   style={{
                     width: "50px",
-                    borderRadius: "50px",
+                    height:"50px",
+                    objectFit: "cover",
+
+                    borderRadius: "50%",
                     position: "absolute",
                     top: "-25px",
                   }}

@@ -317,7 +317,7 @@ const ProfilePage = () => {
             setShortsCreateModal(true);
           }}
         >
-          쇼츠 만들기
+          숏챌 만들기
         </SFeedButton>
         <SEmpty />
         <ShortsGrid>

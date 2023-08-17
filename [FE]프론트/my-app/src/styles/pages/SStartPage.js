@@ -87,3 +87,14 @@ export const SStartImage = styled.img`
   left: ${({ left }) => left || "600px"};
   
 `;
+export const SStartImage2 = styled.img`
+  width: ${({ width }) => width || "100%"};
+  height: ${({ height }) => height || "100%"};
+  opacity: ${({ opacity }) => opacity || 0.3};
+  position: relative;
+  top: ${({ top }) => top || "0px"};
+  left: ${({ left }) => left || "600px"};
+  
+`;
+
+

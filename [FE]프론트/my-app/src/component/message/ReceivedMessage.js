@@ -79,7 +79,9 @@ const ReceivedMessage = (setMassageView) => {
             </SMessageItem>
           ))
       ) : (
+        <SMessageItem>
         <div>받은 메시지가 없습니다</div>
+        </SMessageItem>
       )}
     </SMessageList>
   </div>

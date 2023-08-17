@@ -592,20 +592,23 @@ export const SMyFollowingListModal= styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 370px;
-  height: 400px;
+  width: 300px;
+  max-height: 350px;
   z-index: 1500;
+  padding: 10px;
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 20px;
+  overflow-y: auto; // 스크롤 추가
+  padding-top: 80px; // 헤더 높이와 동일하게 설정
 `;
-export const SMyFollowingListModalArea= styled.div`
-width: 100%;
-height: 100%;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-padding: 0px;
+export const SMyFollowingListModalArea = styled.div`
+  width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto; // 스크롤 추가
+
 `;
 
 
@@ -619,5 +622,22 @@ display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
-padding: 0px;
+`;
+
+
+export const SModalHeader = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px; // 원하는 높이로 설정
+  background-color: #1877f2; // 원하는 배경색으로 설정
+  display: flex;
+  align-items: center;
+  padding: 7px 18px;
+  font-size: 17px;
+  font-weight: 500;
+  color: white;
+  box-sizing: border-box;
+  z-index: 2;
 `;

@@ -66,7 +66,7 @@ export const SCreateChallengeWrapper = styled.div`
 `;
 export const SCreateChallengeButton = styled.button`
   font-family: "Pretendard";
-  background-color: #ff007a;
+  background: linear-gradient(180deg, #060DB3 0%, #FF1EB2 100%);
   border: none;
   border-radius: 10px;
   width: 150px;
@@ -76,6 +76,8 @@ export const SCreateChallengeButton = styled.button`
   margin-top: 30px;
   color: white;
   cursor: pointer;
+  &:hover {
+    background: linear-gradient(180deg, #060DB3 0%, #0000c5 30%, #FF1EB2 100%);
 `;
 
 // MyChallenge
@@ -89,12 +91,17 @@ export const SStatusWrapper = styled.div`
   }
   a {
     margin: 0 20px 0 0;
+    border : 1px solid grey;
+    padding :10px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 18px;
-    font-weight: 800;
-    color: gray;
+    font-weight: 500;
+    color: white;
     &:hover {
       color: #ff007a;
+      border : 1px solid #ff007a;
+
     }
   }
 `;
@@ -269,6 +276,9 @@ export const SCategoryWrapper = styled.div`
   a {
     margin: 0 20px 0 0;
     cursor: pointer;
+    border : 1px solid grey;
+    padding :10px;
+    border-radius: 10px;
     font-size: 18px;
     font-weight: 800;
     color: gray;
