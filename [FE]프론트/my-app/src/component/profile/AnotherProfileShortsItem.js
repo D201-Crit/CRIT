@@ -32,7 +32,6 @@ const AnotherProfileShortsItem = ({ shortsByAll }) => {
 
 
 const slideLength = shortsByAll && shortsByAll.filter((short) => short.writer === nickname).length;
-console.log("매끼고",slideLength)
 const settings = {
   dots: slideLength > 1,
   infinite: slideLength > 1,
@@ -43,59 +42,64 @@ const settings = {
 
 
 
-  return (
-    <div>
-      {shortsByAll && (
+return (
+  <div>
+    {shortsByAll && shortsByAll.filter((short) => short.writer === nickname).length === 0 ? (
+      <div>등록된 숏챌이 없습니다</div>
+    ) : (
+      shortsByAll && (
         <div>
-            <SliderContainer>
-
-          <Slider {...settings}>
-            {shortsByAll
-              .map((short) => (
-                <SShortItemProfileVer  onClick={() =>
-                  !isAnyModalOpen() &&
-                  setOpenDetailModal({
-                    ...openDetailModal,
-                    [short.id]: !openDetailModal[short.id],
-                  })
-                }key={short.id}>
-                  <img
-                    src={short.thumbnailUrl}
-                    alt={short.title}
-
-                  />
-                  <h2>{short.title}</h2>
-                  <p>♥ &nbsp; {short.likesCount}</p>
-                  <ShortsSpanWrapper>
-              <span>{short.title}</span>
-              <span style={{color:"gray",fontWeight:"normal"}}>{short.writer}</span>
-              <span style={{color:"gray", fontWeight:"normal"}}>조회수&nbsp;{short.views}회</span>
-              </ShortsSpanWrapper>
-                </SShortItemProfileVer>
-              ))}
-          </Slider>
+          <SliderContainer>
+            <Slider {...settings}>
+              {shortsByAll
+                .map((short) => (
+                  <SShortItemProfileVer
+                    onClick={() =>
+                      !isAnyModalOpen() &&
+                      setOpenDetailModal({
+                        ...openDetailModal,
+                        [short.id]: !openDetailModal[short.id],
+                      })
+                    }
+                    key={short.id}
+                  >
+                    <img src={short.thumbnailUrl} alt={short.title} />
+                    <h2>{short.title}</h2>
+                    <p>
+                      ♥ &nbsp; {short.likesCount}
+                    </p>
+                    <ShortsSpanWrapper>
+                      <span>{short.title}</span>
+                      <span style={{ color: "gray", fontWeight: "normal" }}>{short.writer}</span>
+                      <span style={{ color: "gray", fontWeight: "normal" }}>
+                        조회수&nbsp;{short.views}회
+                      </span>
+                    </ShortsSpanWrapper>
+                  </SShortItemProfileVer>
+                ))}
+            </Slider>
           </SliderContainer>
-
         </div>
-        
-      )}
+      )
+    )}
 
-      {shortsByAll &&
-        shortsByAll.map((short) =>
-          openDetailModal[short.id] ? (
-            <DetailShortModal
-              key={short.id}
-              shortId={short.id}
-              setOpenDetailModal={() =>
-                setOpenDetailModal({
-                  ...openDetailModal,
-                  [short.id]: false,
-                })
-              }
-            />
-          ) : null
-        )}
-    </div>
-  );
+    {shortsByAll &&
+      shortsByAll.map((short) =>
+        openDetailModal[short.id] ? (
+          <DetailShortModal
+            key={short.id}
+            shortId={short.id}
+            setOpenDetailModal={() =>
+              setOpenDetailModal({
+                ...openDetailModal,
+                [short.id]: false,
+              })
+            }
+          />
+        ) : null
+      )}
+  </div>
+);
+
 };
 export default AnotherProfileShortsItem;

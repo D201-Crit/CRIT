@@ -3,10 +3,13 @@ import { useSelector } from 'react-redux';
 import { api } from "../../api/api";
 import { SSubmitButton, SForm, SInput, SInputContext, SMessageBox } from '../../styles/pages/SMessage';
 import MyFollowingListForMessage from './MyFollowingListForMessage';
+import Loading from '../Loading';
+
 
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/messages';
 const SendMessage = (setMassageView) => {
   const user = useSelector((state) => state.users);
+  const [loading, setLoading] = useState(false);
   const [followingListModal,setFollowingListModal] = useState(true);
   const [myFollowingList,setMyFollowingList] = useState(null);
 
@@ -34,6 +37,7 @@ const SendMessage = (setMassageView) => {
         setMyFollowingList(followingsList);
       })
       .catch((error) => {
+        
         console.log("getMyFollowingList 에러 (profile-page)", error);
       });
   };
@@ -67,6 +71,12 @@ const handleReceiverNameChange = (event) => {
   // 메시지 보내기
   const sendMessage = async (event) => {
     event.preventDefault();
+
+    if(messageTosend.content.trim() === "" || messageTosend.title.trim() === "" || messageTosend.receiverName.trim() === ""){
+    alert("제목과 내용을 모두 작성해주세요.");
+    return}
+    
+    setLoading(true);
     api.post(`${API_BASE_URL}`,
     {
       title: messageTosend.title,
@@ -80,6 +90,7 @@ const handleReceiverNameChange = (event) => {
       },
     })
     .then((res) => {
+      setLoading(false);
       setMessageToSend({
         title: "",
         content: "",
@@ -90,6 +101,7 @@ const handleReceiverNameChange = (event) => {
     })
 
     .catch((error) => {
+      setLoading(false);
       console.log(error)
       console.log('메시지 보내기 실패');
     })
@@ -107,6 +119,8 @@ const handleReceiverNameChange = (event) => {
 
     
     <div>
+          {loading ? <Loading /> : null}
+
 
 {followingListModal && (
       <MyFollowingListForMessage setFollowingListModal={setFollowingListModal} myFollowingList={myFollowingList} onClickFollowing={onClickFollowing}/>

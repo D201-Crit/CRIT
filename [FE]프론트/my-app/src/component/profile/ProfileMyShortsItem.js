@@ -31,7 +31,6 @@ const ProfileMyShortsItem = ({ shortsByAll }) => {
 
 
 const slideLength = shortsByAll && shortsByAll.filter((short) => short.writer === user.nickname).length;
-console.log("매끼고",slideLength)
 const settings = {
   dots: slideLength > 1,
   infinite: slideLength > 1,

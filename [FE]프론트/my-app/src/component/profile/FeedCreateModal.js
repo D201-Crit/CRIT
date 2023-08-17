@@ -3,9 +3,11 @@ import { api } from '../../api/api';
 import { useSelector } from "react-redux";
 import { SCreateModal,SAriticleForm, SImageContainer, SFileInput, SPreviewImage, SFileInputLabel  } from '../../styles/pages/SCommunityPage';
 import { ModalOverlay } from '../../styles/SCommon';
+import Loading from "../Loading";
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/feeds';
 
 const FeedCreateModal = ({ setIsCreateModalOpen, getFeeds }) => {
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.users);
   const [feedContent, setFeedContent] = useState({
     content: "",
@@ -36,6 +38,7 @@ const FeedCreateModal = ({ setIsCreateModalOpen, getFeeds }) => {
 
     if (feedContent.content.trim() === "" || feedImage.length === 0) {
       alert("제목과 내용을 모두 작성해주세요.");}
+    setLoading(true);
     const formData = new FormData();
   
     // // 이미지가 없을 경우 빈 배열을 전달하려면 다음과 같이 작성하십시오.
@@ -60,11 +63,10 @@ const FeedCreateModal = ({ setIsCreateModalOpen, getFeeds }) => {
         },
       })
       .then(() => {
+        setLoading(false);
         console.log("게시글 작성성공");
-
         getFeeds();
         console.log("겟피드");
-
         setIsCreateModalOpen(false);
         setFeedContent("");
         setFeedImage(null);
@@ -91,6 +93,8 @@ const FeedCreateModal = ({ setIsCreateModalOpen, getFeeds }) => {
 
 
     return (
+      <div>
+      {loading ? <Loading /> : null}
       <ModalOverlay onClick={handleOutsideClick} data-cy="modal-overlay">
         <SCreateModal>
         <h1>피드 작성</h1>
@@ -137,7 +141,7 @@ const FeedCreateModal = ({ setIsCreateModalOpen, getFeeds }) => {
         </div>
         </SCreateModal>
           </ModalOverlay>
-
+          </div>
     );
   };
 
