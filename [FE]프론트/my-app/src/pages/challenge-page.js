@@ -34,8 +34,31 @@ import { SScrollButtonWrapper2 } from "../styles/pages/SMainPage";
 import CheckTime from "./../component/challenge/CheckTime";
 import GetAllChallenge from "./../component/challenge/GetAllChallenge";
 import QnaModal from "../component/challenge/QnaModal";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+
+
 
 const ChallengePage = () => {
+
+  useEffect(() => {
+    AOS.init({
+      offset: 0,
+      duration: 700,
+      easing: "ease-in-out",
+      once: false,
+      delay: 50,
+      anchorPlacement: "bottom-top",
+    });
+
+    return () => {
+      AOS.refresh();
+    };
+  }, []);
+
+
+
   const [loading, setLoading] = useState(true);
   const challenges = useSelector((state) => state.challenges);
   console.log(challenges);
@@ -57,16 +80,21 @@ const ChallengePage = () => {
     checkChallenges();
   }, [challenges]);
   return (
+<div data-aos="zoom-in-up">
+
     <SChallengeWrapper>
       {loading ? <Loading /> : null}
+
       <SCreateChallengeWrapper>
         <SCreateChallengeButton onClick={openModal}>
           챌린지 만들기
         </SCreateChallengeButton>
       </SCreateChallengeWrapper>
+
       <SCritWrapper>
         <SCrit src="https://github.com/Jinga02/ChallengePJT/assets/110621233/5e33307d-94b5-4cd1-8a12-2f1c95f2f0ec" />
       </SCritWrapper>
+
       <QnaModal />
       <MyChallenge />
       <SCritWrapper2>
@@ -88,13 +116,17 @@ const ChallengePage = () => {
       <Modal style={customModalStyles} isOpen={isOpen}>
         <CreateChallengeModal closeModal={closeModal} />
       </Modal>
+
+
       <CheckTime />
       <GetAllChallenge />
       <GetAllMyChallenge />
       <GetCompleteMyChallenge />
       <GetOnGoingMyChallenge />
       <GetPlannedMyChallenge />
+
     </SChallengeWrapper>
+    </div>
   );
 };
 

@@ -22,6 +22,7 @@ export const SIntroPageWrapper = styled.div`
 
   h1 {
     margin-bottom: 10px;
+    font-size: 50px;
   }
 
   .intro-text {

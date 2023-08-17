@@ -13,10 +13,10 @@ const IntroPage = () => {
   useEffect(() => {
     AOS.init({
       offset: 0,
-      duration: 900,
+      duration: 300,
       easing: "ease-in-out",
       once: false,
-      delay: 150,
+      delay: 50,
       anchorPlacement: "top-bottom",
     });
 
@@ -34,8 +34,8 @@ const IntroPage = () => {
         style={{ "margin-top": "200px" }}
       >
         <img
-          src={process.env.PUBLIC_URL + "/mz2.png"}
-          style={{ width: "500px", height: "500px" }}
+          src={process.env.PUBLIC_URL + "/logo2.png"}
+          style={{ width: "700px", height: "350px" }}
           alt="placeholder"
         />
 
@@ -43,7 +43,7 @@ const IntroPage = () => {
           <h1>
             누구나 볼 수 있는 성취의 순간,
             <br />
-            크릿을 만나보세요!
+            <span style={{ color: "#33ff00" }}>크릿</span>을 만나보세요!
           </h1>
           <p style={{ color: "grey" }}>
             챌린지를 즐겁게 시작하고 이끌어가는 서비스, 크릿! 다양한 도전을
@@ -58,10 +58,10 @@ const IntroPage = () => {
       <SEmpty />
       <SEmpty />
 
-      <div className="content empty" data-aos="fade-up" data-aos-delay="350">
+      <div className="content empty" data-aos="fade-up" data-aos-delay="150">
         <img
           src={process.env.PUBLIC_URL + "/introimg1.png"}
-          style={{ width: "500px", height: "500px" }}
+          style={{ width: "700px", height: "700px" }}
           alt="placeholder"
         />
         <div className="intro-text">
@@ -78,7 +78,7 @@ const IntroPage = () => {
         </div>
       </div>
       <SEmpty />
-      <div className="content empty" data-aos="fade-up" data-aos-delay="550">
+      <div className="content empty" data-aos="fade-up" data-aos-delay="150">
         <div className="intro-text">
           <h1>영상으로 즐기는 챌린지 이야기</h1>
           <p style={{ color: "grey" }}>
@@ -88,12 +88,22 @@ const IntroPage = () => {
             성장하는 즐거움을 누리세요. 새로운 영상 컨텐츠로 소중한 추억을
             간직해보세요.
           </p>
-          <img src={process.env.PUBLIC_URL + "/mz.png"} alt="placeholder" />
+          <img src={process.env.PUBLIC_URL + "/introimg2.png"} 
+                    style={{ width: "900px", height: "700px" }}
+
+          alt="placeholder" />
         </div>
       </div>
+
+
       <SEmpty />
-      <div className="content empty" data-aos="fade-up" data-aos-delay="750">
-        <img src={user_image} alt="placeholder" />
+
+      <div className="content empty" data-aos="fade-down" data-aos-delay="150">
+
+        <img src={process.env.PUBLIC_URL + "/board3.png"} 
+                  style={{ width: "700px", height: "700px" }}
+
+        alt="placeholder" />
         <div className="intro-text">
           <h1>다양한 도전과 만남이 기다립니다!</h1>
           <p style={{ color: "grey" }}>

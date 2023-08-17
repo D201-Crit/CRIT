@@ -19,6 +19,7 @@ import {
 } from "../styles/pages/SProfilePage";
 import { SEmpty, SEmpty2 } from "../styles/SCommon";
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import AnotherProfileFeed from "../component/profile/AnotherProfileFeed";
 import AnotherProfileShorts from "../component/profile/AnotherProfileShorts";
@@ -28,6 +29,7 @@ import CheckTime from "./../component/challenge/CheckTime";
 const API_BASE_URL = "https://i9d201.p.ssafy.io/api/";
 
 const AnotherProfilePage = () => {
+  const navigate = useNavigate();
   const user = useSelector((state) => state.users);
   const myNickname = user.nickname;
   const { nickname } = useParams();
@@ -43,11 +45,17 @@ const AnotherProfilePage = () => {
     ? profileInfo.followings.length
     : 0;
 
+    
   // 프로필 정보 가져오기
   useEffect(() => {
-    getAnotherProfile(nickname);
-    getMyProfile();
+    if (myNickname === nickname) {
+      navigate("/profilepage"); // 본인의 프로필일 경우, '/profilepage'로 이동
+    } else {
+      getAnotherProfile(nickname);
+      getMyProfile();
+    }
   }, []); // 빈 의존성 배열을 사용하여 초기 렌더링 시에만 실행
+
 
   // 내 프로필 가져오기
   const getMyProfile = async () => {

@@ -78,6 +78,19 @@ export const SLogoImage = styled.img`
   left: ${({ left }) => left || "0px"};
 `;
 
+
+
+export const SStartImage3 = styled.img`
+  width: 150vw;
+  height: 150vh;
+  object-fit: cover;
+  position: absolute;
+  z-index: -1000;
+  opacity: ${({ opacity }) => opacity || 0.3};
+  top: ${({ top }) => top || "-100px"};
+  left: ${({ left }) => left || "-100px"};
+`;
+
 export const SStartImage = styled.img`
   width: ${({ width }) => width || "500px"};
   height: ${({ height }) => height || "550px"};
