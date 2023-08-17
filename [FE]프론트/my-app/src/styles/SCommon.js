@@ -81,7 +81,7 @@ export const SMenuWrapper = styled.div`
 // User
 export const SUserWrapper = styled.div`
   position: absolute;
-  width: 120px;
+  width: 140px;
   font-size: 17px;
   cursor: pointer;
   right: 10px;
@@ -175,18 +175,17 @@ export const ModalOverlay = styled.div`
 export const SBtnAnimation = styled.div`
   color: linear-gradient(90deg, red, blue);
   :hover {
-  animation: gradient-animation 1s infinite linear alternate; 
-  @keyframes gradient-animation {
-    0% {
-      color: linear-gradient(90deg, red, blue);
-    }
-    100% {
-      color: linear-gradient(90deg, yellow, green);
+    animation: gradient-animation 1s infinite linear alternate;
+    @keyframes gradient-animation {
+      0% {
+        color: linear-gradient(90deg, red, blue);
+      }
+      100% {
+        color: linear-gradient(90deg, yellow, green);
+      }
     }
   }
-}
 `;
-
 
 export const SLoadingBackground = styled.div`
   position: fixed;
@@ -205,7 +204,7 @@ export const SLoadingBackground = styled.div`
 export const SLoadingText = styled.div`
   font-family: "Pretendard";
   text-align: center;
-  font-size : 28px;
+  font-size: 28px;
   font-weight: 500;
   text-align: center;
 `;
