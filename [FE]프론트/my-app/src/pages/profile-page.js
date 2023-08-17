@@ -19,15 +19,15 @@ import {
 import { SEmpty, SEmpty2 } from "../styles/SCommon";
 import { useState, useRef, useEffect } from "react";
 import MyFollowingList from "../component/profile/MyFollowingList";
-import MyFollowerList from '../component/profile/MyFollowerList';
+import MyFollowerList from "../component/profile/MyFollowerList";
 import CreateShortsModal from "../component/shorts/CreateShortsModal";
 import ProfileShorts from "../component/profile/ProfileShorts";
 import Feed from "../component/profile/ProfileFeed";
 import { useSelector } from "react-redux";
 import { api } from "../api/api";
 import CheckTime from "./../component/challenge/CheckTime";
-const API_BASE_URL = "https://i9d201.p.ssafy.io/api/";
 
+const API_BASE_URL = "https://i9d201.p.ssafy.io/api/";
 const ProfilePage = () => {
   const user = useSelector((state) => state.users);
   const [profileImage, setProfileImage] = useState(null);
@@ -71,7 +71,6 @@ const ProfilePage = () => {
     }
   }, [myFollowerList]);
 
-
   // 프로필 이미지 변경 처리
   const profileChange = (e) => {
     const imageList = e.target.files;
@@ -99,7 +98,7 @@ const ProfilePage = () => {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
           },
-        }
+        },
       )
       .then((res) => {
         const followingsList = res.data.data;
@@ -120,7 +119,7 @@ const ProfilePage = () => {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
           },
-        }
+        },
       )
       .then((res) => {
         const followerList = res.data.data;
@@ -212,7 +211,6 @@ const ProfilePage = () => {
         />
       )}
 
-
       {followerListModal && (
         <MyFollowerList
           setFollowerListModal={setFollowerListModal}
@@ -285,11 +283,12 @@ const ProfilePage = () => {
             <a style={{ color: "grey" }} className="follower">
               팔로워
             </a>
-            <a style={{ margin: "10px", fontSize: "24px", fontWeight: "1000" }}
-            onClick={() => {
+            <a
+              style={{ margin: "10px", fontSize: "24px", fontWeight: "1000" }}
+              onClick={() => {
                 setFollowerListModal(true);
               }}
-              >
+            >
               {followersCount}
             </a>
           </Col>

@@ -34,7 +34,7 @@ export const SLogoWrapper = styled.div`
   #login {
     position: absolute;
     right: 20px;
-    top: 15px;
+    top: 10px;
     font-size: 25px;
     text-decoration: none;
     color: white;
