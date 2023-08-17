@@ -15,9 +15,9 @@ const CheckTime = () => {
   useEffect(() => {
     const checkChallengeEndTimeInterval = setInterval(() => {
       const now = new Date();
-      const hours = formatNumber(now.getHours());
-      const minutes = formatNumber(now.getMinutes());
-      const currentTime = `${hours}:${minutes}`;
+      const currentTime = `${formatNumber(now.getHours())}:${formatNumber(
+        now.getMinutes()
+      )}`;
 
       challenges.forEach((challenge) => {
         if (!hasAlertShown && challenge.startTime === currentTime) {

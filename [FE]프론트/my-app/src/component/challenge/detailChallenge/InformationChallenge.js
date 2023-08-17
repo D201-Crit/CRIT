@@ -92,8 +92,7 @@ const InformationChallenge = () => {
     const today = new Date();
     const start = new Date(startDate);
     const end = new Date(endDate);
-    console.log(start);
-    console.log(end);
+
     // 연, 월, 일만 비교
     today.setHours(0, 0, 0, 0);
     start.setHours(0, 0, 0, 0);
@@ -128,7 +127,6 @@ const InformationChallenge = () => {
   const minutes = now.getMinutes();
   const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
   const Time = `${hours}:${formattedMinutes}`;
-  console.log(Time);
   // 참여하기 startDate 2일전까지만 보이게
   const twoDaysBefore = new Date(challenge.startDate);
   twoDaysBefore.setDate(twoDaysBefore.getDate() - 2);
@@ -162,7 +160,7 @@ const InformationChallenge = () => {
           <>
             {getDaysInProgress(
               challenge.startDate,
-              challenge.endDate,
+              challenge.endDate
             )?.includes("현재") ? (
               challenge.startTime <= Time && Time <= challenge.endTime ? (
                 challenge.cert === "실시간" ? (

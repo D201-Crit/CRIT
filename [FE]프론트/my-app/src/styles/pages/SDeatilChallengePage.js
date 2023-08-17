@@ -2,6 +2,10 @@ import { styled } from "styled-components";
 // 디테일페이지 전체 div
 export const SDetailChallengeWrapper = styled.div`
   margin: 30px auto -40px auto;
+  h1 {
+    text-align: center;
+    font-size: 60px;
+  }
 `;
 // 디테일페이지 챌린지 정보 div
 export const SInformationWrapper = styled.div`
@@ -272,7 +276,7 @@ export const SBoardsWrapper = styled.div`
   margin: 30px auto;
   h1 {
     text-align: center;
-    font-size: 70px;
+    font-size: 60px;
   }
 `;
 

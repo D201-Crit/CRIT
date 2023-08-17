@@ -721,7 +721,7 @@ export const SCalendarwrapper = styled.div`
 `;
 export const SMoneyWrapper = styled.div`
   position: absolute;
-  bottom: 85px;
+  bottom: 95px;
   left: 560px;
   width: 435px;
   text-align: center;

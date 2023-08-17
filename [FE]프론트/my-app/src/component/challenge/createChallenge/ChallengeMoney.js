@@ -18,7 +18,6 @@ const ChallengeMoney = ({ onChangeMoney }) => {
         <option value="7000">7,000원</option>
         <option value="10000">10,000원</option>
       </select>
-      <h3>{money ? `${money}원` : ""}</h3>
     </SMoneyWrapper>
   );
 };

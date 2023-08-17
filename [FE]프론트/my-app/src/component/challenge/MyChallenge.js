@@ -41,7 +41,6 @@ const MyChallenge = () => {
   const [isPhotoOpen, setIsPhotoOpen] = useState(false);
   const [challengeData, setChallengeData] = useState(null); // 모달에 전달할 데이터 state 추가
   const [selectedSessionId, setSelectedSessionId] = useState(null);
-  console.log(myChallenges);
   const [selectedStatus, setSelectedCategory] = useState(myChallenges); // 초기값: 전체
   const handleCategoryClick = (status) => {
     if (status == "전체") {
@@ -177,7 +176,6 @@ const MyChallenge = () => {
     return startDateA - startDateB;
   };
   const sortedMyChallenges = [...selectedStatus].sort(sortByStartDate);
-  console.log(sortedMyChallenges);
   // 상세보기 클릭
   const detailClick = (challenge) => {
     if (location.pathname === "/ChallengePage") {

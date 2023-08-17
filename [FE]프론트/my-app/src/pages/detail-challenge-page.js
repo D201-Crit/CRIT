@@ -6,15 +6,12 @@ import { api } from "../api/api";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Loading from "../component/Loading";
-import { SStartImage } from "../styles/pages/SStartPage";
-import CheckTime from "./../component/challenge/CheckTime";
 
 const DetailChallengePage = () => {
   const location = useLocation();
   const challenge = location.state?.challenge;
   const user = useSelector((state) => state.users);
   const [boards, setBoards] = useState([]);
-  const date = new Date();
   const [loading, setLoading] = useState(true);
   console.log(challenge);
   const [checkUser, setCheckUser] = useState(false);
@@ -41,7 +38,6 @@ const DetailChallengePage = () => {
         console.log(err);
       });
   };
-
   useEffect(() => {
     getBoard();
     checkedUser();
@@ -49,20 +45,14 @@ const DetailChallengePage = () => {
   return (
     <SDetailChallengeWrapper>
       {loading ? <Loading /> : null}
-
       <InformationChallenge />
-      {/* <SStartImage
-        src={process.env.PUBLIC_URL + "/startimg2.png"}
-        style={{
-          left: "10px",
-          top: "-550px",
-          transform: "rotate(280deg)",
-        }}
-        alt="placeholder"
-      /> */}
       {checkUser ? (
         <ShowBoard boards={boards} challenge={challenge} getBoard={getBoard} />
-      ) : null}
+      ) : challenge.challengeStatus === "END" ? (
+        <h1>종료된 챌린지 입니다.</h1>
+      ) : (
+        <h1>참여하지 않은 챌린지 입니다.</h1>
+      )}
     </SDetailChallengeWrapper>
   );
 };
