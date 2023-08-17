@@ -103,7 +103,7 @@ export const SImg = styled.img`
   bottom: -160px;
   left: 120px;
   width: 600px;
-  height: 500px;
+  height: 600px;
 `;
 
 export const SSwiper = styled(Swiper)`
@@ -896,12 +896,150 @@ export const SPhotochallengeWrapper = styled.div`
     cursor: pointer;
   }
 `;
+// 설명서
+export const SQnaWrapper = styled.div`
+  position: fixed;
+  top: 330px;
+  left: 10px;
+  width: 250px;
+  height: 200px;
+  z-index: 1001;
+`;
+export const SScrollCircle = styled.div`
+  padding: 7px 10px;
+  position: fixed;
+  top:395px;
+  background-color: #0000c5;
+  border-radius: 50%;
+  transition: opacity 0.3s;
+  opacity: ${(props) => (props.isHovered ? 0 : 1)};
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 27px;-[]
+  color: white;
+  cursor: pointer;
+  box-shadow: 0px 0px 20px 0.1px rgba(255, 255, 255, 15%);
+`;
+
+export const SQnaButtonWrapper = styled.div`
+  position: absolute;
+  left: 220px;
+  top: -130px;
+  background: linear-gradient(
+    90deg,
+    rgba(21, 21, 21, 0.82) 59.45%,
+    rgba(29, 29, 29, 0) 120.65%
+  );
+`;
+export const SQnAButton = styled.button`
+  &:hover {
+    background: linear-gradient(
+      90deg,
+      rgba(51, 51, 51, 0.82) 59.45%,
+      rgba(29, 29, 29, 0) 120.65%
+    );
+  }
+
+  &.active {
+    color: #ff007a;
+  }
+  cursor: pointer;
+  position: absolute;
+  top: 180px;
+  left: -160px;
+  border: none;
+  border-radius: 8px;
+  background-color: rgba(22, 22, 22, 22);
+  color: gray;
+  font-size: 20px;
+  font-weight: 800;
+`;
+export const SQnajWrapper = styled.div`
+  position: absolute;
+  width: 400px;
+  height: 500px;
+  top: -150px;
+  left: 50px;
+  background-color: rgba(22, 22, 22, 22);
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px gray;
+  overflow: hidden;
+  overflow-y: auto;
+  ${"" /* z-index: 1; */}
+  h2 {
+    padding: 10px 0 0 0;
+    text-align: center;
+  }
+  p {
+    padding: 5px 18px;
+    font-size: 20px;
+  }
+  #warring {
+    color: red;
+  }
+  b {
+    color: red;
+  }
+`;
+export const SQnajWrapper2 = styled.div`
+  position: absolute;
+  top: -150px;
+  left: 50px;
+  width: 400px;
+  height: 500px;
+  background-color: rgba(22, 22, 22, 22);
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px gray;
+  overflow: hidden;
+  overflow-y: auto;
+
+  h2 {
+    padding: 10px 0 0 0;
+    text-align: center;
+  }
+  p {
+    padding: 5px 18px;
+    font-size: 20px;
+  }
+  #warring {
+    color: red;
+  }
+  b {
+    color: red;
+  }
+`;
+
+export const SQnAButton2 = styled.button`
+  &:hover {
+    background: linear-gradient(
+      90deg,
+      rgba(51, 51, 51, 0.82) 59.45%,
+      rgba(29, 29, 29, 0) 120.65%
+    );
+  }
+
+  &.active {
+    color: #ff007a;
+  }
+  cursor: pointer;
+  position: absolute;
+  top: 240px;
+  left: -160px;
+  border: none;
+  border-radius: 8px;
+  background-color: rgba(22, 22, 22, 22);
+  color: gray;
+  font-size: 20px;
+  font-weight: 800;
+`;
 
 // 챌린지 페이지 크릿 1
 export const SCritWrapper = styled.div`
   position: absolute;
   z-index: -1;
 `;
+
 export const SCrit = styled.img`
   width: 400px;
   position: absolute;

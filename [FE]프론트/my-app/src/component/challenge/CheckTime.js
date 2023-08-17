@@ -7,11 +7,16 @@ const CheckTime = () => {
   const challenges = useSelector((state) => state.myChallenges);
   const navigate = useNavigate();
   const [hasAlertShown, setHasAlertShown] = useState(false);
-
   const formatNumber = (number) => {
     return number < 10 ? `0${number}` : number;
   };
-
+  // 날짜 형식
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const month = (date.getMonth() + 1).toString();
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${month}${day}`;
+  };
   useEffect(() => {
     const checkChallengeEndTimeInterval = setInterval(() => {
       const now = new Date();
@@ -20,7 +25,13 @@ const CheckTime = () => {
       )}`;
 
       challenges.forEach((challenge) => {
-        if (!hasAlertShown && challenge.startTime === currentTime) {
+        if (
+          !hasAlertShown &&
+          challenge.startTime === currentTime &&
+          formatDate(challenge.startDate) <=
+            formatDate(now) <=
+            formatDate(challenge.endDate)
+        ) {
           setHasAlertShown(true);
           showChallengeStartModal(challenge);
         }

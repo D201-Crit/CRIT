@@ -188,11 +188,9 @@ export const SButtonWrapper = styled.div`
     height: 50px;
     font-size: 18px;
     font-weight: 1000;
-
     border-radius: 10px;
     border: none;
     background-color: #33ff00;
-
     cursor: pointer;
   }
 `;
