@@ -78,8 +78,6 @@ const ChallengePage = () => {
         style={{ left: "860px", top: "-750px" }}
         alt="placeholder"
       />
-
-      {/*  모달  */}
       <Modal style={customModalStyles} isOpen={isOpen}>
         <CreateChallengeModal
           closeModal={closeModal}

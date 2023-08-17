@@ -101,9 +101,9 @@ export const SStatusWrapper = styled.div`
 export const SImg = styled.img`
   position: absolute;
   bottom: -160px;
-  left: 120px;
-  width: 600px;
-  height: 600px;
+  left: 180px;
+  width: 500px;
+  height: 500px;
 `;
 
 export const SSwiper = styled(Swiper)`
