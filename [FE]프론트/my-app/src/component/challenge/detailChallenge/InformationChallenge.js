@@ -19,7 +19,7 @@ import {
 import JoinListModal from "../JoinListModal";
 import VideoRoomComponent from "./../../VideoRoomComponent";
 
-const InformationChallenge = () => {
+const InformationChallenge = ({ setCheckUser }) => {
   const location = useLocation();
   const challenge = location.state.challenge;
   const user = useSelector((state) => state.users);
@@ -160,7 +160,7 @@ const InformationChallenge = () => {
           <>
             {getDaysInProgress(
               challenge.startDate,
-              challenge.endDate
+              challenge.endDate,
             )?.includes("현재") ? (
               challenge.startTime <= Time && Time <= challenge.endTime ? (
                 challenge.cert === "실시간" ? (
@@ -219,7 +219,10 @@ const InformationChallenge = () => {
         ) : (
           <>
             {twoDaysBefore >= new Date() && (
-              <JoinChallenge challenge={challenge} />
+              <JoinChallenge
+                setCheckUser={setCheckUser}
+                challenge={challenge}
+              />
             )}
           </>
         )}

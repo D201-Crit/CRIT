@@ -25,9 +25,6 @@ const CheckTime = () => {
       )}`;
 
       challenges.forEach((challenge) => {
-        // console.log(formatDate(challenge.startDate));
-        // console.log(formatDate(now));
-        // console.log(formatDate(challenge.endDate));
         if (
           !hasAlertShown &&
           challenge.startTime === currentTime &&

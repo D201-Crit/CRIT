@@ -13,8 +13,10 @@ import "swiper/css/grid";
 import "swiper/css/pagination";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 
 const SearchChallenge = ({ allChallenge }) => {
+  const user = useSelector((state) => state.users);
   const navigate = useNavigate();
   // 챌린지 검색
   const [title, onChangeTitle, setTitle] = useInput("");
@@ -25,10 +27,16 @@ const SearchChallenge = ({ allChallenge }) => {
   const [stretching, setStretching] = useState([]);
   const [progress, setProgress] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("전체"); // 초기값: 전체
-
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const month = (date.getMonth() + 1).toString();
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${month}${day}`;
+  };
+  const now = new Date();
   const onSearchChallenge = () => {
     const filterChallenge = allChallenge.filter((challenge) =>
-      challenge.name.includes(title)
+      challenge.name.includes(title),
     );
     if (filterChallenge.length === 0) {
       Swal.fire({
@@ -50,19 +58,21 @@ const SearchChallenge = ({ allChallenge }) => {
 
   const categorizeChallenges = () => {
     const studyChallenges = allChallenge.filter(
-      (challenge) => challenge.category === "공부"
+      (challenge) => challenge.category === "공부",
     );
     const sportChallenges = allChallenge.filter(
-      (challenge) => challenge.category === "운동"
+      (challenge) => challenge.category === "운동",
     );
     const bookChallenges = allChallenge.filter(
-      (challenge) => challenge.category === "독서"
+      (challenge) => challenge.category === "독서",
     );
     const stretchingChallenges = allChallenge.filter(
-      (challenge) => challenge.category === "스트레칭"
+      (challenge) => challenge.category === "스트레칭",
     );
     const progressChallenges = allChallenge.filter(
-      (challenge) => challenge.challengeStatus === "WAIT"
+      (challenge) =>
+        formatDate(now) <= formatDate(challenge.startDate) &&
+        !challenge.userList.includes(user.nickname),
     );
 
     setStudy(studyChallenges);

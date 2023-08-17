@@ -46,7 +46,7 @@ const DetailChallengePage = () => {
   return (
     <SDetailChallengeWrapper>
       {loading ? <Loading /> : null}
-      <InformationChallenge />
+      <InformationChallenge setCheckUser={setCheckUser} />
       {checkUser ? (
         <ShowBoard boards={boards} challenge={challenge} getBoard={getBoard} />
       ) : challenge.challengeStatus === "END" ? (
