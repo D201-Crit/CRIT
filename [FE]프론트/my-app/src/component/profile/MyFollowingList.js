@@ -1,5 +1,6 @@
 import React, { useState, useEffectm, } from "react";
 import { SMyFollowingListModal, SMyFollowingListModalArea, SFollowButton } from '../../styles/pages/SProfilePage';
+import { Link } from "react-router-dom";
 
 const MyFollowingList = ({setFollowingListModal,myFollowingList}) => {
   return(
@@ -12,7 +13,9 @@ const MyFollowingList = ({setFollowingListModal,myFollowingList}) => {
         <img src={following.imageUrl} alt="프로필 이미지" style={{ width: '100%', height: '100%' }} />
       </div>
       <div style={{ lineHeight: '50px' }}>
-        <a>{following.nickname}</a>
+      <Link to={`/ProfilePage/${following.nickname}`} style={{ color: "#1877f2", textDecoration: "none" }}> <a>{following.nickname}</a></Link>
+
+       
       </div>
     </div>
   ))}

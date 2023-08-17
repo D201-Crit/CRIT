@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useSelector } from 'react-redux';
 import { api } from "../../api/api";
+import { SPayPaymentBox } from '../../styles/pages/SPayPage';
 const Payment = () => {
   const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/payment';
   const user = useSelector((state) => state.users);
@@ -37,12 +38,16 @@ const Payment = () => {
 };
 
   return (
-    <>
-      <h1>결제하기</h1>
-      <label htmlFor="amount">금액: </label>
+    <SPayPaymentBox>
+      <img
+        src={process.env.PUBLIC_URL + "/paymentImg.png"}
+        alt="placeholder"
+      />
+
+
       <input type="text" id="amount" value={amount} onChange={handleAmountChange} />
       <button onClick={handleClickPay}>결제 요청</button>
-    </>
+      </SPayPaymentBox>
   );
 };
 
