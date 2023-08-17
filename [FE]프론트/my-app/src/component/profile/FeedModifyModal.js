@@ -4,12 +4,12 @@ import { SInput2, SForm2 } from "../../styles/pages/SMainPage";
 import { SDividerLine } from "../../styles/pages/SMainPage";
 import { api } from '../../api/api';
 import { useSelector } from "react-redux";
+import { ModalOverlay } from '../../styles/SCommon';
 import Loading from "../Loading";
 
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/feeds';
 
 const FeedModifyModal = ({getFeed,setModifyModal,prevfeed,feedId}) => {
-  // const [showModifyModal, setModifyModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.users);
   const [editingContent, setEditingContent] = useState(prevfeed);
@@ -22,6 +22,11 @@ const FeedModifyModal = ({getFeed,setModifyModal,prevfeed,feedId}) => {
 
     const modifyShorts = (e) => {
       e.preventDefault();
+      if(editingContent.content.trim() === ""){
+        alert("내용을 작성해주세요.");
+        return
+      }
+        setLoading(true);
         api.put(`${API_BASE_URL}/update/${feedId}`,
         {
           content: editingContent.content,
@@ -41,11 +46,13 @@ const FeedModifyModal = ({getFeed,setModifyModal,prevfeed,feedId}) => {
     };
 
 
-  const handleOutsideClick = (e) => {
-    if (e.target.className === "modal-overlay") {
-      setModifyModal(null);
-    }
-  };
+    const handleOutsideClick = (e) => {
+      if (e.target.getAttribute('data-cy') === "modal-overlay") {
+        setModifyModal(null);
+      }
+    };
+  
+  
 
   const handleFeedChange = (event) => {
     const { name, value } = event.target;
@@ -61,8 +68,7 @@ return (
   {loading ? <Loading /> : null}
   
   <SDetailFeedModal>
-    <div onClick={handleOutsideClick} className="modal-overlay">
-
+    <ModalOverlay onClick={handleOutsideClick} data-cy="modal-overlay">
     <SDetailFeedModalArea>
     <div className="FeedDetailModal">
       <h1>피드수정</h1>
@@ -83,7 +89,7 @@ return (
 
     
     </SDetailFeedModalArea>
-    </div>
+    </ModalOverlay>
     
   </SDetailFeedModal>
   </div>

@@ -11,6 +11,10 @@ const ModifyShortsModal = ({ setModifyModal, prevshotrs, shortId, getShort }) =>
 
   const modifyShorts = (e,setIsEditOpen) => {
     e.preventDefault();
+    if(shorts.content.trim() === "" || shorts.title.trim() === ""){
+      alert("제목과 내용을 작성해주세요.");
+      return
+    }
       api.put(`${API_BASE_URL}/${shortId}`,
       {
         title: shorts.title,

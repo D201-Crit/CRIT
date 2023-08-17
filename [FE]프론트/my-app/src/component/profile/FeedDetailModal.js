@@ -118,13 +118,6 @@ export default FeedDetailModal;
 
 
 
-// <input
-// type="text"
-// value={editingContent}
-// onChange={(e) => setEditingContent(e.target.value)}
-// />
-
-
 
 
 

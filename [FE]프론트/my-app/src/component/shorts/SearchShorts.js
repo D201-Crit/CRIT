@@ -24,34 +24,36 @@ const SearchShorts = ({shortsByAll}) => {
   const [searchResults, setSearchResults] = useState([]);
   const [openDetailModal, setOpenDetailModal] = useState({});
 
-
-  useEffect(() => {
+  const performSearch = async () => {
     if (searchTerm.length > 0) {
-      // 데이터를 불러오는 API 호출을 통해 실제 검색 결과를 가져옵니다.
-      const fetchData = async () => {
-        const response = await axios.get(
-          "https://i9d201.p.ssafy.io/api/shorts/whole",
-          {
-            headers: {
-              Authorization: `Bearer ${user.accessToken}`,
-            },
-          }
-        );
-        const data = response.data.data;
-        const results = data.filter((short) =>
-          short.title.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setSearchResults(results);
-      };
-      fetchData();
+      const response = await axios.get(
+        "https://i9d201.p.ssafy.io/api/shorts/whole",
+        {
+          headers: {
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+        }
+      );
+      const data = response.data.data;
+      const results = data.filter((short) =>
+        short.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setSearchResults(results);
     } else {
       setSearchResults([]);
     }
-  }, [searchTerm]);
+  };
 
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value);
   };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      performSearch();
+    }
+  };
+
   const isAnyModalOpen = () => {
     return Object.values(openDetailModal).some((value) => value === true);
   };
@@ -66,12 +68,12 @@ const SearchShorts = ({shortsByAll}) => {
       <SInput
         value={searchTerm}
         onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
         placeholder="검색어를 입력하세요."
       />
 
       
       <SResultList>
-      {/* <SResultItem> */}
       <SResultContainer>
       {searchResults &&
         searchResults.map((result) => (
@@ -98,7 +100,6 @@ const SearchShorts = ({shortsByAll}) => {
           
         ))}
       </SResultContainer>
-      {/* </SResultItem> */}
       </SResultList>
         {searchResults &&
         searchResults.map((result) =>
