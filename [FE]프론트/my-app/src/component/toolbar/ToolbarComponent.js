@@ -182,11 +182,11 @@ export default class ToolbarComponent extends Component {
                 <Fullscreen />
               )}
             </IconButton>
-            {endTime <= Time ? (
+            {endTime >= Time ? (
               <IconButton
                 color="secondary"
                 className="navButton"
-                onClick={this.leaveSession}
+                onClick={closeButton}
                 id="navLeaveButton"
               >
                 <PowerSettingsNew />
@@ -195,7 +195,7 @@ export default class ToolbarComponent extends Component {
               <IconButton
                 color="secondary"
                 className="navButton"
-                onClick={closeButton}
+                onClick={this.leaveSession}
                 id="navLeaveButton"
               >
                 <PowerSettingsNew />

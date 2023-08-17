@@ -1,19 +1,17 @@
-import {
-  SHr,
-  SEmpty,
-  SCommunityWrapper,
-} from "../styles/pages/SCommunityPage";
+import { SHr, SEmpty, SCommunityWrapper } from "../styles/pages/SCommunityPage";
 import React from "react";
 import AdvertisingBoard from "../component/community/AdvertisingBoard ";
 import CommunityBoardDetail from "../component/community/CommunityBoardDetail";
 import { useParams } from "react-router-dom"; // 수정
+import CheckTime from "./../component/challenge/CheckTime";
 
 const CommunityBoardPage = () => {
-  const  classification  = useParams(); // 수정
-  
+  const classification = useParams(); // 수정
+
   // classification 변수가 객체인지 확인하여 문자열로 변환합니다.
-  const classificationString = typeof classification === "object" ? classification.id : classification;
-  console.log("디버긔",classificationString)
+  const classificationString =
+    typeof classification === "object" ? classification.id : classification;
+  console.log("디버긔", classificationString);
   return (
     <>
       <SCommunityWrapper>
@@ -28,6 +26,7 @@ const CommunityBoardPage = () => {
           <CommunityBoardDetail classification={classificationString} />
         </div>
       </SCommunityWrapper>
+      <CheckTime />
     </>
   );
 };

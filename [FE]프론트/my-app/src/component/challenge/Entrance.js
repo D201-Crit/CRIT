@@ -60,7 +60,7 @@ const Entrance = () => {
       text: "CRIT",
 
       showConfirmButton: false,
-      // timer: 2500,
+      timer: 2000,
       background: "#272727",
       color: "white",
       width: "500px",
@@ -149,7 +149,7 @@ const Entrance = () => {
               : challenge.info}
           </p>
           {getDaysInProgress(challenge.startDate, challenge.endDate)?.includes(
-            "현재",
+            "현재"
           ) ? (
             challenge.startTime <= Time && Time <= challenge.endTime ? (
               challenge.cert === "실시간" ? (

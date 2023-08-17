@@ -73,12 +73,6 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
       timer: 1500,
       background: "#272727",
       color: "white",
-      // width: "500px",
-      // 먼지
-      // imageUrl: 'https://unsplash.it/400/200',
-      // imageWidth: 400,
-      // imageHeight: 200,
-      // imageAlt: 'Custom image',
     });
   };
   // 챌린지 생성
@@ -92,18 +86,11 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
       cancelButtonText: "취소",
       confirmButtonColor: "#0000c5",
       cancelButtonColor: "#ff007a",
-
       background: "#272727",
       color: "white",
       preConfirm: () => {
         return createChallenge();
       },
-      // width: "500px",
-      // 먼지
-      // imageUrl: 'https://unsplash.it/400/200',
-      // imageWidth: 400,
-      // imageHeight: 200,
-      // imageAlt: 'Custom image',
     });
   };
   const createChallenge = () => {
@@ -164,7 +151,7 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
     formData.append("file", image); // 이미지 파일 첨부
     formData.append(
       "requestDto",
-      new Blob([JSON.stringify(requestDto)], { type: "application/json" }),
+      new Blob([JSON.stringify(requestDto)], { type: "application/json" })
     ); // requestDto를 JSON 형식으로 추가
 
     api
@@ -185,12 +172,6 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
           timer: 1500,
           background: "#272727",
           color: "white",
-          // width: "500px",
-          // 먼지
-          // imageUrl: 'https://unsplash.it/400/200',
-          // imageWidth: 400,
-          // imageHeight: 200,
-          // imageAlt: 'Custom image',
         });
         getAllChallenge();
       })

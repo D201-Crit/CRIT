@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Loading from "../component/Loading";
 import { SStartImage } from "../styles/pages/SStartPage";
+import CheckTime from "./../component/challenge/CheckTime";
 
 const DetailChallengePage = () => {
   const location = useLocation();
@@ -30,7 +31,7 @@ const DetailChallengePage = () => {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
           },
-        },
+        }
       )
       .then((res) => {
         setLoading(false);

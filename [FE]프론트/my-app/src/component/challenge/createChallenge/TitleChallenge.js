@@ -20,12 +20,6 @@ const TitleChallenge = ({ onChangeTitle }) => {
         timer: 1500,
         background: "#272727",
         color: "white",
-        // width: "500px",
-        // 먼지
-        // imageUrl: 'https://unsplash.it/400/200',
-        // imageWidth: 400,
-        // imageHeight: 200,
-        // imageAlt: 'Custom image',
       });
 
       setTitle("");

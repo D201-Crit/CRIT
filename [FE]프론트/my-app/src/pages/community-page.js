@@ -5,6 +5,7 @@ import "aos/dist/aos.css";
 import AdvertisingBoard from "../component/community/AdvertisingBoard ";
 import CommunityBoard from "./../component/community/CommunityBoard";
 // import { ChangeName, useUsername } from "./../store/CommunityStore";
+import CheckTime from "./../component/challenge/CheckTime";
 
 const CommunityPage = () => {
   useEffect(() => {
@@ -36,6 +37,7 @@ const CommunityPage = () => {
           <CommunityBoard />
         </div>
       </SCommunityWrapper>
+      <CheckTime />
     </div>
   );
 };

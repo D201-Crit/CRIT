@@ -900,6 +900,7 @@ export const SPhotochallengeWrapper = styled.div`
 // 챌린지 페이지 크릿 1
 export const SCritWrapper = styled.div`
   position: absolute;
+  z-index: -1;
 `;
 export const SCrit = styled.img`
   width: 400px;
@@ -907,6 +908,7 @@ export const SCrit = styled.img`
   top: -40px;
   left: 900px;
   transform: rotate(70deg);
+  z-index: -1;
 `;
 
 // 챌린지 페이지 크릿 2
@@ -919,14 +921,18 @@ export const SCrit2 = styled.img`
   top: -400px;
   left: -600px;
   transform: rotate(70deg);
+  z-index: -1;
 `;
 
 // 챌린지 페이지 크릿 3
 export const SCritWrapper3 = styled.div`
   position: absolute;
+  z-index: -1;
 `;
 export const SCrit3 = styled.img`
   width: 800px;
+  z-index: -1;
+
   position: absolute;
   top: -750px;
   left: 760px;

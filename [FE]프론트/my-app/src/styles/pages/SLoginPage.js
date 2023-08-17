@@ -60,9 +60,8 @@ export const SMoveSignUp = styled(Link)`
 `;
 
 export const SKakaoLoginButton = styled.img`
-  width: 60px;
-  height: 60px;
-  border-radius: 5px;
+  width: 150px;
+  height: 40px;
   cursor: pointer;
   margin: 10px;
 `;

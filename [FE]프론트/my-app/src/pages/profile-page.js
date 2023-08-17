@@ -1,29 +1,50 @@
-import { SFeedButton, SShortsArea, SProfileWrapper, SProfileModifyModal, SProfileModifyModalArea, ModalText, ModalButtonContainer, ModalButton, ShortsGrid, Empty, Row, Col, OpacityZero, SProfileImg, SProfileImgCover, FeedGrid } from "../styles/pages/SProfilePage";
-import { SEmpty, SEmpty2 } from '../styles/SCommon';
+import {
+  SFeedButton,
+  SShortsArea,
+  SProfileWrapper,
+  SProfileModifyModal,
+  SProfileModifyModalArea,
+  ModalText,
+  ModalButtonContainer,
+  ModalButton,
+  ShortsGrid,
+  Empty,
+  Row,
+  Col,
+  OpacityZero,
+  SProfileImg,
+  SProfileImgCover,
+  FeedGrid,
+} from "../styles/pages/SProfilePage";
+import { SEmpty, SEmpty2 } from "../styles/SCommon";
 import { useState, useRef, useEffect } from "react";
-import MyFollowingList from '../component/profile/MyFollowingList';
-import CreateShortsModal from '../component/shorts/CreateShortsModal';
+import MyFollowingList from "../component/profile/MyFollowingList";
+import CreateShortsModal from "../component/shorts/CreateShortsModal";
 import ProfileShorts from "../component/profile/ProfileShorts";
 import Feed from "../component/profile/ProfileFeed";
 import { useSelector } from "react-redux";
-import { api } from '../api/api';
-const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/';
+import { api } from "../api/api";
+import CheckTime from "./../component/challenge/CheckTime";
+const API_BASE_URL = "https://i9d201.p.ssafy.io/api/";
 
 const ProfilePage = () => {
   const user = useSelector((state) => state.users);
   const [profileImage, setProfileImage] = useState(null);
   const [profileInfo, setProfileInfo] = useState({});
   const profileImgFileInput = useRef(null);
-  const [myFollowingList,setMyFollowingList] = useState(null);
+  const [myFollowingList, setMyFollowingList] = useState(null);
   const [shortsCreateModal, setShortsCreateModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [followingListModal,setFollowingListModal] = useState(false);
+  const [followingListModal, setFollowingListModal] = useState(false);
 
-
-  const followersCount = profileInfo.followers ? profileInfo.followers.length : 0;
-  const followingCount = profileInfo.followings ? profileInfo.followings.length : 0;
-  const point = profileInfo.cashPoint ? profileInfo.cashPoint: 0;
-  const exp = profileInfo.exp ? profileInfo.exp: 0;
+  const followersCount = profileInfo.followers
+    ? profileInfo.followers.length
+    : 0;
+  const followingCount = profileInfo.followings
+    ? profileInfo.followings.length
+    : 0;
+  const point = profileInfo.cashPoint ? profileInfo.cashPoint : 0;
+  const exp = profileInfo.exp ? profileInfo.exp : 0;
 
   // 프로필 정보 가져오기
   useEffect(() => {
@@ -40,31 +61,35 @@ const ProfilePage = () => {
     }
   }, [myFollowingList]);
 
-
   // 프로필 이미지 변경 처리
   const profileChange = (e) => {
     const imageList = e.target.files;
-  
+
     if (imageList.length > 0) {
-      const imageObj = { url: URL.createObjectURL(imageList[0]), file: imageList[0] };
+      const imageObj = {
+        url: URL.createObjectURL(imageList[0]),
+        file: imageList[0],
+      };
       setProfileImage(imageObj);
       setShowConfirmModal(true); // 여기에 이 코드를 추가해주세요.
     } else {
       setProfileImage(null);
       setShowConfirmModal(false);
-
-    
     }
   };
-  
+
   // 내 팔로잉 목록 불러오기
   const getMyFollowingList = async () => {
-    api.get(`${API_BASE_URL}/myfollowing/user
-    `, {
-      headers: {
-        Authorization: `Bearer ${user.accessToken}`,
-      },
-    })
+    api
+      .get(
+        `${API_BASE_URL}/myfollowing/user
+    `,
+        {
+          headers: {
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+        }
+      )
       .then((res) => {
         const followingsList = res.data.data;
         setMyFollowingList(followingsList);
@@ -73,7 +98,6 @@ const ProfilePage = () => {
         console.log("getMyFollowingList 에러 (profile-page)", error);
       });
   };
-
 
   const handleConfirm = () => {
     updateImage();
@@ -84,9 +108,7 @@ const ProfilePage = () => {
     cancelProfileUpload();
     setShowConfirmModal(false);
     window.location.reload();
-
   };
-
 
   // 프로필 업로드 취소
   const cancelProfileUpload = () => {
@@ -95,11 +117,12 @@ const ProfilePage = () => {
 
   // 프로필 이미지 가져오기
   const getProfile = async () => {
-    api.get(`${API_BASE_URL}/myProfile`, {
-      headers: {
-        Authorization: `Bearer ${user.accessToken}`,
-      },
-    })
+    api
+      .get(`${API_BASE_URL}/myProfile`, {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      })
       .then((res) => {
         console.log("프로필 정보", res);
         setProfileInfo(res.data.data);
@@ -134,31 +157,31 @@ const ProfilePage = () => {
       });
   };
 
-  
   return (
     <>
-    
-    <SProfileModifyModal show={showConfirmModal}>
-      <SProfileModifyModalArea>
-        <ModalText>프로필 변경 하시겠습니까?</ModalText>
-        <ModalButtonContainer>
-          <ModalButton variant="confirm" onClick={handleConfirm}>
-            예
-          </ModalButton>
-          <ModalButton variant="cancel" onClick={handleCancel}>
-            아니오
-          </ModalButton>
-        </ModalButtonContainer>
-      </SProfileModifyModalArea>
-    </SProfileModifyModal>
+      <SProfileModifyModal show={showConfirmModal}>
+        <SProfileModifyModalArea>
+          <ModalText>프로필 변경 하시겠습니까?</ModalText>
+          <ModalButtonContainer>
+            <ModalButton variant="confirm" onClick={handleConfirm}>
+              예
+            </ModalButton>
+            <ModalButton variant="cancel" onClick={handleCancel}>
+              아니오
+            </ModalButton>
+          </ModalButtonContainer>
+        </SProfileModifyModalArea>
+      </SProfileModifyModal>
 
-    {followingListModal && (
-      <MyFollowingList setFollowingListModal={setFollowingListModal} myFollowingList={myFollowingList}/>
-        )}
-
+      {followingListModal && (
+        <MyFollowingList
+          setFollowingListModal={setFollowingListModal}
+          myFollowingList={myFollowingList}
+        />
+      )}
 
       <SProfileWrapper>
-      <SEmpty2/>
+        <SEmpty2 />
         <Row>
           <SProfileImgCover>
             <SProfileImg>
@@ -185,53 +208,83 @@ const ProfilePage = () => {
           </OpacityZero>
 
           <Row>
-
             <Row>
-            <h2 style={{margin:"4px", fontWeight:"200", color:"#33FF00"}}>{profileInfo.grade}</h2>
+              <h2
+                style={{ margin: "4px", fontWeight: "200", color: "#33FF00" }}
+              >
+                {profileInfo.grade}
+              </h2>
             </Row>
-            <Row> 
-            <h1 style={{margin:"1px"}}>{profileInfo.nickname}</h1>
+            <Row>
+              <h1 style={{ margin: "1px" }}>{profileInfo.nickname}</h1>
             </Row>
           </Row>
-
         </Row>
-        <SEmpty2/>
+        <SEmpty2 />
 
         <Row>
-        <Col/>
-        <Col/>
+          <Col />
+          <Col />
 
-        <Col>
-        <a style={{color:"grey"}} className="follower">포인트</a><a style={{margin:"10px" ,fontSize: "24px", fontWeight: "1000"}}>{point}</a>
-        </Col>
-        <Col>
-        <a style={{color:"grey"}} className="follower">경험치</a><a style={{margin:"10px" ,fontSize: "24px", fontWeight: "1000"}}>{exp}</a>
-
-        </Col>
-        <Col>
-        <a style={{color:"grey"}} className="follower">팔로워</a><a style={{margin:"10px" ,fontSize: "24px", fontWeight: "1000"}}>{followersCount}</a>
-
-        </Col>
-        <Col style={{cursor:"pointer"}}>
-        <a style={{color:"grey", }} className="following">팔로잉</a><a style={{margin:"10px" ,fontSize: "24px", fontWeight: "1000"}} onClick={()=>{setFollowingListModal(true)}}>{followingCount}</a>
-        </Col>
-        <Col/>
-        <Col/>
-
+          <Col>
+            <a style={{ color: "grey" }} className="follower">
+              포인트
+            </a>
+            <a style={{ margin: "10px", fontSize: "24px", fontWeight: "1000" }}>
+              {point}
+            </a>
+          </Col>
+          <Col>
+            <a style={{ color: "grey" }} className="follower">
+              경험치
+            </a>
+            <a style={{ margin: "10px", fontSize: "24px", fontWeight: "1000" }}>
+              {exp}
+            </a>
+          </Col>
+          <Col>
+            <a style={{ color: "grey" }} className="follower">
+              팔로워
+            </a>
+            <a style={{ margin: "10px", fontSize: "24px", fontWeight: "1000" }}>
+              {followersCount}
+            </a>
+          </Col>
+          <Col style={{ cursor: "pointer" }}>
+            <a style={{ color: "grey" }} className="following">
+              팔로잉
+            </a>
+            <a
+              style={{ margin: "10px", fontSize: "24px", fontWeight: "1000" }}
+              onClick={() => {
+                setFollowingListModal(true);
+              }}
+            >
+              {followingCount}
+            </a>
+          </Col>
+          <Col />
+          <Col />
         </Row>
 
         <Empty />
-        <SEmpty2/>
+        <SEmpty2 />
         {/* 이후 추가될 쇼츠 영역 */}
-        <SFeedButton onClick={() => { setShortsCreateModal(true) }}>쇼츠 만들기</SFeedButton>
-        <SEmpty/>
+        <SFeedButton
+          onClick={() => {
+            setShortsCreateModal(true);
+          }}
+        >
+          쇼츠 만들기
+        </SFeedButton>
+        <SEmpty />
         <ShortsGrid>
-        <SShortsArea>
-        {shortsCreateModal && (
-          <CreateShortsModal setShortsCreateModal={setShortsCreateModal} />
-        )}
-        <ProfileShorts/>
-        </SShortsArea>
+          <SShortsArea>
+            {shortsCreateModal && (
+              <CreateShortsModal setShortsCreateModal={setShortsCreateModal} />
+            )}
+            <ProfileShorts />
+          </SShortsArea>
         </ShortsGrid>
 
         {/* 이후 추가될 피드 영역 */}
@@ -239,6 +292,7 @@ const ProfilePage = () => {
           <Feed />
         </FeedGrid>
       </SProfileWrapper>
+      <CheckTime />
     </>
   );
 };
