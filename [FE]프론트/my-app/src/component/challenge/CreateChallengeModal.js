@@ -173,6 +173,7 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
           background: "#272727",
           color: "white",
         });
+        getAllChallenge();
       })
       .catch((error) => {
         console.error("챌린지 생성 에러:", error);
