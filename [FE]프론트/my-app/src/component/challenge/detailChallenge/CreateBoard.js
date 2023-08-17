@@ -23,7 +23,7 @@ const CreateBoard = ({ boards, classification, getBoard }) => {
   };
   const writeBoard = (e) => {
     e.preventDefault();
-    if (checkBoards.length !== 0) {
+    if (checkBoards) {
       return Swal.fire({
         position: "center",
         icon: "error",
