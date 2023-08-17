@@ -20,7 +20,7 @@ import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import ChallengeImage from "./createChallenge/ChallengeImage";
 
-const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
+const CreateChallengeModal = ({ closeModal }) => {
   const user = useSelector((state) => state.users);
   const [requestDto, setRequestDto] = useState({
     title: "",
@@ -173,7 +173,7 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
           background: "#272727",
           color: "white",
         });
-        getAllChallenge();
+        window.location.reload();
       })
       .catch((error) => {
         console.error("챌린지 생성 에러:", error);

@@ -38,6 +38,7 @@ import QnaModal from "../component/challenge/QnaModal";
 const ChallengePage = () => {
   const [loading, setLoading] = useState(true);
   const challenges = useSelector((state) => state.challenges);
+  console.log(challenges);
   const checkChallenges = () => {
     if (challenges) {
       setLoading(false);
@@ -78,10 +79,7 @@ const ChallengePage = () => {
         alt="placeholder"
       />
       <Modal style={customModalStyles} isOpen={isOpen}>
-        <CreateChallengeModal
-          closeModal={closeModal}
-          getAllChallenge={challenges}
-        />
+        <CreateChallengeModal closeModal={closeModal} />
       </Modal>
       <CheckTime />
       <GetAllChallenge />
