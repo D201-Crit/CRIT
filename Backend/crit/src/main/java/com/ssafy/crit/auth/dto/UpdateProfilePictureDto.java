@@ -9,11 +9,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UpdateProfilePictureDto {
 	private String profileImageUrl;
-	private String profileImageName;
 
 	@Builder
-	public UpdateProfilePictureDto(String profileImageUrl, String profileImageName) {
+	public UpdateProfilePictureDto(String profileImageUrl) {
 		this.profileImageUrl = profileImageUrl;
-		this.profileImageName = profileImageName;
 	}
 }

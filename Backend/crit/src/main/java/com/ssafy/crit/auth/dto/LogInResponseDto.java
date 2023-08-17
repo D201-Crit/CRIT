@@ -19,17 +19,12 @@ public class LogInResponseDto {
     private Date refreshTokenExpirationTime;
     private int exp;
     private Grade grade;
+    private int cashPoint;
+    private String imageUrl;
 
     @Builder
-    // public LogInResponseDto(String id, String nickname, String email, String accessToken, String refreshToken, Date refreshTokenExpirationTime) {
-    //     this.id = id;
-    //     this.nickname = nickname;
-    //     this.email = email;
-    //     this.accessToken = accessToken;
-    //     this.refreshToken = refreshToken;
-    //     this.refreshTokenExpirationTime = refreshTokenExpirationTime;
-    // }
-    public LogInResponseDto(String id, String nickname, String email, String accessToken, String refreshToken, Date refreshTokenExpirationTime, int exp, Grade grade) {
+    public LogInResponseDto(String id, String nickname, String email, String accessToken, String refreshToken,
+        Date refreshTokenExpirationTime, int exp, Grade grade, int cashPoint, String imageUrl) {
         this.id = id;
         this.nickname = nickname;
         this.email = email;
@@ -38,5 +33,7 @@ public class LogInResponseDto {
         this.refreshTokenExpirationTime = refreshTokenExpirationTime;
         this.exp = exp;
         this.grade = grade;
+        this.cashPoint = cashPoint;
+        this.imageUrl = imageUrl;
     }
 }

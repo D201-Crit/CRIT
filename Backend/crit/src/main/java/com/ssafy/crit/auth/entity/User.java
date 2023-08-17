@@ -7,6 +7,7 @@ import com.ssafy.crit.auth.entity.enumType.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
@@ -35,8 +36,6 @@ public class User extends BaseTimeEntity {
 
     @Column
     private String profileImageUrl;
-
-    private String profileImageName;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -67,17 +66,18 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "following")
     private List<Follow> followings = new ArrayList<>();
 
+    @ColumnDefault("0")
+    private int cashPoint;
+
     @Builder
     public User(String id, String nickname, String password, String email, String profileImageUrl,
-        String profileImageName,
         Role role, AuthProvider authProvider, String refreshToken, Date tokenExpirationTime, String tid, int exp,
-        Grade grade, Boolean isChecked, List<Follow> followers, List<Follow> followings) {
+        Grade grade, Boolean isChecked, List<Follow> followers, List<Follow> followings, int cashPoint ) {
         this.id = id;
         this.nickname = nickname;
         this.password = password;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
-        this.profileImageName = profileImageName;
         this.role = role;
         this.authProvider = authProvider;
         this.refreshToken = refreshToken;
@@ -88,6 +88,7 @@ public class User extends BaseTimeEntity {
         this.isChecked = false;
         this.followers = followers;
         this.followings = followings;
+        this.cashPoint = cashPoint;
     }
 
     /*
@@ -124,6 +125,11 @@ public class User extends BaseTimeEntity {
         this.exp = exp + 10;
         this.isChecked = true;
     }
+
+    public void challengeExp(){
+        this.exp += 100;
+    }
+
     public void setGrade(int exp){
         this.grade = Grade.getGradeByExp(exp);
     }
@@ -136,25 +142,18 @@ public class User extends BaseTimeEntity {
         this.profileImageUrl = s;
     }
 
-    public void setProfileImageName(String imageName) {
-        this.profileImageName = imageName;
+    public void addCashPoint(int point) {
+        this.cashPoint += point;
     }
 
+    public boolean useCashPoint(int point){
+        if(this.cashPoint < point){ // 포인트가 모자란 경우
+            return false;
+        }
 
-    public void addMemberTofollower(Follow follow) {
-        followers.add(follow);
+        this.cashPoint -= point;
+        return true;
     }
 
-    public void addMemberTofollowing(Follow follow) {
-        followings.add(follow);
-    }
-
-    public void removeMemberTofollower(Follow follow) {
-        followers.remove(follow);
-    }
-
-    public void removeMemberTofollowing(Follow follow) {
-        followings.remove(follow);
-    }
 
 }

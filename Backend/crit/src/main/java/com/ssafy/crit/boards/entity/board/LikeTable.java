@@ -12,6 +12,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * author : 강민승
+ */
 @Entity
 @NoArgsConstructor
 @Getter
@@ -22,8 +25,8 @@ public class LikeTable {
 	@GeneratedValue
 	private Long id;
 
-	 @ManyToOne(fetch = FetchType.LAZY)
-	 private User user;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Board board;

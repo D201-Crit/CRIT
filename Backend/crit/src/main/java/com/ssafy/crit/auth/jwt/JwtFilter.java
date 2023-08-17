@@ -1,6 +1,7 @@
 package com.ssafy.crit.auth.jwt;
 
-import com.ssafy.crit.common.exception.BadRequestException;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+                                    FilterChain filterChain) throws ServletException, IOException, BadRequestException {
 
         try {
             String authorizationHeader = request.getHeader("Authorization");
@@ -43,7 +44,7 @@ public class JwtFilter extends OncePerRequestFilter {
             String userId = null;
             String provider = null;
 
-            if (request.getServletPath().startsWith("/auth") || request.getServletPath().startsWith("/login/oauth2")) {
+            if (request.getServletPath().startsWith("/auth") || request.getServletPath().startsWith("/oauth/login/oauth2")) {
                 filterChain.doFilter(request, response);
             }
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
@@ -51,39 +52,27 @@ public class JwtFilter extends OncePerRequestFilter {
                 token = authorizationHeader.substring(7);
 
                 if (jwtProvider.isExpiration(token)) { // 만료되었는지 체크
-                    throw new BadRequestException("EXPIRED_ACCESS_TOKEN");
+                    throw new BadRequestException(ErrorCode.TOKEN_EXPIRED);
                 }
 
                 userId = (String) jwtProvider.get(token).get("userId");
                 provider = (String) jwtProvider.get(token).get("provider");
                 if(!userRepository.existsById(userId)){
-                    throw new BadRequestException("CANNOT_FOUND_USER");
+                    throw new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
                 }
+                // 인증 정보 등록 및 다음 체인으로 이동
+                log.info("Security filter에 access Token 저장  " + token);
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userId, null, List.of(new SimpleGrantedAuthority("USER")));
+                authenticationToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                filterChain.doFilter(request, response);
             }
-            // 인증 정보 등록 및 다음 체인으로 이동
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userId, null, List.of(new SimpleGrantedAuthority("USER")));
-            authenticationToken.setDetails(
-                    new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            filterChain.doFilter(request, response);
-
         } catch (BadRequestException e) {
-            if (e.getMessage().equalsIgnoreCase("EXPIRED_ACCESS_TOKEN")) {
-                writeErrorLogs("EXPIRED_ACCESS_TOKEN", e.getMessage(), e.getStackTrace());
-                JSONObject jsonObject = createJsonError(String.valueOf(UNAUTHORIZED.value()), e.getMessage());
-                setJsonResponse(response, UNAUTHORIZED, jsonObject.toString());
-            } else if (e.getMessage().equalsIgnoreCase("CANNOT_FOUND_USER")) {
-                writeErrorLogs("CANNOT_FOUND_USER", e.getMessage(), e.getStackTrace());
-                JSONObject jsonObject = createJsonError(String.valueOf(UNAUTHORIZED.value()), e.getMessage());
-                setJsonResponse(response, UNAUTHORIZED, jsonObject.toString());
-            }
-        } catch (Exception e) {
-            writeErrorLogs("Exception", e.getMessage(), e.getStackTrace());
-
-            if (response.getStatus() == HttpStatus.OK.value()) {
-                response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            }
+            log.info("BadRequest");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+            throw new BadRequestException(ErrorCode.NOT_VALID_TOKEN);
         } finally {
             log.debug("**** SECURITY FILTER FINISH");
         }

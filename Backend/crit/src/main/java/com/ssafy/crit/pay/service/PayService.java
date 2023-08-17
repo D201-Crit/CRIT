@@ -2,10 +2,15 @@ package com.ssafy.crit.pay.service;
 
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import com.ssafy.crit.pay.dto.KakaoApproveResponse;
 import com.ssafy.crit.pay.dto.KakaoCancelResponse;
 import com.ssafy.crit.pay.dto.KakaoReadyResponse;
+import com.ssafy.crit.pay.entity.Pay;
+import com.ssafy.crit.pay.repository.PayRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,11 +20,15 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PayService {
 
+    private final PayRepository payRepository;
     private final UserRepository userRepository;
     static final String cid = "TC0ONETIME"; // 가맹점 테스트 코드
     @Value("86f8e70b2e6f309e47d76e82c0e84441")
@@ -42,9 +51,9 @@ public class PayService {
         parameters.add("total_amount", String.valueOf(amount));
         parameters.add("vat_amount", "0");
         parameters.add("tax_free_amount", "0");
-        parameters.add("approval_url", "http://localhost:3000/payment/success"); // 성공 시 redirect url
-        parameters.add("cancel_url", "http://localhost:3000/payment/cancel"); // 취소 시 redirect url
-        parameters.add("fail_url", "http://localhost:3000/payment/fail"); // 실패 시 redirect url
+        parameters.add("approval_url", "https://i9d201.p.ssafy.io/payment/success"); // 성공 시 redirect url
+        parameters.add("cancel_url", "https://i9d201.p.ssafy.io/payment/cancel"); // 취소 시 redirect url
+        parameters.add("fail_url", "https://i9d201.p.ssafy.io/payment/fail"); // 실패 시 redirect url
 
         // 파라미터, 헤더
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
@@ -57,7 +66,7 @@ public class PayService {
                 KakaoReadyResponse.class);
         // tid 저장
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("아이디가 존재 X"));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
         user.updateTid(kakaoReady.getTid());
         return kakaoReady;
     }
@@ -65,10 +74,11 @@ public class PayService {
     /**
     * 결제 승인
      */
+    @Transactional
     public KakaoApproveResponse ApproveResponse(String userId, String pgToken) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("아이디가 존재 X"));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
         // 카카오 요청
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
@@ -89,6 +99,13 @@ public class PayService {
                 requestEntity,
                 KakaoApproveResponse.class);
 
+        // 포인트 충전
+        user.addCashPoint(approveResponse.getAmount().getTotal());
+        // 기록 추가
+        Pay pay = Pay.builder().user(user).price(approveResponse.getAmount().getTotal()).build();
+        log.info("pay 기록중 : {} 유저의 결제 금액 {}원", pay.getUser().getNickname(), pay.getPrice());
+        payRepository.save(pay);
+
         return approveResponse;
     }
 
@@ -98,7 +115,7 @@ public class PayService {
     public KakaoCancelResponse kakaoCancel(String userId, String amount) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("아이디가 존재 X"));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID));
 
         // 카카오페이 요청
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
@@ -121,6 +138,16 @@ public class PayService {
 
         return cancelResponse;
     }
+
+    /**
+     * 결제 기록 불러오기
+    */
+    public List<Pay> getPayLogs(User user) throws Exception{
+        return payRepository.findAllByUser(user);
+    }
+
+
+
 
 
     /**

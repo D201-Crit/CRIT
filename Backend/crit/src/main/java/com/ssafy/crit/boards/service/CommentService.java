@@ -7,13 +7,19 @@ import com.ssafy.crit.boards.entity.board.Comment;
 import com.ssafy.crit.boards.repository.BoardRepository;
 import com.ssafy.crit.boards.repository.CommentRepository;
 import com.ssafy.crit.boards.service.dto.CommentDto;
+import com.ssafy.crit.boards.service.dto.FileResponseDto;
+
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * author : 강민승
+ */
 @RequiredArgsConstructor
 @Service
 public class CommentService {
@@ -25,16 +31,18 @@ public class CommentService {
     // 댓글 작성하기
     @Transactional
     public CommentDto writeComment(Long boardId, CommentDto commentDto, User user) {
-        Comment comment = new Comment();
-        comment.setContent(commentDto.getContent());
 
         // 게시판 번호로 게시글 찾기
         Board board = boardRepository.findById(boardId).orElseThrow(() -> {
-             return new IllegalArgumentException("게시판을 찾을 수 없습니다.");
+             return new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_ID);
         });
 
-        comment.setUser(user);
-        comment.setBoard(board);
+        Comment comment = Comment.builder()
+                .content(commentDto.getContent())
+                .user(user)
+                .board(board)
+                .build();
+
         commentRepository.save(comment);
 
         return CommentDto.toDto(comment);
@@ -52,14 +60,20 @@ public class CommentService {
         return commentDtos;
     }
 
-
     // 댓글 삭제하기
     @Transactional
-    public String deleteComment(Long commentId) {
+    public String deleteComment(Long commentId, User user) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(()-> {
-            return new IllegalArgumentException("댓글 Id를 찾을 수 없습니다.");
+            return new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_COMMENT);
         });
+
+        if(!comment.getUser().getId().equals(user.getId())){
+            throw new BadRequestException(ErrorCode.NOT_EXISTS_BOARD_AUTHORIZE);
+        }
+
         commentRepository.deleteById(commentId);
         return "삭제 완료";
     }
+
+
 }

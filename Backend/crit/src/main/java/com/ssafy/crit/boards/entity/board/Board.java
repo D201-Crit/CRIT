@@ -11,6 +11,9 @@ import javax.persistence.*;
 
 import java.util.List;
 
+/**
+ * author : 강민승
+ */
 @Getter
 @NoArgsConstructor
 @Entity
@@ -20,15 +23,17 @@ public class Board extends BaseTimeEntity {
     @GeneratedValue
     private Long id;
 
+    @Column(nullable = false, length = 150)
     private String title;
 
+    @Column(nullable = false, length = 150)
     private String content;
 
     private int views;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UploadFile> uploadFiles;
-
+    
     @ManyToOne
     @JoinColumn(name = "board")
     private Classification classification;
@@ -37,7 +42,7 @@ public class Board extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LikeTable> likes;
 
 
@@ -53,9 +58,10 @@ public class Board extends BaseTimeEntity {
         this.likes = likes;
     }
 
-    public int getLikes(List<LikeTable> likes){
-        return likes.size();
-    }
+    // public int getNNumberOfLikes(List<LikeTable> likes){
+    //
+    //     return likes.size();
+    // }
 
     public void setViews(int views){
         this.views = views;
@@ -64,6 +70,10 @@ public class Board extends BaseTimeEntity {
 
     public void setUpdate(String title, String content) {
         this.title = title;
+        this.content = content;
+    }
+
+    public void setFeedUpdate(String content) {
         this.content = content;
     }
 

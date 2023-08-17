@@ -2,7 +2,11 @@ package com.ssafy.crit.shorts.service;
 
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.repository.UserRepository;
+import com.ssafy.crit.common.error.code.ErrorCode;
+import com.ssafy.crit.common.error.exception.BadRequestException;
+import com.ssafy.crit.common.s3.S3Uploader;
 import com.ssafy.crit.shorts.dto.HashTagDto;
+import com.ssafy.crit.shorts.dto.MainThumbnailDto;
 import com.ssafy.crit.shorts.dto.ShortsDto;
 import com.ssafy.crit.shorts.dto.ShortsResponseDto;
 import com.ssafy.crit.shorts.entity.HashTag;
@@ -19,18 +23,14 @@ import org.jcodec.common.model.Picture;
 import org.jcodec.scale.AWTUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -42,41 +42,28 @@ public class ShortsService {
     private final UserRepository userRepository;
     private final HashTagRepository hashTagRepository;
     private final HashTagShortsRepository hashTagShortsRepository;
+    private final S3Uploader s3Uploader;
 
-    private static final String EXTENSION = "png";
-    private static final String DEFAULT_IMAGE_PATH = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\thumbnail\\crit-demo.png";
-    private static final String shortsSavePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\shorts\\";
-    private static final String thumbnailSavePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\thumbnail\\";
-
+    private static final String shortsDirectory = "shorts";
+    private static final String thumnailDirectory = "thumbnail";
 
     @Transactional
-    public ShortsResponseDto create(ShortsDto shortsDto, MultipartFile file, String userId) throws Exception{
-        User user = userRepository.findById(userId)
-                .orElseThrow(()-> new IllegalArgumentException("userId가 없음"));
-
-        /*랜덤식별자_원래파일이름 = 저장될 파일이름 지정*/
-        String savedFileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-        String savedFilePath = shortsSavePath + savedFileName;
-        // 로컬에 파일 저장
-        Files.copy(file.getInputStream(), Paths.get(savedFilePath));
-        // 썸네일 이미지 추출 및 로컬에 저장
-        String thumbnailPath = extractThumbnailImage(savedFileName, savedFilePath);
+    public ShortsResponseDto create(ShortsDto shortsDto, MultipartFile file, User user) throws Exception{
+        String shortsUrl = s3Uploader.uploadFiles(file, shortsDirectory);
+        String thumnailUrl = s3Uploader.uploadThumbnail(file, thumnailDirectory);
 
         ShortsResponseDto shortsResponseDto = ShortsResponseDto.builder()
                 .title(shortsDto.getTitle())
                 .content(shortsDto.getContent())
-                .shortsUrl(savedFilePath)
-                .shortsName(savedFileName)
-                .thumbnailUrl(thumbnailPath)
+                .shortsUrl(shortsUrl)
+                .shortsName(shortsUrl)
+                .thumbnailUrl(thumnailUrl)
                 .hashTagNames(shortsDto.getHashTagNames())
                 .build();
 
         Shorts shorts = shortsResponseDto.toEntity(user);
         shortsRepository.save(shorts);
 
-        /**
-         * 해당하는 해쉬태그가 없으면 바로 생성하고 그 후 중간테이블 생성
-         */
         for(String hashTagName : shortsDto.getHashTagNames()) {
             Optional<HashTag> optionalHashTag = hashTagRepository.findByHashTag(hashTagName);
 
@@ -103,7 +90,7 @@ public class ShortsService {
     @Transactional
     public ShortsDto read(Long id){
         Shorts shorts = shortsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid shorts id."));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_SHORTS_ID));
         shorts.getHashTagShortsList().size(); // hashTagShortsList를 로딩합니다.
         return ShortsDto.toDto(shorts);
     }
@@ -112,9 +99,8 @@ public class ShortsService {
     @Transactional
     public ShortsDto update(Long id, ShortsDto shortsDto){
         Shorts shorts = shortsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid shorts id."));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_SHORTS_ID));
         shorts.setTitle(shortsDto.getTitle());
-        shorts.setShortsUrl(shortsDto.getShortsUrl());
         shorts.setContent(shortsDto.getContent());
         // Add other fields to update as necessary.
         return ShortsDto.toDto(shorts);
@@ -123,7 +109,7 @@ public class ShortsService {
     @Transactional
     public void delete(Long id){
         Shorts shorts = shortsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid shorts id."));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_EXISTS_SHORTS_ID));
         shortsRepository.delete(shorts);
     }
 
@@ -141,33 +127,56 @@ public class ShortsService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
+//    public ShortsDto get(Long id) {
+//        return shortsRepository.findById(id)
+//                .map(ShortsDto::toDto)
+//                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_VALID_SHORTS_DATA));
+//    }
+
+    @Transactional  // readOnly 속성을 제거하였습니다.
     public ShortsDto get(Long id) {
-        return shortsRepository.findById(id)
-                .map(ShortsDto::toDto)
-                .orElseThrow(() -> new RuntimeException("Shorts not found with id " + id));
+        Shorts shorts = shortsRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException(ErrorCode.NOT_VALID_SHORTS_DATA));
+
+        // views 값을 증가시킵니다.
+        shorts.setViews(shorts.getViews() + 1);
+
+        // 변경된 엔터티를 저장합니다.
+        shortsRepository.save(shorts);
+
+        // Dto를 반환합니다.
+        return ShortsDto.toDto(shorts);
     }
 
 
-    /**
-     * 영상에서 썸네일 이미지 추출하기
-     */
-    public String extractThumbnailImage(String shortsName, String savedFilePath) {
-        try {
-            // MultipartFile을 File로 변환
-            Picture picture = FrameGrab.getFrameFromFile(new File(savedFilePath), 0);
-            BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
+    public MainThumbnailDto getMainThumbnail() {
+        List<Shorts> shortsViewsDesc = shortsRepository.findAllByOrderByViewsDesc();
+        List<Shorts> shortsCreatedDateDesc = shortsRepository.findAllByOrderByCreatedDateDesc();
+        List<Shorts> shortsLikesDesc = shortsRepository.findAllByOrderByLikesDesc();
 
-            // 이미지 파일 이름 설정 (영상 파일 이름에 "_thumbnail"을 붙임)
-            String thumbnailFileName = shortsName.replaceFirst("[.][^.]+$", "") + "_thumbnail." + EXTENSION;
-            String thumbnailFilePath = thumbnailSavePath + thumbnailFileName;
+        List<ShortsDto> sellectedViewShorts = shortsViewsDesc.stream()
+                .limit(12)
+                .map(ShortsDto::toDto)
+                .collect(Collectors.toList());
 
-            // 썸네일 이미지 저장
-            ImageIO.write(bufferedImage, EXTENSION, new File(thumbnailFilePath));
-            return thumbnailFilePath;
-        } catch (IOException | JCodecException e) {
-            e.printStackTrace();
-        }
-        return DEFAULT_IMAGE_PATH;
+        List<ShortsDto> sellectedCreatedShorts = shortsCreatedDateDesc.stream()
+                .limit(12)
+                .map(ShortsDto::toDto)
+                .collect(Collectors.toList());
+
+        List<ShortsDto> sellectedLikesShorts = shortsLikesDesc.stream()
+                .limit(12)
+                .map(ShortsDto::toDto)
+                .collect(Collectors.toList());
+
+        MainThumbnailDto mainThumbnailDto = MainThumbnailDto.builder()
+                .thumbnailsByView(sellectedViewShorts)
+                .thumbnailsByDate(sellectedCreatedShorts)
+                .thumbnailsByLike(sellectedLikesShorts)
+                .build();
+
+        return mainThumbnailDto;
+
     }
 }

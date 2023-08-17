@@ -11,19 +11,23 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Data
 
+/**
+ * author : 강민승
+ */
+
 public class Follow {
 
+    // pk 값
     @Id
     @GeneratedValue
     @Column(name = "follow_id")
     private Long id;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    // 양방향 맵핑
+    @ManyToOne(fetch = FetchType.LAZY) // 성능 최적화를 위함.
     @JoinColumn(name = "follower_id")
     private User follower;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "following_id")
     private User following;

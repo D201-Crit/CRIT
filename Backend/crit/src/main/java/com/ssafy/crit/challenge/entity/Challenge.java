@@ -1,30 +1,17 @@
 package com.ssafy.crit.challenge.entity;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.boards.entity.Classification;
-import com.ssafy.crit.boards.entity.board.Board;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -60,6 +47,9 @@ public class Challenge {
     private String filePath;
     private String fileName;
 
+    @Enumerated(EnumType.STRING)
+    private ChallengeStatus challengeStatus;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User createUser; // 챌린지 만든 사람
@@ -78,13 +68,21 @@ public class Challenge {
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
     private List<ChallengeUser> challengeUserList = new ArrayList<>(); //챌린지 유저 리스트
 
-    /**  */
-    public void addChallengeUser(ChallengeUser user){
+    /**
+     *
+     */
+    public void addChallengeUser(ChallengeUser user) {
         this.challengeUserList.add(user);
     }
 
-    public void addBoard(Classification classification){
+    public void addBoard(Classification classification) {
         this.board = classification;
     }
 
+    public void setImg(String imgUrl) {
+        this.filePath= imgUrl;
+    }
+    public void setChallengeStatus(ChallengeStatus challengeStatus) {
+        this.challengeStatus = challengeStatus;
+    }
 }

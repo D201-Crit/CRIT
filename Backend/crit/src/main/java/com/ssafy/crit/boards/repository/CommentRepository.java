@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-
+/**
+ * author : 강민승
+ */
 public interface CommentRepository extends JpaRepository<Comment,Long> {
     List<Comment> findAllByBoardId(Long boardId);
 
