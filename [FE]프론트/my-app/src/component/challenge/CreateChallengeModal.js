@@ -27,7 +27,7 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
     introduce: "",
     select: "",
     authentication: "",
-    member: "",
+    member: 3,
     money: "",
     startTime: "",
     endTime: "",
@@ -173,7 +173,6 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
           background: "#272727",
           color: "white",
         });
-        getAllChallenge();
       })
       .catch((error) => {
         console.error("챌린지 생성 에러:", error);
