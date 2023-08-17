@@ -7,6 +7,12 @@ import {
   SCritWrapper,
   SCrit2,
   SCritWrapper2,
+  SQnAButton,
+  SQnaWrapper,
+  SQnajWrapper,
+  SQnAButton2,
+  SQnajWrapper2,
+  SScrollCircle,
 } from "../styles/pages/SChallengePage";
 import Loading from "../component/Loading";
 
@@ -27,6 +33,7 @@ import { SStartImage } from "../styles/pages/SStartPage";
 import { SScrollButtonWrapper2 } from "../styles/pages/SMainPage";
 import CheckTime from "./../component/challenge/CheckTime";
 import GetAllChallenge from "./../component/challenge/GetAllChallenge";
+import QnaModal from "../component/challenge/QnaModal";
 
 const ChallengePage = () => {
   const [loading, setLoading] = useState(true);
@@ -45,13 +52,13 @@ const ChallengePage = () => {
   const closeModal = () => {
     setIsOpen(false);
   };
+
   useEffect(() => {
     checkChallenges();
   }, []);
   return (
     <SChallengeWrapper>
       {loading ? <Loading /> : null}
-      <SScrollButtonWrapper2 />
       <SCreateChallengeWrapper>
         <SCreateChallengeButton onClick={openModal}>
           챌린지 만들기
@@ -60,6 +67,7 @@ const ChallengePage = () => {
       <SCritWrapper>
         <SCrit src="https://github.com/Jinga02/ChallengePJT/assets/110621233/5e33307d-94b5-4cd1-8a12-2f1c95f2f0ec" />
       </SCritWrapper>
+      <QnaModal />
       <MyChallenge />
       <SCritWrapper2>
         <SCrit2 src="https://github.com/Jinga02/ChallengePJT/assets/110621233/5e33307d-94b5-4cd1-8a12-2f1c95f2f0ec" />
@@ -70,8 +78,6 @@ const ChallengePage = () => {
         style={{ left: "860px", top: "-750px" }}
         alt="placeholder"
       />
-
-      {/*  모달  */}
       <Modal style={customModalStyles} isOpen={isOpen}>
         <CreateChallengeModal
           closeModal={closeModal}

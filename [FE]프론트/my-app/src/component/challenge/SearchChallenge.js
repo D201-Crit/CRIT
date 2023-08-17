@@ -23,6 +23,7 @@ const SearchChallenge = ({ allChallenge }) => {
   const [study, setStudy] = useState([]);
   const [book, setBook] = useState([]);
   const [stretching, setStretching] = useState([]);
+  const [progress, setProgress] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("전체"); // 초기값: 전체
 
   const onSearchChallenge = () => {
@@ -60,11 +61,15 @@ const SearchChallenge = ({ allChallenge }) => {
     const stretchingChallenges = allChallenge.filter(
       (challenge) => challenge.category === "스트레칭"
     );
+    const progressChallenges = allChallenge.filter(
+      (challenge) => challenge.challengeStatus === "WAIT"
+    );
 
     setStudy(studyChallenges);
     setSport(sportChallenges);
     setBook(bookChallenges);
     setStretching(stretchingChallenges);
+    setProgress(progressChallenges);
   };
 
   const handleCategoryClick = (category) => {
@@ -88,6 +93,8 @@ const SearchChallenge = ({ allChallenge }) => {
     categoryChallenges = study;
   } else if (selectedCategory === "독서") {
     categoryChallenges = book;
+  } else if (selectedCategory === "참여가능") {
+    categoryChallenges = progress;
   }
 
   // 검색 결과가 있으면 검색 결과를, 없으면 카테고리 별 챌린지를 보여줍니다.
@@ -121,6 +128,7 @@ const SearchChallenge = ({ allChallenge }) => {
           <a onClick={() => handleCategoryClick("스트레칭")}>스트레칭</a>
           <a onClick={() => handleCategoryClick("공부")}>공부</a>
           <a onClick={() => handleCategoryClick("독서")}>독서</a>
+          <a onClick={() => handleCategoryClick("참여가능")}>참여가능</a>
         </ul>
       </SCategoryWrapper>
       <SSearchSwiper
