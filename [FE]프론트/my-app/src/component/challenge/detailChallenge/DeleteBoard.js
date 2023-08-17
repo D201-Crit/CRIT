@@ -11,6 +11,8 @@ const DeleteBoard = ({ boardId, getBoard }) => {
       title: "게시글을 삭제하시겠습니까?",
       text: "삭제된 게시글은 되돌릴 수 없습니다.",
       showCancelButton: true,
+      confirmButtonColor: "#0000c5",
+      cancelButtonColor: "#ff007a",
       confirmButtonText: "확인",
       cancelButtonText: "취소",
       background: "#272727",

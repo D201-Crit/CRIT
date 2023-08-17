@@ -151,7 +151,7 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
     formData.append("file", image); // 이미지 파일 첨부
     formData.append(
       "requestDto",
-      new Blob([JSON.stringify(requestDto)], { type: "application/json" })
+      new Blob([JSON.stringify(requestDto)], { type: "application/json" }),
     ); // requestDto를 JSON 형식으로 추가
 
     api
@@ -181,10 +181,7 @@ const CreateChallengeModal = ({ closeModal, getAllChallenge }) => {
           position: "center",
           icon: "error",
           html: `
-            <h1>${
-              error.response.data.errorMessage
-                ? error.response.data.errorMessage
-                : error.response.data
+            <h1>기존 챌린지 시간과 중복되는 시간입니다.
             }</h1>
           `,
           showConfirmButton: false,

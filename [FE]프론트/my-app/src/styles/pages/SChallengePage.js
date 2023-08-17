@@ -419,6 +419,11 @@ export const SChallengeImage = styled.div`
     background: white;
     border-radius: 50px;
   }
+  img {
+    position: absolute;
+    width: 180px;
+    height: 150px;
+  }
   label {
     position: absolute;
     top: 95px;
@@ -426,11 +431,7 @@ export const SChallengeImage = styled.div`
     font-size: 30px;
     width: 300px;
   }
-  img {
-    position: absolute;
-    width: 180px;
-    height: 180px;
-  }
+
   input {
     position: absolute;
     top: 140px;
@@ -901,9 +902,10 @@ export const SQnaWrapper = styled.div`
   position: fixed;
   top: 330px;
   left: 10px;
-  width: 250px;
-  height: 200px;
+  width: 400px;
+  height: 300px;
   z-index: 1001;
+  // background: red;
 `;
 export const SScrollCircle = styled.div`
   padding: 7px 10px;
@@ -912,7 +914,8 @@ export const SScrollCircle = styled.div`
   background-color: #0000c5;
   border-radius: 50%;
   transition: opacity 0.3s;
-  opacity: ${(props) => (props.isHovered ? 0 : 1)};
+  z-index: 1001;
+
   align-items: center;
   justify-content: center;
   font-weight: 600;
@@ -946,7 +949,7 @@ export const SQnAButton = styled.button`
   }
   cursor: pointer;
   position: absolute;
-  top: 180px;
+  top: 200px;
   left: -160px;
   border: none;
   border-radius: 8px;
@@ -960,7 +963,7 @@ export const SQnajWrapper = styled.div`
   width: 400px;
   height: 500px;
   top: -150px;
-  left: 50px;
+  left: 200px;
   background-color: rgba(22, 22, 22, 22);
   border-radius: 10px;
   box-shadow: 0px 0px 15px gray;
@@ -985,7 +988,7 @@ export const SQnajWrapper = styled.div`
 export const SQnajWrapper2 = styled.div`
   position: absolute;
   top: -150px;
-  left: 50px;
+  left: 200px;
   width: 400px;
   height: 500px;
   background-color: rgba(22, 22, 22, 22);

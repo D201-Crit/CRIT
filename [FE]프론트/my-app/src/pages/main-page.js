@@ -50,7 +50,6 @@ const MainPage = () => {
   const [shortsByAll, setShortsByAll] = useState([]);
 
   // 바로입장 클릭 시
-  console.log(ongoingChallenges);
   const openChallenge = () => {
     if (ongoingChallenges.length === 0) {
       Swal.fire({
@@ -102,7 +101,6 @@ const MainPage = () => {
       })
       .then((res) => {
         setLoading(false);
-        console.log("쇼츠데이터", res.data.data);
         setShortsByAll(res.data.data);
       })
       .catch((err) => {
@@ -120,7 +118,6 @@ const MainPage = () => {
       })
       .then((res) => {
         setLoading(false);
-        console.log("쇼츠데이터", res.data.data);
         setShortsByDate(res.data.data.thumbnailsByDate);
         setShortsByView(res.data.data.thumbnailsByView);
         setShortsByLike(res.data.data.thumbnailsByLike);

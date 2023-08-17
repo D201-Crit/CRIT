@@ -15,7 +15,6 @@ const GetPlannedMyChallenge = () => {
         },
       })
       .then((res) => {
-        console.log(res.data.data);
         dispatch(setPlannedMyChallenge(res.data.data));
       })
       .catch((err) => {

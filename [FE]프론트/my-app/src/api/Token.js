@@ -29,7 +29,7 @@ const Token = () => {
           },
           (error) => {
             return Promise.reject(error);
-          }
+          },
         );
 
         // Response Interceptor 추가
@@ -57,7 +57,7 @@ const Token = () => {
                     nickname: user.nickname,
                     accessToken: newAccessToken,
                     refreshToken: user.refreshToken,
-                  })
+                  }),
                 );
                 persistor.flush(); // 상태를 영구적으로 저장
                 error.config.headers.Authorization = `Bearer ${newAccessToken}`;
@@ -71,7 +71,7 @@ const Token = () => {
               }
             }
             return Promise.reject(error);
-          }
+          },
         );
       } else {
         console.log("No data found in localStorage.");

@@ -15,7 +15,6 @@ const GetCompleteMyChallenge = () => {
         },
       })
       .then((res) => {
-        console.log(res.data.data);
         dispatch(setCompleteMyChallenge(res.data.data));
       })
       .catch((err) => {

@@ -27,7 +27,6 @@ import { useSelector } from "react-redux";
 import { SImg } from "./../../styles/pages/SChallengePage";
 import Swal from "sweetalert2";
 import PhotoChallengeModal from "./PhotoChallengeModal";
-import { SCrit } from "../../styles/pages/SChallengePage";
 
 const MyChallenge = () => {
   const user = useSelector((state) => state.users);
@@ -233,7 +232,6 @@ const MyChallenge = () => {
   const formattedHours = hours < 10 ? `0${hours}` : hours;
   const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
   const Time = `${formattedHours}:${formattedMinutes}`;
-  console.log(Time);
   return (
     <>
       <SStatusWrapper>
@@ -263,7 +261,7 @@ const MyChallenge = () => {
           {sortedMyChallenges.map((challenge) => {
             const daysInProgress = getDaysInProgress(
               challenge.startDate,
-              challenge.endDate
+              challenge.endDate,
             );
             return (
               <SSwiperSlide key={challenge.id}>
@@ -292,7 +290,7 @@ const MyChallenge = () => {
                   <p id="people">{challenge.userList.length}명 참여 중</p>
                   {getDaysInProgress(
                     challenge.startDate,
-                    challenge.endDate
+                    challenge.endDate,
                   )?.includes("현재") ? (
                     challenge.startTime <= Time && Time <= challenge.endTime ? (
                       challenge.cert === "실시간" ? (

@@ -15,7 +15,6 @@ const GetAllMyChallenge = () => {
         },
       })
       .then((res) => {
-        console.log(res.data.data);
         dispatch(setMyChallenge(res.data.data));
       })
       .catch((err) => {

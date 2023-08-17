@@ -38,7 +38,6 @@ import QnaModal from "../component/challenge/QnaModal";
 const ChallengePage = () => {
   const [loading, setLoading] = useState(true);
   const challenges = useSelector((state) => state.challenges);
-  console.log(challenges);
   const checkChallenges = () => {
     if (challenges) {
       setLoading(false);
@@ -55,7 +54,7 @@ const ChallengePage = () => {
 
   useEffect(() => {
     checkChallenges();
-  }, []);
+  }, [challenges]);
   return (
     <SChallengeWrapper>
       {loading ? <Loading /> : null}

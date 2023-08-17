@@ -15,7 +15,6 @@ const GetOnGoingMyChallenge = () => {
         },
       })
       .then((res) => {
-        console.log(res.data.data);
         dispatch(setOnGoingMyChallenge(res.data.data));
       })
       .catch((err) => {
