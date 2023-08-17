@@ -135,7 +135,7 @@ function AppRoutes() {
             />
             <Route path="/PayPage" element={<PayPage />} />
             <Route path="/payment/success" element={<PaySuccessPage />} />
-            <Route path="/PayCanclePage" element={<PayCanclePage />} />
+            <Route path="/payment/cancel" element={<PayCanclePage />} />
             <Route path="/PayConflictPage" element={<PayConflictPage />} />
           </Routes>
         </ContentWrapper>
