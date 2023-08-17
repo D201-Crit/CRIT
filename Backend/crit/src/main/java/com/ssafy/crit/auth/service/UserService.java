@@ -270,6 +270,13 @@ public class UserService {
 			.collect(Collectors.toList());
 	}
 
+	public List<UserResponseDto> getWholeUserInMyFollower(User user){
+		List<Follow> myFollowers = followRepository.findByMyFollowers(user);
+
+		return myFollowers.stream()
+			.map(follower -> UserResponseDto.toUserResponseDto(follower.getFollower(), followRepository.findByMyFollowers(follower.getFollowing())))
+			.collect(Collectors.toList());
+	}
 
 	public MultipartFile loadResource() throws IOException {
 		Resource resource = resourceLoader.getResource("classpath:basic-profile-picture/user-basic-profile.png");
