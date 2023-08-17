@@ -111,7 +111,7 @@ const MainPage = () => {
   };
 
   const getShorts = () => {
-    setLoading(true);
+    setLoading(false);
     api
       .get("https://i9d201.p.ssafy.io/api/shorts/main", {
         headers: {

@@ -67,7 +67,7 @@ const ChallengePage = () => {
       <SearchChallenge allChallenge={challenges} />
       <SStartImage
         src={process.env.PUBLIC_URL + "/startimg2.png"}
-        style={{ left: "960px", top: "-750px" }}
+        style={{ left: "860px", top: "-750px" }}
         alt="placeholder"
       />
 
