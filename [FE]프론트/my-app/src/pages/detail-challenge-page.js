@@ -6,6 +6,7 @@ import { api } from "../api/api";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Loading from "../component/Loading";
+import GetAllChallenge from "../component/challenge/GetAllChallenge";
 
 const DetailChallengePage = () => {
   const location = useLocation();
@@ -54,6 +55,7 @@ const DetailChallengePage = () => {
       ) : (
         <h1>참여하지 않은 챌린지 입니다.</h1>
       )}
+      <GetAllChallenge />
     </SDetailChallengeWrapper>
   );
 };
