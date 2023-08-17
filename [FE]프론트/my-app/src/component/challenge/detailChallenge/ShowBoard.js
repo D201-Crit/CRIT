@@ -37,31 +37,32 @@ const ShowBoard = ({ boards, challenge, getBoard }) => {
       ) : challenge.challengeStatus === "WAIT" ? (
         <h1>진행 예정인 챌린지 입니다</h1>
       ) : (
-        <CreateBoard
-          boards={groupedBoards[formattedToday]}
-          getBoard={getBoard}
-          classification={challenge.classification}
-        />
-      )}
-
-      {Object.keys(groupedBoards)
-        .reverse()
-        .map((date) => (
-          <SDiv key={date}>
-            <h2>{date}</h2>
-            {groupedBoards[date].map((board) => (
-              <SBoardWrapper key={board.id}>
-                <span id="writer">{board.writer}</span>
-                <span id="content">{board.content}</span>
-                {user.nickname === board.writer ? (
-                  <DeleteBoard getBoard={getBoard} boardId={board.id} />
-                ) : (
-                  <LikeBoard getBoard={getBoard} board={board} />
-                )}
-              </SBoardWrapper>
+        <>
+          <CreateBoard
+            boards={groupedBoards[formattedToday]}
+            getBoard={getBoard}
+            classification={challenge.classification}
+          />
+          {Object.keys(groupedBoards)
+            .reverse()
+            .map((date) => (
+              <SDiv key={date}>
+                <h2>{date}</h2>
+                {groupedBoards[date].map((board) => (
+                  <SBoardWrapper key={board.id}>
+                    <span id="writer">{board.writer}</span>
+                    <span id="content">{board.content}</span>
+                    {user.nickname === board.writer ? (
+                      <DeleteBoard getBoard={getBoard} boardId={board.id} />
+                    ) : (
+                      <LikeBoard getBoard={getBoard} board={board} />
+                    )}
+                  </SBoardWrapper>
+                ))}
+              </SDiv>
             ))}
-          </SDiv>
-        ))}
+        </>
+      )}
     </SBoardsWrapper>
   );
 };

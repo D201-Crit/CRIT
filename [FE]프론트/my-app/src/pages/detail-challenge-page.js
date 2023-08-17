@@ -14,6 +14,7 @@ const DetailChallengePage = () => {
   const [boards, setBoards] = useState([]);
   const [loading, setLoading] = useState(true);
   console.log(challenge);
+  console.log(user);
   const [checkUser, setCheckUser] = useState(false);
   const checkedUser = () => {
     if (challenge.userList.includes(user.nickname)) {
