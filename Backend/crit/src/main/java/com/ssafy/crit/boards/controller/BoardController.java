@@ -6,7 +6,6 @@ import java.util.List;
 import com.ssafy.crit.auth.entity.User;
 import com.ssafy.crit.auth.jwt.JwtProvider;
 import com.ssafy.crit.auth.repository.UserRepository;
-import com.ssafy.crit.boards.repository.UploadFileRepository;
 import com.ssafy.crit.boards.service.dto.BoardResponseDto;
 import com.ssafy.crit.boards.service.dto.BoardSaveRequestDto;
 import com.ssafy.crit.boards.service.dto.BoardShowSortDto;
@@ -17,7 +16,9 @@ import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,44 +38,62 @@ public class BoardController {
 	private final BoardService boardService;
 	private final UserRepository userRepository;
 	private final JwtProvider jwtProvider;
-	private final UploadFileRepository uploadFileRepository;
 
 	@GetMapping("/whole/{category_id}")
-	public Response<?> getBoards(
-								 @PathVariable("category_id") String category,
+	public Response<?> getBoards(@PathVariable("category_id") String category,
 								 @RequestParam(required = false) String sortted,
-								 @RequestParam(required = false) String part) {
+								 @RequestParam(required = false) String part,
+								 @RequestParam(value = "page", defaultValue = "0") int page) {
 
 		Page<BoardShowSortDto> boards;
-
+		Pageable pageable = getPageable(page);
 		if (part != null) {
-			boards = boardService.findByTitleContaining(part,category);
+			boards = boardService.findByTitleContaining(part,category,pageable);
 			return new Response<>("성공", "포함된 단어 찾기", boards);
 		}
 
 		if ("views-desc".equals(sortted)) {
-			boards = boardService.orderByViewsDesc(category);
+			boards = boardService.orderByViewsDesc(category,pageable);
 			return new Response<>("성공", "조회순 내림차순", boards);
 		}
 
 		if ("views-asc".equals(sortted)) {
-			boards = boardService.orderByViewsAsc(category);
+			boards = boardService.orderByViewsAsc(category,pageable);
 			return new Response<>("성공", "조회순 오름차순", boards);
 		}
 
 		if ("likes-desc".equals(sortted)) {
-			boards = boardService.orderByLikesDesc(category);
-			return new Response<>("성공", "좋아요순 내림차순", boards);
+			boards = boardService.orderByLikesDesc(category,pageable);
+			return new Response<>("성공", "조회순 내림차순", boards);
 		}
 
 		if ("likes-asc".equals(sortted)) {
-			boards = boardService.orderByLikesAsc(category);
-			return new Response<>("성공", "좋아요순 오름차순", boards);
+			boards = boardService.orderByLikesAsc(category,pageable);
+			return new Response<>("성공", "조회순 오름차순", boards);
 		}
 
 
-		boards = boardService.getBoards( category);
+		boards = boardService.getBoards( category,pageable);
 		return new Response<>("성공", "카테고리별 전체 게시물 리턴", boards);
+	}
+
+	@GetMapping("/classificationOfMyBoards")
+	public Response<?> getMyBoardsClassification(@RequestParam("classification") String classificationString,
+												 HttpServletRequest httpServletRequest,
+												 @RequestParam(value = "page", defaultValue = "0") int page){
+
+		User user = getUser(httpServletRequest);
+		Pageable pageable = getPageable(page);
+		return new Response<>("성공", "분류 별 내가 쓴 게시판 찾기",
+				boardService.findAllByUserAndClassification(user, classificationString, pageable));
+	}
+	@GetMapping("/myBoards")
+	public Response<?> getMyBoards(HttpServletRequest httpServletRequest,
+								   @RequestParam(value = "page", defaultValue = "0") int page){
+		User user = getUser(httpServletRequest);
+		Pageable pageable = getPageable(page);
+		return new Response<>("성공", "분류 별 내가 쓴 게시판 찾기",
+				boardService.findAllByUser(user, pageable));
 	}
 
 
@@ -139,10 +158,6 @@ public class BoardController {
 
 	@PostMapping("/deleteImageOne/{boardId}/{fileId}")
 	public Response<?> imageDelete(@PathVariable("boardId") Long id, @PathVariable("fileId") Long fileId, HttpServletRequest httpServletRequest){
-
-		if(!uploadFileRepository.findById(fileId).isPresent())
-			return null;
-
 		User user = getUser(httpServletRequest);
 		return new Response<>("성공", "이미지 삭제 링크 추가 성공", boardService.imageDelete(id, fileId));
 
@@ -152,21 +167,6 @@ public class BoardController {
 	public Response<?> clearMapping(){
 		boardService.clearList();
 		return new Response<>("성공", "리스트clear", null);	}
-
-
-	@GetMapping("/classificationOfMyBoards")
-	public Response<?> getMyBoardsClassification(@RequestParam("classification") String classificationString, HttpServletRequest httpServletRequest){
-		User user = getUser(httpServletRequest);
-		return new Response<>("성공", "분류 별 내가 쓴 게시판 찾기",
-				boardService.findAllByUserAndClassification(user, classificationString));
-	}
-
-	@GetMapping("/myBoards")
-	public Response<?> getMyBoards(HttpServletRequest httpServletRequest){
-		User user = getUser(httpServletRequest);
-		return new Response<>("성공", "분류 별 내가 쓴 게시판 찾기",
-				boardService.findAllByUser(user));
-	}
 
 
 
@@ -180,4 +180,10 @@ public class BoardController {
 		});
 		return user;
 	}
+
+	private static Pageable getPageable(int page) {
+		Pageable pageable = PageRequest.of(page, 20, Sort.by("createdDate").descending());
+		return pageable;
+	}
 }
+

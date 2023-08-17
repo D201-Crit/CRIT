@@ -1,5 +1,6 @@
 package com.ssafy.crit.boards.service;
 
+import com.ssafy.crit.common.error.ResourceNotFoundException;
 import com.ssafy.crit.common.error.code.ErrorCode;
 import com.ssafy.crit.common.error.exception.BadRequestException;
 import org.springframework.beans.factory.annotation.Value;
@@ -112,6 +113,19 @@ public class FeedService {
 			}
 		}
 		return null;
+	}
+
+	public Page<FileResponseDto> getElseFeeds(Pageable pageable, String elseUser) {
+		User elseNickname = userRepository.findByNickname(elseUser).orElseThrow(() -> {
+			return new BadRequestException(ErrorCode.NOT_EXISTS_USER_ID);
+		});
+
+		Classification classification = classificationRepository.findByCategory("Feeds").orElseThrow(() -> {
+			return new ResourceNotFoundException("Feeds"
+					, null, ErrorCode.NOT_EXISTS_BOARD_FEEDS);
+		});
+		Page<Board> byClassificationAndUser = boardRepository.findByClassificationAndUser(pageable, classification, elseNickname);
+		return getFileResponseDto(byClassificationAndUser);
 	}
 
 	public FileResponseDto getFeed(Long id) {

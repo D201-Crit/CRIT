@@ -51,10 +51,17 @@ public class FeedController {
 	}
 
 	@GetMapping("/whole")
-	public Response<?> getFeeds(Pageable pageable, HttpServletRequest httpServletRequest){
+	public Response<?> getFeeds(Pageable pageable, HttpServletRequest httpServletRequest,
+								@RequestParam(required = false) String Nickname){
 		User user = getUser(httpServletRequest);
+
+		if(Nickname != null){
+			return new Response<>("성공", "다른 사람 피드 가져오기", feedService.getElseFeeds(pageable,Nickname));
+		}
+
 		return new Response<>("성공", "전체 피드 가져오기", feedService.getFeeds(pageable, user));
 	}
+
 
 	@DeleteMapping("/delete/{id}")
 	public Response<?> delete(@PathVariable("id") Long id, HttpServletRequest httpServletRequest){

@@ -26,7 +26,7 @@ public class ShortsController {
         return new Response<>("성공", "쇼츠 생성 완료", shortsService.create(shortsDto, file, user));
     }
 
-    @GetMapping
+    @GetMapping("/whole")
     public Response<?> getAll() {
         return new Response<>("성공", "전체 쇼츠 조회 완료", shortsService.getAll());
     }
