@@ -125,6 +125,11 @@ public class User extends BaseTimeEntity {
         this.exp = exp + 10;
         this.isChecked = true;
     }
+
+    public void challengeExp(){
+        this.exp += 100;
+    }
+
     public void setGrade(int exp){
         this.grade = Grade.getGradeByExp(exp);
     }
