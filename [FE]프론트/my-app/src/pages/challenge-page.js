@@ -12,14 +12,12 @@ import Loading from "../component/Loading";
 
 // 나머지
 import "aos/dist/aos.css";
-
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import MyChallenge from "../component/challenge/MyChallenge";
 import CreateChallengeModal from "../component/challenge/CreateChallengeModal";
 import SearchChallenge from "../component/challenge/SearchChallenge";
 import { useSelector } from "react-redux";
-
 import GetCompleteMyChallenge from "../component/challenge/GetCompleteMyChallenge";
 import GetOnGoingMyChallenge from "./../component/challenge/GetOnGoingMyChallenge";
 import GetAllMyChallenge from "../component/challenge/GetAllMyChallenge";
@@ -28,10 +26,12 @@ import { SCrit } from "../styles/pages/SChallengePage";
 import { SStartImage } from "../styles/pages/SStartPage";
 import { SScrollButtonWrapper2 } from "../styles/pages/SMainPage";
 import CheckTime from "./../component/challenge/CheckTime";
+import GetAllChallenge from "./../component/challenge/GetAllChallenge";
 
 const ChallengePage = () => {
   const [loading, setLoading] = useState(true);
   const challenges = useSelector((state) => state.challenges);
+  console.log(challenges);
   const checkChallenges = () => {
     if (challenges) {
       setLoading(false);
@@ -79,7 +79,7 @@ const ChallengePage = () => {
         />
       </Modal>
       <CheckTime />
-      <GetAllMyChallenge />
+      <GetAllChallenge />
       <GetAllMyChallenge />
       <GetCompleteMyChallenge />
       <GetOnGoingMyChallenge />

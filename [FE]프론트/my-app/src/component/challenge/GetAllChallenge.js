@@ -16,7 +16,6 @@ const GetAllChallenge = () => {
       })
       .then((res) => {
         dispatch(setChallenge(res.data.data));
-        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
