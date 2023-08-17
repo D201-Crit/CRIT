@@ -31,6 +31,7 @@ import Footer from "./component/footer/footer";
 
 import styled from "styled-components";
 
+
 const AppContainer = styled.div`
   display: flex;
   flex-direction: column;

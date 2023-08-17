@@ -17,7 +17,11 @@ import "./index.css";
 // import "swiper/css/grid";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 Modal.setAppElement("#root"); // 또는 원하는 루트 엘리먼트 선택자를 사용
-
+// 배포 환경에서 console.log, console.warn 지우기
+if (process.env.NODE_ENV === "production") {
+  console.log = function no_console() {};
+  console.warn = function no_console() {};
+}
 root.render(
   <Provider store={store}>
     <Token />

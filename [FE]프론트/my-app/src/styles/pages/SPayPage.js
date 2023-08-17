@@ -78,7 +78,6 @@ export const SPayInfoArea = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   background: #2F2F2F;
-  // background: white;
   padding : 40px;
   width: 100%;
 `;
@@ -109,7 +108,7 @@ export const PaySuccessWrapper = styled.section`
   padding: 30px;
   margin: auto;
   border-radius: 18px;
-  background-color: #f8f8f8;
+  background: #2F2F2F;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   font-family: "Pretendard", sans-serif;
 `;
@@ -129,7 +128,7 @@ export const PaySuccessInfo = styled.div`
 `;
 
 export const PaySuccessParagraph = styled.p`
-  font-size: 16px;
+  font-size: 24px;
   line-height: 1.6;
   margin-top: 20px;
 `;

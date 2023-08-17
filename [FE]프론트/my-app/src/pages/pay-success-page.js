@@ -2,7 +2,7 @@ import { useLocation } from 'react-router-dom';
 import { api } from '../api/api';
 import { useSelector } from "react-redux";
 import React, { useState, useEffect } from 'react';
-import { PaySuccessWrapper, PaySuccessTitle, PaySuccessInfo, PaySuccessParagraph, PaySuccessPaymentInfo } from '../styles/pages/SPayPage';
+import { PaySuccessWrapper, PaySuccessTitle, PaySuccessInfo, PaySuccessParagraph, PaySuccessPaymentInfo } from '../styles/pages/S';
 
 const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/payment';
 const PaySuccessPage = () => {
@@ -41,10 +41,10 @@ const PaySuccessPage = () => {
       <PaySuccessInfo>
         <h3>결제 상세정보</h3>
         <PaySuccessPaymentInfo>
-          결제일시: {payresult.approved_at}
-          주문번호: {payresult.partner_order_id}
-          상품명: {payresult.item_name}
-          결제금액: {payresult.amount?.total}
+          결제일시: {payresult.approved_at}<br/>
+          주문번호: {payresult.partner_order_id}<br/>
+          상품명: {payresult.item_name}<br/>
+          결제금액: {payresult.amount?.total}<br/>
           결제방법: {payresult.payment_method_type}
         </PaySuccessPaymentInfo>
         <PaySuccessParagraph>
