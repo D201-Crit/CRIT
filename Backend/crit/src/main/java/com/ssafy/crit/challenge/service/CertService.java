@@ -53,9 +53,15 @@ public class CertService {
         // 이미지 정보 확인 -> 챌린지 시작 시간이랑 사진 시간이랑 비교 -> (X)
         // 사진 올린 시간과 현재 시간을 비교
 
-        if (Math.abs(Duration.between(LocalTime.now(), challenge.getStartTime()).getSeconds()) > 605) { // 시작 시간이랑  10분이상 차이나는 경우
+        if(challenge.getStartTime().isAfter(LocalTime.now()) ||
+            challenge.getEndTime().isBefore(LocalTime.now())
+        ) {
             throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_CERT_TIME);
         }
+
+//        if (Math.abs(Duration.between(LocalTime.now(), challenge.getStartTime()).getSeconds()) > 605) { // 시작 시간이랑  10분이상 차이나는 경우
+//            throw new BadRequestException(ErrorCode.NOT_EXISTS_CHALLENGE_CERT_TIME);
+//        }
 
         // 올바르게 올린경우 사진 저장
         String uploadImgPath = s3Uploader.uploadFiles(file, "cert/img");
