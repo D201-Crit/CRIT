@@ -146,6 +146,10 @@ export const SBoardCard = styled.div`
   padding: 20px;
   margin: 10px;
   box-shadow: 0px 5px 10px -5px grey;
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center; 
 
   &:hover {
     animation: ${glowEffect} 0.5s infinite alternate,
@@ -165,7 +169,15 @@ export const SBoardCard = styled.div`
     margin: 0; /* 모든 p 태그의 상하 여백을 없애기 위해 */
     margin-right: 10px; /* 작성자와 조회수 사이의 간격을 조정 */
   }
-
+  img {
+    max-width: 80%;
+    max-height: 80%
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(0%, -10%);
+    object-fit: contain;
+  }
   .gotodetail {
     display: flex;
     top : 80%;
