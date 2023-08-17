@@ -134,27 +134,69 @@ export const CategoryButton = styled.div`
     background-color: #efefef;
   }
 `;
+export const SBoardTitle = styled.div`
+  background: #0000c5;
+  /* background: linear-gradient(90deg, #002F89 -4.96%, rgba(158, 249, 255, 0) 161.36%); */
+  /* background: linear-gradient(90deg, #0000C5 -4.96%, rgba(0, 57, 169, 0) 161.36%); */
+  /* background: linear-gradient(90deg, #83C4FF -4.96%, rgba(171, 215, 255, 0) 161.36%); */
+  /* background: linear-gradient(90deg, #83C4FF -4.96%, rgba(46, 71, 95, 0) 161.36%); */
+  /* background: linear-gradient(90deg, #150F59 -4.96%, rgba(18, 52, 84, 0) 161.36%); */
+  /* background: linear-gradient(90deg, #002445 -4.96%, rgba(0, 0, 0, 0) 161.36%); */
+  /* background: linear-gradient(90deg, #003642 -4.96%, rgba(39, 49, 53, 0) 161.36%); */
+  /* background: linear-gradient(90deg, #103170 -4.96%, rgba(158, 249, 255, 0) 161.36%); */
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: -1;
+`;
 
+export const SBoardCardItem= styled.div`
+    background: linear-gradient(180deg, #2B2B2B 0%, rgba(0, 0, 0, 0) 100%);
+    width: 430px;
+    height: 530px;
+    position: relative;
+    display: flex; 
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 100;
+    box-shadow: 0px 5px 10px -5px grey;
+
+
+`
 export const SBoardCard = styled.div`
   cursor : pointer;
+  z-index: 400;
+  background: dark;
   position: relative;
-  background-color: #dark;
   width: 400px;
   height: 470px;
-  border: 1px solid #dddddd;
+  border: 1px solid gray;
   border-radius: 10px;
   padding: 20px;
   margin: 10px;
   box-shadow: 0px 5px 10px -5px grey;
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center; 
 
   &:hover {
+    box-shadow: 0px 5px 10px -5px grey;
     animation: ${glowEffect} 0.5s infinite alternate,
               ${floatEffect} 1s ease-in-out infinite;
   }
 
   h1 {
     text-align: center;
-    margin: 25px 0px 110px 0px;
+    font-size: 50px;
+    font-weight: 1500;
+    text-shadow: 1px 1px 2px grey, 0 0 1em grey, 0 0 0.2em grey;    
+    /* margin: 25px 0px 110px 0px; */
+    margin: 25px 0px 50px 0px;
   }
   .board-item {
     display: flex;
@@ -165,7 +207,15 @@ export const SBoardCard = styled.div`
     margin: 0; /* 모든 p 태그의 상하 여백을 없애기 위해 */
     margin-right: 10px; /* 작성자와 조회수 사이의 간격을 조정 */
   }
-
+  img {
+    max-width: 80%;
+    max-height: 80%
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(0%, -10%);
+    object-fit: contain;
+  }
   .gotodetail {
     display: flex;
     top : 80%;
@@ -213,17 +263,7 @@ export const SHeaderWrapper2 = styled.div`
   background-color: black;
   
 `;
-export const SBoardTitle = styled.div`
-  background: #0000c5;
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  top: -450px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: -1;
-`;
+
 
 export const SBoardDetailBoardInfo = styled.p`
   margin: 0 5px;

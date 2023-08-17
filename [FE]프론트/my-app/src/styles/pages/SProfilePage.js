@@ -188,7 +188,7 @@ export const SFeedArea = styled.div`
 
   .grid-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-gap: 5px;
   }
 `;

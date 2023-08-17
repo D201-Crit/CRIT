@@ -3,6 +3,7 @@ import React, { useEffect, useState, forwardRef } from "react";
 import { api } from '../../api/api';
 import { useSelector } from "react-redux";
 import Loading from '../Loading';
+import { Link } from "react-router-dom";
 import { SDeleteIcon } from '../../styles/pages/SMessage';
 import {
   SDividerLine,
@@ -279,7 +280,7 @@ const DetailShortModal = ({ shortId, setOpenDetailModal, ref}) => {
             <SDividerLine />
 
             <SInfoRow>
-              <p style={{ color: "#1877f2" }}>{short.writer}</p>
+            <Link to={`/ProfilePage/${short.writer}`} style={{ color: "#1877f2", textDecoration: "none" }}><p>{short.writer}</p></Link>
               <p >조회수&nbsp;&nbsp; :&nbsp;&nbsp; {short.views}</p>
               <p>좋아요&nbsp;&nbsp;:&nbsp;&nbsp;{short.likesCount}</p>
             </SInfoRow>
@@ -320,7 +321,7 @@ const DetailShortModal = ({ shortId, setOpenDetailModal, ref}) => {
               <SCommentList>
                 {comments.map((comment) => (
                   <div key={comment.id} className="comment-item">
-                    <p style={{ color: "#1877f2" }}>{comment.writer}</p>
+                      <Link to={`/ProfilePage/${comment.writer}`} style={{ color: "#1877f2", textDecoration: "none" }}>{comment.writer}</Link>
                     <p>{comment.content}</p>
                     <div>
                       {isMyComment(comment) && (
