@@ -32,6 +32,9 @@ const Nav = () => {
           <NavLink to="/ProfilePage">
             <h3>내 정보</h3>
           </NavLink>
+          <NavLink to="/PayPage">
+            <h3>포인트 충전</h3>
+          </NavLink>
           <LogOut />
         </>
       )}

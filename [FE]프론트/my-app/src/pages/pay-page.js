@@ -1,13 +1,13 @@
 
 import React from 'react';
 import Payment from '../component/pay/PaymentComponent';
-
+import { SPayWrapper } from '../styles/pages/SPayPage';
 function PayPage() {
   return (
-    <div>
-      <h1>Kakao Pay 예제</h1>
+    <SPayWrapper>
+      <h1>결제</h1>
       <Payment />
-    </div>
+    </SPayWrapper>
   );
 }
 

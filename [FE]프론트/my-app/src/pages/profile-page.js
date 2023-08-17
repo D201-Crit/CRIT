@@ -19,6 +19,7 @@ import {
 import { SEmpty, SEmpty2 } from "../styles/SCommon";
 import { useState, useRef, useEffect } from "react";
 import MyFollowingList from "../component/profile/MyFollowingList";
+import MyFollowerList from '../component/profile/MyFollowerList';
 import CreateShortsModal from "../component/shorts/CreateShortsModal";
 import ProfileShorts from "../component/profile/ProfileShorts";
 import Feed from "../component/profile/ProfileFeed";
@@ -33,9 +34,11 @@ const ProfilePage = () => {
   const [profileInfo, setProfileInfo] = useState({});
   const profileImgFileInput = useRef(null);
   const [myFollowingList, setMyFollowingList] = useState(null);
+  const [myFollowerList, setMyFollowerList] = useState(null);
   const [shortsCreateModal, setShortsCreateModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [followingListModal, setFollowingListModal] = useState(false);
+  const [followerListModal, setFollowerListModal] = useState(false);
 
   const followersCount = profileInfo.followers
     ? profileInfo.followers.length
@@ -53,6 +56,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     getMyFollowingList();
+    getMyFollowerList();
   }, []);
 
   useEffect(() => {
@@ -60,6 +64,13 @@ const ProfilePage = () => {
       console.log("내 팔로잉 리스트", myFollowingList);
     }
   }, [myFollowingList]);
+
+  useEffect(() => {
+    if (myFollowerList !== null) {
+      console.log("내 팔로워 리스트", myFollowerList);
+    }
+  }, [myFollowerList]);
+
 
   // 프로필 이미지 변경 처리
   const profileChange = (e) => {
@@ -96,6 +107,27 @@ const ProfilePage = () => {
       })
       .catch((error) => {
         console.log("getMyFollowingList 에러 (profile-page)", error);
+      });
+  };
+
+  // 내 팔로워 목록 불러오기
+  const getMyFollowerList = async () => {
+    api
+      .get(
+        `${API_BASE_URL}/myfollower/user
+    `,
+        {
+          headers: {
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        const followerList = res.data.data;
+        setMyFollowerList(followerList);
+      })
+      .catch((error) => {
+        console.log("getMyFollowerList 에러 (profile-page)", error);
       });
   };
 
@@ -180,6 +212,13 @@ const ProfilePage = () => {
         />
       )}
 
+
+      {followerListModal && (
+        <MyFollowerList
+          setFollowerListModal={setFollowerListModal}
+          myFollowerList={myFollowerList}
+        />
+      )}
       <SProfileWrapper>
         <SEmpty2 />
         <Row>
@@ -246,7 +285,11 @@ const ProfilePage = () => {
             <a style={{ color: "grey" }} className="follower">
               팔로워
             </a>
-            <a style={{ margin: "10px", fontSize: "24px", fontWeight: "1000" }}>
+            <a style={{ margin: "10px", fontSize: "24px", fontWeight: "1000" }}
+            onClick={() => {
+                setFollowerListModal(true);
+              }}
+              >
               {followersCount}
             </a>
           </Col>
