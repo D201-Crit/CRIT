@@ -314,6 +314,7 @@ public class ChallengeService {
         log.info("=======챌린지를 패스한 인원들 정산=======");
         for (User user : passList) {
             log.info("유저 {}의 정산 금액: {} ", user.getId(), challenge.getMoney());
+            user.challengeExp();
             user.addCashPoint(challenge.getMoney());
         }
 
@@ -321,6 +322,7 @@ public class ChallengeService {
         for (User user : successList) {
             int finallyAddedMoney = settledMoney / successList.size() + challenge.getMoney();
             log.info("유저 {}의 정산 금액: {} ", user.getId(), finallyAddedMoney);
+            user.challengeExp();
             user.addCashPoint(finallyAddedMoney);
         }
 
