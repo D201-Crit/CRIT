@@ -164,7 +164,7 @@ const CommunityBoardDetail = ({ classification }) => {
                                 {/* 여기다가 이미지 첨부여부 아이콘 표시<SBoardDetailBoardInfo></SBoardDetailBoardInfo> */}
                                     <SBoardDetailBoardInfo onClick={() => goToArticleDetail(article.id)}>{article.title}</SBoardDetailBoardInfo>
                                     <SBoardDetailBoardInfo>{article.writer}</SBoardDetailBoardInfo>
-                                    <SBoardDetailBoardInfo>{formatTime(article.modifyTime)}</SBoardDetailBoardInfo>
+                                    <SBoardDetailBoardInfo>{formatTime(article.createTime)}</SBoardDetailBoardInfo>
                                     <SBoardDetailBoardInfo>{article.views}</SBoardDetailBoardInfo>
                                     <SBoardDetailBoardInfo>{article.likesCount}</SBoardDetailBoardInfo>
                                 </SHeaderWrapper>

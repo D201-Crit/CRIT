@@ -137,7 +137,6 @@ const ProfilePage = () => {
   
   return (
     <>
-    
     <SProfileModifyModal show={showConfirmModal}>
       <SProfileModifyModalArea>
         <ModalText>프로필 변경 하시겠습니까?</ModalText>

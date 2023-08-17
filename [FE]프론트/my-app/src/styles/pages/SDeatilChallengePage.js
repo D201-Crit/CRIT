@@ -372,7 +372,7 @@ export const SJoinListModal = {
     border: "0.5px solid rgba(80, 80, 80)",
     borderRadius: "10px",
     boxShadow: "0px 0px 15px gray",
-    width: "400px",
+    width: "350px",
     height: "650px",
     margin: "70px auto",
     padding: "0",
@@ -401,7 +401,9 @@ export const SJoinListWrapper = styled.div`
     width: 280px;
   }
   h1 {
-    margin: 80px 35px;
+    font-weight: 200;
+    font-size: 24px;
+    margin: 80px 70px;
   }
 `;
 
