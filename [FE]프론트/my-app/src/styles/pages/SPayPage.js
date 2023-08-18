@@ -122,7 +122,7 @@ export const PaySuccessTitle = styled.h1`
 `;
 
 export const PaySuccessInfo = styled.div`
-  background-color: white;
+  background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0.95) 0.01%, rgba(0, 0, 0, 0.01) 100%);
   padding: 25px 30px;
   border-radius: 18px;
   box-shadow: 0 2px 7px rgba(0, 0, 0, 0.1);
