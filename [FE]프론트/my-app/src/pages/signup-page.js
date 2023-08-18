@@ -133,12 +133,12 @@ const SignUp = () => {
                 })
           )
             // 중복 확인 성공한 경우 nickname 중복 상태를 false로 변경
-            setcheckNickname(false);
+            setcheckNickname(true);
         })
         .catch((err) => {
           console.log(err);
           // 중복 확인 실패한 경우 nickname 중복 상태를 true로 변경
-          setcheckNickname(true);
+          setcheckNickname(false);
         });
     }
   };
@@ -198,6 +198,8 @@ const SignUp = () => {
               position: "center",
               icon: "success",
               title: "회원가입 완료!",
+              background: "#272727",
+
               showConfirmButton: false,
               timer: 1500,
             });
