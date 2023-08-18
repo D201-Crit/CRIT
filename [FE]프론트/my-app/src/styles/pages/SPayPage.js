@@ -106,9 +106,10 @@ export const PayInfomationWrapper = styled.div`
 export const PaySuccessWrapper = styled.section`
   max-width: 800px;
   padding: 30px;
+  color: white;
   margin: auto;
   border-radius: 18px;
-  background: #2F2F2F;
+  background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0.15) 0.01%, rgba(0, 0, 0, 0.01) 100%);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   font-family: "Pretendard", sans-serif;
 `;
@@ -135,6 +136,7 @@ export const PaySuccessParagraph = styled.p`
 
 export const PaySuccessPaymentInfo = styled.p`
   margin-top: 20px;
+  padding : 30px;
   white-space: pre;
   font-size: 18px;
 `;
