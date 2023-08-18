@@ -199,7 +199,7 @@ const SignUp = () => {
               icon: "success",
               title: "회원가입 완료!",
               background: "#272727",
-
+              color: "white",
               showConfirmButton: false,
               timer: 1500,
             });
