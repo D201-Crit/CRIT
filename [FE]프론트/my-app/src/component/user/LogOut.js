@@ -7,7 +7,6 @@ import { api } from "../../api/api";
 const LogOut = () => {
   const user = useSelector((state) => state.users); // useSelector를 통해 userSlice의 상태를 가져옴
   const nav = useNavigate();
-  console.log(user);
 
   const logOut = () => {
     api
@@ -21,7 +20,7 @@ const LogOut = () => {
           headers: {
             Authorization: `Bearer ${user.refreshToken}`,
           },
-        },
+        }
       )
       .then((res) => {
         persistor.purge(); // 영구 저장된 모든 상태를 초기화

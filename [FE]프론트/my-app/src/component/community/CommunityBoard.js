@@ -1,11 +1,11 @@
-import React from 'react';
-import BoardCard from './BoardCard.js';
+import React from "react";
+import BoardCard from "./BoardCard.js";
 import {
   SHr,
   SEmpty,
   SBoardArticleCol,
   SBoardContainer,
-} from '../../styles/pages/SCommunityPage';
+} from "../../styles/pages/SCommunityPage";
 
 const CommunityBoard = () => {
   const boards = [
@@ -14,7 +14,7 @@ const CommunityBoard = () => {
     { title: "운동 게시판", imagePath: "/board1.png" },
     { title: "반려동물 게시판", imagePath: "/board4.png" },
   ];
-  
+
   return (
     <div>
       <SHr />

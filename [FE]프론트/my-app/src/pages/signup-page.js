@@ -35,7 +35,7 @@ const SignUp = () => {
       setMismatchError(e.target.value !== passwordCheck);
     },
     // 함수 기준 외부 변수만 deps[]에 작성
-    [passwordCheck],
+    [passwordCheck]
   );
   // 아이디 중복확인
   const onCheckId = (userId) => {
@@ -53,7 +53,7 @@ const SignUp = () => {
     } else {
       axios
         .post(
-          `https://i9d201.p.ssafy.io/api/auth/valid/userId?userId=${userId}`,
+          `https://i9d201.p.ssafy.io/api/auth/valid/userId?userId=${userId}`
         )
         .then((res) => {
           if (
@@ -106,7 +106,7 @@ const SignUp = () => {
     } else {
       axios
         .post(
-          `https://i9d201.p.ssafy.io/api/auth/valid/nickname?nickname=${nickname}`,
+          `https://i9d201.p.ssafy.io/api/auth/valid/nickname?nickname=${nickname}`
         )
         .then((res) => {
           if (
@@ -133,12 +133,12 @@ const SignUp = () => {
                 })
           )
             // 중복 확인 성공한 경우 nickname 중복 상태를 false로 변경
-            setcheckNickname(true);
+            setcheckNickname(false);
         })
         .catch((err) => {
           console.log(err);
           // 중복 확인 실패한 경우 nickname 중복 상태를 true로 변경
-          setcheckNickname(false);
+          setcheckNickname(true);
         });
     }
   };
@@ -149,7 +149,7 @@ const SignUp = () => {
       setPasswordCheck(e.target.value);
       setMismatchError(e.target.value !== password);
     },
-    [password],
+    [password]
   );
 
   // 회원가입 폼 제출
@@ -182,7 +182,6 @@ const SignUp = () => {
         });
       }
       if (!mismatchError && checkId && checkNickname) {
-        console.log("서버로 회원가입하기");
         setSignUpError("");
         setSignUpSuccess(false);
         axios
@@ -223,7 +222,7 @@ const SignUp = () => {
           });
       }
     },
-    [email, nickname, password, passwordCheck, checkId, checkNickname],
+    [email, nickname, password, passwordCheck, checkId, checkNickname]
   );
 
   return (

@@ -21,7 +21,7 @@ const CheckTime = () => {
     const checkChallengeEndTimeInterval = setInterval(() => {
       const now = new Date();
       const currentTime = `${formatNumber(now.getHours())}:${formatNumber(
-        now.getMinutes(),
+        now.getMinutes()
       )}`;
 
       challenges.forEach((challenge) => {

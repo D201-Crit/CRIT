@@ -45,7 +45,6 @@ const AnotherProfilePage = () => {
     ? profileInfo.followings.length
     : 0;
 
-    
   // 프로필 정보 가져오기
   useEffect(() => {
     if (myNickname === nickname) {
@@ -55,7 +54,6 @@ const AnotherProfilePage = () => {
       getMyProfile();
     }
   }, []); // 빈 의존성 배열을 사용하여 초기 렌더링 시에만 실행
-
 
   // 내 프로필 가져오기
   const getMyProfile = async () => {
@@ -102,7 +100,6 @@ const AnotherProfilePage = () => {
         }
       )
       .then((res) => {
-        console.log(res);
         getAnotherProfile();
       });
   };
@@ -121,7 +118,6 @@ const AnotherProfilePage = () => {
         }
       )
       .then((res) => {
-        console.log(res);
         getAnotherProfile();
       });
   };

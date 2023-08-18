@@ -11,7 +11,6 @@ const CommunityBoardPage = () => {
   // classification 변수가 객체인지 확인하여 문자열로 변환합니다.
   const classificationString =
     typeof classification === "object" ? classification.id : classification;
-  console.log("디버긔", classificationString);
   return (
     <>
       <SCommunityWrapper>

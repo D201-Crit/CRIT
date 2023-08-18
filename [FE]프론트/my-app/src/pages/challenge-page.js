@@ -37,11 +37,7 @@ import QnaModal from "../component/challenge/QnaModal";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-
-
-
 const ChallengePage = () => {
-
   useEffect(() => {
     AOS.init({
       offset: 0,
@@ -57,11 +53,8 @@ const ChallengePage = () => {
     };
   }, []);
 
-
-
   const [loading, setLoading] = useState(true);
   const challenges = useSelector((state) => state.challenges);
-  console.log(challenges);
   const checkChallenges = () => {
     if (challenges) {
       setLoading(false);
@@ -80,52 +73,49 @@ const ChallengePage = () => {
     checkChallenges();
   }, [challenges]);
   return (
-<div data-aos="zoom-in-up">
+    <div data-aos="zoom-in-up">
+      <SChallengeWrapper>
+        {loading ? <Loading /> : null}
 
-    <SChallengeWrapper>
-      {loading ? <Loading /> : null}
+        <SCreateChallengeWrapper>
+          <SCreateChallengeButton onClick={openModal}>
+            챌린지 만들기
+          </SCreateChallengeButton>
+        </SCreateChallengeWrapper>
 
-      <SCreateChallengeWrapper>
-        <SCreateChallengeButton onClick={openModal}>
-          챌린지 만들기
-        </SCreateChallengeButton>
-      </SCreateChallengeWrapper>
+        <SCritWrapper>
+          <SCrit src="https://github.com/Jinga02/ChallengePJT/assets/110621233/5e33307d-94b5-4cd1-8a12-2f1c95f2f0ec" />
+        </SCritWrapper>
 
-      <SCritWrapper>
-        <SCrit src="https://github.com/Jinga02/ChallengePJT/assets/110621233/5e33307d-94b5-4cd1-8a12-2f1c95f2f0ec" />
-      </SCritWrapper>
+        <QnaModal />
+        <MyChallenge />
+        <SCritWrapper2>
+          <SCrit2 src="https://github.com/Jinga02/ChallengePJT/assets/110621233/5e33307d-94b5-4cd1-8a12-2f1c95f2f0ec" />
+        </SCritWrapper2>
+        <SearchChallenge allChallenge={challenges} />
+        <SStartImage
+          src={process.env.PUBLIC_URL + "/startimg2.png"}
+          style={{ left: "860px", top: "-750px" }}
+          alt="placeholder"
+        />
 
-      <QnaModal />
-      <MyChallenge />
-      <SCritWrapper2>
-        <SCrit2 src="https://github.com/Jinga02/ChallengePJT/assets/110621233/5e33307d-94b5-4cd1-8a12-2f1c95f2f0ec" />
-      </SCritWrapper2>
-      <SearchChallenge allChallenge={challenges} />
-      <SStartImage
-        src={process.env.PUBLIC_URL + "/startimg2.png"}
-        style={{ left: "860px", top: "-750px" }}
-        alt="placeholder"
-      />
+        <SStartImage2
+          src={process.env.PUBLIC_URL + "/backImg.png"}
+          style={{ left: "0px", top: "-1200px", zIndex: "-1000" }}
+          alt="placeholder"
+        />
 
-      <SStartImage2
-        src={process.env.PUBLIC_URL + "/backImg.png"}
-        style={{ left: "0px", top: "-1200px", zIndex: "-1000" }}
-        alt="placeholder"
-      />  
+        <Modal style={customModalStyles} isOpen={isOpen}>
+          <CreateChallengeModal closeModal={closeModal} />
+        </Modal>
 
-      <Modal style={customModalStyles} isOpen={isOpen}>
-        <CreateChallengeModal closeModal={closeModal} />
-      </Modal>
-
-
-      <CheckTime />
-      <GetAllChallenge />
-      <GetAllMyChallenge />
-      <GetCompleteMyChallenge />
-      <GetOnGoingMyChallenge />
-      <GetPlannedMyChallenge />
-
-    </SChallengeWrapper>
+        <CheckTime />
+        <GetAllChallenge />
+        <GetAllMyChallenge />
+        <GetCompleteMyChallenge />
+        <GetOnGoingMyChallenge />
+        <GetPlannedMyChallenge />
+      </SChallengeWrapper>
     </div>
   );
 };

@@ -122,7 +122,6 @@ const Entrance = () => {
   const minutes = now.getMinutes();
   const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
   const Time = `${hours}:${formattedMinutes}`;
-  console.log(Time);
   return (
     <SEntranceSwiper
       grabCursor={true}

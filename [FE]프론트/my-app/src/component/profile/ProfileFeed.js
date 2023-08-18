@@ -40,7 +40,7 @@ const Feed = () => {
       })
       .then((res) => {
         setFeeds(res.data.data.content);
-        console.log("피드받아오냐?", res);
+        // console.log("피드받아오냐?", res);
       })
       .catch((error) => {
         console.log("피드에러받아오냐?", error);
@@ -65,14 +65,19 @@ const Feed = () => {
 
           {/* FeedCreateModal */}
           {isCreateModalOpen && (
-            <FeedCreateModal setIsCreateModalOpen={setIsCreateModalOpen} feeds={feeds} getFeeds={getFeeds} />
+            <FeedCreateModal
+              setIsCreateModalOpen={setIsCreateModalOpen}
+              feeds={feeds}
+              getFeeds={getFeeds}
+            />
           )}
 
           {/* 게시물 리스트 */}
           <div>
             {feeds.length === 0 ? (
-              <h2 style={{fontSize: "30px",color : "#343CF4"
-            }}>등록된 피드가 없습니다</h2>
+              <h2 style={{ fontSize: "30px", color: "#343CF4" }}>
+                등록된 피드가 없습니다
+              </h2>
             ) : (
               <SFeedBox>
                 {feeds.map((feed) => (
@@ -98,7 +103,11 @@ const Feed = () => {
         {/* FeedDetailModal */}
         {isDetailModalOpen && (
           <SDetailFeedModal>
-            <FeedDetailModal getFeeds={getFeeds} setIsDetailModalOpen={setIsDetailModalOpen} feedId={feedId} />
+            <FeedDetailModal
+              getFeeds={getFeeds}
+              setIsDetailModalOpen={setIsDetailModalOpen}
+              feedId={feedId}
+            />
           </SDetailFeedModal>
         )}
       </div>

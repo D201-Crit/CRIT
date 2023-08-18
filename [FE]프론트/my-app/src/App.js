@@ -30,7 +30,7 @@ import Swal from "sweetalert2";
 import Footer from "./component/footer/footer";
 
 import styled from "styled-components";
-
+import { api } from "./api/api";
 
 const AppContainer = styled.div`
   display: flex;

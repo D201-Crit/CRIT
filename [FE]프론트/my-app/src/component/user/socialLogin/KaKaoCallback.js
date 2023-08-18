@@ -19,7 +19,6 @@ const KakaoCallback = () => {
       // url: `https://i9d201.p.ssafy.io/api/oauth/login/oauth2/code/${registrationId}?code=${code}&state=${state}`,
     })
       .then((res) => {
-        console.log(res);
         dispatch(
           setUser({
             id: res.data.id,

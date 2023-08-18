@@ -57,7 +57,6 @@ const CommunityArticleDetailPage = () => {
       })
       .then((res) => {
         setArticles(res.data.data);
-        console.log(res);
       })
       .catch((error) => {
         console.log(error);
@@ -74,7 +73,6 @@ const CommunityArticleDetailPage = () => {
       })
       .then((res) => {
         setNewComment("");
-        console.log(res);
         setComments(res.data.data);
       })
       .catch((error) => {
@@ -147,7 +145,6 @@ const CommunityArticleDetailPage = () => {
         },
       })
       .then((res) => {
-        console.log("게시글 삭제 성공");
         return fetchArticles();
       })
       .then((res) => {
@@ -168,7 +165,6 @@ const CommunityArticleDetailPage = () => {
         },
       })
       .then((res) => {
-        console.log(res);
         fetchArticles();
       })
       .catch((error) => {
@@ -184,7 +180,6 @@ const CommunityArticleDetailPage = () => {
         },
       })
       .then((res) => {
-        console.log("Delete Like Response:", res);
         return fetchArticles();
       })
       .catch((error) => {
@@ -242,8 +237,17 @@ const CommunityArticleDetailPage = () => {
         {articles && (
           <div>
             <SArticleTitle>{articles.title}</SArticleTitle>
-            <Link to={`/ProfilePage/${articles.writer}`} style={{ color: "#1877f2", textDecoration: "none" , display:"flex",     justifyContent: "flex-end", // 추가된 코드
- }}><p>작성자 : {articles.writer}</p></Link>
+            <Link
+              to={`/ProfilePage/${articles.writer}`}
+              style={{
+                color: "#1877f2",
+                textDecoration: "none",
+                display: "flex",
+                justifyContent: "flex-end", // 추가된 코드
+              }}
+            >
+              <p>작성자 : {articles.writer}</p>
+            </Link>
             <SImageContainer2>
               {" "}
               {/* ImageContainer 추가 */}

@@ -61,13 +61,13 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (myFollowingList !== null) {
-      console.log("내 팔로잉 리스트", myFollowingList);
+      // console.log("내 팔로잉 리스트", myFollowingList);
     }
   }, [myFollowingList]);
 
   useEffect(() => {
     if (myFollowerList !== null) {
-      console.log("내 팔로워 리스트", myFollowerList);
+      // console.log("내 팔로워 리스트", myFollowerList);
     }
   }, [myFollowerList]);
 
@@ -98,7 +98,7 @@ const ProfilePage = () => {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
           },
-        },
+        }
       )
       .then((res) => {
         const followingsList = res.data.data;
@@ -119,7 +119,7 @@ const ProfilePage = () => {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
           },
-        },
+        }
       )
       .then((res) => {
         const followerList = res.data.data;
@@ -155,7 +155,6 @@ const ProfilePage = () => {
         },
       })
       .then((res) => {
-        console.log("프로필 정보", res);
         setProfileInfo(res.data.data);
         setProfileImage({ url: res.data.data.imageUrl, file: null });
       })

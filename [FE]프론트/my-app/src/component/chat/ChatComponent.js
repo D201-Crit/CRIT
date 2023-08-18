@@ -14,7 +14,6 @@ export default class ChatComponent extends Component {
       messageList: [],
       message: "",
     };
-    console.log(props);
     this.chatScroll = React.createRef();
     this.handleChange = this.handleChange.bind(this);
     this.handlePressKey = this.handlePressKey.bind(this);
@@ -57,7 +56,6 @@ export default class ChatComponent extends Component {
   }
 
   sendMessage() {
-    console.log(this.state.message);
     if (this.props.user && this.state.message) {
       let message = this.state.message.replace(/ +(?= )/g, "");
       if (message !== "" && message !== " ") {

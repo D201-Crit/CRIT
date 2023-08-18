@@ -91,8 +91,8 @@ export const SStatusWrapper = styled.div`
   }
   a {
     margin: 0 20px 0 0;
-    border : 1px solid grey;
-    padding :10px;
+    border: 1px solid grey;
+    padding: 10px;
     border-radius: 10px;
     cursor: pointer;
     font-size: 18px;
@@ -100,8 +100,7 @@ export const SStatusWrapper = styled.div`
     color: white;
     &:hover {
       color: #ff007a;
-      border : 1px solid #ff007a;
-
+      border: 1px solid #ff007a;
     }
   }
 `;
@@ -276,8 +275,8 @@ export const SCategoryWrapper = styled.div`
   a {
     margin: 0 20px 0 0;
     cursor: pointer;
-    border : 1px solid grey;
-    padding :10px;
+    border: 1px solid grey;
+    padding: 10px;
     border-radius: 10px;
     font-size: 18px;
     font-weight: 800;
@@ -915,7 +914,6 @@ export const SQnaWrapper = styled.div`
   width: 400px;
   height: 300px;
   z-index: 1001;
-  // background: red;
 `;
 export const SScrollCircle = styled.div`
   padding: 7px 10px;

@@ -29,7 +29,6 @@ const Login = () => {
         })
         .then((res) => {
           console.log(res);
-          console.log(res.data.cashPoint);
           dispatch(
             setUser({
               id: res.data.id,

@@ -7,52 +7,52 @@ import {
   SMessageItem,
   SDeleteIconButton,
 } from "../../styles/pages/SMessage";
-const API_BASE_URL = 'https://i9d201.p.ssafy.io/api/messages';
+const API_BASE_URL = "https://i9d201.p.ssafy.io/api/messages";
 const SentMessage = (setMassageView) => {
   const user = useSelector((state) => state.users);
-  const [sentMessage,setSentMessage] = useState([]);
+  const [sentMessage, setSentMessage] = useState([]);
 
   useEffect(() => {
-     getSentMessage();
+    getSentMessage();
   }, []);
-
 
   const getSentMessage = () => {
     api
-      .get(`${API_BASE_URL}/sent`,{
+      .get(`${API_BASE_URL}/sent`, {
         headers: {
-          Authorization: `Bearer ${user.accessToken}`
+          Authorization: `Bearer ${user.accessToken}`,
         },
       })
       .then((res) => {
-        console.log(res);
-        setSentMessage(res.data.data.sort((a, b) => new Date(b.id) - new Date(a.id)))
+        // console.log(res);
+        setSentMessage(
+          res.data.data.sort((a, b) => new Date(b.id) - new Date(a.id))
+        );
       })
-      .catch((err)=>{
-        console.log(err)
+      .catch((err) => {
+        console.log(err);
       });
   };
   // 보낸 메시지 삭제
   const deleteSentMessage = (messageId) => {
     api
-      .delete(`${API_BASE_URL}/sent/${messageId}`,{
+      .delete(`${API_BASE_URL}/sent/${messageId}`, {
         headers: {
-          Authorization: `Bearer ${user.accessToken}`
+          Authorization: `Bearer ${user.accessToken}`,
         },
       })
       .then((res) => {
         getSentMessage();
-        console.log("삭제성공",res);
+        // console.log("삭제성공",res);
       })
-      .catch((err)=>{
-        console.log("삭제실패",err)
+      .catch((err) => {
+        console.log("삭제실패", err);
       });
   };
 
-
   return (
     <div>
-      <h3 style={{margin: '20px 10px' }}>보낸 메시지</h3>
+      <h3 style={{ margin: "20px 10px" }}>보낸 메시지</h3>
       <SMessageList>
         {sentMessage.length ? (
           sentMessage
@@ -78,9 +78,8 @@ const SentMessage = (setMassageView) => {
             ))
         ) : (
           <SMessageItem>
-          <div>보낸 메시지가 없습니다</div>
+            <div>보낸 메시지가 없습니다</div>
           </SMessageItem>
-
         )}
       </SMessageList>
     </div>
@@ -88,4 +87,3 @@ const SentMessage = (setMassageView) => {
 };
 
 export default SentMessage;
-

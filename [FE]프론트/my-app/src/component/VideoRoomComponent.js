@@ -32,7 +32,6 @@ const maxPredictions = 2; // 모델이 가지고 있는 클래스의 수에 따�
 class VideoRoomComponent extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.webcamRef = React.createRef(); // webcam을 Ref로 선언
     this.modelRef = React.createRef();
     this.totalTimeRef = React.createRef();
@@ -165,12 +164,10 @@ class VideoRoomComponent extends Component {
 
   async connectToSession() {
     if (this.props.token !== undefined) {
-      console.log("token received: ", this.props.token);
       this.connect(this.props.token);
     } else {
       try {
         var token = await this.getToken();
-        console.log(token);
         this.connect(token);
       } catch (error) {
         console.error(
@@ -208,11 +205,11 @@ class VideoRoomComponent extends Component {
           });
         }
         alert("There was an error connecting to the session:", error.message);
-        console.log(
-          "There was an error connecting to the session:",
-          error.code,
-          error.message
-        );
+        // console.log(
+        //   "There was an error connecting to the session:",
+        //   error.code,
+        //   error.message
+        // );
       });
   }
   //-----------------------teachable machine----------------------------//
@@ -246,9 +243,7 @@ class VideoRoomComponent extends Component {
     const class1Prediction = prediction[0].probability.toFixed(2);
     const class2Prediction = prediction[1].probability.toFixed(2);
     const check = 0;
-    console.log(
-      `자리 있음 : ${class1Prediction},  자리 없음 : ${class2Prediction}`
-    );
+
     if (class2Prediction == 1.0) {
       Swal.fire({
         position: "center",
@@ -412,13 +407,13 @@ class VideoRoomComponent extends Component {
     if (this.props.leaveSession) {
       this.props.leaveSession();
     }
-    console.log("Teachable Machine 종료");
+    // console.log("Teachable Machine 종료");
     this.isUnmounted = true;
     const challengeId = this.props.challengeData.challenge.id;
     // const inTime = 0 + this.totalTimeRef.current;
     const inTime = this.state.totalTime.toFixed(0);
     // console.log(`지속 시간: ${this.totalTimeRef.current}ms`);
-    console.log(`지속 시간: ${this.state.totalTime.toFixed(2)}초`);
+    // console.log(`지속 시간: ${this.state.totalTime.toFixed(2)}초`);
 
     api
       .post("https://i9d201.p.ssafy.io/api/cert/video", {
@@ -427,7 +422,6 @@ class VideoRoomComponent extends Component {
       })
       .then((res) => {
         const cert = res.data.data;
-        console.log(cert);
         Swal.fire({
           position: "center",
           icon: cert.percentage >= 80 ? "success" : "error",
@@ -542,7 +536,7 @@ class VideoRoomComponent extends Component {
       remoteUsers.forEach((user) => {
         if (user.getConnectionId() === event.from.connectionId) {
           const data = JSON.parse(event.data);
-          console.log("EVENTO REMOTE: ", event.data);
+          // console.log("EVENTO REMOTE: ", event.data);
           if (data.isAudioActive !== undefined) {
             user.setAudioActive(data.isAudioActive);
           }
@@ -733,7 +727,7 @@ class VideoRoomComponent extends Component {
     if (display === "block") {
       this.setState({ chatDisplay: display, messageReceived: false });
     } else {
-      console.log("chat", display);
+      // console.log("chat", display);
       this.setState({ chatDisplay: display });
     }
     this.updateLayout();
@@ -837,7 +831,6 @@ class VideoRoomComponent extends Component {
 
   async createSession(sessionId) {
     // 여기서 세션 ID를 this.props.challengeData.challenge.id로 전달합니다.
-    console.log("test");
     const response = await axios.post(
       APPLICATION_SERVER_URL + "sessions",
       {

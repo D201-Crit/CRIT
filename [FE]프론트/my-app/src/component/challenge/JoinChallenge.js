@@ -4,7 +4,6 @@ import Swal from "sweetalert2";
 
 const JoinChallenge = ({ challenge, setCheckUser }) => {
   const user = useSelector((state) => state.users);
-  console.log(challenge);
   const checkEntrance = () => {
     return Swal.fire({
       position: "center",
@@ -35,7 +34,7 @@ const JoinChallenge = ({ challenge, setCheckUser }) => {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
           },
-        },
+        }
       )
       .then((res) => {
         Swal.fire({

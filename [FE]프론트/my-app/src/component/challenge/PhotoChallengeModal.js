@@ -16,7 +16,6 @@ const PhotoChallengeModal = ({ challengeData, closePhotoModal }) => {
     };
     reader.readAsDataURL(file);
   };
-  console.log(challengeData);
   const checkCreate = (e) => {
     e.preventDefault();
     Swal.fire({
@@ -46,7 +45,6 @@ const PhotoChallengeModal = ({ challengeData, closePhotoModal }) => {
       )
       .then((res) => {
         const certList = res.data.data[res.data.data.length - 1]; // 마지막 요소 선택
-        console.log(certList);
 
         Swal.fire({
           position: "center",
@@ -102,7 +100,6 @@ const PhotoChallengeModal = ({ challengeData, closePhotoModal }) => {
         },
       })
       .then((res) => {
-        console.log(res);
         getCertList();
         setImage(null); // 이미지 상태 초기화
         // closePhotoModal();
