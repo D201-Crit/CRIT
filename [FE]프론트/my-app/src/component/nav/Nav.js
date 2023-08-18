@@ -27,7 +27,7 @@ const Nav = () => {
     </div>
   );
 
-  const getProfile = () => {
+  const getProfile = async () => {
     if (user) {
       api
         .get(`${API_BASE_URL}/myProfile`, {
@@ -36,10 +36,11 @@ const Nav = () => {
           },
         })
         .then((res) => {
+          console.log("프로필 정보", res);
           setProfile({ url: res.data.data.imageUrl, file: null });
         })
         .catch((error) => {
-          console.log(error);
+          console.log("에러받아오냐?", error);
         });
     }
   };
@@ -60,10 +61,8 @@ const Nav = () => {
     </div>
   );
   useEffect(() => {
-    if (user && user.accessToken) {
-      getProfile();
-    }
-  }, [user]);
+    getProfile();
+  }, []);
 
   return (
     <SNav>
@@ -154,7 +153,7 @@ const Nav = () => {
                   src={profile.url}
                   style={{
                     width: "50px",
-                    height: "50px",
+                    height:"50px",
                     objectFit: "cover",
 
                     borderRadius: "50%",
