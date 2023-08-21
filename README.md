@@ -1,4 +1,4 @@
-![startimg2__1_](/uploads/5bb4802e32a5876fb5cd6f6fb7f47158/startimg2__1_.png)# CRIT
+# CRIT
 
 ## 프로젝트 개요
 
