@@ -60,16 +60,16 @@ CRIT은 단순한 챌린지 서비스를 넘어, 참가자들이 '함께' 성장
 
 ---
 ### 시작페이지 & 회원가입 & 로그인
-![시작페이지-_-회원가입-_-로그인](/uploads/bfa1ff1d536238430c2e31e37d4db18d/시작페이지-_-회원가입-_-로그인.gif)
+![회원가입](/uploads/7655bb5a0492bf2f1f88b431c77b2676/ezgif.com-gif-maker.gif)
 
 ### 메인페이지 & 커뮤니티
-![메인페이지-_-커뮤니티](/uploads/df56ff0b2d859114234ab40a5e281f8c/메인페이지-_-커뮤니티.gif)
+![메인페이지](/uploads/6871b2f032e0c8a052845560c65ea84c/ezgif.com-optimize.gif)
 
 ### 프로필 & 메시지
-![프로필-_-메시지](/uploads/120a6cee7b899b8fe86bf1a80e2dcf57/프로필-_-메시지.gif)
+![프로필](/uploads/bdb23db1d7b1c6ad8a63b822dc08eb1d/ezgif.com-optimize__1_.gif)
 
 ### 챌린지
-![프로필-_-메시지](/uploads/120a6cee7b899b8fe86bf1a80e2dcf57/프로필-_-메시지.gif)
+![챌린지](/uploads/c2cbca461ca3958bbbfb11bc6b6be464/ezgif.com-gif-maker__1_.gif)
 
 ## 기술 차별점
 
