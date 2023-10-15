@@ -18,7 +18,7 @@ CRIT은 단순한 챌린지 서비스를 넘어, 참가자들이 '함께' 성장
 
 ---
 
-![제목_없음](/uploads/da4c7d050815d098f6758a32a7d134f7/제목_없음.png)
+![crit1](https://github.com/D201-Crit/CRIT/assets/110797992/0bbc27f5-d2ef-43ae-ab75-ae710686aad6)
 
 - C : Create Goals(목표를 설정하세요)
 - R : Realize your Goals(목표를 거머쥐세요)
@@ -60,16 +60,16 @@ CRIT은 단순한 챌린지 서비스를 넘어, 참가자들이 '함께' 성장
 
 ---
 ### 시작페이지 & 회원가입 & 로그인
-![회원가입](/uploads/7655bb5a0492bf2f1f88b431c77b2676/ezgif.com-gif-maker.gif)
+![회원가입](https://github.com/D201-Crit/CRIT/assets/110797992/82188ac5-34c6-4f2b-966f-042fa8e8207d)
 
 ### 메인페이지 & 커뮤니티
-![메인페이지](/uploads/6871b2f032e0c8a052845560c65ea84c/ezgif.com-optimize.gif)
+![메인페이지](https://github.com/D201-Crit/CRIT/assets/110797992/931f9b3b-9f2a-4775-8bda-c5c1de93ab68)
 
 ### 프로필 & 메시지
-![프로필](/uploads/bdb23db1d7b1c6ad8a63b822dc08eb1d/ezgif.com-optimize__1_.gif)
+![프로필](https://github.com/D201-Crit/CRIT/assets/110797992/2be628a5-ae4f-400d-9da7-7ece3b8fdc0c)
 
 ### 챌린지
-![챌린지](/uploads/c2cbca461ca3958bbbfb11bc6b6be464/ezgif.com-gif-maker__1_.gif)
+![챌린지](https://github.com/D201-Crit/CRIT/assets/110797992/94b784b6-804d-425f-ba6f-eb94c0dc9377)
 
 ## 기술 차별점
 
@@ -163,14 +163,12 @@ OpenVidu라이브러리를 사용하여 kurento-midea-server를 거쳐 서로 �
 ## 아키텍처
 
 ---
-
-![수정한_아키텍쳐2__1_](/uploads/412e5e08ce94793f422e1e3f508ee3c2/수정한_아키텍쳐2__1_.jpg)
+![수정한_아키텍쳐2__1_](https://github.com/D201-Crit/CRIT/assets/110797992/cc7ec62d-ec67-42af-8ab6-ef1550d83488)
 
 ## ERD
 
 ---
-
-![image](/uploads/1823dca98b0be6e1c3927da3c44446f5/image.png)
+![erd](https://github.com/D201-Crit/CRIT/assets/110797992/78e831a1-bcbd-4073-8cd7-19565497d583)
 
 ## 협업 툴
 
